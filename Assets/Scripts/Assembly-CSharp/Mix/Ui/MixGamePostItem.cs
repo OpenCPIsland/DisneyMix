@@ -166,7 +166,7 @@ namespace Mix.Ui
 			// Start the Coroutine to wait 5 seconds before replacing ALL shaders
 			if (MonoSingleton<GameManager>.Instance != null)
 			{
-				MonoSingleton<GameManager>.Instance.StartCoroutine(ApplyShaderAfterDelay(base.instance, 0.2f));
+				MonoSingleton<GameManager>.Instance.StartCoroutine(ApplyShaderAfterDelay(base.instance, 0.5f));
 			}
 
 			return base.instance;
