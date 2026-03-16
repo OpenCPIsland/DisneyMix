@@ -806,7 +806,7 @@ namespace Mix.Ui
 				gameObject2.transform.localScale = localScale;
 			}
 			Util.SetLayerRecursively(gameObject2, parent.layer);
-			UnityEngine.Object.DestroyObject(gameObject);
+			UnityEngine.Object.Destroy(gameObject);
 		}
 
 		private void FlipAvatarUvs(GameObject go)
@@ -1786,7 +1786,7 @@ namespace Mix.Ui
 			if (thread is IGroupChatThread)
 			{
 				((IGroupChatThread)thread).OnGagMessageAdded += eventGenerator.AddEventHandler<AbstractChatThreadGagMessageAddedEventArgs>(thread, OnGagMessageReceived);
-			}
+								}
 			thread.OnTextMessageAdded += eventGenerator.AddEventHandler<AbstractChatThreadTextMessageAddedEventArgs>(thread, OnTextMessageReceived);
 			thread.OnStickerMessageAdded += eventGenerator.AddEventHandler<AbstractChatThreadStickerMessageAddedEventArgs>(thread, OnStickerMessageReceived);
 			thread.OnPhotoMessageAdded += eventGenerator.AddEventHandler<AbstractChatThreadPhotoMessageAddedEventArgs>(thread, OnPhotoMessageReceived);
@@ -1985,7 +1985,10 @@ namespace Mix.Ui
 				IScrollItem item = new MixChatItem(aChatThread, aTextMessage, ScrollView);
 				if (aIsNewMessage && !aTextMessage.IsMine())
 				{
-					AccessibilityManager.Instance.Speak(aTextMessage.Text);
+					if (AccessibilityManager.Instance != null)
+					{
+						AccessibilityManager.Instance.Speak(aTextMessage.Text);
+					}
 				}
 				AddMessageToScrollView(aTextMessage, item, aIsNewMessage);
 			}
@@ -2173,7 +2176,7 @@ namespace Mix.Ui
 				}
 			}
 			IScrollItem scrollItem = null;
-			if (chatMessage != null && clientMessages != null && clientMessages.ContainsKey(chatMessage))
+			if (chatMessage != null && clientMessages != null && clientMessages.ContainsKey(chatMessage) && ScrollView != null)
 			{
 				scrollItem = ScrollView.Get(clientMessages[chatMessage]);
 			}
@@ -2183,7 +2186,10 @@ namespace Mix.Ui
 				if (aChatMessage is ITextMessage)
 				{
 					ITextMessage textMessage = (ITextMessage)aChatMessage;
-					AccessibilityManager.Instance.Speak(textMessage.Text);
+					if (AccessibilityManager.Instance != null)
+					{
+						AccessibilityManager.Instance.Speak(textMessage.Text);
+					}
 				}
 				if (ScrollView != null && Singleton<ChatHelper>.Instance != null)
 				{

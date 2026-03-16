@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
+using System.Collections.Generic; // Added for List
 using Fabric;
 using Mix.Ui;
 using UnityEngine;
+using UnityEngine.UI; // Added for Graphic
 
 namespace Mix.GagManagement
 {
@@ -43,6 +46,10 @@ namespace Mix.GagManagement
 
 		public GagHead Receiver { get; private set; }
 
+		private bool hasLoggedWaitingForAudio;
+		private bool hasLoggedGagPlaying;
+		private Coroutine shaderUpdateCoroutine; // Track the shader routine
+
 		public void UpdateAvatarOffsetX()
 		{
 			float t;
@@ -78,11 +85,18 @@ namespace Mix.GagManagement
 				AudioSource componentInChildren = base.gameObject.GetComponentInChildren<AudioSource>();
 				if (componentInChildren != null && (double)componentInChildren.time > 0.001)
 				{
+					Debug.Log("[GagContainer] Audio started. Calling PlayLoadedAnimation().");
 					PlayLoadedAnimation();
+				}
+				else if (!hasLoggedWaitingForAudio)
+				{
+					hasLoggedWaitingForAudio = true;
+					Debug.Log("[GagContainer] Waiting for audio before playing loaded gag animation.");
 				}
 			}
 			else if (isGagDone)
 			{
+				Debug.Log("[GagContainer] Gag marked done. Destroying gag via GagManager.");
 				isGagDone = false;
 				if (!MonoSingleton<GagManager>.Instance.IsNullOrDisposed())
 				{
@@ -154,6 +168,7 @@ namespace Mix.GagManagement
 			}
 			if (num == num2)
 			{
+				Debug.Log("[GagContainer] All gag animators/effects completed. Marking gag done.");
 				isGagDone = true;
 				return;
 			}
@@ -177,14 +192,123 @@ namespace Mix.GagManagement
 			}
 		}
 
+		// --- SHADER PATCH LOGIC ---
+		private IEnumerator ContinuouslyPatchShaders(GameObject targetInstance)
+		{
+			// Initial tiny wait
+			yield return new WaitForSeconds(0.1f);
+
+			Action scanAndReplace = () =>
+			{
+				if (targetInstance == null) return;
+				
+				Shader optimizedUIShader = Shader.Find("Custom/UI/OptimizedUIShader");
+				if (optimizedUIShader != null)
+				{
+					// Patch UI Graphics
+					Graphic[] uiGraphics = targetInstance.GetComponentsInChildren<Graphic>(true);
+					int graphicCount = 0;
+					foreach (Graphic graphic in uiGraphics)
+					{
+						if (graphic != null && graphic.material != null && graphic.material.shader != optimizedUIShader)
+						{
+							Material newMat = new Material(graphic.material); 
+							newMat.shader = optimizedUIShader;
+							graphic.material = newMat;
+							graphicCount++;
+						}
+					}
+
+					// Patch Renderers (Gags are heavily 3D mesh based)
+					Renderer[] standardRenderers = targetInstance.GetComponentsInChildren<Renderer>(true);
+					int rendererCount = 0;
+					foreach (Renderer rend in standardRenderers)
+					{
+						if (rend != null && rend.sharedMaterials != null)
+						{
+							bool changed = false;
+							Material[] newMaterials = new Material[rend.sharedMaterials.Length];
+							for (int i = 0; i < rend.sharedMaterials.Length; i++)
+							{
+								if (rend.sharedMaterials[i] != null && rend.sharedMaterials[i].shader != optimizedUIShader)
+								{
+									// Keep existing Standard/complex shaders safe, force UI optimized on the rest
+									if (!rend.sharedMaterials[i].name.Contains("Standard"))
+									{
+										Material repMat = new Material(rend.sharedMaterials[i]);
+										repMat.shader = optimizedUIShader;
+										newMaterials[i] = repMat;
+										changed = true;
+									}
+									else
+									{
+										newMaterials[i] = rend.sharedMaterials[i];
+									}
+								}
+								else
+								{
+									newMaterials[i] = rend.sharedMaterials[i];
+								}
+							}
+							
+							if (changed) 
+							{
+								rend.sharedMaterials = newMaterials;
+								rendererCount++;
+							}
+						}
+					}
+
+					if (graphicCount > 0 || rendererCount > 0)
+					{
+						Debug.Log($"[GagContainer] Patched {graphicCount} UI Graphics, {rendererCount} Renderers on Gag object.");
+					}
+				}
+			};
+
+			// Initial run
+			scanAndReplace();
+			int lastChildCount = -1;
+
+			while (targetInstance != null)
+			{
+				int currentChildCount = targetInstance.GetComponentsInChildren<Transform>(true).Length;
+
+				// Repatch if the gag dynamically instantiates new particle effects or mesh updates
+				if (currentChildCount != lastChildCount)
+				{
+					if (lastChildCount != -1) 
+					{
+						Debug.Log($"[GagContainer] Gag hierarchy changed ({lastChildCount} -> {currentChildCount}). Rerunning Shader Patch.");
+					}
+					lastChildCount = currentChildCount;
+					scanAndReplace();
+				}
+
+				yield return new WaitForSeconds(0.5f);
+			}
+		}
+		// --------------------------
+
 		public void Play(GameObject aSenderHead, GameObject aReceiverHead, string aSenderAnimName, string aReceiverAnimName, bool aFlipReceiver)
 		{
+			Debug.Log("[GagContainer] Play called. senderAnim=" + aSenderAnimName + ", receiverAnim=" + aReceiverAnimName + ", flipReceiver=" + aFlipReceiver);
+
 			if (MonoSingleton<GagManager>.Instance.IsNullOrDisposed() || MonoSingleton<NavigationManager>.Instance.IsNullOrDisposed() || Singleton<SoundManager>.Instance == null)
 			{
+				Debug.LogWarning("[GagContainer] Dependencies unavailable. Marking gag as done.");
 				isGagPlaying = true;
 				isGagDone = true;
 				return;
 			}
+
+			// Start monitoring the shader for this gag
+			if (shaderUpdateCoroutine != null) StopCoroutine(shaderUpdateCoroutine);
+			shaderUpdateCoroutine = StartCoroutine(ContinuouslyPatchShaders(gameObject));
+
+			hasLoggedWaitingForAudio = false;
+			hasLoggedGagPlaying = false;
+
 			AvatarOffsetX = MonoSingleton<GagManager>.Instance.GetAvatarOffset();
 			ObjectOffsetX = MonoSingleton<GagManager>.Instance.GetObjectOffset();
 			Sender = new GagHead(aSenderHead, AvatarAnimatorController);
@@ -204,6 +328,8 @@ namespace Mix.GagManagement
 					Singleton<SoundManager>.Instance.StopAllAudioSourcesFromRoot(lastProcessedRequestController.transform, base.gameObject);
 				}
 				eventName = component._eventName;
+				Debug.Log("[GagContainer] EventTrigger found. Waiting for event/audio. eventName=" + eventName);
+
 				GagObject[] gagObjects = GagObjects;
 				foreach (GagObject gagObject in gagObjects)
 				{
@@ -212,12 +338,19 @@ namespace Mix.GagManagement
 			}
 			else
 			{
+				Debug.Log("[GagContainer] No EventTrigger. Playing loaded animation immediately.");
 				PlayLoadedAnimation();
 			}
 		}
 
 		public void PlayLoadedAnimation()
 		{
+			if (!hasLoggedGagPlaying)
+			{
+				hasLoggedGagPlaying = true;
+				Debug.Log("[GagContainer] PlayLoadedAnimation started.");
+			}
+
 			isGagPlaying = true;
 			Sender.animator.Play(senderAnimName);
 			if (receiverAnimName != null)
@@ -261,6 +394,7 @@ namespace Mix.GagManagement
 
 		private void SwapUVs()
 		{
+			Debug.Log("[GagContainer] SwapUVs called. isReceiverFlipped=" + isReceiverFlipped);
 			if (!isReceiverFlipped)
 			{
 				return;
@@ -319,6 +453,14 @@ namespace Mix.GagManagement
 
 		public void Destroy()
 		{
+			Debug.Log("[GagContainer] Destroy called. Cleaning gag resources.");
+			
+			if (shaderUpdateCoroutine != null) 
+			{
+				StopCoroutine(shaderUpdateCoroutine);
+				shaderUpdateCoroutine = null;
+			}
+
 			AvatarAnimatorController = null;
 			GagObject[] gagObjects = GagObjects;
 			foreach (GagObject gagObject in gagObjects)
