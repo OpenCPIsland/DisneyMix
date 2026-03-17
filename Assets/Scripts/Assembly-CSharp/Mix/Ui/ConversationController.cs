@@ -87,7 +87,7 @@ namespace Mix.Ui
 				}
 			});
 			MonoSingleton<FakeFriendManager>.Instance.CheckTimeBasedMessages();
-			StartChatButton.gameObject.SetActive(MixSession.User.Friends.Count() > 1);
+			StartChatButton.gameObject.SetActive(MixSession.User.Friends.Count() > 0);
 			officialAccountsScroller = new OfficialAccountsScroller(OfficialAccountsScrollerPrefab, OfficialAccountItemPrefab, ToggleScroll);
 			officialAccountsScroller.LoadOfficialAccounts(delegate(bool didLoad)
 			{
@@ -410,7 +410,7 @@ namespace Mix.Ui
 			MonoSingleton<FakeFriendManager>.Instance.HighlightAnimator(FakeFriendManager.TYPE_FRIEND_BUTTON, FriendsButtonAnimator);
 			if (MixSession.IsValidSession)
 			{
-				StartChatButton.gameObject.SetActive(MixSession.User.Friends.Count() > 1);
+				StartChatButton.gameObject.SetActive(MixSession.User.Friends.Count() > 0);
 				SetNoChatItems();
 			}
 			if (updateBadgeCooldown > 0f)

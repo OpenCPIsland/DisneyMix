@@ -50,19 +50,7 @@ namespace Mix.Ui
 							if (!isClicked)
 							{
 								isClicked = true;
-								MonoSingleton<LoginManager>.Instance.TriggerRefreshProfile(delegate
-								{
-									if (MixSession.ParentalConsentRequired)
-									{
-										MixSession.User.SendParentalApprovalEmail(delegate(ISendParentalApprovalEmailResult result)
-										{
-											if (!result.Success && MonoSingleton<ConnectionManager>.Instance.IsConnected)
-											{
-												Log.Exception("SendParentalApprovalEmail failed to resend");
-											}
-										});
-									}
-								});
+								MonoSingleton<LoginManager>.Instance.TriggerRefreshProfile();
 							}
 						}
 					}

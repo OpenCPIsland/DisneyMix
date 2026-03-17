@@ -25,7 +25,7 @@ namespace Mix.Ui
 
 		public Button AddToGroupButton;
 
-		public NativeTextView InputField;
+		public InputField InputField;
 
 		public GameObject Highlighted;
 
@@ -49,8 +49,8 @@ namespace Mix.Ui
 		{
 			thread = aThread;
 			onFriendsAddedToGroupEvent = aOnFriendsAddedToGroupEvent;
-			InputField.KeyboardValueChanged += OnKeyboardValueChanged;
-			InputField.KeyboardFocusChanged += OnKeyboardFocusChanged;
+			InputField.onValueChanged.AddListener(OnInputValueChanged);
+			InputField.onEndEdit.AddListener(OnInputEndEdit);
 			IOrderedEnumerable<IFriend> orderedEnumerable = MixSession.User.Friends.OrderBy((IFriend f) => f.NickFirstOrDisplayName());
 			foreach (IFriend item in orderedEnumerable)
 			{
@@ -90,8 +90,8 @@ namespace Mix.Ui
 
 		private void OnDestroy()
 		{
-			InputField.KeyboardValueChanged -= OnKeyboardValueChanged;
-			InputField.KeyboardFocusChanged -= OnKeyboardFocusChanged;
+			InputField.onValueChanged.RemoveListener(OnInputValueChanged);
+			InputField.onEndEdit.RemoveListener(OnInputEndEdit);
 		}
 
 		public void OnAddToGroupButtonClicked()
@@ -181,8 +181,8 @@ namespace Mix.Ui
 
 		public void ExitSearch()
 		{
-			InputField.Value = string.Empty;
-			Filter(InputField.Value);
+			InputField.text = string.Empty;
+			Filter(InputField.text);
 			MonoSingleton<NativeKeyboardManager>.Instance.Keyboard.Hide();
 		}
 
@@ -320,19 +320,24 @@ namespace Mix.Ui
 			}
 		}
 
-		private void OnKeyboardValueChanged(NativeTextView aField, string aValue)
+		private void OnInputValueChanged(string aValue)
 		{
 			Filter(aValue);
 		}
 
-		private void OnKeyboardFocusChanged(NativeTextView aField, bool aFocus)
+		private void OnInputSelected(string aValue)
 		{
-			Highlighted.SetActive(aFocus);
+			Highlighted.SetActive(true);
+		}
+
+		private void OnInputEndEdit(string aValue)
+		{
+			Highlighted.SetActive(false);
 		}
 
 		private void Update()
 		{
-			InputField.Reposition();
+			Highlighted.SetActive(InputField != null && InputField.isFocused);
 		}
 	}
 }

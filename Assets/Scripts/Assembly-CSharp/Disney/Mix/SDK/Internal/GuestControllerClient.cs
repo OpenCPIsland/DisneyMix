@@ -259,9 +259,10 @@ namespace Disney.Mix.SDK.Internal
 
 		public void SendParentalApprovalEmail(Action<GuestControllerResult<NotificationResponse>> callback)
 		{
-			QueueItem item = CreateQueueItem("/client/{client-id}/notification/parental-approval/{swid}", HttpMethod.POST, new EmptyRequest(), GuestControllerAuthenticationType.AccessToken, callback);
-			queue.Add(item);
-			ExecuteNextCall();
+			if (callback != null)
+			{
+				callback(new GuestControllerResult<NotificationResponse>(false, null, new Dictionary<string, string>()));
+			}
 		}
 
 		public void SendVerificationEmail(Action<GuestControllerResult<NotificationResponse>> callback)
@@ -505,10 +506,26 @@ namespace Disney.Mix.SDK.Internal
 				long timeoutTime = wwwCall.TimeoutTime;
 				uint statusCode = wwwCall.StatusCode;
 				string responseText = ((wwwCall.ResponseBody != null) ? stringEncoding.GetString(wwwCall.ResponseBody) : string.Empty);
-				GuestControllerWebCallResponse response = item.ResponseParser(responseText);
-				if (response == null)
+				GuestControllerWebCallResponse response = null;
+				bool parseFailed = false;
+				try
 				{
+					response = item.ResponseParser(responseText);
+				}
+				catch (Exception ex)
+				{
+					parseFailed = true;
+					logger.Critical("GuestController parse failed: " + ex + "\nURL: " + item.Uri + "\nStatus: " + statusCode + "\nBody: " + responseText);
+				}
+
+				if (parseFailed || response == null)
+				{
+					wwwCalls.Remove(wwwCall);
+					wwwCall.Dispose();
+					logger.Critical(HttpLogBuilder.BuildResponseLog(requestId, item.Uri, item.HttpMethod, responseHeaders, responseText, statusCode));
+					queue.Remove(item);
 					CallCallbackWithFailureResult(item, null, responseHeaders);
+					ExecuteNextCall();
 				}
 				else
 				{

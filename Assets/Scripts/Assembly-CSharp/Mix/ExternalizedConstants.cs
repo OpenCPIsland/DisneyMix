@@ -20,6 +20,7 @@ namespace Mix
 			}
 		}
 
+
 		private const string GUEST_CONTROLLER_URL = "guest_baseUrl";
 
 		private const string GUEST_CONTROLLER_CLIENT_ID = "guest_clientId";
@@ -125,7 +126,7 @@ namespace Mix
 			get
 			{
 #if UNITY_ANDROID || !UNITY_EDITOR
-                return "http://10.0.0.77:80";
+				return "http://10.0.0.77:80";
 #else
 				return "http://localhost:80";
 #endif
@@ -208,21 +209,21 @@ namespace Mix
 		{
 			get
 			{
-#if UNITY_ANDROID && !UNITY_EDITOR
-                return "http://10.0.0.77:80";
+#if UNITY_ANDROID || !UNITY_EDITOR
+				return "http://10.0.0.77:80";
 #else
                 return "http://localhost:80";
 #endif
-			}
-         }
+            }
+        }
 
 
         public static string CpipeUrl
 		{
 			get
 			{
-#if UNITY_ANDROID && !UNITY_EDITOR
-                return "http://10.0.0.77:80";
+#if UNITY_ANDROID || !UNITY_EDITOR
+				return "http://10.0.0.77:80";
 #else
                 return "http://localhost:80";
 #endif
@@ -233,8 +234,8 @@ namespace Mix
 		{
 			get
 			{
-#if UNITY_ANDROID && !UNITY_EDITOR
-                return "http://10.0.0.77:80";
+#if UNITY_ANDROID || !UNITY_EDITOR
+				return "http://10.0.0.77:80";
 #else
                 return "http://localhost:80";
 #endif
@@ -245,8 +246,8 @@ namespace Mix
 		{
 			get
 			{
-#if UNITY_ANDROID && !UNITY_EDITOR
-                return "http://10.0.0.77:80";
+#if UNITY_ANDROID || !UNITY_EDITOR
+				return "http://10.0.0.77:80";
 #else
                 return "http://localhost:80";
 #endif

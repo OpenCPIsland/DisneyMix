@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 using Core.MetaData;
 
@@ -653,6 +656,577 @@ namespace Core.Joe
 			}
 			val = (val << 7) | num;
 			return true;
+		}
+
+		private sealed class SheetWriteData
+		{
+			public Sheet Sheet;
+			public Column[] Columns;
+			public List<Row> Rows;
+		}
+
+		private sealed class JoeWriteContext
+		{
+			public readonly List<string> Strings = new List<string>();
+			public readonly Dictionary<string, int> StringIndexes = new Dictionary<string, int>();
+
+			public readonly List<int> Ints = new List<int>();
+			public readonly Dictionary<int, int> IntIndexes = new Dictionary<int, int>();
+
+			public readonly List<float> Floats = new List<float>();
+			public readonly Dictionary<int, int> FloatIndexesByBits = new Dictionary<int, int>();
+
+			public readonly List<string[]> StringArrays = new List<string[]>();
+			public readonly Dictionary<string, int> StringArrayIndexes = new Dictionary<string, int>();
+
+			public readonly List<int[]> NonNegativeIntArrays = new List<int[]>();
+			public readonly Dictionary<string, int> NonNegativeIntArrayIndexes = new Dictionary<string, int>();
+
+			public readonly List<int[]> RawIntArrays = new List<int[]>();
+			public readonly Dictionary<string, int> RawIntArrayIndexes = new Dictionary<string, int>();
+
+			public readonly List<float[]> FloatArrays = new List<float[]>();
+			public readonly Dictionary<string, int> FloatArrayIndexes = new Dictionary<string, int>();
+		}
+
+		public byte[] Encode()
+		{
+			return Encode(sheets);
+		}
+
+		public static byte[] Encode(Sheet[] sourceSheets)
+		{
+			if (sourceSheets == null)
+			{
+				return null;
+			}
+
+			List<SheetWriteData> writeSheets = new List<SheetWriteData>();
+			JoeWriteContext context = new JoeWriteContext();
+
+			for (int i = 0; i < sourceSheets.Length; i++)
+			{
+				Sheet sheet = sourceSheets[i];
+				if (sheet == null)
+				{
+					continue;
+				}
+
+				Column[] columns = sheet.InternalGetAllColumns();
+				if (columns == null)
+				{
+					continue;
+				}
+
+				List<Row> rows = GetOrderedRows(sheet);
+				SheetWriteData writeSheet = new SheetWriteData
+				{
+					Sheet = sheet,
+					Columns = columns,
+					Rows = rows
+				};
+				writeSheets.Add(writeSheet);
+
+				GetOrAddString(context, sheet.SheetName);
+				for (int c = 0; c < columns.Length; c++)
+				{
+					GetOrAddString(context, columns[c].ColName);
+				}
+
+				for (int r = 0; r < rows.Count; r++)
+				{
+					Row row = rows[r];
+					for (int c = 0; c < columns.Length; c++)
+					{
+						ColumnType type = columns[c].ColType;
+						switch (type)
+						{
+						case ColumnType.String:
+						{
+							string value = row.TryGetString(c, null);
+							if (value != null)
+							{
+								GetOrAddString(context, value);
+							}
+							break;
+						}
+						case ColumnType.RawInt:
+							GetOrAddInt(context, row.TryGetInt(c, 0));
+							break;
+						case ColumnType.Float:
+							GetOrAddFloat(context, row.TryGetFloat(c, 0f));
+							break;
+						case ColumnType.StringArray:
+						{
+							string[] value = row.TryGetStringArray(c);
+							if (value != null)
+							{
+								GetOrAddStringArray(context, value);
+							}
+							break;
+						}
+						case ColumnType.NonNegativeIntArray:
+						{
+							int[] value = row.TryGetIntArray(c);
+							if (value != null)
+							{
+								GetOrAddNonNegativeIntArray(context, value);
+							}
+							break;
+						}
+						case ColumnType.RawIntArray:
+						{
+							int[] value = row.TryGetIntArray(c);
+							if (value != null)
+							{
+								GetOrAddRawIntArray(context, value);
+							}
+							break;
+						}
+						case ColumnType.FloatArray:
+						{
+							float[] value = row.TryGetFloatArray(c);
+							if (value != null)
+							{
+								GetOrAddFloatArray(context, value);
+							}
+							break;
+						}
+						}
+					}
+				}
+			}
+
+			using (MemoryStream ms = new MemoryStream())
+			{
+				using (BinaryWriter writer = new BinaryWriter(ms))
+				{
+					writer.Write((byte)74);
+					writer.Write((byte)79);
+					writer.Write((byte)69);
+					writer.Write((byte)1);
+
+					writer.Write(context.Strings.Count);
+					for (int i = 0; i < context.Strings.Count; i++)
+					{
+						string text = context.Strings[i] ?? string.Empty;
+						byte[] utf8 = Encoding.UTF8.GetBytes(text);
+						WriteVariableLength(writer, (uint)utf8.Length);
+						writer.Write(utf8);
+					}
+
+					writer.Write(context.Ints.Count);
+					for (int i = 0; i < context.Ints.Count; i++)
+					{
+						writer.Write(context.Ints[i]);
+					}
+
+					writer.Write(context.Floats.Count);
+					for (int i = 0; i < context.Floats.Count; i++)
+					{
+						writer.Write(context.Floats[i]);
+					}
+
+					writer.Write(context.StringArrays.Count);
+					for (int i = 0; i < context.StringArrays.Count; i++)
+					{
+						string[] arr = context.StringArrays[i];
+						WriteVariableLength(writer, (uint)arr.Length);
+						for (int j = 0; j < arr.Length; j++)
+						{
+							int strIndex = context.StringIndexes[arr[j]];
+							WriteVariableLength(writer, (uint)strIndex);
+						}
+					}
+
+					writer.Write(context.NonNegativeIntArrays.Count);
+					for (int i = 0; i < context.NonNegativeIntArrays.Count; i++)
+					{
+						int[] arr = context.NonNegativeIntArrays[i];
+						WriteVariableLength(writer, (uint)arr.Length);
+						for (int j = 0; j < arr.Length; j++)
+						{
+							uint value = (arr[j] < 0) ? 0u : (uint)arr[j];
+							WriteVariableLength(writer, value);
+						}
+					}
+
+					writer.Write(context.RawIntArrays.Count);
+					for (int i = 0; i < context.RawIntArrays.Count; i++)
+					{
+						int[] arr = context.RawIntArrays[i];
+						WriteVariableLength(writer, (uint)arr.Length);
+						for (int j = 0; j < arr.Length; j++)
+						{
+							int intIndex = context.IntIndexes[arr[j]];
+							WriteVariableLength(writer, (uint)intIndex);
+						}
+					}
+
+					writer.Write(context.FloatArrays.Count);
+					for (int i = 0; i < context.FloatArrays.Count; i++)
+					{
+						float[] arr = context.FloatArrays[i];
+						WriteVariableLength(writer, (uint)arr.Length);
+						for (int j = 0; j < arr.Length; j++)
+						{
+							int floatIndex = context.FloatIndexesByBits[FloatToBits(arr[j])];
+							WriteVariableLength(writer, (uint)floatIndex);
+						}
+					}
+
+					WriteVariableLength(writer, (uint)writeSheets.Count);
+					for (int i = 0; i < writeSheets.Count; i++)
+					{
+						int sheetNameIndex = context.StringIndexes[writeSheets[i].Sheet.SheetName];
+						WriteVariableLength(writer, (uint)sheetNameIndex);
+					}
+
+					for (int i = 0; i < writeSheets.Count; i++)
+					{
+						SheetWriteData writeSheet = writeSheets[i];
+						Column[] columns = writeSheet.Columns;
+
+						WriteVariableLength(writer, (uint)columns.Length);
+						for (int c = 0; c < columns.Length; c++)
+						{
+							writer.Write((byte)columns[c].ColType);
+							int colNameIndex = context.StringIndexes[columns[c].ColName];
+							WriteVariableLength(writer, (uint)colNameIndex);
+						}
+
+						uint cellCount = (uint)(writeSheet.Rows.Count * columns.Length);
+						WriteVariableLength(writer, cellCount);
+
+						for (int r = 0; r < writeSheet.Rows.Count; r++)
+						{
+							Row row = writeSheet.Rows[r];
+							for (int c = 0; c < columns.Length; c++)
+							{
+								ColumnType type = columns[c].ColType;
+								switch (type)
+								{
+								case ColumnType.String:
+								{
+									string value = row.TryGetString(c, null);
+									if (value == null)
+									{
+										writer.Write((byte)0);
+									}
+									else
+									{
+										WriteVariableLength(writer, (uint)(context.StringIndexes[value] + 1));
+									}
+									break;
+								}
+								case ColumnType.Boolean:
+								{
+									bool value = row.TryGetBool(c);
+									writer.Write((byte)(value ? 2 : 1));
+									break;
+								}
+								case ColumnType.NonNegativeInt:
+								{
+									int value = row.TryGetInt(c, 0);
+									uint encoded = (uint)((value < 0) ? 1 : (value + 1));
+									WriteVariableLength(writer, encoded);
+									break;
+								}
+								case ColumnType.RawInt:
+								{
+									int value = row.TryGetInt(c, 0);
+									int intIndex = context.IntIndexes[value];
+									WriteVariableLength(writer, (uint)(intIndex + 1));
+									break;
+								}
+								case ColumnType.Float:
+								{
+									float value = row.TryGetFloat(c, 0f);
+									int floatIndex = context.FloatIndexesByBits[FloatToBits(value)];
+									WriteVariableLength(writer, (uint)(floatIndex + 1));
+									break;
+								}
+								case ColumnType.StringArray:
+								{
+									string[] value = row.TryGetStringArray(c);
+									if (value == null)
+									{
+										writer.Write((byte)0);
+									}
+									else
+									{
+										string key = BuildStringArrayKey(value);
+										WriteVariableLength(writer, (uint)(context.StringArrayIndexes[key] + 1));
+									}
+									break;
+								}
+								case ColumnType.NonNegativeIntArray:
+								{
+									int[] value = row.TryGetIntArray(c);
+									if (value == null)
+									{
+										writer.Write((byte)0);
+									}
+									else
+									{
+										string key = BuildIntArrayKey(value);
+										WriteVariableLength(writer, (uint)(context.NonNegativeIntArrayIndexes[key] + 1));
+									}
+									break;
+								}
+								case ColumnType.RawIntArray:
+								{
+									int[] value = row.TryGetIntArray(c);
+									if (value == null)
+									{
+										writer.Write((byte)0);
+									}
+									else
+									{
+										string key = BuildIntArrayKey(value);
+										WriteVariableLength(writer, (uint)(context.RawIntArrayIndexes[key] + 1));
+									}
+									break;
+								}
+								case ColumnType.FloatArray:
+								{
+									float[] value = row.TryGetFloatArray(c);
+									if (value == null)
+									{
+										writer.Write((byte)0);
+									}
+									else
+									{
+										string key = BuildFloatArrayKey(value);
+										WriteVariableLength(writer, (uint)(context.FloatArrayIndexes[key] + 1));
+									}
+									break;
+								}
+								default:
+									writer.Write((byte)0);
+									break;
+								}
+							}
+						}
+					}
+
+					writer.Write((byte)0);
+				}
+
+				return ms.ToArray();
+			}
+		}
+
+		private static List<Row> GetOrderedRows(Sheet sheet)
+		{
+			Dictionary<string, Row> rows = sheet.GetAllRows();
+			if (rows == null || rows.Count == 0)
+			{
+				return new List<Row>();
+			}
+			return rows.OrderBy(kv => kv.Key, StringComparer.Ordinal).Select(kv => kv.Value).ToList();
+		}
+
+		private static int GetOrAddString(JoeWriteContext context, string value)
+		{
+			value = value ?? string.Empty;
+			int index;
+			if (context.StringIndexes.TryGetValue(value, out index))
+			{
+				return index;
+			}
+			index = context.Strings.Count;
+			context.Strings.Add(value);
+			context.StringIndexes[value] = index;
+			return index;
+		}
+
+		private static int GetOrAddInt(JoeWriteContext context, int value)
+		{
+			int index;
+			if (context.IntIndexes.TryGetValue(value, out index))
+			{
+				return index;
+			}
+			index = context.Ints.Count;
+			context.Ints.Add(value);
+			context.IntIndexes[value] = index;
+			return index;
+		}
+
+		private static int GetOrAddFloat(JoeWriteContext context, float value)
+		{
+			int bits = FloatToBits(value);
+			int index;
+			if (context.FloatIndexesByBits.TryGetValue(bits, out index))
+			{
+				return index;
+			}
+			index = context.Floats.Count;
+			context.Floats.Add(value);
+			context.FloatIndexesByBits[bits] = index;
+			return index;
+		}
+
+		private static int GetOrAddStringArray(JoeWriteContext context, string[] value)
+		{
+			string key = BuildStringArrayKey(value);
+			int index;
+			if (context.StringArrayIndexes.TryGetValue(key, out index))
+			{
+				return index;
+			}
+
+			string[] clone = new string[value.Length];
+			for (int i = 0; i < value.Length; i++)
+			{
+				clone[i] = value[i] ?? string.Empty;
+				GetOrAddString(context, clone[i]);
+			}
+
+			index = context.StringArrays.Count;
+			context.StringArrays.Add(clone);
+			context.StringArrayIndexes[key] = index;
+			return index;
+		}
+
+		private static int GetOrAddNonNegativeIntArray(JoeWriteContext context, int[] value)
+		{
+			string key = BuildIntArrayKey(value);
+			int index;
+			if (context.NonNegativeIntArrayIndexes.TryGetValue(key, out index))
+			{
+				return index;
+			}
+
+			int[] clone = new int[value.Length];
+			for (int i = 0; i < value.Length; i++)
+			{
+				clone[i] = (value[i] < 0) ? 0 : value[i];
+			}
+
+			index = context.NonNegativeIntArrays.Count;
+			context.NonNegativeIntArrays.Add(clone);
+			context.NonNegativeIntArrayIndexes[key] = index;
+			return index;
+		}
+
+		private static int GetOrAddRawIntArray(JoeWriteContext context, int[] value)
+		{
+			string key = BuildIntArrayKey(value);
+			int index;
+			if (context.RawIntArrayIndexes.TryGetValue(key, out index))
+			{
+				return index;
+			}
+
+			int[] clone = new int[value.Length];
+			for (int i = 0; i < value.Length; i++)
+			{
+				clone[i] = value[i];
+				GetOrAddInt(context, clone[i]);
+			}
+
+			index = context.RawIntArrays.Count;
+			context.RawIntArrays.Add(clone);
+			context.RawIntArrayIndexes[key] = index;
+			return index;
+		}
+
+		private static int GetOrAddFloatArray(JoeWriteContext context, float[] value)
+		{
+			string key = BuildFloatArrayKey(value);
+			int index;
+			if (context.FloatArrayIndexes.TryGetValue(key, out index))
+			{
+				return index;
+			}
+
+			float[] clone = new float[value.Length];
+			for (int i = 0; i < value.Length; i++)
+			{
+				clone[i] = value[i];
+				GetOrAddFloat(context, clone[i]);
+			}
+
+			index = context.FloatArrays.Count;
+			context.FloatArrays.Add(clone);
+			context.FloatArrayIndexes[key] = index;
+			return index;
+		}
+
+		private static string BuildStringArrayKey(string[] value)
+		{
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < value.Length; i++)
+			{
+				string v = value[i] ?? string.Empty;
+				sb.Append(v.Length);
+				sb.Append(':');
+				sb.Append(v);
+				sb.Append('|');
+			}
+			return sb.ToString();
+		}
+
+		private static string BuildIntArrayKey(int[] value)
+		{
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < value.Length; i++)
+			{
+				if (i > 0)
+				{
+					sb.Append(',');
+				}
+				sb.Append(value[i]);
+			}
+			return sb.ToString();
+		}
+
+		private static string BuildFloatArrayKey(float[] value)
+		{
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < value.Length; i++)
+			{
+				if (i > 0)
+				{
+					sb.Append(',');
+				}
+				sb.Append(FloatToBits(value[i]));
+			}
+			return sb.ToString();
+		}
+
+		private static int FloatToBits(float value)
+		{
+			return BitConverter.ToInt32(BitConverter.GetBytes(value), 0);
+		}
+
+		private static void WriteVariableLength(BinaryWriter writer, uint val)
+		{
+			if (val == 0u)
+			{
+				writer.Write((byte)0);
+				return;
+			}
+
+			byte[] parts = new byte[5];
+			int count = 0;
+			while (val > 0u)
+			{
+				parts[count++] = (byte)(val & 0x7Fu);
+				val >>= 7;
+			}
+
+			for (int i = count - 1; i >= 0; i--)
+			{
+				byte b = parts[i];
+				if (i != 0)
+				{
+					b = (byte)(b | 0x80);
+				}
+				writer.Write(b);
+			}
 		}
 	}
 }
