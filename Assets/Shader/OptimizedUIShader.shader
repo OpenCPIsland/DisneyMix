@@ -1,112 +1,106 @@
-Shader "Custom/UI/OptimizedUIShader"
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Custom/UI/OptimizedUIShader" {
+Properties {
+[PerRendererData]  _MainTex ("Sprite Texture", 2D) = "white" { }
+ _Color ("Tint", Color) = (1.000000,1.000000,1.000000,1.000000)
+ _StencilComp ("Stencil Comparison", Float) = 8.000000
+ _Stencil ("Stencil ID", Float) = 0.000000
+ _StencilOp ("Stencil Operation", Float) = 0.000000
+ _StencilWriteMask ("Stencil Write Mask", Float) = 255.000000
+ _StencilReadMask ("Stencil Read Mask", Float) = 255.000000
+ _ColorMask ("Color Mask", Float) = 15.000000
+}
+SubShader { 
+ Tags { "QUEUE"="Transparent" "IGNOREPROJECTOR"="true" "RenderType"="Transparent" "PreviewType"="Plane" "CanUseSpriteAtlas"="true" }
+ Pass {
+  Tags { "QUEUE"="Transparent" "IGNOREPROJECTOR"="true" "RenderType"="Transparent" "PreviewType"="Plane" "CanUseSpriteAtlas"="true" }
+  ZTest [unity_GUIZTestMode]
+  ZWrite Off
+  Cull Off
+  Stencil {
+   Ref [_Stencil]
+   ReadMask [_StencilReadMask]
+   WriteMask [_StencilWriteMask]
+   Comp [_StencilComp]
+   Pass [_StencilOp]
+  }
+  Blend SrcAlpha OneMinusSrcAlpha
+  ColorMask [_ColorMask]
+  GpuProgramID 45395
+CGPROGRAM
+//#pragma target 4.0
+
+#pragma vertex vert
+#pragma fragment frag
+
+#include "UnityCG.cginc"
+
+
+#define CODE_BLOCK_VERTEX
+//uniform float4x4 UNITY_MATRIX_MVP;
+uniform float4 _Color;
+uniform float4 _TextureSampleAdd;
+uniform sampler2D _MainTex;
+struct appdata_t
 {
-	Properties
-	{
-		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
-		_Color ("Tint", Color) = (1,1,1,1)
-		_StencilComp ("Stencil Comparison", Float) = 8
-		_Stencil ("Stencil ID", Float) = 0
-		_StencilOp ("Stencil Operation", Float) = 0
-		_StencilWriteMask ("Stencil Write Mask", Float) = 255
-		_StencilReadMask ("Stencil Read Mask", Float) = 255
-		_ColorMask ("Color Mask", Float) = 15
-		// Added missing base UI property to prevent errors if UI elements expects it
-		[Toggle(UNITY_UI_ALPHACLIP)] _UseUIAlphaClip ("Use Alpha Clip", Float) = 0
-	}
+    float4 vertex :POSITION;
+    float4 color :COLOR;
+    float4 texcoord :TEXCOORD0;
+};
 
-	SubShader
-	{
-		Tags
-		{
-			"Queue"="Transparent"
-			"IgnoreProjector"="True"
-			"RenderType"="Transparent"
-			"PreviewType"="Plane"
-			"CanUseSpriteAtlas"="True"
-		}
+struct OUT_Data_Vert
+{
+    float4 xlv_COLOR :COLOR;
+    float2 xlv_TEXCOORD0 :TEXCOORD0;
+    float4 xlv_TEXCOORD1 :TEXCOORD1;
+    float4 vertex :SV_POSITION;
+};
 
-		Stencil
-		{
-			Ref [_Stencil]
-			Comp [_StencilComp]
-			Pass [_StencilOp]
-			ReadMask [_StencilReadMask]
-			WriteMask [_StencilWriteMask]
-		}
+struct v2f
+{
+    float4 xlv_COLOR :COLOR;
+    float2 xlv_TEXCOORD0 :TEXCOORD0;
+};
 
-		Cull Off
-		Lighting Off
-		ZWrite Off
-		ZTest [unity_GUIZTestMode]
-		Blend SrcAlpha OneMinusSrcAlpha
-		ColorMask [_ColorMask]
+struct OUT_Data_Frag
+{
+    float4 color :SV_Target0;
+};
 
-		Pass
-		{
-			CGPROGRAM
-			#pragma vertex vert
-			#pragma fragment frag
+OUT_Data_Vert vert(appdata_t in_v)
+{
+    OUT_Data_Vert out_v;
+    float2 tmpvar_1;
+    tmpvar_1 = in_v.texcoord.xy;
+    float4 tmpvar_2;
+    float2 tmpvar_3;
+    tmpvar_3 = tmpvar_1;
+    tmpvar_2 = (in_v.color * _Color);
+    out_v.vertex = UnityObjectToClipPos(in_v.vertex);
+    out_v.xlv_COLOR = tmpvar_2;
+    out_v.xlv_TEXCOORD0 = tmpvar_3;
+    out_v.xlv_TEXCOORD1 = in_v.vertex;
+    return out_v;
+}
 
-			// Add standard UI multi-compiles to support masks properly 
-			#pragma multi_compile __ UNITY_UI_CLIP_RECT
-			#pragma multi_compile __ UNITY_UI_ALPHACLIP
+#define CODE_BLOCK_FRAGMENT
+OUT_Data_Frag frag(v2f in_f)
+{
+    OUT_Data_Frag out_f;
+    float4 tmpvar_1;
+    float4 color_2;
+    float4 tmpvar_3;
+    tmpvar_3 = ((tex2D(_MainTex, in_f.xlv_TEXCOORD0) + _TextureSampleAdd) * in_f.xlv_COLOR);
+    color_2 = tmpvar_3;
+    tmpvar_1 = color_2;
+    out_f.color = tmpvar_1;
+    return out_f;
+}
 
-			#include "UnityCG.cginc"
-			#include "UnityUI.cginc"
 
-			struct appdata_t
-			{
-				float4 vertex : POSITION;
-				float4 color : COLOR;
-				float2 texcoord : TEXCOORD0;
-				UNITY_VERTEX_INPUT_INSTANCE_ID
-			};
+ENDCG
 
-			struct v2f
-			{
-				float4 vertex : SV_POSITION;
-				fixed4 color : COLOR;
-				float2 texcoord : TEXCOORD0;
-				float4 worldPosition : TEXCOORD1;
-				UNITY_VERTEX_OUTPUT_STEREO
-			};
-
-			sampler2D _MainTex;
-			fixed4 _Color;
-			float4 _TextureSampleAdd; // Standard UI property for fonts/sprites
-			float4 _ClipRect;
-
-			v2f vert(appdata_t v)
-			{
-				v2f o;
-				UNITY_SETUP_INSTANCE_ID(v);
-				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
-				
-				o.worldPosition = v.vertex;
-				o.vertex = UnityObjectToClipPos(o.worldPosition);
-				o.texcoord = v.texcoord;
-				o.color = v.color * _Color;
-				return o;
-			}
-
-			fixed4 frag(v2f IN) : SV_Target
-			{
-				// UI standard calculation applying _TextureSampleAdd to support text
-				half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
-				
-				// Standard explicit Unity UI Clipping setup for Canvas RectMask2D
-				#ifdef UNITY_UI_CLIP_RECT
-				color.a *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
-				#endif
-
-				// Match default Unity UI alpha clip behavior
-				#ifdef UNITY_UI_ALPHACLIP
-				clip (color.a - 0.001);
-				#endif
-
-				return color;
-			}
-			ENDCG
-		}
-	}
+}
+}
 }

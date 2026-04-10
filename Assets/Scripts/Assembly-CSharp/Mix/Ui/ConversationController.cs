@@ -72,38 +72,40 @@ namespace Mix.Ui
 
 		private Dictionary<long, SingleChatItem> scrollListItems = new Dictionary<long, SingleChatItem>();
 
-		private void Start()
-		{
-			Singleton<TechAnalytics>.Instance.TrackTimeToConversations();
-			GameObject noChatItemsAvatar = AvatarSpawner.Init();
-			noChatItemsAvatar.SetActive(false);
-			NoChatItems.SetActive(false);
-			MonoSingleton<AvatarManager>.Instance.SkinAvatar(noChatItemsAvatar, MixSession.User.Avatar, (AvatarFlags)0, delegate
-			{
-				if (!this.IsNullOrDisposed() && noChatItemsAvatar != null)
-				{
-					noChatItemsAvatar.transform.Rotate(new Vector3(0f, 15f, 0f));
-					noChatItemsAvatar.SetActive(true);
-				}
-			});
-			MonoSingleton<FakeFriendManager>.Instance.CheckTimeBasedMessages();
-			StartChatButton.gameObject.SetActive(MixSession.User.Friends.Count() > 0);
-			officialAccountsScroller = new OfficialAccountsScroller(OfficialAccountsScrollerPrefab, OfficialAccountItemPrefab, ToggleScroll);
-			officialAccountsScroller.LoadOfficialAccounts(delegate(bool didLoad)
-			{
-				officialAccountsLoaded = didLoad;
-				if (didLoad && ScrollView.Get(officialAccountsScroller) == null)
-				{
-					ScrollView.Add(officialAccountsScroller, true);
-				}
-				else
-				{
-					officialAccountsScroller = null;
-				}
-			});
-		}
+        private void Start()
+        {
+            // Tracks analytics for the transition into the conversation view
+            Singleton<TechAnalytics>.Instance.TrackTimeToConversations();
 
-		private void FixedUpdate()
+            // Spawns the placeholder avatar for when there are no active chats
+            GameObject noChatItemsAvatar = AvatarSpawner.Init();
+            noChatItemsAvatar.SetActive(false);
+            NoChatItems.SetActive(false);
+
+            // Applies the local user's 'Mix' avatar skin to the GameObject
+            // (AvatarFlags)0 usually indicates a standard default render
+            MonoSingleton<AvatarManager>.Instance.SkinAvatar(noChatItemsAvatar, MixSession.User.Avatar, (AvatarFlags)0, delegate
+            {
+                // Safety check: Ensure the script wasn't destroyed while the skin was loading
+                if (!this.IsNullOrDisposed() && noChatItemsAvatar != null)
+                {
+                    // Slight Y-rotation to give the avatar a natural 'profile' look in the UI
+                    noChatItemsAvatar.transform.Rotate(new Vector3(0f, 15f, 0f));
+                    noChatItemsAvatar.SetActive(true);
+                }
+            });
+
+            // Triggers logic for "Fake Friends" (likely system bots or tutorial accounts)
+            MonoSingleton<FakeFriendManager>.Instance.CheckTimeBasedMessages();
+
+            // Only shows the "Start Chat" button if the user actually has friends in their list
+            if (StartChatButton != null && MixSession.User != null)
+            {
+                StartChatButton.gameObject.SetActive(MixSession.User.Friends.Count() > 0);
+            }
+        } // Fixed the trailing semicolon/brace issue here
+
+        private void FixedUpdate()
 		{
 			if (scrollListItems == null || scrollListItems.Count <= 0)
 			{

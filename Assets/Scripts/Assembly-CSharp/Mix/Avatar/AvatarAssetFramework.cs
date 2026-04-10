@@ -47,17 +47,17 @@ namespace Mix.Avatar
 		public void LoadCachedImage(string path, Action<bool, Texture2D> callback)
 		{
 			string relPath = "/Avatar/cache/" + path;
-			if (!MonoSingleton<AssetManager>.Instance.DoesExist(relPath))
+			if (assetManager == null || !assetManager.DoesExist(relPath))
 			{
-				callback(false, null);
+				callback(false, Texture2D.whiteTexture);
 				return;
 			}
 			Texture2D image = new Texture2D(2, 2, TextureFormat.ARGB32, false);
-			MonoSingleton<AssetManager>.Instance.LoadImage(relPath, ref image, delegate(Texture2D texture)
+			assetManager.LoadImage(relPath, ref image, delegate(Texture2D texture)
 			{
 				if (texture == null)
 				{
-					callback(false, null);
+					callback(false, Texture2D.whiteTexture);
 				}
 				else
 				{
@@ -68,7 +68,12 @@ namespace Mix.Avatar
 
 		public void SaveCachedImage(Texture2D texture, string path, Action<bool> callback)
 		{
-			MonoSingleton<AssetManager>.Instance.SaveImage("/Avatar/cache/" + path, texture, delegate(bool success)
+			if (assetManager == null)
+			{
+				callback(false);
+				return;
+			}
+			assetManager.SaveImage("/Avatar/cache/" + path, texture, delegate(bool success)
 			{
 				callback(success);
 			});
@@ -121,11 +126,10 @@ namespace Mix.Avatar
 
 		public string GetAvatarElementVersionInfo(AvatarElement element)
 		{
-			if (MonoSingleton<AssetManager>.Instance != null && MonoSingleton<AssetManager>.Instance.cpipeManager != null && MonoSingleton<AssetManager>.Instance.cpipeManager.cpipe != null && element != null)
+			if (assetManager != null && assetManager.cpipeManager != null && assetManager.cpipeManager.cpipe != null && element != null)
 			{
-				Cpipe cpipe = MonoSingleton<AssetManager>.Instance.cpipeManager.cpipe;
-				AssetManager instance = MonoSingleton<AssetManager>.Instance;
-				return GetShaString(cpipe.GetLatestHash(instance.GetCpipePrefix(element.Hd)) + cpipe.GetLatestHash(instance.GetCpipePrefix(element.Sd)));
+				Cpipe cpipe = assetManager.cpipeManager.cpipe;
+				return GetShaString(cpipe.GetLatestHash(assetManager.GetCpipePrefix(element.Hd)) + cpipe.GetLatestHash(assetManager.GetCpipePrefix(element.Sd)));
 			}
 			return string.Empty;
 		}

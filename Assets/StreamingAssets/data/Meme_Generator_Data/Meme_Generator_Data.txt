@@ -1,0 +1,2 @@
+url thumb
+bh6_baymaxstuckinwindow.unity3d	bh6_baymaxstuckinwindow_thumb.unity3d  

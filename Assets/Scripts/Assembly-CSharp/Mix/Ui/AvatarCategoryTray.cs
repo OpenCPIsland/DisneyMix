@@ -131,6 +131,29 @@ namespace Mix.Ui
 			return (content != null) ? content.GetThumbContent() : null;
 		}
 
+		public bool LoadCategory(string categoryName)
+		{
+			if (listener == null || thumbItems == null || thumbItems.Count == 0)
+			{
+				return false;
+			}
+
+			if (!string.IsNullOrEmpty(categoryName))
+			{
+				for (int i = 0; i < thumbItems.Count; i++)
+				{
+					if (thumbItems[i] != null && thumbItems[i].trayData != null && thumbItems[i].trayData.categoryName == categoryName)
+					{
+						listener.OnSubSelected(thumbItems[i].trayData);
+						return true;
+					}
+				}
+			}
+
+			listener.OnSubSelected(thumbItems[0].trayData);
+			return false;
+		}
+
 		public void OnCategoryClicked(GameObject aButton)
 		{
 			if (listener == null)

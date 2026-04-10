@@ -109,28 +109,40 @@ namespace Mix.Ui
 
 		public void OnColorThemeClicked(ColorToggleItem aColorToggleItem)
 		{
+			if (databaseApi == null || aColorToggleItem == null)
+				return;
+
 			string text = databaseApi.LoadUserValue("default_primary_color");
 			if (text == null || !text.Equals(aColorToggleItem.PrimaryColor))
 			{
 				Analytics.LogAppColorChangeAction(aColorToggleItem.PrimaryColor);
-				if (!avatarSpinner.IsNullOrDisposed())
+				if (avatarSpinner != null && !avatarSpinner.IsNullOrDisposed())
 				{
 					avatarSpinner.PlayAnimationTrigger("ChangedColorPreference");
 				}
 			}
 			databaseApi.SaveUserValue("default_primary_color", aColorToggleItem.PrimaryColor);
 			databaseApi.SaveUserValue("default_secondary_color", aColorToggleItem.SecondaryColor);
-			TintImage[] array = (TintImage[])UnityEngine.Object.FindObjectsOfType(typeof(TintImage));
-			TintImage[] array2 = array;
-			foreach (TintImage tintImage in array2)
+
+			// Use the new API for finding objects and add null checks
+			var tintImages = UnityEngine.Object.FindObjectsByType<TintImage>(FindObjectsSortMode.None);
+			if (tintImages != null)
 			{
-				tintImage.OnColorThemeChanged();
+				foreach (TintImage tintImage in tintImages)
+				{
+					if (tintImage != null)
+						tintImage.OnColorThemeChanged();
+				}
 			}
-			TintText[] array3 = (TintText[])UnityEngine.Object.FindObjectsOfType(typeof(TintText));
-			TintText[] array4 = array3;
-			foreach (TintText tintText in array4)
+
+			var tintTexts = UnityEngine.Object.FindObjectsByType<TintText>(FindObjectsSortMode.None);
+			if (tintTexts != null)
 			{
-				tintText.OnColorThemeChanged();
+				foreach (TintText tintText in tintTexts)
+				{
+					if (tintText != null)
+						tintText.OnColorThemeChanged();
+				}
 			}
 		}
 

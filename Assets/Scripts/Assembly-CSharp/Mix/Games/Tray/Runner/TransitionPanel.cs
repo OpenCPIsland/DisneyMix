@@ -36,7 +36,11 @@ namespace Mix.Games.Tray.Runner
 
 		public bool startClosed;
 
-		private void Start()
+		public Vector3 customLeftOpenPosition = new Vector3(-1000f, 0f, 0f);
+        public Vector3 customRightOpenPosition = new Vector3(1000f, 0f, 0f);
+
+
+        private void Start()
 		{
 			if (startClosed)
 			{
@@ -53,8 +57,8 @@ namespace Mix.Games.Tray.Runner
 		public void Open(float delay = 0f)
 		{
 			OnOpen();
-			leftPanel.transform.DOLocalMove(leftPanelOpenPosition, openTime).SetDelay(delay).SetEase(Ease.OutQuad);
-			rightPanel.transform.DOLocalMove(rightPanelOpenPosition, openTime).SetDelay(delay).SetEase(Ease.OutQuad);
+			leftPanel.transform.DOLocalMove(customLeftOpenPosition, openTime).SetDelay(delay).SetEase(Ease.OutQuad);
+			rightPanel.transform.DOLocalMove(customRightOpenPosition, openTime).SetDelay(delay).SetEase(Ease.OutQuad);
 			DOVirtual.DelayedCall(openTime, delegate
 			{
 				OnOpenComplete();

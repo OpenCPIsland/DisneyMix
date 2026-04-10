@@ -110,18 +110,24 @@ namespace Mix.AvatarInternal
 
 		private IEnumerator RunShaderAndGetTexture(Material mat, int aSize, Action<Texture2D> output)
 		{
-			yield return new WaitForEndOfFrame();
-			RenderTexture.active = null;
-			RenderTexture texOut = RenderTexture.GetTemporary(aSize, aSize);
-			Graphics.Blit(mat.mainTexture, texOut, mat);
-			RenderTexture.active = texOut;
-			Texture2D tex = new Texture2D(aSize, aSize, format, true);
-			tex.ReadPixels(new Rect(0f, 0f, aSize, aSize), 0, 0, true);
-			RenderTexture.active = null;
-			RenderTexture.ReleaseTemporary(texOut);
-			yield return new WaitForEndOfFrame();
-			tex.Apply(false);
-			output(tex);
+			   Debug.Log($"[MultiplaneCompositor] Shader: {mat.shader?.name}");
+			   Debug.Log($"[MultiplaneCompositor] Material: {mat}");
+			   Debug.Log($"[MultiplaneCompositor] mainTexture: {mat.mainTexture}");
+			   yield return new WaitForEndOfFrame();
+			   RenderTexture.active = null;
+			   RenderTexture texOut = RenderTexture.GetTemporary(aSize, aSize);
+			   // Try blitting with null as source
+			   Debug.Log("[MultiplaneCompositor] Blitting with null as source texture");
+			   Graphics.Blit(null, texOut, mat);
+			   RenderTexture.active = texOut;
+			   Texture2D tex = new Texture2D(aSize, aSize, format, true);
+			   tex.ReadPixels(new Rect(0f, 0f, aSize, aSize), 0, 0, true);
+			   RenderTexture.active = null;
+			   RenderTexture.ReleaseTemporary(texOut);
+			   yield return new WaitForEndOfFrame();
+			   tex.Apply(false);
+			   Debug.Log($"[MultiplaneCompositor] Output texture created: {tex.width}x{tex.height}");
+			   output(tex);
 		}
 
 		private AvatarCategoryInfo GetCategoryInfo(string name)

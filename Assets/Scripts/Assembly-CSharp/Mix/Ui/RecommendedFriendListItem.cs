@@ -120,7 +120,7 @@ namespace Mix.Ui
 			gameObject.GetComponent<Button>().transition = Selectable.Transition.None;
 			Util.SetLayerRecursively(gameObject, LayerMask.NameToLayer(layer));
 			Text component = instance.transform.Find("FriendInfo/FriendNameText").GetComponent<Text>();
-			int num = (int)AccessibilityManager.Instance.GetAdjustedFontSize(component.fontSize);
+			int num = component.fontSize;
 			component.fontSize = ((num >= 48) ? 48 : num);
 			CS_0024_003C_003E8__locals22.imageTarget = ((!MonoSingleton<AvatarManager>.Instance.AvatarHasGeo(User.Avatar)) ? gameObject.transform.Find("FriendInfo/AvatarImage/ImageTarget") : gameObject.transform.Find("FriendInfo/AvatarImage/Mask/ImageTarget_Geo"));
 			imageTargetSize = (int)CS_0024_003C_003E8__locals22.imageTarget.GetComponent<RectTransform>().rect.height;

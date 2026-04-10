@@ -94,14 +94,14 @@ namespace Mix.AvatarInternal
 		{
 			ClientAvatar clientAvatar = new ClientAvatar();
 			clientAvatar.Accessory = GetRandomPropertyForCategory("Accessory");
-			clientAvatar.Costume = new ClientAvatarProperty("15", 0, 0.0, 0.0);
+			clientAvatar.Costume = new ClientAvatarProperty("0", 0, 0.0, 0.0);
 			clientAvatar.Brow = GetRandomPropertyForCategory("Brow");
 			clientAvatar.Eyes = GetRandomPropertyForCategory("Eyes");
 			clientAvatar.Hair = GetRandomPropertyForCategory("Hair");
 			clientAvatar.Mouth = GetRandomPropertyForCategory("Mouth");
 			clientAvatar.Nose = GetRandomPropertyForCategory("Nose");
 			clientAvatar.Skin = GetRandomPropertyForCategory("Skin");
-			clientAvatar.Hat = GetRandomPropertyForCategory("Hat");
+			clientAvatar.Hat = new ClientAvatarProperty("0", 0, 0.0, 0.0);
 			return clientAvatar;
 		}
 

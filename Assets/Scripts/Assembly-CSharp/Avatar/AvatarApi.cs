@@ -22,12 +22,14 @@ namespace Avatar
 
 		public AvatarApi(MonoBehaviour monoEngine)
 		{
+			Debug.Log("[AvatarApi] Constructor called");
 			textureCallbacks = new Dictionary<string, TextureCallback>();
 			engine = new AvatarEngine(monoEngine);
 		}
 
 		public void InitializeAvatars(IAssetManager assets, AvatarPrint logging, AvatarsInitialized aListener)
 		{
+			Debug.Log("[AvatarApi] InitializeAvatars called");
 			assetManager = assets;
 			AvatarEngine.SetLogging(logging);
 			engine.Init(assets, aListener);
@@ -35,13 +37,16 @@ namespace Avatar
 
 		public void SetProcessing(bool value)
 		{
+			//Debug.Log($"[AvatarApi] SetProcessing: {value}");
 			engine.CompositeFreely = value;
 		}
 
 		public void CancelAvatarComposite(IAvatar avatar, GameObject avatarObj, AvatarFlags flags, TextureCallback textureCallback)
 		{
+			Debug.Log("[AvatarApi] CancelAvatarComposite called");
 			if (avatar == null)
 			{
+				Debug.LogWarning("[AvatarApi] CancelAvatarComposite: avatar is null");
 				return;
 			}
 			string shaString = assetManager.GetShaString(string.Concat(flags, SerializeAvatar(avatar), avatarObj.GetHashCode()));
@@ -63,18 +68,22 @@ namespace Avatar
 
 		public IAvatar GenerateRandomDna()
 		{
+			Debug.Log("[AvatarApi] GenerateRandomDna called");
 			return engine.GenerateRandomDna();
 		}
 
 		public void ResetAvatarTextures(GameObject avatarObj, string texturePath, Action callback)
 		{
+			Debug.Log($"[AvatarApi] ResetAvatarTextures called: texturePath={texturePath}");
 			engine.ResetAvatarSkin(avatarObj, texturePath, callback);
 		}
 
 		public void CompositeTextures(IAvatar avatar, GameObject avatarObj, AvatarFlags flags, TextureCallback textureCallback)
 		{
+			Debug.Log("[AvatarApi] CompositeTextures called");
 			if (avatar == null)
 			{
+				Debug.LogWarning("[AvatarApi] CompositeTextures: avatar is null");
 				if (textureCallback != null)
 				{
 					textureCallback(false, string.Empty);
@@ -100,6 +109,7 @@ namespace Avatar
 
 		private void CompositeTextureWrapper(IAvatar avatar, GameObject avatarObj, AvatarFlags flags, string aCacheId)
 		{
+			Debug.Log("[AvatarApi] CompositeTextureWrapper called");
 			engine.BuildAvatar(avatar, avatarObj, aCacheId, flags, delegate(bool aIsSuccess)
 			{
 				ReportTextureResults(aIsSuccess, flags, aCacheId);
@@ -108,6 +118,7 @@ namespace Avatar
 
 		private void ReportTextureResults(bool aIsSuccess, AvatarFlags flags, string aCacheId)
 		{
+			Debug.Log($"[AvatarApi] ReportTextureResults: aIsSuccess={aIsSuccess}, flags={flags}, aCacheId={aCacheId}");
 			string cacheId = (((flags & AvatarFlags.WithoutCaching) != 0) ? null : aCacheId);
 			if (textureCallbacks.ContainsKey(aCacheId) && textureCallbacks[aCacheId] != null)
 			{

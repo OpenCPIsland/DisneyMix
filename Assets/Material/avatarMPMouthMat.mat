@@ -23,6 +23,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - MouthTex00:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 0.33, y: 0.25}
@@ -33,11 +37,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - MouthBlendMode00: 0
+    - MouthCrop: 1
+    - MouthXOffset: 0
+    - MouthYOffset: 0
     - _Cutoff: 0.5
     - _Fade: 0
     - _Inv: 0
     - _RimPower: 10
     m_Colors:
+    - MouthColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _LightDir: {r: -0.5, g: 0.8, b: -1, a: 0}
     - _RimColor: {r: 1, g: 1, b: 1, a: 0.5882353}

@@ -61,8 +61,7 @@ namespace Mix.Games.Tray.Fireworks
 			toastPanel.Init(BaseGameController.Instance.Session.StatusBarHeight, BaseGameController.Instance.Session.ScreenHeight, BaseGameController.Instance.Session.HeightScale);
 			toastPanel.ToastPanelAnimationComplete += ActivateKeyboard;
 			toastPanel.ToastPanelHideComplete += HideObject;
-			nativeTextView.DefaultText = BaseGameController.Instance.Session.GetLocalizedString("customtokens.game.fireworks_entermessage");
-			nativeTextView.maxCharacters = 16;
+			nativeTextView.Value = BaseGameController.Instance.Session.GetLocalizedString("customtokens.game.fireworks_entermessage");
 		}
 
 		private void OnEnable()
@@ -81,7 +80,7 @@ namespace Mix.Games.Tray.Fireworks
 
 		private void ActivateKeyboard()
 		{
-			nativeTextView.SelectInput();
+			nativeTextView.Select();
 		}
 
 		private void OnDonePressedKeyboard(NativeKeyboardReturnKey returnKey)

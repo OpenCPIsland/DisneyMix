@@ -487,10 +487,10 @@ namespace Mix.Games
 
 		int IGameSessionSettings.GetStatusBarHeight()
 		{
-			return Singleton<SettingsManager>.Instance.GetStatusBarHeight();
-		}
+            return 0;
+        }
 
-		float IGameSessionSettings.GetHeightScale()
+        float IGameSessionSettings.GetHeightScale()
 		{
 			return Singleton<SettingsManager>.Instance.GetHeightScale();
 		}

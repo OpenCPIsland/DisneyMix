@@ -28,6 +28,7 @@ public class AvatarComponent : MonoBehaviour
 
 	private void Start()
 	{
+		Debug.Log($"[AvatarComponent] Start: Category={Category}, xOffset={xOffset}, yOffset={yOffset}, ignoreCropAndOffset={ignoreCropAndOffset}, Layers.Length={(Layers != null ? Layers.Length : 0)}");
 	}
 
 	private void Update()

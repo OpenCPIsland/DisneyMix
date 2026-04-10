@@ -95,9 +95,12 @@ namespace Mix.Assets
 			UnityEngine.Component[] componentsInChildren = aGameObject.GetComponentsInChildren<UnityEngine.Component>(true);
 			foreach (UnityEngine.Component component in componentsInChildren)
 			{
-				if (component.GetType() == typeof(Animator))
+				if (component == null)
 				{
-					Animator animator = (Animator)component;
+					continue;
+				}
+				if (component is Animator animator)
+				{
 					int num2 = component.gameObject.GetComponentsInChildren<Transform>(true).Length;
 					if (!(animator != null) || !(animator.runtimeAnimatorController != null))
 					{
@@ -113,21 +116,15 @@ namespace Mix.Assets
 						}
 					}
 				}
-				else if (component.GetType() == typeof(AudioComponent))
+				else if (component is AudioComponent audioComponent)
 				{
-					AudioComponent audioComponent = (AudioComponent)component;
 					if (audioComponent != null && audioComponent.AudioClip != null)
 					{
 						num += (long)(audioComponent.AudioClip.length * 6f * 1024f);
 					}
 				}
-				else if (component.GetType() == typeof(SkinnedMeshRenderer))
+				else if (component is SkinnedMeshRenderer skinnedMeshRenderer)
 				{
-					SkinnedMeshRenderer skinnedMeshRenderer = (SkinnedMeshRenderer)component;
-					if (!(skinnedMeshRenderer != null))
-					{
-						continue;
-					}
 					Material[] sharedMaterials = skinnedMeshRenderer.sharedMaterials;
 					if (sharedMaterials == null)
 					{
@@ -142,9 +139,8 @@ namespace Mix.Assets
 						}
 					}
 				}
-				else if (component.GetType() == typeof(Image))
+				else if (component is Image image)
 				{
-					Image image = (Image)component;
 					if (image != null && image.mainTexture != null)
 					{
 						num = image.mainTexture.width * image.mainTexture.height * 8;

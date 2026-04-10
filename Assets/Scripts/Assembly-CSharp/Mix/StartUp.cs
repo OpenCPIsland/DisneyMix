@@ -9,7 +9,7 @@ namespace Mix
 	{
 		private void Awake()
 		{
-			ClearCacheFolders();
+		//	ClearCacheFolders();
 		}
 
 		private void ClearCacheFolders()

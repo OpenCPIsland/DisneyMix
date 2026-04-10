@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
 public static class RebuildAssetBundles
 {
-	private const string OutputRoot = "AssetBundles";
+	private static readonly string OutputRoot = Application.streamingAssetsPath + "\\AssetBundles";
 	private const string RawBuildFolderName = "_raw";
 	private const string DynamicAssetsRoot = "Assets\\DynamicAssets";
+	private const string AssetBundlesJsonRelativePath = "Assets/Resources/json/AssetBundles.json";
 
 	[MenuItem("Tools/AssetBundles/Rebuild All")]
 	public static void RebuildAll()
@@ -45,7 +47,7 @@ public static class RebuildAssetBundles
 
 	private static void RestructureOutputFromDynamicAssets(string rawBuildPath, string outputRoot, string dynamicAssetsRoot, AssetBundleManifest manifest)
 	{
-		Dictionary<string, string> bundleToRelativeFolder = BuildBundleFolderMap(dynamicAssetsRoot);
+		Dictionary<string, string> bundleToRelativeFolder = BuildBundleFolderMap(dynamicAssetsRoot, outputRoot);
 		string miscPath = Path.Combine(outputRoot, "misc");
 		Directory.CreateDirectory(miscPath);
 
@@ -78,55 +80,72 @@ public static class RebuildAssetBundles
 		}
 	}
 
-	private static Dictionary<string, string> BuildBundleFolderMap(string dynamicAssetsRoot)
+	private static Dictionary<string, string> BuildBundleFolderMap(string dynamicAssetsRoot, string outputRoot)
 	{
 		Dictionary<string, string> map = new Dictionary<string, string>(System.StringComparer.OrdinalIgnoreCase);
 
-		if (!Directory.Exists(dynamicAssetsRoot))
-		{
-			Debug.LogWarning("DynamicAssets folder not found at: " + Path.GetFullPath(dynamicAssetsRoot) + ". Unmapped bundles will go to misc.");
-			return map;
-		}
-
-		string normalizedRoot = dynamicAssetsRoot.Replace("\\", "/").TrimEnd('/') + "/";
-
-		// 1) Authoritative mapping from importer bundle assignments
-		string[] bundleNames = AssetDatabase.GetAllAssetBundleNames();
-		for (int i = 0; i < bundleNames.Length; i++)
-		{
-			string bundleName = bundleNames[i];
-			string[] assetPaths = AssetDatabase.GetAssetPathsFromAssetBundle(bundleName);
-			if (assetPaths == null || assetPaths.Length == 0)
-			{
-				continue;
-			}
-
-			for (int j = 0; j < assetPaths.Length; j++)
-			{
-				string assetPath = assetPaths[j].Replace("\\", "/");
-				if (!assetPath.StartsWith(normalizedRoot))
-				{
-					continue;
-				}
-
-				string relativeAssetPath = assetPath.Substring(normalizedRoot.Length);
-				string relativeFolder = Path.GetDirectoryName(relativeAssetPath) ?? string.Empty;
-				relativeFolder = relativeFolder.Replace("\\", "/");
-				if (string.IsNullOrEmpty(relativeFolder))
-				{
-					relativeFolder = "root";
-				}
-
-				AddMapVariants(map, bundleName, relativeFolder);
-				break;
-			}
-		}
-
-		// 2) Fallback mapping from DynamicAssets file names (fixes flat bundle names like thumbsdownprefab_hd.unity3d)
+		AddFileNameMappingsFromAssetBundlesJson(outputRoot, map);
 		AddFileNameMappingsFromDynamicAssets(dynamicAssetsRoot, map);
 
 		Debug.Log("[RebuildAssetBundles] BuildBundleFolderMap entries: " + map.Count);
 		return map;
+	}
+
+	private static void AddFileNameMappingsFromAssetBundlesJson(string outputRoot, Dictionary<string, string> map)
+	{
+		string jsonPath = Path.GetFullPath(Path.Combine(Application.dataPath, "StreamingAssets", Path.GetFileName(AssetBundlesJsonRelativePath)));
+		if (!File.Exists(jsonPath))
+		{
+			Debug.LogWarning("assetbundles.json not found at: " + jsonPath + ". Falling back to DynamicAssets folder mapping.");
+			return;
+		}
+
+		string json = File.ReadAllText(jsonPath);
+		MatchCollection matches = Regex.Matches(json, "\"(?<key>[^\"]+)\"\\s*:\\s*\\{", RegexOptions.Compiled);
+		foreach (Match match in matches)
+		{
+			string bundleKey = match.Groups["key"].Value;
+			string relativeFolder = ResolveFolderFromAssetBundleKey(bundleKey, outputRoot);
+			if (string.IsNullOrEmpty(relativeFolder))
+			{
+				continue;
+			}
+
+			string bundleName = Path.GetFileName(bundleKey);
+			string bundleNameNoExt = Path.GetFileNameWithoutExtension(bundleKey);
+			AddMapKey(map, bundleKey.ToLowerInvariant(), relativeFolder);
+			AddMapVariants(map, bundleName, relativeFolder);
+			AddMapVariants(map, bundleNameNoExt, relativeFolder);
+		}
+	}
+
+	private static string ResolveFolderFromAssetBundleKey(string bundleKey, string outputRoot)
+	{
+		if (string.IsNullOrEmpty(bundleKey))
+		{
+			return string.Empty;
+		}
+
+		string normalizedKey = bundleKey.Replace("\\", "/").Trim();
+		string normalizedOutputRoot = outputRoot.Replace("\\", "/").Trim('/');
+		if (normalizedKey.StartsWith(normalizedOutputRoot + "/", System.StringComparison.OrdinalIgnoreCase))
+		{
+			normalizedKey = normalizedKey.Substring(normalizedOutputRoot.Length + 1);
+		}
+
+		if (normalizedKey.EndsWith(".unity3d", System.StringComparison.OrdinalIgnoreCase))
+		{
+			normalizedKey = normalizedKey.Substring(0, normalizedKey.Length - ".unity3d".Length);
+		}
+
+		string relativeFolder = Path.GetDirectoryName(normalizedKey) ?? string.Empty;
+		relativeFolder = relativeFolder.Replace("\\", "/");
+		if (string.IsNullOrEmpty(relativeFolder))
+		{
+			relativeFolder = "root";
+		}
+
+		return relativeFolder;
 	}
 
 	private static void AddFileNameMappingsFromDynamicAssets(string dynamicAssetsRoot, Dictionary<string, string> map)
@@ -150,6 +169,23 @@ public static class RebuildAssetBundles
 			}
 
 			string fileNameNoExt = Path.GetFileNameWithoutExtension(relativePath).ToLowerInvariant();
+
+			// Custom: If file contains both "avtr" and "thumb", map to "avatar_thumbs"
+			if (fileNameNoExt.Contains("avtr") && fileNameNoExt.Contains("thumb"))
+			{
+				AddMapKey(map, fileNameNoExt, "avatar_thumbs");
+				AddMapKey(map, fileNameNoExt + ".unity3d", "avatar_thumbs");
+				if (fileNameNoExt.EndsWith("_hd"))
+				{
+					AddMapKey(map, fileNameNoExt.Substring(0, fileNameNoExt.Length - 3), "avatar_thumbs");
+				}
+				else if (fileNameNoExt.EndsWith("_sd"))
+				{
+					AddMapKey(map, fileNameNoExt.Substring(0, fileNameNoExt.Length - 3), "avatar_thumbs");
+				}
+				continue; // Skip default mapping for these files
+			}
+
 			AddMapKey(map, fileNameNoExt, relativeFolder);
 
 			// common bundle naming variants

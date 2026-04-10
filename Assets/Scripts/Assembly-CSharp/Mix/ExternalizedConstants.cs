@@ -125,11 +125,7 @@ namespace Mix
 		{
 			get
 			{
-#if UNITY_ANDROID || !UNITY_EDITOR
-				return "http://10.0.0.77:80";
-#else
-				return "http://localhost:80";
-#endif
+				return ((ExternalizedConstant)externalizedConstants["guest_baseUrl"]).value;
 			}
 		}
 
@@ -209,50 +205,34 @@ namespace Mix
 		{
 			get
 			{
-#if UNITY_ANDROID || !UNITY_EDITOR
-				return "http://10.0.0.77:80";
-#else
-                return "http://localhost:80";
-#endif
-            }
-        }
+				return ((ExternalizedConstant)externalizedConstants["cellophane_client_id_assets"]).value;
+			}
+		}
 
 
         public static string CpipeUrl
 		{
 			get
 			{
-#if UNITY_ANDROID || !UNITY_EDITOR
-				return "http://10.0.0.77:80";
-#else
-                return "http://localhost:80";
-#endif
-            }
-        }
+				return ((ExternalizedConstant)externalizedConstants["cpipe_url"]).value;
+			}
+		}
 
 		public static string MixPlatformServicesUrl
 		{
 			get
 			{
-#if UNITY_ANDROID || !UNITY_EDITOR
-				return "http://10.0.0.77:80";
-#else
-                return "http://localhost:80";
-#endif
-            }
-        }
+				return ((ExternalizedConstant)externalizedConstants["mix_platform_services_url"]).value;
+			}
+		}
 
 		public static string MixPlatformServicesCellophane
 		{
 			get
 			{
-#if UNITY_ANDROID || !UNITY_EDITOR
-				return "http://10.0.0.77:80";
-#else
-                return "http://localhost:80";
-#endif
-            }
-        }
+				return ((ExternalizedConstant)externalizedConstants["mix_platform_services_cellophane"]).value;
+			}
+		}
 
 		public static string GcmSenderId
 		{

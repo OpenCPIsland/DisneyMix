@@ -1,0 +1,31 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.3.10f1
+CRC: 627725097
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 0965d8aad7da13a5956bf158457d88c9
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 6ed93f06f4db9381403d0adc4f00ff98
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 30b19c9b3841a999129dfae8f07c7cd2
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: aa753c42d4868acb4783a486e94cf11c, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Assembly-CSharp
+  ClassName: AvatarComponentLayer
+Assets:
+- Assets/dynamicassets/hd/avatar_multiplane/mouth/en_us/avtr_mouth_2114_IPMUTerry.prefab
+Dependencies: []

@@ -644,7 +644,8 @@ namespace Mix.Games.Tray.Fireworks
 
 		private void Update()
 		{
-			if (mGameStage == FireworksStage.Creation)
+            ReplaceMobileAdditiveShaderWithLegacy(this.gameObject);
+            if (mGameStage == FireworksStage.Creation)
 			{
 				mNumFireworksLaunchedThisFrame = 0f;
 				if (mIsSongCountdownStarted)
@@ -936,6 +937,65 @@ namespace Mix.Games.Tray.Fireworks
 		public void StartTheShow()
 		{
 			mGameStage = FireworksStage.ShowTime;
+
+        }
+
+        private void Start()
+		{
+			Debug.Log("FireworksGame is attached to GameObject: " + gameObject.name);
+
+			// Find "Snow" GameObject and apply legacy shader after 1 second
+			var allGameObjects = FindObjectsOfType<GameObject>();
+			foreach (var go in allGameObjects)
+			{
+				if (go.name == "Snow")
+				{
+					Debug.Log("Found Snow GameObject: " + go.name);
+					StartCoroutine(SetLegacyParticleShaderAfterDelay(go, 1f));
+				}
+			}
+		}
+
+		private IEnumerator SetLegacyParticleShaderAfterDelay(GameObject go, float delay)
+		{
+			yield return new WaitForSeconds(delay);
+			var renderers = go.GetComponentsInChildren<Renderer>(true);
+			Shader legacyShader = Shader.Find("Legacy Shaders/Particles/Alpha Blended");
+			foreach (var renderer in renderers)
+			{
+				foreach (var mat in renderer.sharedMaterials)
+				{
+					if (mat != null && legacyShader != null)
+					{
+						mat.shader = legacyShader;
+						Debug.Log($"Assigned Legacy Shaders/Particles/Alpha Blended to {renderer.gameObject.name}");
+					}
+				}
+			}
+		}
+
+		private void ReplaceMobileAdditiveShaderWithLegacy(GameObject root)
+		{
+			var renderers = root.GetComponentsInChildren<Renderer>(true);
+			foreach (var renderer in renderers)
+			{
+				foreach (var mat in renderer.sharedMaterials)
+				{
+					if (mat != null && mat.shader != null && mat.shader.name == "Mobile/Particles/Additive")
+					{
+						Shader legacyShader = Shader.Find("Legacy Shaders/Particles/Additive");
+						if (legacyShader != null)
+						{
+							Debug.Log($"[FireworksGame] Replacing shader on {renderer.gameObject.name} from 'Mobile/Particles/Additive' to 'Legacy Shaders/Particles/Additive'");
+							mat.shader = legacyShader;
+						}
+						else
+						{
+							Debug.LogWarning("[FireworksGame] Legacy Shaders/Particles/Additive not found.");
+						}
+					}
+				}
+			}
 		}
 	}
 }

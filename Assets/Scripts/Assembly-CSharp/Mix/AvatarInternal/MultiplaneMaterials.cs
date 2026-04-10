@@ -11,1007 +11,1023 @@ using UnityEngine;
 
 namespace Mix.AvatarInternal
 {
-	public class MultiplaneMaterials
-	{
-		public static string EmptyCostumePath = string.Empty;
+    public class MultiplaneMaterials
+    {
+        public static string EmptyCostumePath = string.Empty;
+        public static string EmptyGeoPath = string.Empty;
 
-		public static string EmptyGeoPath = string.Empty;
+        private MonoBehaviour monoEngine;
+        private MultiplaneCompositor faceComp;
+        private MultiplaneCompositor eyeComp;
+        private MultiplaneCompositor eyebrowComp;
+        private MultiplaneCompositor mouthComp;
+        private MultiplaneCompositor glassesComp;
+        private MultiplaneCompositor hatComp;
 
-		private MonoBehaviour monoEngine;
+        private Material glassesMaterial;
+        private Material hatMaterial;
+        private Material faceMat;
+        private Material leftEyeMat;
+        private Material rightEyeMat;
+        private Material leftEyebrowMat;
+        private Material rightEyebrowMat;
+        private Material mouthMat;
 
-		private MultiplaneCompositor faceComp;
+        private GameObject leftEyeObj;
+        private GameObject rightEyeObj;
+        private GameObject leftEyebrowObj;
+        private GameObject rightEyebrowObj;
+        private GameObject mouthObj;
+        private GameObject faceObj;
+        private GameObject baseAvatarObject;
 
-		private MultiplaneCompositor eyeComp;
+        private readonly MultiplaneTextureTracker textureTracker;
+        private global::Avatar.Interfaces.IAssetManager assetManager;
 
-		private MultiplaneCompositor eyebrowComp;
+        public bool hasErrored;
 
-		private MultiplaneCompositor mouthComp;
+        public MultiplaneMaterials(MonoBehaviour aMonoEngine, global::Avatar.Interfaces.IAssetManager aAssetManager, GameObject aAvatarObj)
+        {
+            Log("Constructor called");
 
-		private MultiplaneCompositor glassesComp;
+            if (aAvatarObj.IsNullOrDisposed())
+            {
+                LogError("Avatar object is null or disposed in constructor.");
+                hasErrored = true;
+                return;
+            }
 
-		private MultiplaneCompositor hatComp;
+            monoEngine = aMonoEngine;
+            assetManager = aAssetManager;
 
-		private Material glassesMaterial;
+            try
+            {
+                leftEyeObj = aAvatarObj.transform.Find("grp_offset/face_eye_left")?.gameObject;
+                rightEyeObj = aAvatarObj.transform.Find("grp_offset/face_eye_right")?.gameObject;
+                leftEyebrowObj = aAvatarObj.transform.Find("grp_offset/face_brow_left")?.gameObject;
+                rightEyebrowObj = aAvatarObj.transform.Find("grp_offset/face_brow_right")?.gameObject;
+                mouthObj = aAvatarObj.transform.Find("grp_offset/face_mouth")?.gameObject;
+                faceObj = aAvatarObj.transform.Find("grp_offset/head")?.gameObject;
+            }
+            catch (Exception ex)
+            {
+                LogError("Exception in constructor: " + ex.Message);
+                hasErrored = true;
+                return;
+            }
 
-		private Material hatMaterial;
+            baseAvatarObject = aAvatarObj;
 
-		private Material faceMat;
+            faceMat = RetrieveMaterial(faceObj);
+            leftEyeMat = RetrieveMaterial(leftEyeObj);
+            rightEyeMat = RetrieveMaterial(rightEyeObj);
+            leftEyebrowMat = RetrieveMaterial(leftEyebrowObj);
+            rightEyebrowMat = RetrieveMaterial(rightEyebrowObj);
+            mouthMat = RetrieveMaterial(mouthObj);
 
-		private Material leftEyeMat;
+            faceComp = new MultiplaneCompositor(monoEngine, 512, TextureFormat.ARGB32, "NewAvatarHair");
+            eyebrowComp = new MultiplaneCompositor(monoEngine, 64, TextureFormat.ARGB32, "NewAvatarBrow");
+            eyeComp = new MultiplaneCompositor(monoEngine, 256, TextureFormat.ARGB32, "NewAvatarEyes");
+            mouthComp = new MultiplaneCompositor(monoEngine, 256, TextureFormat.ARGB32, "NewAvatarMouth");
+            glassesComp = new MultiplaneCompositor(monoEngine, 128, TextureFormat.ARGB32, "NewAvatarGeo");
+            hatComp = new MultiplaneCompositor(monoEngine, 256, TextureFormat.ARGB32, "NewAvatarGeo");
 
-		private Material rightEyeMat;
+            Transform texLEye = aAvatarObj.transform.Find("grp_offset/tex_l_eye");
+            Transform texREye = aAvatarObj.transform.Find("grp_offset/tex_r_eye");
+            Transform texMouth = aAvatarObj.transform.Find("grp_offset/tex_mouth");
 
-		private Material leftEyebrowMat;
+            if (texLEye == null || texREye == null || texMouth == null)
+            {
+                LogError("One or more required texture transforms are missing in constructor.");
+                hasErrored = true;
+                return;
+            }
 
-		private Material rightEyebrowMat;
+            AddTextureControllerToObj(leftEyeObj, texLEye.gameObject, 0.25f, 0.25f);
+            AddTextureControllerToObj(rightEyeObj, texREye.gameObject, 0.25f, 0.25f);
+            AddTextureControllerToObj(mouthObj, texMouth.gameObject, 0.33f, 0.25f);
 
-		private Material mouthMat;
+            textureTracker = aAvatarObj.GetComponent<MultiplaneTextureTracker>() ?? aAvatarObj.AddComponent<MultiplaneTextureTracker>();
 
-		private GameObject leftEyeObj;
+            Log("Constructor finished successfully");
+        }
 
-		private GameObject rightEyeObj;
+        private void Log(string message) => Debug.Log($"[MultiplaneMaterials] {message}");
+        private void LogError(string message) => Debug.LogError($"[MultiplaneMaterials] {message}");
 
-		private GameObject leftEyebrowObj;
+        public Material RetrieveMaterial(GameObject go)
+        {
+            if (go == null || go.IsNullOrDisposed())
+            {
+                LogError("GameObject is null or disposed in RetrieveMaterial.");
+                hasErrored = true;
+                return null;
+            }
 
-		private GameObject rightEyebrowObj;
+            Renderer renderer = go.GetComponent<Renderer>();
+            if (renderer == null)
+            {
+                LogError("Renderer component is null in RetrieveMaterial.");
+                hasErrored = true;
+                return null;
+            }
 
-		private GameObject mouthObj;
+            return renderer.material;
+        }
 
-		private GameObject faceObj;
+        public void CleanupCompositors()
+        {
+            Log("CleanupCompositors called");
+            if (!baseAvatarObject.IsNullOrDisposed())
+            {
+                faceComp?.CleanLayers();
+                eyebrowComp?.CleanLayers();
+                eyeComp?.CleanLayers();
+                mouthComp?.CleanLayers();
+                glassesComp?.CleanLayers();
+                hatComp?.CleanLayers();
+            }
+        }
 
-		private GameObject baseAvatarObject;
+        public void ResetAvatarHeadToDefault(string texturePath, Action callback)
+        {
+            Log($"ResetAvatarHeadToDefault called with texturePath: {texturePath}");
 
-		private readonly MultiplaneTextureTracker textureTracker;
+            if (baseAvatarObject.IsNullOrDisposed() || textureTracker.IsNullOrDisposed() || faceMat.IsNullOrDisposed())
+            {
+                LogError("Cannot reset avatar head to default: required objects are null or disposed.");
+                callback?.Invoke();
+                return;
+            }
 
-		private global::Avatar.Interfaces.IAssetManager assetManager;
+            Texture texture = Resources.Load<Texture>(texturePath);
+            if (texture != null)
+            {
+                SetAvatarPlanesVisibility(false);
+                textureTracker.CleanAllTextures();
+                faceMat.SetTexture("_MainTex", texture);
+                callback?.Invoke();
+            }
+            else
+            {
+                LogError($"Default texture not found at path: {texturePath}");
+                callback?.Invoke();
+            }
+        }
 
-		public bool hasErrored;
+        private void SetAvatarPlanesVisibility(bool isShown)
+        {
+            if (baseAvatarObject.IsNullOrDisposed() || leftEyeObj.IsNullOrDisposed() || rightEyeObj.IsNullOrDisposed() ||
+                leftEyebrowObj.IsNullOrDisposed() || rightEyebrowObj.IsNullOrDisposed() || mouthObj.IsNullOrDisposed() ||
+                textureTracker.IsNullOrDisposed())
+                return;
 
-		public MultiplaneMaterials(MonoBehaviour aMonoEngine, global::Avatar.Interfaces.IAssetManager aAssetManager, GameObject aAvatarObj)
-		{
-			if (aAvatarObj.IsNullOrDisposed())
-			{
-				hasErrored = true;
-				return;
-			}
-			monoEngine = aMonoEngine;
-			assetManager = aAssetManager;
-			try
-			{
-				leftEyeObj = aAvatarObj.transform.Find("grp_offset/face_eye_left").gameObject;
-				rightEyeObj = aAvatarObj.transform.Find("grp_offset/face_eye_right").gameObject;
-				leftEyebrowObj = aAvatarObj.transform.Find("grp_offset/face_brow_left").gameObject;
-				rightEyebrowObj = aAvatarObj.transform.Find("grp_offset/face_brow_right").gameObject;
-				mouthObj = aAvatarObj.transform.Find("grp_offset/face_mouth").gameObject;
-				faceObj = aAvatarObj.transform.Find("grp_offset/head").gameObject;
-			}
-			catch (Exception)
-			{
-				hasErrored = true;
-				return;
-			}
-			baseAvatarObject = aAvatarObj;
-			faceMat = RetrieveMaterial(faceObj);
-			leftEyeMat = RetrieveMaterial(leftEyeObj);
-			rightEyeMat = RetrieveMaterial(rightEyeObj);
-			leftEyebrowMat = RetrieveMaterial(leftEyebrowObj);
-			rightEyebrowMat = RetrieveMaterial(rightEyebrowObj);
-			mouthMat = RetrieveMaterial(mouthObj);
-			faceComp = new MultiplaneCompositor(monoEngine, 512, TextureFormat.ARGB32, "NewAvatarHair");
-			eyebrowComp = new MultiplaneCompositor(monoEngine, 64, TextureFormat.ARGB32, "NewAvatarBrow");
-			eyeComp = new MultiplaneCompositor(monoEngine, 256, TextureFormat.ARGB32, "NewAvatarEyes");
-			mouthComp = new MultiplaneCompositor(monoEngine, 256, TextureFormat.ARGB32, "NewAvatarMouth");
-			glassesComp = new MultiplaneCompositor(monoEngine, 128, TextureFormat.ARGB32, "NewAvatarGeo");
-			hatComp = new MultiplaneCompositor(monoEngine, 256, TextureFormat.ARGB32, "NewAvatarGeo");
-			Transform transform = aAvatarObj.transform.Find("grp_offset/tex_l_eye");
-			Transform transform2 = aAvatarObj.transform.Find("grp_offset/tex_r_eye");
-			Transform transform3 = aAvatarObj.transform.Find("grp_offset/tex_mouth");
-			if (transform == null || transform2 == null || transform3 == null)
-			{
-				hasErrored = true;
-				return;
-			}
-			AddTextureControllerToObj(leftEyeObj, transform.gameObject, 0.25f, 0.25f);
-			AddTextureControllerToObj(rightEyeObj, transform2.gameObject, 0.25f, 0.25f);
-			AddTextureControllerToObj(mouthObj, transform3.gameObject, 0.33f, 0.25f);
-			textureTracker = aAvatarObj.GetComponent<MultiplaneTextureTracker>() ?? aAvatarObj.AddComponent<MultiplaneTextureTracker>();
-		}
+            Log($"SetAvatarPlanesVisibility: {(isShown ? "show" : "hide")} face planes");
 
-		public Material RetrieveMaterial(GameObject go)
-		{
-			Renderer component = go.GetComponent<Renderer>();
-			if (component == null)
-			{
-				hasErrored = true;
-				return null;
-			}
-			return component.material;
-		}
+            leftEyeObj.SetActive(isShown);
+            rightEyeObj.SetActive(isShown);
+            leftEyebrowObj.SetActive(isShown);
+            rightEyebrowObj.SetActive(isShown);
+            mouthObj.SetActive(isShown);
 
-		public void CleanupCompositors()
-		{
-			if (!baseAvatarObject.IsNullOrDisposed())
-			{
-				faceComp.CleanLayers();
-				eyebrowComp.CleanLayers();
-				eyeComp.CleanLayers();
-				mouthComp.CleanLayers();
-				glassesComp.CleanLayers();
-				hatComp.CleanLayers();
-			}
-		}
+            if (!isShown)
+                textureTracker.CleanupGeo();
+        }
 
-		public void ResetAvatarHeadToDefault(string texturePath, Action callback)
-		{
-			if (baseAvatarObject.IsNullOrDisposed() || textureTracker.IsNullOrDisposed() || faceMat.IsNullOrDisposed())
-			{
-				callback();
-				return;
-			}
-			Texture texture = (Texture)Resources.Load(texturePath, typeof(Texture));
-			if (texture != null)
-			{
-				SetAvatarPlanesVisibility(false);
-				textureTracker.CleanAllTextures();
-				faceMat.SetTexture("_MainTex", texture);
-				callback();
-			}
-			else
-			{
-				callback();
-			}
-		}
+        private void setBlendValues(GameObject go, float yValue, bool hasXOffset = false, float xValue = 0f)
+        {
+            if (go.IsNullOrDisposed()) return;
 
-		private void SetAvatarPlanesVisibility(bool isShown)
-		{
-			if (!baseAvatarObject.IsNullOrDisposed() && !leftEyeObj.IsNullOrDisposed() && !rightEyeObj.IsNullOrDisposed() && !leftEyebrowObj.IsNullOrDisposed() && !rightEyebrowObj.IsNullOrDisposed() && !mouthObj.IsNullOrDisposed() && !textureTracker.IsNullOrDisposed())
-			{
-				leftEyeObj.SetActive(isShown);
-				rightEyeObj.SetActive(isShown);
-				leftEyebrowObj.SetActive(isShown);
-				rightEyebrowObj.SetActive(isShown);
-				mouthObj.SetActive(isShown);
-				if (!isShown)
-				{
-					textureTracker.CleanupGeo();
-				}
-			}
-		}
+            SkinnedMeshRenderer smr = go.GetComponent<SkinnedMeshRenderer>();
+            if (smr != null && smr.sharedMesh != null && smr.sharedMesh.blendShapeCount > 0)
+            {
+                if (hasXOffset)
+                {
+                    smr.SetBlendShapeWeight(0, xValue + 50f);
+                    smr.SetBlendShapeWeight(1, yValue + 50f);
+                }
+                else
+                {
+                    smr.SetBlendShapeWeight(0, yValue + 50f);
+                }
+            }
+        }
 
-		private void setBlendValues(GameObject go, float yValue, bool hasXOffset = false, float xValue = 0f)
-		{
-			if (go.IsNullOrDisposed())
-			{
-				return;
-			}
-			SkinnedMeshRenderer component = go.GetComponent<SkinnedMeshRenderer>();
-			if (!component.IsNullOrDisposed() && component.sharedMesh != null && component.sharedMesh.blendShapeCount > 0)
-			{
-				if (hasXOffset)
-				{
-					component.SetBlendShapeWeight(0, xValue + 50f);
-					component.SetBlendShapeWeight(1, yValue + 50f);
-				}
-				else
-				{
-					component.SetBlendShapeWeight(0, yValue + 50f);
-				}
-			}
-		}
+        private void AddTextureControllerToObj(GameObject go, GameObject jointObject, float xOffsetRatio = 0.333f, float yOffsetRatio = 0.333f)
+        {
+            if (go.IsNullOrDisposed()) return;
 
-		private void AddTextureControllerToObj(GameObject go, GameObject jointObject, float xOffsetRatio = 0.333f, float yOffsetRatio = 0.333f)
-		{
-			if (!go.IsNullOrDisposed())
-			{
-				AnimatedTextureController animatedTextureController = go.GetComponent<AnimatedTextureController>() ?? go.AddComponent<AnimatedTextureController>();
-				animatedTextureController.jointController = jointObject;
-				animatedTextureController.offsetRatioX = xOffsetRatio;
-				animatedTextureController.offsetRatioY = yOffsetRatio;
-			}
-		}
+            AnimatedTextureController controller = go.GetComponent<AnimatedTextureController>() ?? go.AddComponent<AnimatedTextureController>();
+            controller.jointController = jointObject;
+            controller.offsetRatioX = xOffsetRatio;
+            controller.offsetRatioY = yOffsetRatio;
+        }
 
-		public void LoadAvatarTextures(IAvatar dna, AvatarFlags flags, Action<bool> callback)
-		{
-			if (hasErrored)
-			{
-				callback(false);
-				return;
-			}
-			CompositeCostume(dna, flags, delegate(bool hasCostume)
-			{
-				if (hasErrored)
-				{
-					CleanupCompositors();
-					callback(false);
-				}
-				else
-				{
-					SetAvatarPlanesVisibility(!hasCostume);
-					if (!hasCostume)
-					{
-						DelegateQueuer delegateQueuer = new DelegateQueuer(delegate
-						{
-							CleanupCompositors();
-							callback(!hasErrored);
-						});
-						CompositeSkinAndHair(dna, flags, delegateQueuer.EnqueueAction());
-						CompositeBrow(dna, flags, delegateQueuer.EnqueueAction());
-						CompositeEyes(dna, flags, delegateQueuer.EnqueueAction());
-						CompositeMouth(dna, flags, delegateQueuer.EnqueueAction());
-						CompositeAccessory(dna, flags, delegateQueuer.EnqueueAction(), dna.Accessory, "Accessory", glassesComp);
-						if (dna.Hat != null)
-						{
-							CompositeAccessory(dna, flags, delegateQueuer.EnqueueAction(), dna.Hat, "Hat", hatComp);
-						}
-						delegateQueuer.FinishedEnqueuing();
-					}
-					else
-					{
-						callback(true);
-					}
-				}
-			});
-		}
+        public void LoadAvatarTextures(IAvatar dna, AvatarFlags flags, Action<bool> callback)
+        {
+            if (hasErrored)
+            {
+                callback?.Invoke(false);
+                return;
+            }
 
-		private void LoadAccessoryGeometry(IAvatarProperty geoProperty, string propertyName, Action<bool> callback)
-		{
-			if (geoProperty == null)
-			{
-				callback(false);
-				return;
-			}
-			AvatarElement avatarData = assetManager.GetAvatarData(geoProperty.SelectionKey);
-			if (avatarData == null || string.IsNullOrEmpty(avatarData.Hd))
-			{
-				callback(false);
-				return;
-			}
-			string bundlePath = avatarData.Hd.Replace("_hd", "_geo_hd");
-			if (!string.IsNullOrEmpty(EmptyGeoPath) && bundlePath == EmptyGeoPath)
-			{
-				callback(false);
-				return;
-			}
-			assetManager.LoadABundle(delegate(UnityEngine.Object systemObject, object userdata)
-			{
-				GeoLoadedCallback(systemObject, bundlePath, propertyName, callback);
-			}, bundlePath, null, string.Empty, false, false, true);
-		}
+            CompositeCostume(dna, flags, hasCostume =>
+            {
+                if (hasErrored)
+                {
+                    CleanupCompositors();
+                    callback?.Invoke(false);
+                    return;
+                }
 
-		private void LoadTestGeoAccessory(IAvatarProperty geoProperty, MultiplaneCompositor comper, string propertyName, Action<bool> callback)
-		{
-			if (geoProperty == null)
-			{
-				callback(false);
-				return;
-			}
-			AvatarElement avatarData = assetManager.GetAvatarData(geoProperty.SelectionKey);
-			if (avatarData == null || string.IsNullOrEmpty(avatarData.Hd) || comper == null)
-			{
-				callback(false);
-				return;
-			}
-			comper.AddLayerInfo("Accessory", geoProperty, avatarData);
-			string bundlePath = avatarData.Hd;
-			assetManager.LoadABundle(delegate(UnityEngine.Object systemObject, object userdata)
-			{
-				BundleLoadedCallback(systemObject, comper, bundlePath, geoProperty.SelectionKey, callback);
-			}, bundlePath, null, string.Empty, false, false, true);
-		}
+                SetAvatarPlanesVisibility(!hasCostume);
 
-		private void GeoLoadedCallback(UnityEngine.Object aGameObject, string bundlePath, string propertyName, Action<bool> callback)
-		{
-			GameObject gameObject = null;
-			if (!aGameObject.IsNullOrDisposed())
-			{
-				GameObject gameObject2 = aGameObject as GameObject;
-				AvatarGeoComponent component = gameObject2.GetComponent<AvatarGeoComponent>();
-				if (!baseAvatarObject.IsNullOrDisposed())
-				{
-					Transform transform = baseAvatarObject.transform.Find(component.JointName);
-					if (!transform.IsNullOrDisposed())
-					{
-						gameObject = transform.gameObject;
-					}
-				}
-				else
-				{
-					hasErrored = true;
-					callback(false);
-				}
-			}
-			if (MonoSingleton<AssetManager>.Instance != null && !gameObject.IsNullOrDisposed() && !textureTracker.IsNullOrDisposed())
-			{
-				if (propertyName == "Hat")
-				{
-					bool obj = textureTracker.AttachAndTrackGeoAccessory(bundlePath, gameObject, propertyName, ref hatMaterial);
-					if (hatMaterial != null)
-					{
-						textureTracker.DisableActiveGeoJoint(propertyName);
-					}
-					callback(obj);
-				}
-				else
-				{
-					bool obj2 = textureTracker.AttachAndTrackGeoAccessory(bundlePath, gameObject, propertyName, ref glassesMaterial);
-					if (glassesMaterial != null)
-					{
-						textureTracker.DisableActiveGeoJoint(propertyName);
-					}
-					callback(obj2);
-				}
-			}
-			else
-			{
-				hasErrored = true;
-				callback(false);
-			}
-		}
+                if (!hasCostume)
+                {
+                    var queuer = new DelegateQueuer(() =>
+                    {
+                        CleanupCompositors();
+                        callback?.Invoke(!hasErrored);
+                    });
 
-		private void BundleLoadedCallback(UnityEngine.Object aGameObject, MultiplaneCompositor comper, string bundlePath, string key, Action<bool> callback)
-		{
-			if (MonoSingleton<AssetManager>.Instance != null)
-			{
-				GameObject gameObject = (GameObject)MonoSingleton<AssetManager>.Instance.GetBundleInstance(bundlePath);
-				if (gameObject == null)
-				{
-					if (callback != null)
-					{
-						callback(false);
-					}
-					return;
-				}
-				Action bundleCleanup = AddTextureLayersFromComponent(gameObject, comper, bundlePath, key);
-				comper.AddBundleCleanupCall(bundleCleanup);
-				if (callback != null)
-				{
-					callback(true);
-				}
-			}
-			else
-			{
-				callback(false);
-			}
-		}
+                    CompositeSkinAndHair(dna, flags, queuer.EnqueueAction());
+                    CompositeBrow(dna, flags, queuer.EnqueueAction());
+                    CompositeEyes(dna, flags, queuer.EnqueueAction());
+                    CompositeMouth(dna, flags, queuer.EnqueueAction());
+                    CompositeAccessory(dna, flags, queuer.EnqueueAction(), dna.Accessory, "Accessory", glassesComp);
 
-		private Action AddTextureLayersFromComponent(GameObject bundleInstance, MultiplaneCompositor comper, string bundlePath, string key)
-		{
-			AvatarComponent component = bundleInstance.GetComponent<AvatarComponent>();
-			if (!component.IsNullOrDisposed())
-			{
-				AvatarComponentLayer[] layers = component.Layers;
-				foreach (AvatarComponentLayer avatarComponentLayer in layers)
-				{
-					if (avatarComponentLayer != null)
-					{
-						AvatarTextureTracker.AddTextureReference(avatarComponentLayer.Texture);
-						AvatarTextureTracker.AddTextureReference(avatarComponentLayer.NormalMap);
-					}
-				}
-				comper.AddComponent(key, component);
-				return delegate
-				{
-					if (!component.IsNullOrDisposed())
-					{
-						if (component != null && component.Layers != null)
-						{
-							for (int j = 0; j < component.Layers.Length; j++)
-							{
-								if (component.Layers[j].Texture != null)
-								{
-									AvatarTextureTracker.DecrementTextureReference(component.Layers[j].Texture);
-								}
-								if (component.Layers[j].NormalMap != null)
-								{
-									AvatarTextureTracker.DecrementTextureReference(component.Layers[j].NormalMap);
-								}
-							}
-						}
-						if (!string.IsNullOrEmpty(bundlePath) && bundleInstance != null)
-						{
-							component = null;
-							MonoSingleton<AssetManager>.Instance.DestroyBundleInstance(bundlePath, bundleInstance);
-							bundleInstance = null;
-						}
-					}
-				};
-			}
-			return delegate
-			{
-			};
-		}
+                    if (dna.Hat != null)
+                        CompositeAccessory(dna, flags, queuer.EnqueueAction(), dna.Hat, "Hat", hatComp);
 
-		private void AddBundleLoad(string name, IAvatarProperty property, MultiplaneCompositor comp, AvatarFlags flags, Action<bool> callback)
-		{
-			AvatarElement avatarData = assetManager.GetAvatarData(property.SelectionKey);
-			if (avatarData == null)
-			{
-				callback(false);
-				return;
-			}
-			comp.AddLayerInfo(name, property, avatarData);
-			string bundlePath = avatarData.Hd;
-			assetManager.LoadABundle(delegate(UnityEngine.Object systemObject, object userdata)
-			{
-				BundleLoadedCallback(systemObject, comp, bundlePath, property.SelectionKey, callback);
-			}, bundlePath, null, string.Empty, false, false, true);
-		}
+                    queuer.FinishedEnqueuing();
+                }
+                else
+                {
+                    callback?.Invoke(true);
+                }
+            });
+        }
 
-		private Action<Texture2D> SetTextures(string prop, Material mat, string path, Action callback)
-		{
-			return delegate(Texture2D mainTex)
-			{
-				if (!string.IsNullOrEmpty(path))
-				{
-					assetManager.SaveCachedImage(mainTex, path, delegate(bool imageSaved)
-					{
-						hasErrored = !imageSaved;
-						if (!hasErrored && !textureTracker.IsNullOrDisposed())
-						{
-							textureTracker.SetAndTrackTexture(mat, prop, path, mainTex);
-						}
-						callback();
-					});
-				}
-				else
-				{
-					if (!textureTracker.IsNullOrDisposed())
-					{
-						textureTracker.SetAndTrackTexture(mat, prop, path, mainTex);
-					}
-					callback();
-				}
-			};
-		}
+        // ===================================================================
+        // Composite Methods
+        // ===================================================================
 
-		private string GenerateFilenameFromProps(KeyValuePair<IAvatarProperty, string>[] propInfos, bool ignoreOffsets = false)
-		{
-			StringBuilder stringBuilder = new StringBuilder();
-			JsonWriter jsonWriter = new JsonWriter(stringBuilder);
-			jsonWriter.WriteArrayStart();
-			for (int i = 0; i < propInfos.Length; i++)
-			{
-				KeyValuePair<IAvatarProperty, string> keyValuePair = propInfos[i];
-				SerializeProperty(jsonWriter, keyValuePair.Key, keyValuePair.Value, ignoreOffsets);
-			}
-			jsonWriter.WriteArrayEnd();
-			return assetManager.GetShaString(stringBuilder.ToString());
-		}
+        private void CompositeCostume(IAvatar dna, AvatarFlags flags, Action<bool> callback)
+        {
+            if ((flags & AvatarFlags.WithoutCostume) == AvatarFlags.WithoutCostume)
+            {
+                callback?.Invoke(false);
+                return;
+            }
 
-		private void SerializeProperty(JsonWriter writer, IAvatarProperty prop, string propName, bool ignoreOffsets)
-		{
-			if (prop == null)
-			{
-				prop = new ClientAvatarProperty(string.Empty, 0, 0.0, 0.0);
-			}
-			writer.WriteObjectStart();
-			writer.WritePropertyName(propName);
-			writer.WriteObjectStart();
-			writer.WritePropertyName("SelectionKey");
-			writer.Write(prop.SelectionKey);
-			writer.WritePropertyName("TintIndex");
-			writer.Write(prop.TintIndex);
-			if (!ignoreOffsets)
-			{
-				writer.WritePropertyName("XOffset");
-				writer.Write(prop.XOffset);
-				writer.WritePropertyName("YOffset");
-				writer.Write(prop.YOffset);
-			}
-			if (assetManager != null)
-			{
-				writer.WritePropertyName("VersionInfo");
-				writer.Write(assetManager.GetAvatarElementVersionInfo(assetManager.GetAvatarData(prop.SelectionKey)));
-			}
-			writer.WriteObjectEnd();
-			writer.WriteObjectEnd();
-		}
+            if (dna?.Costume == null || string.IsNullOrEmpty(dna.Costume.SelectionKey) || dna.Costume.SelectionKey == "0")
+            {
+                callback?.Invoke(false);
+                return;
+            }
 
-		private void CompositeCostume(IAvatar dna, AvatarFlags flags, Action<bool> callback)
-		{
-			if ((flags & AvatarFlags.WithoutCostume) == AvatarFlags.WithoutCostume)
-			{
-				callback(false);
-				return;
-			}
-			KeyValuePair<IAvatarProperty, string>[] propInfos = new KeyValuePair<IAvatarProperty, string>[1]
-			{
-				new KeyValuePair<IAvatarProperty, string>(dna.Costume, "Costume")
-			};
-			string path = GenerateFilenameFromProps(propInfos) + ".png";
-			Texture2D texture = MultiplaneMemCache.GetTexture(path);
-			if (texture != null)
-			{
-				SetTextures("_MainTex", faceMat, string.Empty, delegate
-				{
-					callback(true);
-				})(texture);
-				return;
-			}
-			if (!string.IsNullOrEmpty(EmptyCostumePath) && EmptyCostumePath == path)
-			{
-				callback(false);
-				return;
-			}
-			assetManager.LoadCachedImage(path, delegate(bool success, Texture2D texture2D)
-			{
-				if (!success)
-				{
-					AddBundleLoad("Costume", dna.Costume, faceComp, flags, delegate(bool bundleSuccess)
-					{
-						if (!bundleSuccess)
-						{
-							hasErrored = true;
-							callback(true);
-						}
-						else
-						{
-							bool hasCostume = !faceComp.IsComponentIgnored(dna.Costume.SelectionKey);
-							if (hasCostume)
-							{
-								faceComp.Composite(flags, delegate(Texture2D newTexture)
-								{
-									MultiplaneMemCache.AddTexture(path, newTexture, delegate
-									{
-										UnityEngine.Object.Destroy(newTexture);
-									});
-									SetTextures("_MainTex", faceMat, path, delegate
-									{
-										callback(hasCostume);
-									})(newTexture);
-								});
-							}
-							else
-							{
-								EmptyCostumePath = path;
-								callback(hasCostume);
-							}
-						}
-					});
-				}
-				else
-				{
-					MultiplaneMemCache.AddTexture(path, texture2D, delegate
-					{
-						UnityEngine.Object.Destroy(texture2D);
-					});
-					SetTextures("_MainTex", faceMat, string.Empty, delegate
-					{
-						callback(true);
-					})(texture2D);
-				}
-			});
-		}
+            var propInfos = new[] { new KeyValuePair<IAvatarProperty, string>(dna.Costume, "Costume") };
+            string path = GenerateFilenameFromProps(propInfos) + ".png";
 
-		private void CompositeSkinAndHair(IAvatar dna, AvatarFlags flags, Action callback)
-		{
-			if (hasErrored)
-			{
-				callback();
-				return;
-			}
-			KeyValuePair<IAvatarProperty, string>[] propInfos = new KeyValuePair<IAvatarProperty, string>[3]
-			{
-				new KeyValuePair<IAvatarProperty, string>(dna.Skin, "Skin"),
-				new KeyValuePair<IAvatarProperty, string>(dna.Nose, "Nose"),
-				new KeyValuePair<IAvatarProperty, string>(dna.Hair, "Hair")
-			};
-			string path = GenerateFilenameFromProps(propInfos) + ".png";
-			Texture2D texture = MultiplaneMemCache.GetTexture(path);
-			if (texture != null)
-			{
-				SetTextures("_MainTex", faceMat, string.Empty, callback)(texture);
-				return;
-			}
-			assetManager.LoadCachedImage(path, delegate(bool success, Texture2D texture2D)
-			{
-				if (!success)
-				{
-					CompositeSkinAndHairFromScratch(dna, flags, path, callback);
-				}
-				else
-				{
-					MultiplaneMemCache.AddTexture(path, texture2D, delegate
-					{
-						UnityEngine.Object.Destroy(texture2D);
-					});
-					SetTextures("_MainTex", faceMat, string.Empty, callback)(texture2D);
-				}
-			});
-		}
+            Texture2D cachedTex = MultiplaneMemCache.GetTexture(path);
+            Log($"Costume cache lookup for {path}: {(cachedTex != null ? "HIT" : "MISS")}");
 
-		private void CompositeHairAndNormals(IAvatar dna, AvatarFlags flags, Action callback)
-		{
-			if (hasErrored)
-			{
-				callback();
-			}
-		}
+            if (cachedTex != null)
+            {
+                SetTextures("_MainTex", faceMat, string.Empty, () => callback?.Invoke(true))(cachedTex);
+                return;
+            }
 
-		private Action<bool> HairEnquerHelper(DelegateQueuer queuer)
-		{
-			Action callback = queuer.EnqueueAction();
-			return delegate(bool success)
-			{
-				hasErrored = !success;
-				callback();
-			};
-		}
+            if (!string.IsNullOrEmpty(EmptyCostumePath) && EmptyCostumePath == path)
+            {
+                callback?.Invoke(false);
+                return;
+            }
 
-		private void CompositeSkinAndHairFromScratch(IAvatar dna, AvatarFlags flags, string basePath, Action callback)
-		{
-			DelegateQueuer delegateQueuer = new DelegateQueuer(delegate
-			{
-				if (hasErrored)
-				{
-					callback();
-				}
-				else
-				{
-					faceComp.Composite(flags, delegate(Texture2D mainTex)
-					{
-						if (!textureTracker.IsNullOrDisposed())
-						{
-							MultiplaneMemCache.AddTexture(basePath, mainTex, delegate
-							{
-								UnityEngine.Object.Destroy(mainTex);
-							});
-							textureTracker.SetAndTrackTexture(faceMat, "_MainTex", basePath, mainTex);
-							assetManager.SaveCachedImage(mainTex, basePath, delegate
-							{
-								callback();
-							});
-						}
-						else
-						{
-							hasErrored = true;
-							callback();
-						}
-					});
-				}
-			});
-			AddBundleLoad("Skin", dna.Skin, faceComp, flags, HairEnquerHelper(delegateQueuer));
-			AddBundleLoad("Nose", dna.Nose, faceComp, flags, HairEnquerHelper(delegateQueuer));
-			AddBundleLoad("Hair", dna.Hair, faceComp, flags, HairEnquerHelper(delegateQueuer));
-			delegateQueuer.FinishedEnqueuing();
-		}
+            assetManager.LoadCachedImage(path, (success, texture2D) =>
+            {
+                if (!success)
+                {
+                    AddBundleLoad("Costume", dna.Costume, faceComp, flags, bundleSuccess =>
+                    {
+                        if (!bundleSuccess)
+                        {
+                            hasErrored = true;
+                            LogError("Failed to load costume bundle for path: " + path);
+                            callback?.Invoke(false);
+                            return;
+                        }
+                        bool hasCostume = !faceComp.IsComponentIgnored(dna.Costume.SelectionKey);
+                        if (hasCostume)
+                        {
+                            try
+                            {
+                                faceComp.Composite(flags, newTexture =>
+                                {
+                                    if (newTexture == null)
+                                    {
+                                        hasErrored = true;
+                                        LogError("faceComp.Composite returned null texture for path: " + path);
+                                        callback?.Invoke(false);
+                                        return;
+                                    }
+                                    MultiplaneMemCache.AddTexture(path, newTexture, () => UnityEngine.Object.Destroy(newTexture));
+                                    SetTextures("_MainTex", faceMat, path, () => callback?.Invoke(hasCostume))(newTexture);
+                                });
+                            }
+                            catch (Exception ex)
+                            {
+                                hasErrored = true;
+                                LogError("Exception during faceComp.Composite: " + ex);
+                                callback?.Invoke(false);
+                            }
+                        }
+                        else
+                        {
+                            EmptyCostumePath = path;
+                            callback?.Invoke(hasCostume);
+                        }
+                    });
+                }
+                else
+                {
+                    if (texture2D == null)
+                    {
+                        hasErrored = true;
+                        LogError($"Costume cached image load returned success but texture was null for {path}.");
+                        callback?.Invoke(false);
+                        return;
+                    }
 
-		private void CompositeBrow(IAvatar dna, AvatarFlags flags, Action callback)
-		{
-			if (hasErrored || textureTracker.IsNullOrDisposed())
-			{
-				callback();
-				return;
-			}
-			ClientAvatarProperty browDupe = new ClientAvatarProperty(dna.Brow.SelectionKey, dna.Hair.TintIndex, dna.Brow.XOffset, dna.Brow.YOffset);
-			KeyValuePair<IAvatarProperty, string>[] propInfos = new KeyValuePair<IAvatarProperty, string>[1]
-			{
-				new KeyValuePair<IAvatarProperty, string>(browDupe, "Brow")
-			};
-			string path = GenerateFilenameFromProps(propInfos, true) + ".png";
-			setBlendValues(leftEyebrowObj, (float)browDupe.YOffset);
-			setBlendValues(rightEyebrowObj, (float)browDupe.YOffset);
-			Texture2D texture = MultiplaneMemCache.GetTexture(path);
-			if (texture != null)
-			{
-				MultiplaneMemCache.GetTexture(path);
-				textureTracker.SetAndTrackTexture(leftEyebrowMat, "_MainTex", path, texture);
-				textureTracker.SetAndTrackTexture(rightEyebrowMat, "_MainTex", path, texture);
-				callback();
-				return;
-			}
-			assetManager.LoadCachedImage(path, delegate(bool success, Texture2D texture2D)
-			{
-				if (!success)
-				{
-					AddBundleLoad("Brow", browDupe, eyebrowComp, flags, delegate(bool bundleSuccess)
-					{
-						if (!bundleSuccess)
-						{
-							hasErrored = true;
-							callback();
-						}
-						else
-						{
-							eyebrowComp.Composite(flags, delegate(Texture2D mainTex)
-							{
-								if (!textureTracker.IsNullOrDisposed())
-								{
-									MultiplaneMemCache.AddTexture(path, mainTex, delegate
-									{
-										UnityEngine.Object.Destroy(mainTex);
-									});
-									MultiplaneMemCache.GetTexture(path);
-									textureTracker.SetAndTrackTexture(leftEyebrowMat, "_MainTex", path, mainTex);
-									textureTracker.SetAndTrackTexture(rightEyebrowMat, "_MainTex", path, mainTex);
-									assetManager.SaveCachedImage(mainTex, path, delegate
-									{
-										callback();
-									});
-								}
-								else
-								{
-									hasErrored = true;
-									callback();
-								}
-							});
-						}
-					});
-				}
-				else
-				{
-					if (!textureTracker.IsNullOrDisposed())
-					{
-						MultiplaneMemCache.AddTexture(path, texture2D, delegate
-						{
-							UnityEngine.Object.Destroy(texture2D);
-						});
-						MultiplaneMemCache.GetTexture(path);
-						textureTracker.SetAndTrackTexture(leftEyebrowMat, "_MainTex", path, texture2D);
-						textureTracker.SetAndTrackTexture(rightEyebrowMat, "_MainTex", path, texture2D);
-					}
-					callback();
-				}
-			});
-		}
+                    MultiplaneMemCache.AddTexture(path, texture2D, () => UnityEngine.Object.Destroy(texture2D));
+                    SetTextures("_MainTex", faceMat, string.Empty, () => callback?.Invoke(true))(texture2D);
+                }
+            });
+        }
 
-		private void CompositeAccessory(IAvatar dna, AvatarFlags flags, Action callback, IAvatarProperty accessoryProperty, string propertyName, MultiplaneCompositor compositor)
-		{
-			if (dna == null || textureTracker.IsNullOrDisposed())
-			{
-				hasErrored = true;
-				callback();
-				return;
-			}
-			if ((flags & AvatarFlags.WithoutGeo) == AvatarFlags.WithoutGeo)
-			{
-				textureTracker.DisableActiveGeoJoint(propertyName);
-				callback();
-				return;
-			}
-			offsetAccessory((float)accessoryProperty.YOffset, propertyName);
-			KeyValuePair<IAvatarProperty, string>[] propInfos = new KeyValuePair<IAvatarProperty, string>[1]
-			{
-				new KeyValuePair<IAvatarProperty, string>(accessoryProperty, propertyName)
-			};
-			string id = GenerateFilenameFromProps(propInfos, true);
-			if (textureTracker.currentGeoIds.ContainsKey(propertyName) && textureTracker.currentGeoIds[propertyName] == id)
-			{
-				callback();
-				return;
-			}
-			string path = id + ".png";
-			LoadAccessoryGeometry(accessoryProperty, propertyName, delegate(bool geoSuccess)
-			{
-				if (geoSuccess)
-				{
-					assetManager.LoadCachedImage(path, delegate(bool cacheSuccess, Texture2D texture)
-					{
-						if (!cacheSuccess)
-						{
-							LoadTestGeoAccessory(accessoryProperty, compositor, propertyName, delegate(bool textureSuccess)
-							{
-								if (textureSuccess && !getGeoMaterial(propertyName).IsNullOrDisposed())
-								{
-									compositor.Composite(flags, delegate(Texture2D mainTex)
-									{
-										if (!textureTracker.IsNullOrDisposed())
-										{
-											textureTracker.SetAndTrackTexture(getGeoMaterial(propertyName), "_MainTex", path, mainTex);
-											textureTracker.EnableActiveGeoJoint(propertyName);
-											offsetAccessory((float)accessoryProperty.YOffset, propertyName);
-											if (textureTracker.currentGeoIds.ContainsKey(propertyName))
-											{
-												textureTracker.currentGeoIds[propertyName] = id;
-											}
-											else
-											{
-												textureTracker.currentGeoIds.Add(propertyName, id);
-											}
-											assetManager.SaveCachedImage(mainTex, path, delegate
-											{
-												callback();
-											});
-										}
-									});
-								}
-								else
-								{
-									textureTracker.DisableActiveGeoJoint(propertyName);
-									textureTracker.currentGeoIds[propertyName] = null;
-									callback();
-								}
-							});
-						}
-						else
-						{
-							if (!textureTracker.IsNullOrDisposed())
-							{
-								MultiplaneMemCache.AddTexture(path, texture, delegate
-								{
-									UnityEngine.Object.Destroy(texture);
-								});
-								textureTracker.SetAndTrackTexture(getGeoMaterial(propertyName), "_MainTex", path, texture);
-								textureTracker.EnableActiveGeoJoint(propertyName);
-								offsetAccessory((float)accessoryProperty.YOffset, propertyName);
-								if (textureTracker.currentGeoIds.ContainsKey(propertyName))
-								{
-									textureTracker.currentGeoIds[propertyName] = id;
-								}
-								else
-								{
-									textureTracker.currentGeoIds.Add(propertyName, id);
-								}
-							}
-							callback();
-						}
-					});
-				}
-				else
-				{
-					textureTracker.DisableActiveGeoJoint(propertyName);
-					textureTracker.currentGeoIds[propertyName] = null;
-					callback();
-				}
-			});
-		}
+        private void CompositeSkinAndHair(IAvatar dna, AvatarFlags flags, Action callback)
+        {
+            if (hasErrored)
+            {
+                callback?.Invoke();
+                return;
+            }
 
-		private Material getGeoMaterial(string propertyName)
-		{
-			if (propertyName == "Hat")
-			{
-				return hatMaterial;
-			}
-			return glassesMaterial;
-		}
+            var propInfos = new[]
+            {
+                new KeyValuePair<IAvatarProperty, string>(dna.Skin, "Skin"),
+                new KeyValuePair<IAvatarProperty, string>(dna.Nose, "Nose"),
+                new KeyValuePair<IAvatarProperty, string>(dna.Hair, "Hair")
+            };
 
-		private void CompositeEyes(IAvatar dna, AvatarFlags flags, Action callback)
-		{
-			if (hasErrored || textureTracker.IsNullOrDisposed())
-			{
-				callback();
-				return;
-			}
-			KeyValuePair<IAvatarProperty, string>[] propInfos = new KeyValuePair<IAvatarProperty, string>[1]
-			{
-				new KeyValuePair<IAvatarProperty, string>(dna.Eyes, "Eyes")
-			};
-			string path = GenerateFilenameFromProps(propInfos, true) + ".png";
-			setBlendValues(leftEyeObj, (float)dna.Eyes.YOffset);
-			setBlendValues(rightEyeObj, (float)dna.Eyes.YOffset);
-			Texture2D texture = MultiplaneMemCache.GetTexture(path);
-			if (texture != null)
-			{
-				MultiplaneMemCache.GetTexture(path);
-				textureTracker.SetAndTrackTexture(leftEyeMat, "_MainTex", path, texture);
-				textureTracker.SetAndTrackTexture(rightEyeMat, "_MainTex", path, texture);
-				callback();
-				return;
-			}
-			assetManager.LoadCachedImage(path, delegate(bool success, Texture2D texture2D)
-			{
-				if (!success)
-				{
-					AddBundleLoad("Eyes", dna.Eyes, eyeComp, flags, delegate(bool bundleSuccess)
-					{
-						if (!bundleSuccess)
-						{
-							hasErrored = true;
-							callback();
-						}
-						else
-						{
-							eyeComp.Composite(flags, delegate(Texture2D mainTex)
-							{
-								if (!textureTracker.IsNullOrDisposed())
-								{
-									MultiplaneMemCache.AddTexture(path, mainTex, delegate
-									{
-										UnityEngine.Object.Destroy(mainTex);
-									});
-									MultiplaneMemCache.GetTexture(path);
-									textureTracker.SetAndTrackTexture(leftEyeMat, "_MainTex", path, mainTex);
-									textureTracker.SetAndTrackTexture(rightEyeMat, "_MainTex", path, mainTex);
-									assetManager.SaveCachedImage(mainTex, path, delegate
-									{
-										callback();
-									});
-								}
-								else
-								{
-									hasErrored = true;
-									callback();
-								}
-							});
-						}
-					});
-				}
-				else
-				{
-					if (!textureTracker.IsNullOrDisposed())
-					{
-						MultiplaneMemCache.AddTexture(path, texture2D, delegate
-						{
-							UnityEngine.Object.Destroy(texture2D);
-						});
-						MultiplaneMemCache.GetTexture(path);
-						textureTracker.SetAndTrackTexture(leftEyeMat, "_MainTex", path, texture2D);
-						textureTracker.SetAndTrackTexture(rightEyeMat, "_MainTex", path, texture2D);
-					}
-					callback();
-				}
-			});
-		}
+            string path = GenerateFilenameFromProps(propInfos) + ".png";
+            Texture2D texture = MultiplaneMemCache.GetTexture(path);
 
-		private void CompositeMouth(IAvatar dna, AvatarFlags flags, Action callback)
-		{
-			if (hasErrored)
-			{
-				callback();
-				return;
-			}
-			ClientAvatarProperty mouthPropDupe = new ClientAvatarProperty(dna.Mouth.SelectionKey, dna.Skin.TintIndex, dna.Mouth.XOffset, dna.Mouth.YOffset);
-			KeyValuePair<IAvatarProperty, string>[] propInfos = new KeyValuePair<IAvatarProperty, string>[1]
-			{
-				new KeyValuePair<IAvatarProperty, string>(mouthPropDupe, "Mouth")
-			};
-			string path = GenerateFilenameFromProps(propInfos, true) + ".png";
-			setBlendValues(mouthObj, (float)dna.Mouth.YOffset, true, (float)dna.Mouth.XOffset);
-			Texture2D texture = MultiplaneMemCache.GetTexture(path);
-			if (texture != null)
-			{
-				SetTextures("_MainTex", mouthMat, string.Empty, callback)(texture);
-				return;
-			}
-			assetManager.LoadCachedImage(path, delegate(bool success, Texture2D texture2D)
-			{
-				if (!success)
-				{
-					AddBundleLoad("Mouth", mouthPropDupe, mouthComp, flags, delegate(bool bundleSuccess)
-					{
-						if (!bundleSuccess)
-						{
-							hasErrored = true;
-							callback();
-						}
-						else
-						{
-							mouthComp.Composite(flags, delegate(Texture2D newTexture)
-							{
-								MultiplaneMemCache.AddTexture(path, newTexture, delegate
-								{
-									UnityEngine.Object.Destroy(newTexture);
-								});
-								SetTextures("_MainTex", mouthMat, path, callback)(newTexture);
-							});
-						}
-					});
-				}
-				else
-				{
-					MultiplaneMemCache.AddTexture(path, texture2D, delegate
-					{
-						UnityEngine.Object.Destroy(texture2D);
-					});
-					SetTextures("_MainTex", mouthMat, string.Empty, callback)(texture2D);
-				}
-			});
-		}
+            Log($"Skin/Hair cache lookup for {path}: {(texture != null ? "HIT" : "MISS")}");
 
-		private void offsetAccessory(float aYOffset, string aPropertyName)
-		{
-			GameObject activeGeoJoint = textureTracker.GetActiveGeoJoint(aPropertyName);
-			if (!activeGeoJoint.IsNullOrDisposed())
-			{
-				Transform child = activeGeoJoint.transform.GetChild(0);
-				if (!child.IsNullOrDisposed())
-				{
-					float num = 22.81f;
-					float num2 = (aYOffset + 50f) / 100f;
-					float y = num * num2 + -9.7f;
-					child.transform.localPosition = new Vector3(0f, y, 0f);
-				}
-			}
-		}
-	}
+            if (texture != null)
+            {
+                SetTextures("_MainTex", faceMat, string.Empty, callback)(texture);
+                return;
+            }
+
+            assetManager.LoadCachedImage(path, (success, texture2D) =>
+            {
+                Log($"Skin/Hair LoadCachedImage {path} success={success}");
+
+                if (!success)
+                {
+                    Log("[MultiplaneMaterials] Skin/Hair not cached, compositing from scratch");
+                    CompositeSkinAndHairFromScratch(dna, flags, path, callback);
+                }
+                else
+                {
+                    MultiplaneMemCache.AddTexture(path, texture2D, () => UnityEngine.Object.Destroy(texture2D));
+                    SetTextures("_MainTex", faceMat, string.Empty, callback)(texture2D);
+                }
+            });
+        }
+
+        private void CompositeSkinAndHairFromScratch(IAvatar dna, AvatarFlags flags, string basePath, Action callback)
+        {
+            Log("CompositeSkinAndHairFromScratch called");
+
+            var queuer = new DelegateQueuer(() =>
+            {
+                if (hasErrored)
+                {
+                    callback?.Invoke();
+                    return;
+                }
+
+                faceComp.Composite(flags, mainTex =>
+                {
+                    if (textureTracker.IsNullOrDisposed())
+                    {
+                        hasErrored = true;
+                        callback?.Invoke();
+                        return;
+                    }
+
+                    MultiplaneMemCache.AddTexture(basePath, mainTex, () => UnityEngine.Object.Destroy(mainTex));
+                    textureTracker.SetAndTrackTexture(faceMat, "_MainTex", basePath, mainTex);
+                    assetManager.SaveCachedImage(mainTex, basePath, (bool savedImage) => callback?.Invoke());
+                });
+            });
+
+            AddBundleLoad("Skin", dna.Skin, faceComp, flags, HairEnquerHelper(queuer));
+            AddBundleLoad("Nose", dna.Nose, faceComp, flags, HairEnquerHelper(queuer));
+            AddBundleLoad("Hair", dna.Hair, faceComp, flags, HairEnquerHelper(queuer));
+
+            queuer.FinishedEnqueuing();
+        }
+
+        private void CompositeBrow(IAvatar dna, AvatarFlags flags, Action callback)
+        {
+            if (hasErrored || textureTracker.IsNullOrDisposed())
+            {
+                callback?.Invoke();
+                return;
+            }
+
+            var browDupe = new ClientAvatarProperty(dna.Brow.SelectionKey, dna.Hair.TintIndex, dna.Brow.XOffset, dna.Brow.YOffset);
+
+            var propInfos = new[] { new KeyValuePair<IAvatarProperty, string>(browDupe, "Brow") };
+            string path = GenerateFilenameFromProps(propInfos, true) + ".png";
+
+            setBlendValues(leftEyebrowObj, (float)browDupe.YOffset);
+            setBlendValues(rightEyebrowObj, (float)browDupe.YOffset);
+
+            Texture2D texture = MultiplaneMemCache.GetTexture(path);
+            Log($"Brow cache lookup for {path}: {(texture != null ? "HIT" : "MISS")}");
+
+            if (texture != null)
+            {
+                if (textureTracker.IsNullOrDisposed())
+                {
+                    hasErrored = true;
+                    callback?.Invoke();
+                    return;
+                }
+
+                textureTracker.SetAndTrackTexture(leftEyebrowMat, "_MainTex", path, texture);
+                textureTracker.SetAndTrackTexture(rightEyebrowMat, "_MainTex", path, texture);
+                callback?.Invoke();
+                return;
+            }
+
+            assetManager.LoadCachedImage(path, (success, texture2D) =>
+            {
+                Log($"Brow LoadCachedImage {path} success={success}");
+
+                if (success && texture2D == null)
+                {
+                    LogError($"Brow cached image load returned success but texture was null for {path}. Falling back to bundle load.");
+                    success = false;
+                }
+
+                if (!success)
+                {
+                    AddBundleLoad("Brow", browDupe, eyebrowComp, flags, bundleSuccess =>
+                    {
+                        if (!bundleSuccess)
+                        {
+                            hasErrored = true;
+                            callback?.Invoke();
+                            return;
+                        }
+
+                        eyebrowComp.Composite(flags, mainTex =>
+                        {
+                            if (mainTex == null)
+                            {
+                                hasErrored = true;
+                                LogError("eyebrowComp.Composite returned null texture for path: " + path);
+                                callback?.Invoke();
+                                return;
+                            }
+
+                            if (textureTracker.IsNullOrDisposed())
+                            {
+                                hasErrored = true;
+                                callback?.Invoke();
+                                return;
+                            }
+
+                            MultiplaneMemCache.AddTexture(path, mainTex, () => UnityEngine.Object.Destroy(mainTex));
+                            textureTracker.SetAndTrackTexture(leftEyebrowMat, "_MainTex", path, mainTex);
+                            textureTracker.SetAndTrackTexture(rightEyebrowMat, "_MainTex", path, mainTex);
+                            assetManager.SaveCachedImage(mainTex, path, (bool imageSaved) => callback?.Invoke());
+                        });
+                    });
+                }
+                else
+                {
+                    MultiplaneMemCache.AddTexture(path, texture2D, () => UnityEngine.Object.Destroy(texture2D));
+                    textureTracker.SetAndTrackTexture(leftEyebrowMat, "_MainTex", path, texture2D);
+                    textureTracker.SetAndTrackTexture(rightEyebrowMat, "_MainTex", path, texture2D);
+                    callback?.Invoke();
+                }
+            });
+        }
+
+        private void CompositeEyes(IAvatar dna, AvatarFlags flags, Action callback)
+        {
+            if (hasErrored || textureTracker.IsNullOrDisposed())
+            {
+                callback?.Invoke();
+                return;
+            }
+
+            var propInfos = new[] { new KeyValuePair<IAvatarProperty, string>(dna.Eyes, "Eyes") };
+            string path = GenerateFilenameFromProps(propInfos, true) + ".png";
+
+            setBlendValues(leftEyeObj, (float)dna.Eyes.YOffset);
+            setBlendValues(rightEyeObj, (float)dna.Eyes.YOffset);
+
+            Texture2D texture = MultiplaneMemCache.GetTexture(path);
+            Log($"Eyes cache lookup for {path}: {(texture != null ? "HIT" : "MISS")}");
+
+            if (texture != null)
+            {
+                if (textureTracker.IsNullOrDisposed())
+                {
+                    hasErrored = true;
+                    callback?.Invoke();
+                    return;
+                }
+
+                textureTracker.SetAndTrackTexture(leftEyeMat, "_MainTex", path, texture);
+                textureTracker.SetAndTrackTexture(rightEyeMat, "_MainTex", path, texture);
+                callback?.Invoke();
+                return;
+            }
+
+            assetManager.LoadCachedImage(path, (success, texture2D) =>
+            {
+                Log($"Eyes LoadCachedImage {path} success={success}");
+
+                if (success && texture2D == null)
+                {
+                    LogError($"Eyes cached image load returned success but texture was null for {path}. Falling back to bundle load.");
+                    success = false;
+                }
+
+                if (!success)
+                {
+                    AddBundleLoad("Eyes", dna.Eyes, eyeComp, flags, bundleSuccess =>
+                    {
+                        if (!bundleSuccess)
+                        {
+                            hasErrored = true;
+                            callback?.Invoke();
+                            return;
+                        }
+
+                        eyeComp.Composite(flags, mainTex =>
+                        {
+                            if (mainTex == null)
+                            {
+                                hasErrored = true;
+                                LogError("eyeComp.Composite returned null texture for path: " + path);
+                                callback?.Invoke();
+                                return;
+                            }
+
+                            if (textureTracker.IsNullOrDisposed())
+                            {
+                                hasErrored = true;
+                                callback?.Invoke();
+                                return;
+                            }
+
+                            MultiplaneMemCache.AddTexture(path, mainTex, () => UnityEngine.Object.Destroy(mainTex));
+                            textureTracker.SetAndTrackTexture(leftEyeMat, "_MainTex", path, mainTex);
+                            textureTracker.SetAndTrackTexture(rightEyeMat, "_MainTex", path, mainTex);
+                            assetManager.SaveCachedImage(mainTex, path, (bool savedImage) => callback?.Invoke());
+                        });
+                    });
+                }
+                else
+                {
+                    MultiplaneMemCache.AddTexture(path, texture2D, () => UnityEngine.Object.Destroy(texture2D));
+                    textureTracker.SetAndTrackTexture(leftEyeMat, "_MainTex", path, texture2D);
+                    textureTracker.SetAndTrackTexture(rightEyeMat, "_MainTex", path, texture2D);
+                    callback?.Invoke();
+                }
+            });
+        }
+
+        private void CompositeMouth(IAvatar dna, AvatarFlags flags, Action callback)
+        {
+            if (hasErrored)
+            {
+                callback?.Invoke();
+                return;
+            }
+
+            var mouthPropDupe = new ClientAvatarProperty(dna.Mouth.SelectionKey, dna.Skin.TintIndex, dna.Mouth.XOffset, dna.Mouth.YOffset);
+
+            var propInfos = new[] { new KeyValuePair<IAvatarProperty, string>(mouthPropDupe, "Mouth") };
+            string path = GenerateFilenameFromProps(propInfos, true) + ".png";
+
+            setBlendValues(mouthObj, (float)dna.Mouth.YOffset, true, (float)dna.Mouth.XOffset);
+
+            Texture2D texture = MultiplaneMemCache.GetTexture(path);
+            Log($"Mouth cache lookup for {path}: {(texture != null ? "HIT" : "MISS")}");
+
+            if (texture != null)
+            {
+                SetTextures("_MainTex", mouthMat, string.Empty, callback)(texture);
+                return;
+            }
+
+            assetManager.LoadCachedImage(path, (success, texture2D) =>
+            {
+                Log($"Mouth LoadCachedImage {path} success={success}");
+
+                if (!success)
+                {
+                    AddBundleLoad("Mouth", mouthPropDupe, mouthComp, flags, bundleSuccess =>
+                    {
+                        if (!bundleSuccess)
+                        {
+                            hasErrored = true;
+                            callback?.Invoke();
+                            return;
+                        }
+
+                        mouthComp.Composite(flags, newTexture =>
+                        {
+                            MultiplaneMemCache.AddTexture(path, newTexture, () => UnityEngine.Object.Destroy(newTexture));
+                            SetTextures("_MainTex", mouthMat, path, callback)(newTexture);
+                        });
+                    });
+                }
+                else
+                {
+                    MultiplaneMemCache.AddTexture(path, texture2D, () => UnityEngine.Object.Destroy(texture2D));
+                    SetTextures("_MainTex", mouthMat, string.Empty, callback)(texture2D);
+                }
+            });
+        }
+
+        private void CompositeAccessory(IAvatar dna, AvatarFlags flags, Action callback, IAvatarProperty accessoryProperty, string propertyName, MultiplaneCompositor compositor)
+        {
+            Log($"CompositeAccessory called for {propertyName}");
+
+            if (dna == null || textureTracker.IsNullOrDisposed())
+            {
+                hasErrored = true;
+                callback?.Invoke();
+                return;
+            }
+
+            if ((flags & AvatarFlags.WithoutGeo) == AvatarFlags.WithoutGeo)
+            {
+                textureTracker.DisableActiveGeoJoint(propertyName);
+                callback?.Invoke();
+                return;
+            }
+
+            offsetAccessory((float)accessoryProperty.YOffset, propertyName);
+
+            var propInfos = new[] { new KeyValuePair<IAvatarProperty, string>(accessoryProperty, propertyName) };
+            string id = GenerateFilenameFromProps(propInfos, true);
+            string path = id + ".png";
+
+            if (textureTracker.currentGeoIds.TryGetValue(propertyName, out string current) && current == id)
+            {
+                callback?.Invoke();
+                return;
+            }
+
+            LoadAccessoryGeometry(accessoryProperty, propertyName, geoSuccess =>
+            {
+                if (geoSuccess)
+                {
+                    assetManager.LoadCachedImage(path, (cacheSuccess, texture) =>
+                    {
+                        if (!cacheSuccess)
+                        {
+                            LoadTestGeoAccessory(accessoryProperty, compositor, propertyName, textureSuccess =>
+                            {
+                                if (textureSuccess && !getGeoMaterial(propertyName).IsNullOrDisposed())
+                                {
+                                    compositor.Composite(flags, mainTex =>
+                                    {
+                                        if (textureTracker.IsNullOrDisposed()) return;
+
+                                        textureTracker.SetAndTrackTexture(getGeoMaterial(propertyName), "_MainTex", path, mainTex);
+                                        textureTracker.EnableActiveGeoJoint(propertyName);
+                                        offsetAccessory((float)accessoryProperty.YOffset, propertyName);
+                                        textureTracker.currentGeoIds[propertyName] = id;
+
+                                        assetManager.SaveCachedImage(mainTex, path, (bool savedImage) => callback?.Invoke());
+                                    });
+                                }
+                                else
+                                {
+                                    textureTracker.DisableActiveGeoJoint(propertyName);
+                                    textureTracker.currentGeoIds[propertyName] = null;
+                                    callback?.Invoke();
+                                }
+                            });
+                        }
+                        else
+                        {
+                            if (!textureTracker.IsNullOrDisposed())
+                            {
+                                MultiplaneMemCache.AddTexture(path, texture, () => UnityEngine.Object.Destroy(texture));
+                                textureTracker.SetAndTrackTexture(getGeoMaterial(propertyName), "_MainTex", path, texture);
+                                textureTracker.EnableActiveGeoJoint(propertyName);
+                                offsetAccessory((float)accessoryProperty.YOffset, propertyName);
+                                textureTracker.currentGeoIds[propertyName] = id;
+                            }
+                            callback?.Invoke();
+                        }
+                    });
+                }
+                else
+                {
+                    textureTracker.DisableActiveGeoJoint(propertyName);
+                    textureTracker.currentGeoIds[propertyName] = null;
+                    callback?.Invoke();
+                }
+            });
+        }
+
+        private Material getGeoMaterial(string propertyName)
+        {
+            return propertyName == "Hat" ? hatMaterial : glassesMaterial;
+        }
+
+        private void offsetAccessory(float aYOffset, string aPropertyName)
+        {
+            GameObject activeGeoJoint = textureTracker.GetActiveGeoJoint(aPropertyName);
+            if (activeGeoJoint.IsNullOrDisposed()) return;
+
+            Transform child = activeGeoJoint.transform.GetChild(0);
+            if (child.IsNullOrDisposed()) return;
+
+            float num = 22.81f;
+            float num2 = (aYOffset + 50f) / 100f;
+            float y = num * num2 - 9.7f;
+
+            child.localPosition = new Vector3(0f, y, 0f);
+        }
+
+        private Action<bool> HairEnquerHelper(DelegateQueuer queuer)
+        {
+            Action callback = queuer.EnqueueAction();
+            return success =>
+            {
+                hasErrored = !success;
+                callback?.Invoke();
+            };
+        }
+
+        private Action<Texture2D> SetTextures(string prop, Material mat, string path, Action callback)
+        {
+            return mainTex =>
+            {
+                if (!string.IsNullOrEmpty(path))
+                {
+                    assetManager.SaveCachedImage(mainTex, path, imageSaved =>
+                    {
+                        hasErrored = !imageSaved;
+                        if (!hasErrored && !textureTracker.IsNullOrDisposed())
+                            textureTracker.SetAndTrackTexture(mat, prop, path, mainTex);
+                        callback?.Invoke();
+                    });
+                }
+                else
+                {
+                    if (!textureTracker.IsNullOrDisposed())
+                        textureTracker.SetAndTrackTexture(mat, prop, path, mainTex);
+                    callback?.Invoke();
+                }
+            };
+        }
+
+        private string GenerateFilenameFromProps(KeyValuePair<IAvatarProperty, string>[] propInfos, bool ignoreOffsets = false)
+        {
+            StringBuilder sb = new StringBuilder();
+            JsonWriter writer = new JsonWriter(sb);
+            writer.WriteArrayStart();
+
+            foreach (var kvp in propInfos)
+            {
+                SerializeProperty(writer, kvp.Key, kvp.Value, ignoreOffsets);
+            }
+
+            writer.WriteArrayEnd();
+            return assetManager.GetShaString(sb.ToString());
+        }
+
+        private void SerializeProperty(JsonWriter writer, IAvatarProperty prop, string propName, bool ignoreOffsets)
+        {
+            if (prop == null)
+                prop = new ClientAvatarProperty(string.Empty, 0, 0.0, 0.0);
+
+            writer.WriteObjectStart();
+            writer.WritePropertyName(propName);
+            writer.WriteObjectStart();
+            writer.WritePropertyName("SelectionKey");
+            writer.Write(prop.SelectionKey);
+            writer.WritePropertyName("TintIndex");
+            writer.Write(prop.TintIndex);
+
+            if (!ignoreOffsets)
+            {
+                writer.WritePropertyName("XOffset");
+                writer.Write(prop.XOffset);
+                writer.WritePropertyName("YOffset");
+                writer.Write(prop.YOffset);
+            }
+
+            if (assetManager != null)
+            {
+                writer.WritePropertyName("VersionInfo");
+                writer.Write(assetManager.GetAvatarElementVersionInfo(assetManager.GetAvatarData(prop.SelectionKey)));
+            }
+
+            writer.WriteObjectEnd();
+            writer.WriteObjectEnd();
+        }
+
+        // ===================================================================
+        // Remaining helper methods (kept mostly as original, with minor safety)
+        // ===================================================================
+
+        private void LoadAccessoryGeometry(IAvatarProperty geoProperty, string propertyName, Action<bool> callback)
+        {
+            if (geoProperty == null)
+            {
+                callback?.Invoke(false);
+                return;
+            }
+
+            AvatarElement avatarData = assetManager.GetAvatarData(geoProperty.SelectionKey);
+            if (avatarData == null || string.IsNullOrEmpty(avatarData.Hd))
+            {
+                callback?.Invoke(false);
+                return;
+            }
+
+            string bundlePath = avatarData.Hd.Replace("_hd", "_geo_hd");
+            if (!string.IsNullOrEmpty(EmptyGeoPath) && bundlePath == EmptyGeoPath)
+            {
+                callback?.Invoke(false);
+                return;
+            }
+
+            assetManager.LoadABundle((systemObject, userdata) =>
+            {
+                GeoLoadedCallback(systemObject, bundlePath, propertyName, callback);
+            }, bundlePath, null, string.Empty, false, false, true);
+        }
+
+        private void LoadTestGeoAccessory(IAvatarProperty geoProperty, MultiplaneCompositor comper, string propertyName, Action<bool> callback)
+        {
+            if (geoProperty == null || comper == null)
+            {
+                callback?.Invoke(false);
+                return;
+            }
+
+            AvatarElement avatarData = assetManager.GetAvatarData(geoProperty.SelectionKey);
+            if (avatarData == null || string.IsNullOrEmpty(avatarData.Hd))
+            {
+                callback?.Invoke(false);
+                return;
+            }
+
+            comper.AddLayerInfo("Accessory", geoProperty, avatarData);
+            string bundlePath = avatarData.Hd;
+
+            assetManager.LoadABundle((systemObject, userdata) =>
+            {
+                BundleLoadedCallback(systemObject, comper, bundlePath, geoProperty.SelectionKey, callback);
+            }, bundlePath, null, string.Empty, false, false, true);
+        }
+
+        private void GeoLoadedCallback(UnityEngine.Object aGameObject, string bundlePath, string propertyName, Action<bool> callback)
+        {
+            GameObject gameObject = null;
+            if (aGameObject != null)
+            {
+                GameObject go2 = aGameObject as GameObject;
+                AvatarGeoComponent component = go2?.GetComponent<AvatarGeoComponent>();
+                if (component != null && !baseAvatarObject.IsNullOrDisposed())
+                {
+                    Transform t = baseAvatarObject.transform.Find(component.JointName);
+                    if (t != null)
+                        gameObject = t.gameObject;
+                }
+            }
+
+            if (MonoSingleton<AssetManager>.Instance != null && !gameObject.IsNullOrDisposed() && !textureTracker.IsNullOrDisposed())
+            {
+                bool result;
+                if (propertyName == "Hat")
+                {
+                    result = textureTracker.AttachAndTrackGeoAccessory(bundlePath, gameObject, propertyName, ref hatMaterial);
+                    if (hatMaterial != null) textureTracker.DisableActiveGeoJoint(propertyName);
+                }
+                else
+                {
+                    result = textureTracker.AttachAndTrackGeoAccessory(bundlePath, gameObject, propertyName, ref glassesMaterial);
+                    if (glassesMaterial != null) textureTracker.DisableActiveGeoJoint(propertyName);
+                }
+                callback?.Invoke(result);
+            }
+            else
+            {
+                hasErrored = true;
+                callback?.Invoke(false);
+            }
+        }
+
+        private void BundleLoadedCallback(UnityEngine.Object aGameObject, MultiplaneCompositor comper, string bundlePath, string key, Action<bool> callback)
+        {
+            if (MonoSingleton<AssetManager>.Instance == null)
+            {
+                callback?.Invoke(false);
+                return;
+            }
+
+            GameObject instance = (GameObject)MonoSingleton<AssetManager>.Instance.GetBundleInstance(bundlePath);
+            if (instance == null)
+            {
+                callback?.Invoke(false);
+                return;
+            }
+
+            Action cleanup = AddTextureLayersFromComponent(instance, comper, bundlePath, key);
+            comper.AddBundleCleanupCall(cleanup);
+            callback?.Invoke(true);
+        }
+
+        private Action AddTextureLayersFromComponent(GameObject bundleInstance, MultiplaneCompositor comper, string bundlePath, string key)
+        {
+            AvatarComponent component = bundleInstance?.GetComponent<AvatarComponent>();
+            if (component == null) return () => { };
+
+            AvatarComponentLayer[] layers = component.Layers;
+            foreach (var layer in layers)
+            {
+                if (layer != null)
+                {
+                    AvatarTextureTracker.AddTextureReference(layer.Texture);
+                    AvatarTextureTracker.AddTextureReference(layer.NormalMap);
+                }
+            }
+
+            comper.AddComponent(key, component);
+
+            return () =>
+            {
+                if (component != null && component.Layers != null)
+                {
+                    for (int j = 0; j < component.Layers.Length; j++)
+                    {
+                        if (component.Layers[j].Texture != null)
+                            AvatarTextureTracker.DecrementTextureReference(component.Layers[j].Texture);
+                        if (component.Layers[j].NormalMap != null)
+                            AvatarTextureTracker.DecrementTextureReference(component.Layers[j].NormalMap);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(bundlePath) && bundleInstance != null)
+                {
+                    MonoSingleton<AssetManager>.Instance.DestroyBundleInstance(bundlePath, bundleInstance);
+                }
+            };
+        }
+
+        private void AddBundleLoad(string name, IAvatarProperty property, MultiplaneCompositor comp, AvatarFlags flags, Action<bool> callback)
+        {
+            AvatarElement avatarData = assetManager.GetAvatarData(property.SelectionKey);
+            if (avatarData == null)
+            {
+                callback?.Invoke(false);
+                return;
+            }
+
+            comp.AddLayerInfo(name, property, avatarData);
+            string bundlePath = avatarData.Hd;
+
+            assetManager.LoadABundle((systemObject, userdata) =>
+            {
+                BundleLoadedCallback(systemObject, comp, bundlePath, property.SelectionKey, callback);
+            }, bundlePath, null, string.Empty, false, false, true);
+        }
+
+        private void CompositeHairAndNormals(IAvatar dna, AvatarFlags flags, Action callback)
+        {
+            // Placeholder - implement if needed
+            callback?.Invoke();
+        }
+    }
 }

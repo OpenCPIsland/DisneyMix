@@ -42,7 +42,7 @@ namespace Avatar.DataTypes
 			}
 			else
 			{
-				Hat = new ClientAvatarProperty("257", 0, 0.0, 0.0);
+				Hat = new ClientAvatarProperty("0", 0, 0.0, 0.0);
 			}
 		}
 	}

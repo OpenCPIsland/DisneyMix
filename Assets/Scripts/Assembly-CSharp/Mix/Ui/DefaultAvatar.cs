@@ -15,7 +15,7 @@ namespace Mix.Ui
 			clientAvatar.Nose = new ClientAvatarProperty("106", 0, 0.0, 0.0116169452667236);
 			clientAvatar.Mouth = new ClientAvatarProperty("194", 0, -0.00126063823699951, 0.0);
 			clientAvatar.Skin = new ClientAvatarProperty("123", 9, 0.0, 0.0);
-			clientAvatar.Hat = new ClientAvatarProperty("257", 0, 0.0, 0.0);
+			clientAvatar.Hat = new ClientAvatarProperty("0", 0, 0.0, 0.0);
 			return clientAvatar;
 		}
 	}
