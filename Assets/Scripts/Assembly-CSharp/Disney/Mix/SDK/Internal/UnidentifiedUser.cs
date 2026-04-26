@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Disney.Mix.SDK.Internal
 {
@@ -14,7 +15,19 @@ namespace Disney.Mix.SDK.Internal
 		{
 			get
 			{
+				if (DisplayName == null || string.IsNullOrEmpty(DisplayName.Text))
+				{
+					Debug.LogWarning("[UnidentifiedUser] Missing DisplayName while resolving avatar.");
+					return AvatarBuilder.Build((AvatarDocument)null);
+				}
+
 				UserDocument userByDisplayName = userDatabase.GetUserByDisplayName(DisplayName.Text);
+				if (userByDisplayName == null)
+				{
+					Debug.LogWarning("[UnidentifiedUser] UserDocument not found for displayName: " + DisplayName.Text);
+					return AvatarBuilder.Build((AvatarDocument)null);
+				}
+
 				AvatarDocument avatar = userDatabase.GetAvatar(userByDisplayName.AvatarId);
 				return AvatarBuilder.Build(avatar);
 			}

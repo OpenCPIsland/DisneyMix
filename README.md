@@ -16,8 +16,9 @@
 ---
 
 ### 📈 Project Status
-- [x] **Client status:** Mostly stable, few bugs here and there that need fixing, mostly icons and shaders.
-- [x] **Mobile Support:** Early, but functional.
+- [x] **Client status:** Mostly stable, few bugs here and there that need fixing, mostly shaders.
+- [x] **Mobile Support:** Stable.
+- [>] **Desktop Support:** Needs heavy work
 - [>] **Chatting:** Basic functionality should work; improvements for a smoother experience are planned.
 - [>] **Social Features:** Currently being researched in client to reimplement server-side.
 - [>] **Input Systems:** Transitioning broken custom input bars to the native Unity Input Field.

@@ -604,27 +604,48 @@ namespace Mix.Assets
 			return !IsBundleAssetCached(bundlePath) && !IsBundleCached(bundlePath);
 		}
 
-		public static string GetStreamingFilePath(string url)
-		{
-			string text = ((Application.Platform != 11) ? "file://" : string.Empty);
-			int num = url.IndexOf("AssetBundles/iphone/");
-			if (num > -1)
-			{
-				return Path.Combine(text + Application.StreamingAssetsPath, url.Substring(num));
-			}
-			num = url.IndexOf("AssetBundles/android/");
-			if (num > -1)
-			{
-				return Path.Combine(text + Application.StreamingAssetsPath, url.Substring(num));
-			}
-			if (url.StartsWith("/"))
-			{
-				url = url.Substring(1, url.Length - 1);
-			}
-			return Path.Combine(Application.StreamingAssetsPath, url);
-		}
+        // Define these at the top of your AssetManager class
+#if UNITY_ANDROID && !UNITY_EDITOR
+    private const string PathProtocol = "";
+    private const string BundleFolder = "AssetBundles/android/";
+#elif UNITY_IOS && !UNITY_EDITOR
+    private const string PathProtocol = "file://";
+    private const string BundleFolder = "AssetBundles/iphone/";
+#elif UNITY_STANDALONE_WIN || UNITY_EDITOR
+        // Specifically targets Windows or the Editor
+        private const string PathProtocol = "file://";
+        private const string BundleFolder = "AssetBundles/windows64/";
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR
+        // Specifically targets Windows or the Editor
+        private const string PathProtocol = "file://";
+        private const string BundleFolder = "AssetBundles/standalonemacos/";
+#elif UNITY_STANDALONE_LINUX || UNITY_EDITOR
+        // Specifically targets Windows or the Editor
+        private const string PathProtocol = "file://";
+        private const string BundleFolder = "AssetBundles/standalonelinux/";
+#else
+    // Fallback for other platforms (Mac, Linux, WebGL, etc.)
+    private const string PathProtocol = "file://";
+    private const string BundleFolder = "AssetBundles/android/";
+#endif
 
-		public static string GetDiskCacheFilePath()
+        public static string GetStreamingFilePath(string url)
+        {
+            // 1. Look for the platform folder (e.g., AssetBundles/android/)
+            int index = url.IndexOf(BundleFolder, StringComparison.OrdinalIgnoreCase);
+
+            if (index != -1)
+            {
+                // 2. Use string interpolation and range operator for cleanliness
+                return Path.Combine($"{PathProtocol}{Application.StreamingAssetsPath}", url[index..]);
+            }
+
+            // 3. Fallback: sanitize and combine
+            return Path.Combine(Application.StreamingAssetsPath, url.TrimStart('/'));
+        }
+
+
+        public static string GetDiskCacheFilePath()
 		{
 			return Application.PersistentDataPath + "/cache/";
 		}

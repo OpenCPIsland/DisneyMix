@@ -17,6 +17,8 @@ namespace Mix.Ui
 
 		private int currentSelection = -1;
 
+		private int pendingSelectionIndex = -1;
+
 		public GameObject colorInst;
 
 		private void Start()
@@ -26,6 +28,13 @@ namespace Mix.Ui
 
 		private void Update()
 		{
+			// Apply pending selection after colors are loaded
+			if (pendingSelectionIndex >= 0 && colors != null && pendingSelectionIndex < colors.Count)
+			{
+				int index = pendingSelectionIndex;
+				pendingSelectionIndex = -1;
+				ApplySelection(index);
+			}
 		}
 
 		public void Init(IAvatarColorListener aListener)
@@ -72,22 +81,41 @@ namespace Mix.Ui
 		public void SetSelected(int index)
 		{
 			Debug.Log($"[AvatarColorPicker] SetSelected called: index={index}, currentSelection={currentSelection}, colorsCount={(colors != null ? colors.Count : -1)}, activeSelf={base.gameObject.activeSelf}, activeInHierarchy={base.gameObject.activeInHierarchy}");
-			if (colors != null && index < colors.Count && currentSelection != index)
+			
+			// Defer selection if colors aren't ready yet
+			if (colors == null || index >= colors.Count)
 			{
-				HorizontalLayoutGroup component = contentHolder.gameObject.GetComponent<HorizontalLayoutGroup>();
-				float num = colors[index].GetButtonWidth() + (float)component.padding.left + (float)component.padding.right;
-				RectTransform component2 = contentHolder.gameObject.GetComponent<RectTransform>();
-				RectTransform component3 = base.gameObject.GetComponent<RectTransform>();
-				Vector2 anchoredPosition = new Vector2(-1f * num * (float)index + component3.rect.width / 2f - num / 2f, component2.anchoredPosition.y);
-				component2.anchoredPosition = anchoredPosition;
-				colors[index].SetToggleState(true);
-				currentSelection = index;
-				Debug.Log($"[AvatarColorPicker] SetSelected completed: currentSelection={currentSelection}");
+				Debug.Log($"[AvatarColorPicker] SetSelected: deferring selection until colors are loaded, pendingSelectionIndex={index}");
+				pendingSelectionIndex = index;
+				return;
 			}
-			else
+
+			ApplySelection(index);
+		}
+
+		private void ApplySelection(int index)
+		{
+			if (currentSelection == index)
 			{
-				Debug.LogWarning($"[AvatarColorPicker] SetSelected ignored: colorsNull={(colors == null)}, indexValid={(colors != null && index < colors.Count)}, alreadySelected={(currentSelection == index)}");
+				Debug.Log($"[AvatarColorPicker] ApplySelection: index {index} already selected");
+				return;
 			}
+
+			if (colors == null || index < 0 || index >= colors.Count)
+			{
+				Debug.LogWarning($"[AvatarColorPicker] ApplySelection: invalid index {index}, colorsCount={(colors != null ? colors.Count : -1)}");
+				return;
+			}
+
+			HorizontalLayoutGroup component = contentHolder.gameObject.GetComponent<HorizontalLayoutGroup>();
+			float num = colors[index].GetButtonWidth() + (float)component.padding.left + (float)component.padding.right;
+			RectTransform component2 = contentHolder.gameObject.GetComponent<RectTransform>();
+			RectTransform component3 = base.gameObject.GetComponent<RectTransform>();
+			Vector2 anchoredPosition = new Vector2(-1f * num * (float)index + component3.rect.width / 2f - num / 2f, component2.anchoredPosition.y);
+			component2.anchoredPosition = anchoredPosition;
+			colors[index].SetToggleState(true);
+			currentSelection = index;
+			Debug.Log($"[AvatarColorPicker] ApplySelection completed: currentSelection={currentSelection}");
 		}
 
 		public void SetContent(string categoryName)
@@ -96,6 +124,7 @@ namespace Mix.Ui
 			Color[] colorsByCategoryName = AvatarColorTints.GetColorsByCategoryName(categoryName);
 			ClearColorContents();
 			currentSelection = -1;
+			pendingSelectionIndex = -1;
 			if (colorsByCategoryName == null)
 			{
 				Debug.LogWarning($"[AvatarColorPicker] SetContent: no colors found for categoryName={categoryName}");

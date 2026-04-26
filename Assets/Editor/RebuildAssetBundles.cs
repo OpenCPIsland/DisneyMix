@@ -1,359 +1,106 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
 public static class RebuildAssetBundles
 {
-	private static readonly string OutputRoot = Application.streamingAssetsPath + "\\AssetBundles";
-	private const string RawBuildFolderName = "_raw";
-	private const string DynamicAssetsRoot = "Assets\\DynamicAssets";
-	private const string AssetBundlesJsonRelativePath = "Assets/Resources/json/AssetBundles.json";
+    private static readonly string OutputRoot = Path.Combine(Application.streamingAssetsPath, "AssetBundles");
+    private const string RawBuildFolderName = "_raw";
+    private const string AssetBundlesJsonRelativePath = "Assets/Resources/json/AssetBundles.json";
 
-	[MenuItem("Tools/AssetBundles/Rebuild All")]
-	public static void RebuildAll()
-	{
-		string rawBuildPath = Path.Combine(OutputRoot, RawBuildFolderName);
+    [Serializable]
+    private class ManifestData
+    {
+        public ManifestContent manifest;
+    }
 
-		if (Directory.Exists(OutputRoot))
-		{
-			Directory.Delete(OutputRoot, true);
-		}
+    [Serializable]
+    private class ManifestContent
+    {
+        // Note: JsonUtility doesn't support Dictionaries directly. 
+        // We will read the raw text for the 'paths' section to stay flexible.
+        public string version;
+    }
 
-		Directory.CreateDirectory(OutputRoot);
-		Directory.CreateDirectory(rawBuildPath);
+    [MenuItem("Tools/AssetBundles/Rebuild from JSON")]
+    public static void RebuildAll()
+    {
+        BuildTarget target = EditorUserBuildSettings.activeBuildTarget;
+        string platformFolder = GetPlatformFolder(target);
+        string rawBuildPath = Path.Combine(OutputRoot, RawBuildFolderName);
 
-		BuildAssetBundleOptions options = BuildAssetBundleOptions.ForceRebuildAssetBundle;
-		BuildTarget target = EditorUserBuildSettings.activeBuildTarget;
+        // 1. Setup Directories
+        if (Directory.Exists(OutputRoot)) Directory.Delete(OutputRoot, true);
+        Directory.CreateDirectory(rawBuildPath);
 
-		AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(rawBuildPath, options, target);
-		if (manifest == null)
-		{
-			Debug.LogError("AssetBundle rebuild failed.");
-			return;
-		}
+        // 2. Build Bundles
+        // Unity builds files into 'rawBuildPath' using the Bundle Name.
+        AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(rawBuildPath, BuildAssetBundleOptions.ForceRebuildAssetBundle, target);
 
-		RestructureOutputFromDynamicAssets(rawBuildPath, OutputRoot, DynamicAssetsRoot, manifest);
+        if (manifest == null)
+        {
+            Debug.LogError("AssetBundle build failed.");
+            return;
+        }
 
-		if (Directory.Exists(rawBuildPath))
-		{
-			Directory.Delete(rawBuildPath, true);
-		}
+        // 3. Parse JSON for Mapping
+        string jsonPath = Path.Combine(Directory.GetCurrentDirectory(), AssetBundlesJsonRelativePath);
+        if (!File.Exists(jsonPath))
+        {
+            Debug.LogError($"JSON Manifest missing at: {jsonPath}");
+            return;
+        }
 
-		AssetDatabase.Refresh();
-		Debug.Log("AssetBundles rebuilt and restructured at: " + Path.GetFullPath(OutputRoot));
-	}
+        string jsonContent = File.ReadAllText(jsonPath);
 
-	private static void RestructureOutputFromDynamicAssets(string rawBuildPath, string outputRoot, string dynamicAssetsRoot, AssetBundleManifest manifest)
-	{
-		Dictionary<string, string> bundleToRelativeFolder = BuildBundleFolderMap(dynamicAssetsRoot, outputRoot);
-		string miscPath = Path.Combine(outputRoot, "misc");
-		Directory.CreateDirectory(miscPath);
+        // Extracting paths using a simple loop over the "paths" keys in the JSON.
+        // Since your JSON is a dictionary of paths, we iterate through the keys.
+        string searchPattern = "\"AssetBundles/(.*?)\":";
+        var matches = System.Text.RegularExpressions.Regex.Matches(jsonContent, searchPattern);
 
-		Debug.Log("[RebuildAssetBundles] Bundle map entries: " + bundleToRelativeFolder.Count);
+        int movedCount = 0;
+        foreach (System.Text.RegularExpressions.Match match in matches)
+        {
+            string relativePath = match.Groups[1].Value; // e.g. platform/hd/avatar/.../file.unity3d
 
-		string[] builtBundles = manifest.GetAllAssetBundles();
-		foreach (string bundleName in builtBundles)
-		{
-			string relativeFolder = ResolveRelativeFolder(bundleName, bundleToRelativeFolder);
-			if (string.IsNullOrEmpty(relativeFolder))
-			{
-				relativeFolder = "misc";
-				Debug.LogWarning("[RebuildAssetBundles] Unmapped bundle -> misc: " + bundleName);
-			}
+            // Skip system files like .DS_Store
+            if (relativePath.EndsWith(".DS_Store")) continue;
 
-			string destinationFolder = Path.Combine(outputRoot, relativeFolder);
-			Directory.CreateDirectory(destinationFolder);
+            // Resolve the "platform" token to the current build target
+            string targetPath = relativePath.Replace("platform", platformFolder);
+            string fileName = Path.GetFileName(targetPath);
 
-			string sourceBundlePath = Path.Combine(rawBuildPath, bundleName.Replace('/', Path.DirectorySeparatorChar));
-			string sourceManifestPath = sourceBundlePath + ".manifest";
+            string sourceFile = Path.Combine(rawBuildPath, fileName);
+            string destFile = Path.Combine(OutputRoot, targetPath);
 
-			MoveFileIfExists(sourceBundlePath, Path.Combine(destinationFolder, Path.GetFileName(sourceBundlePath)));
-			MoveFileIfExists(sourceManifestPath, Path.Combine(destinationFolder, Path.GetFileName(sourceManifestPath)));
-		}
+            if (File.Exists(sourceFile))
+            {
+                string destDir = Path.GetDirectoryName(destFile);
+                if (!Directory.Exists(destDir)) Directory.CreateDirectory(destDir);
 
-		// Move root-level leftovers (e.g., main manifest) into misc.
-		foreach (string sourceFilePath in Directory.GetFiles(rawBuildPath))
-		{
-			MoveFileIfExists(sourceFilePath, Path.Combine(miscPath, Path.GetFileName(sourceFilePath)));
-		}
-	}
+                // Move from flat _raw folder to structured folder
+                File.Move(sourceFile, destFile);
+                movedCount++;
+            }
+        }
 
-	private static Dictionary<string, string> BuildBundleFolderMap(string dynamicAssetsRoot, string outputRoot)
-	{
-		Dictionary<string, string> map = new Dictionary<string, string>(System.StringComparer.OrdinalIgnoreCase);
+        // 4. Cleanup
+        if (Directory.Exists(rawBuildPath)) Directory.Delete(rawBuildPath, true);
 
-		AddFileNameMappingsFromAssetBundlesJson(outputRoot, map);
-		AddFileNameMappingsFromDynamicAssets(dynamicAssetsRoot, map);
+        AssetDatabase.Refresh();
+        Debug.Log($"Successfully organized {movedCount} bundles based on AssetBundles.json for {platformFolder}.");
+    }
 
-		Debug.Log("[RebuildAssetBundles] BuildBundleFolderMap entries: " + map.Count);
-		return map;
-	}
-
-	private static void AddFileNameMappingsFromAssetBundlesJson(string outputRoot, Dictionary<string, string> map)
-	{
-		string jsonPath = Path.GetFullPath(Path.Combine(Application.dataPath, "StreamingAssets", Path.GetFileName(AssetBundlesJsonRelativePath)));
-		if (!File.Exists(jsonPath))
-		{
-			Debug.LogWarning("assetbundles.json not found at: " + jsonPath + ". Falling back to DynamicAssets folder mapping.");
-			return;
-		}
-
-		string json = File.ReadAllText(jsonPath);
-		MatchCollection matches = Regex.Matches(json, "\"(?<key>[^\"]+)\"\\s*:\\s*\\{", RegexOptions.Compiled);
-		foreach (Match match in matches)
-		{
-			string bundleKey = match.Groups["key"].Value;
-			string relativeFolder = ResolveFolderFromAssetBundleKey(bundleKey, outputRoot);
-			if (string.IsNullOrEmpty(relativeFolder))
-			{
-				continue;
-			}
-
-			string bundleName = Path.GetFileName(bundleKey);
-			string bundleNameNoExt = Path.GetFileNameWithoutExtension(bundleKey);
-			AddMapKey(map, bundleKey.ToLowerInvariant(), relativeFolder);
-			AddMapVariants(map, bundleName, relativeFolder);
-			AddMapVariants(map, bundleNameNoExt, relativeFolder);
-		}
-	}
-
-	private static string ResolveFolderFromAssetBundleKey(string bundleKey, string outputRoot)
-	{
-		if (string.IsNullOrEmpty(bundleKey))
-		{
-			return string.Empty;
-		}
-
-		string normalizedKey = bundleKey.Replace("\\", "/").Trim();
-		string normalizedOutputRoot = outputRoot.Replace("\\", "/").Trim('/');
-		if (normalizedKey.StartsWith(normalizedOutputRoot + "/", System.StringComparison.OrdinalIgnoreCase))
-		{
-			normalizedKey = normalizedKey.Substring(normalizedOutputRoot.Length + 1);
-		}
-
-		if (normalizedKey.EndsWith(".unity3d", System.StringComparison.OrdinalIgnoreCase))
-		{
-			normalizedKey = normalizedKey.Substring(0, normalizedKey.Length - ".unity3d".Length);
-		}
-
-		string relativeFolder = Path.GetDirectoryName(normalizedKey) ?? string.Empty;
-		relativeFolder = relativeFolder.Replace("\\", "/");
-		if (string.IsNullOrEmpty(relativeFolder))
-		{
-			relativeFolder = "root";
-		}
-
-		return relativeFolder;
-	}
-
-	private static void AddFileNameMappingsFromDynamicAssets(string dynamicAssetsRoot, Dictionary<string, string> map)
-	{
-		string normalizedRoot = dynamicAssetsRoot.Replace("\\", "/").TrimEnd('/') + "/";
-
-		foreach (string file in Directory.GetFiles(dynamicAssetsRoot, "*", SearchOption.AllDirectories))
-		{
-			if (file.EndsWith(".meta"))
-			{
-				continue;
-			}
-
-			string normalizedFile = file.Replace("\\", "/");
-			string relativePath = normalizedFile.Substring(normalizedRoot.Length);
-			string relativeFolder = Path.GetDirectoryName(relativePath) ?? string.Empty;
-			relativeFolder = relativeFolder.Replace("\\", "/");
-			if (string.IsNullOrEmpty(relativeFolder))
-			{
-				relativeFolder = "root";
-			}
-
-			string fileNameNoExt = Path.GetFileNameWithoutExtension(relativePath).ToLowerInvariant();
-
-			// Custom: If file contains both "avtr" and "thumb", map to "avatar_thumbs"
-			if (fileNameNoExt.Contains("avtr") && fileNameNoExt.Contains("thumb"))
-			{
-				AddMapKey(map, fileNameNoExt, "avatar_thumbs");
-				AddMapKey(map, fileNameNoExt + ".unity3d", "avatar_thumbs");
-				if (fileNameNoExt.EndsWith("_hd"))
-				{
-					AddMapKey(map, fileNameNoExt.Substring(0, fileNameNoExt.Length - 3), "avatar_thumbs");
-				}
-				else if (fileNameNoExt.EndsWith("_sd"))
-				{
-					AddMapKey(map, fileNameNoExt.Substring(0, fileNameNoExt.Length - 3), "avatar_thumbs");
-				}
-				continue; // Skip default mapping for these files
-			}
-
-			AddMapKey(map, fileNameNoExt, relativeFolder);
-
-			// common bundle naming variants
-			AddMapKey(map, fileNameNoExt + ".unity3d", relativeFolder);
-
-			if (fileNameNoExt.EndsWith("_hd"))
-			{
-				AddMapKey(map, fileNameNoExt.Substring(0, fileNameNoExt.Length - 3), relativeFolder);
-			}
-			else if (fileNameNoExt.EndsWith("_sd"))
-			{
-				AddMapKey(map, fileNameNoExt.Substring(0, fileNameNoExt.Length - 3), relativeFolder);
-			}
-		}
-	}
-
-	private static void AddMapKey(Dictionary<string, string> map, string key, string relativeFolder)
-	{
-		if (string.IsNullOrEmpty(key))
-		{
-			return;
-		}
-
-		if (!map.ContainsKey(key))
-		{
-			map.Add(key, relativeFolder);
-		}
-	}
-
-	private static void AddMapVariants(Dictionary<string, string> map, string bundleName, string relativeFolder)
-	{
-		string exact = bundleName.ToLowerInvariant();
-		string file = Path.GetFileName(bundleName).ToLowerInvariant();
-		string noExt = Path.GetFileNameWithoutExtension(bundleName).ToLowerInvariant();
-
-		if (!map.ContainsKey(exact))
-		{
-			map.Add(exact, relativeFolder);
-		}
-		if (!map.ContainsKey(file))
-		{
-			map.Add(file, relativeFolder);
-		}
-		if (!map.ContainsKey(noExt))
-		{
-			map.Add(noExt, relativeFolder);
-		}
-	}
-
-	private static string ResolveRelativeFolder(string bundleName, Dictionary<string, string> map)
-	{
-		string exact = bundleName.ToLowerInvariant();
-		string file = Path.GetFileName(bundleName).ToLowerInvariant();
-		string noExt = Path.GetFileNameWithoutExtension(bundleName).ToLowerInvariant();
-
-		string value;
-		if (map.TryGetValue(exact, out value))
-		{
-			return value;
-		}
-		if (map.TryGetValue(file, out value))
-		{
-			return value;
-		}
-		if (map.TryGetValue(noExt, out value))
-		{
-			return value;
-		}
-
-		// quality suffix fallback: *_hd / *_sd
-		if (noExt.EndsWith("_hd"))
-		{
-			string baseName = noExt.Substring(0, noExt.Length - 3);
-			if (map.TryGetValue(baseName, out value))
-			{
-				return value;
-			}
-		}
-		else if (noExt.EndsWith("_sd"))
-		{
-			string baseName = noExt.Substring(0, noExt.Length - 3);
-			if (map.TryGetValue(baseName, out value))
-			{
-				return value;
-			}
-		}
-
-		// Similar-name fallback (mainly for thumbs like thumbsdownprefab_hd.unity3d)
-		string normalizedBundle = NormalizeForSimilarity(noExt);
-		int bestScore = -1;
-		string bestFolder = null;
-
-		foreach (KeyValuePair<string, string> kv in map)
-		{
-			string normalizedKey = NormalizeForSimilarity(kv.Key);
-			if (string.IsNullOrEmpty(normalizedKey))
-			{
-				continue;
-			}
-
-			int score = 0;
-			if (normalizedBundle == normalizedKey)
-			{
-				score = 100;
-			}
-			else if (normalizedBundle.StartsWith(normalizedKey) || normalizedKey.StartsWith(normalizedBundle))
-			{
-				score = 80;
-			}
-			else if (normalizedBundle.Contains(normalizedKey) || normalizedKey.Contains(normalizedBundle))
-			{
-				score = 60;
-			}
-
-			if (score > bestScore)
-			{
-				bestScore = score;
-				bestFolder = kv.Value;
-			}
-		}
-
-		if (bestScore >= 60)
-		{
-			Debug.Log("[RebuildAssetBundles] Similar match: " + bundleName + " -> " + bestFolder + " (score " + bestScore + ")");
-			return bestFolder;
-		}
-
-		return null;
-	}
-
-	private static string NormalizeForSimilarity(string input)
-	{
-		if (string.IsNullOrEmpty(input))
-		{
-			return string.Empty;
-		}
-
-		string s = input.ToLowerInvariant();
-		s = s.Replace(".unity3d", string.Empty);
-		s = s.Replace("_hd", string.Empty);
-		s = s.Replace("_sd", string.Empty);
-		s = s.Replace("thumbs", string.Empty);
-		s = s.Replace("thumb", string.Empty);
-		s = s.Replace("prefab", string.Empty);
-		s = s.Replace("_", string.Empty);
-		s = s.Replace("-", string.Empty);
-
-		return s.Trim();
-	}
-
-	private static void MoveFileIfExists(string sourcePath, string destinationPath)
-	{
-		if (!File.Exists(sourcePath))
-		{
-			return;
-		}
-
-		string parent = Path.GetDirectoryName(destinationPath);
-		if (!string.IsNullOrEmpty(parent) && !Directory.Exists(parent))
-		{
-			Directory.CreateDirectory(parent);
-		}
-
-		if (File.Exists(destinationPath))
-		{
-			File.Delete(destinationPath);
-		}
-
-		File.Move(sourcePath, destinationPath);
-	}
+    private static string GetPlatformFolder(BuildTarget target)
+    {
+        return target switch
+        {
+            BuildTarget.Android => "android",
+            BuildTarget.StandaloneWindows64 => "windows64",
+            BuildTarget.iOS => "iphone",
+            _ => target.ToString().ToLowerInvariant()
+        };
+    }
 }
