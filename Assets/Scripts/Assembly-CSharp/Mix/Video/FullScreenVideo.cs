@@ -1,84 +1,153 @@
+using System;
 using System.Collections;
 using System.IO;
-using Disney.MobileNetwork;
+using Disney.MobileNetwork; // Ensure this assembly is in your project
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Video;
+using UnityEngine.EventSystems;
 
 namespace Mix.Video
 {
-	public class FullScreenVideo
-	{
-		public delegate void VideoCompleteEvent(FullScreenVideo aFullScreenVideo);
+    public class FullScreenVideo
+    {
+        public delegate void VideoCompleteEvent(FullScreenVideo aFullScreenVideo);
+        public event VideoCompleteEvent OnVideoComplete;
 
-		public static bool IsVideoPlaying;
+        public static bool IsVideoPlaying;
 
-		public string StreamingAssetVideoPath;
+        protected string InternalVideoPath;
+        protected float VideoPlayTime;
 
-		protected string CacheFileName;
+        public FullScreenVideo(string a169FileName, string a43FileName, string aCacheFileName, float aVideoPlayTime)
+        {
+            VideoPlayTime = aVideoPlayTime;
 
-		protected float VideoPlayTime;
+            float screenRatio = (float)Screen.height / (float)Screen.width;
+            float ratioThreshold = 1.6666666f;
 
-		public event VideoCompleteEvent OnVideoComplete;
+            // Select the sub-path based on aspect ratio logic from original file
+            if (screenRatio > ratioThreshold)
+            {
+                InternalVideoPath = "video/" + a169FileName;
+            }
+            else
+            {
+                InternalVideoPath = "video/" + a43FileName;
+            }
+        }
 
-		public FullScreenVideo(string a169FileName, string a43FileName, string aCacheFileName, float aVideoPlayTime)
-		{
-			CacheFileName = "/cache/" + aCacheFileName;
-			VideoPlayTime = aVideoPlayTime;
-			StreamingAssetVideoPath = Application.StreamingAssetsPath;
-			float num = (float)Screen.height / (float)Screen.width;
-			float num2 = 1.6666666f;
-			if (num > num2)
-			{
-				StreamingAssetVideoPath = Application.StreamingAssetsPath + "/video/" + a169FileName;
-			}
-			else
-			{
-				StreamingAssetVideoPath = Application.StreamingAssetsPath + "/video/" + a43FileName;
-			}
-		}
+        public void PlayVideo(MonoBehaviour aMonoBehaviour)
+        {
+            aMonoBehaviour.StartCoroutine(ExecuteVideoSequence());
+        }
 
-		public void PlayVideo(MonoBehaviour aMonoBehaviour)
-		{
-			EnvironmentManager.ShowStatusBar(false);
-			aMonoBehaviour.StartCoroutine(UnpackAndroidVideo(StreamingAssetVideoPath, CacheFileName));
-			if (!File.Exists(Application.PersistentDataPath + "/" + CacheFileName))
-			{
-				Debug.LogError("Intro Video Didn't Copy to persisntent Data Correctly.");
-			}
-			else
-			{
-				aMonoBehaviour.StartCoroutine(PlayVideo(Application.PersistentDataPath + "/" + CacheFileName));
-			}
-		}
+        private IEnumerator ExecuteVideoSequence()
+        {
+            // Logic ported from original FullScreenVideo.cs
+            EnvironmentManager.ShowStatusBar(false);
+            IsVideoPlaying = true;
 
-		private IEnumerator PlayVideo(string aFilePath)
-		{
-			IsVideoPlaying = true;
-			float startTime = Time.realtimeSinceStartup;
-			yield return new WaitForSeconds(0.1f);
-			float endVideoTime = Time.realtimeSinceStartup;
-			if (endVideoTime - startTime < VideoPlayTime)
-			{
-				Analytics.LogVideoSkip();
-			}
-			IsVideoPlaying = false;
-			EnvironmentManager.ShowStatusBar(true);
-			if (this.OnVideoComplete != null)
-			{
-				this.OnVideoComplete(this);
-			}
-		}
+            float startTime = Time.realtimeSinceStartup;
 
-		private IEnumerator UnpackAndroidVideo(string aSourcePath, string aDestPath)
-		{
-			WWW www = new WWW(aSourcePath);
-			while (!www.isDone && string.IsNullOrEmpty(www.error))
-			{
-			}
-			if (string.IsNullOrEmpty(www.error))
-			{
-				File.WriteAllBytes(Application.PersistentDataPath + "/" + aDestPath, www.bytes);
-			}
-			yield return null;
-		}
-	}
+            // Use the internal runner to handle the Unity VideoPlayer
+            VideoPlaybackRunner runner = VideoPlaybackRunner.Ensure();
+            yield return runner.Play(InternalVideoPath);
+
+            float endTime = Time.realtimeSinceStartup;
+
+            // Check if the video was skipped (played for less than its duration)
+            if (endTime - startTime < VideoPlayTime)
+            {
+                // Analytics.LogVideoSkip(); // Uncomment if your Analytics class is available
+            }
+
+            IsVideoPlaying = false;
+            EnvironmentManager.ShowStatusBar(true);
+
+            OnVideoComplete?.Invoke(this);
+        }
+    }
+
+    /// <summary>
+    /// Internal component that manages the Unity VideoPlayer and UI overlay.
+    /// </summary>
+    internal class VideoPlaybackRunner : MonoBehaviour
+    {
+        private static VideoPlaybackRunner instance;
+
+        public static VideoPlaybackRunner Ensure()
+        {
+            if (instance != null) return instance;
+            GameObject runnerObject = new GameObject("VideoPlaybackRunner");
+            DontDestroyOnLoad(runnerObject);
+            instance = runnerObject.AddComponent<VideoPlaybackRunner>();
+            return instance;
+        }
+
+        public IEnumerator Play(string videoPath)
+        {
+            // FIX: Use Application.streamingAssetsPath (lowercase 's')
+            string url = Path.Combine(Application.StreamingAssetsPath, videoPath).Replace("\\", "/");
+
+            // Create Overlay UI
+            GameObject root = new GameObject("VideoPlaybackRoot");
+            Canvas canvas = root.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = 32767;
+            root.AddComponent<GraphicRaycaster>();
+
+            // Dark background
+            GameObject bg = new GameObject("VideoBG");
+            bg.transform.SetParent(root.transform, false);
+            Image bgImage = bg.AddComponent<Image>();
+            bgImage.color = Color.black;
+
+            RectTransform bgRect = bg.GetComponent<RectTransform>();
+            bgRect.anchorMin = Vector2.zero;
+            bgRect.anchorMax = Vector2.one;
+            bgRect.sizeDelta = Vector2.zero;
+
+            // Video Display
+            GameObject rawImageObj = new GameObject("VideoImage");
+            rawImageObj.transform.SetParent(root.transform, false);
+            RawImage rawImage = rawImageObj.AddComponent<RawImage>();
+            AspectRatioFitter fitter = rawImageObj.AddComponent<AspectRatioFitter>();
+            fitter.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
+
+            // Video Player Setup
+            VideoPlayer player = root.AddComponent<VideoPlayer>();
+            player.source = VideoSource.Url;
+            player.url = url;
+            player.playOnAwake = false;
+            player.renderMode = VideoRenderMode.RenderTexture;
+
+            bool finished = false;
+            player.loopPointReached += (v) => finished = true;
+
+            player.Prepare();
+            while (!player.isPrepared) yield return null;
+
+            RenderTexture rt = new RenderTexture((int)player.width, (int)player.height, 0);
+            player.targetTexture = rt;
+            rawImage.texture = rt;
+            fitter.aspectRatio = (float)player.width / (float)player.height;
+
+            player.Play();
+
+            while (!finished)
+            {
+                // FIX: Replaced New Input System (Keyboard/Mouse) with Legacy Input for compatibility
+                if (Input.anyKeyDown || Input.GetMouseButtonDown(0))
+                {
+                    break;
+                }
+                yield return null;
+            }
+
+            player.Stop();
+            rt.Release();
+            Destroy(root);
+        }
+    }
 }
