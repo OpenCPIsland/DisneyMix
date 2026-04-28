@@ -10,28 +10,28 @@ namespace Fabric
 
 		protected InterpolatedParameter _envelope = new InterpolatedParameter(1f);
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public VolumeMeter _volumeMeter;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public Component _componentToListen;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public bool _useComponentIsPlayingFlag;
 
 		[NonSerialized]
 		[HideInInspector]
 		public float _sideChainGain = 1f;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public float gain = 1f;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public float fadeUpRate = 0.25f;
 
 		[SerializeField]
@@ -54,11 +54,11 @@ namespace Fabric
 			{
 				if (_componentToListen != null && _componentToListen.IsComponentActive())
 				{
-					_sideChainGain = 1f;
+					_sideChainGain = gain;
 				}
 				else
 				{
-					_sideChainGain = 0f;
+					_sideChainGain = 1f;
 				}
 			}
 			else
@@ -66,6 +66,7 @@ namespace Fabric
 				if (!(_volumeMeter != null))
 				{
 					_sideChainGain = 1f;
+					profiler.End();
 					return;
 				}
 				float mRMS = _volumeMeter.volumeMeterState.mRMS;
@@ -83,7 +84,7 @@ namespace Fabric
 			}
 			if (_useComponentIsPlayingFlag)
 			{
-				_sideChainGain = _envelope.Get(currentTimeMS) * gain;
+				_sideChainGain = _envelope.Get(currentTimeMS);
 			}
 			else
 			{

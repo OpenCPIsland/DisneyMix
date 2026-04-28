@@ -22,12 +22,12 @@ namespace Fabric.TimelineComponent
 		[SerializeField]
 		public bool _loop;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public float _width;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public bool _autopitchenabled;
 
 		[SerializeField]
@@ -38,16 +38,16 @@ namespace Fabric.TimelineComponent
 		[HideInInspector]
 		public RegionStartMode _startMode;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public RegionLoopMode _loopMode = RegionLoopMode.Cutoff;
 
 		[NonSerialized]
 		[HideInInspector]
 		public bool _regionIsActive;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public CurveTypes _fadeInType = CurveTypes.Linear;
 
 		[SerializeField]
@@ -71,7 +71,7 @@ namespace Fabric.TimelineComponent
 				}
 				if (randomComponent == null)
 				{
-					randomComponent = UnityEngine.Object.Instantiate(_component.gameObject, _component.gameObject.transform.position, _component.gameObject.transform.rotation) as GameObject;
+					randomComponent = UnityEngine.Object.Instantiate(_component.gameObject, _component.gameObject.transform.position, _component.gameObject.transform.rotation);
 					randomComponent.transform.parent = base.transform;
 				}
 				SetLoop(_loop, true);
@@ -137,13 +137,13 @@ namespace Fabric.TimelineComponent
 			return false;
 		}
 
-		internal override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents = false)
+		public override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents = false)
 		{
 			base.PlayInternal(zComponentInstance, target, curve, dontPlayComponents);
 			_regionIsActive = true;
 		}
 
-		internal override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd = 0.0)
+		public override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd = 0.0)
 		{
 			base.StopInternal(stopInstances, forceStop, target, curve, scheduleEnd);
 			_regionIsActive = false;

@@ -37,6 +37,34 @@ namespace Fabric.TimelineComponent
 
 		private LocalPoint bccd = default(LocalPoint);
 
+		public bool PointIntersects(float pointX, float pointY)
+		{
+			float num = Calculate_y(pointX);
+			if (Mathf.Abs(num - pointY) < 0.05f)
+			{
+				return true;
+			}
+			return false;
+		}
+
+		public void StretchX(float factor)
+		{
+			for (int i = 0; i < _points.Length; i++)
+			{
+				_points[i]._x *= factor;
+				AudioTools.Limit(ref _points[i]._x, _points[0]._x, _points[_points.Length - 1]._x);
+			}
+		}
+
+		public int GetPointIndex(float x)
+		{
+			int i;
+			for (i = 0; i < _points.Length && _points[i]._x < x; i++)
+			{
+			}
+			return i;
+		}
+
 		public float Calculate_y(float _x)
 		{
 			int i;
@@ -92,6 +120,25 @@ namespace Fabric.TimelineComponent
 				num = CalculateValueByType(localPoint._curveType, 1f, num);
 			}
 			return localPoint._y + (localPoint2._y - localPoint._y) * num;
+		}
+
+		public float CalculatePoints(Point start, Point end, float _x)
+		{
+			float num = 0.5f;
+			if (end._x != start._x)
+			{
+				num = (_x - start._x) / (end._x - start._x);
+			}
+			if (start._y > end._y)
+			{
+				num = 1f - num;
+				num = 1f - CalculateValueByType(start._curveType, 1f, num);
+			}
+			else
+			{
+				num = CalculateValueByType(start._curveType, 1f, num);
+			}
+			return start._y + (end._y - start._y) * num;
 		}
 
 		private float CalculateValueByType(CurveTypes curveType, float value, float t)

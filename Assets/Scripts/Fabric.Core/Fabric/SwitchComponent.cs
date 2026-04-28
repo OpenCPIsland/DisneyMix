@@ -17,6 +17,7 @@ namespace Fabric
 			public List<Component> _components = new List<Component>();
 		}
 
+		[SerializeField]
 		[HideInInspector]
 		public Component _selectedComponent;
 
@@ -26,24 +27,24 @@ namespace Fabric
 		[HideInInspector]
 		public bool _startOnSwitch = true;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public bool _syncToMusicOnFirstPlay = true;
 
 		[HideInInspector]
 		[SerializeField]
 		public SwitchComponentSwitchType _switchComponentSwitchType = SwitchComponentSwitchType.OnSwitch;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public bool _useGlobalSwitch;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public string _globalSwitch;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public List<GlobalSwitchContainer> _globalSwitchMap = new List<GlobalSwitchContainer>();
 
 		protected override void OnInitialise(bool inPreviewMode = false)
@@ -129,47 +130,62 @@ namespace Fabric
 
 		private void SetSwitch(string name, bool ignoreActiveFlag = false)
 		{
-			for (int i = 0; i < _components.Count; i++)
+			int num = 0;
+			Component component;
+			while (true)
 			{
-				Component component = _components[i];
-				if (!(component != null) || !(component.Name == name) || !(component != _selectedComponent))
+				if (num < _components.Count)
 				{
+					component = _components[num];
+					if (component != null && component.Name == name && component != _selectedComponent)
+					{
+						break;
+					}
+					num++;
 					continue;
 				}
-				bool flag = ignoreActiveFlag || _isComponentActive;
-				if (_selectedComponent != null)
+				return;
+			}
+			bool flag = ignoreActiveFlag || _isComponentActive;
+			if (_selectedComponent != null)
+			{
+				_selectedComponent.StopInternal(false, false, 0f, 0.5f);
+			}
+			_selectedComponent = component;
+			if (_startOnSwitch && flag && !IsMusicSyncEnabled())
+			{
+				_componentInstance._instance.ResetPlayScheduled();
+				_selectedComponent.PlayInternal(_componentInstance, 0f, 0.5f);
+				if (_componentStatus == ComponentStatus.Stopping)
 				{
-					_selectedComponent.StopInternal(false, false, 0f, 0.5f);
+					StopInternal(false, false, _fadeParameter.GetTimeRemaining(FabricTimer.Get()), _fadeOutCurve);
 				}
-				_selectedComponent = component;
-				if (_startOnSwitch && flag && !IsMusicSyncEnabled())
-				{
-					_componentInstance._instance.ResetPlayScheduled();
-					_selectedComponent.PlayInternal(_componentInstance, 0f, 0.5f);
-					if (_componentStatus == ComponentStatus.Stopping)
-					{
-						StopInternal(false, false, _fadeParameter.GetTimeRemaining(FabricTimer.Get()), _fadeOutCurve);
-					}
-				}
-				if (HasValidEventNotifier())
-				{
-					NotifyEvent(EventNotificationType.OnSwitch, _selectedComponent);
-				}
-				break;
+			}
+			if (HasValidEventNotifier())
+			{
+				NotifyEvent(EventNotificationType.OnSwitch, _selectedComponent);
 			}
 		}
 
 		private void SetDefferedSwitch(string name)
 		{
-			for (int i = 0; i < _components.Count; i++)
+			int num = 0;
+			Component component;
+			while (true)
 			{
-				Component component = _components[i];
-				if (component.name == name)
+				if (num < _components.Count)
 				{
-					_defferedSelectedComponent = component;
-					break;
+					component = _components[num];
+					if (component.name == name)
+					{
+						break;
+					}
+					num++;
+					continue;
 				}
+				return;
 			}
+			_defferedSelectedComponent = component;
 		}
 
 		public override EventStatus OnProcessEvent(Event zEvent, ComponentInstance zInstance)
@@ -217,8 +233,12 @@ namespace Fabric
 			return result;
 		}
 
-		internal override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
+		public override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
 		{
+			if (!CheckMIDI(zComponentInstance))
+			{
+				return;
+			}
 			base.PlayInternal(zComponentInstance, target, curve, true);
 			if (_switchComponentSwitchType == SwitchComponentSwitchType.OnPlay && _defferedSelectedComponent != null)
 			{
@@ -239,15 +259,15 @@ namespace Fabric
 			}
 			if (_selectedComponent != null)
 			{
-				if (_activeMusicTimeSettings != null && IsMusicSyncEnabled() && _syncToMusicOnFirstPlay)
+				if (_activeMusicTimeSettings != null && IsMusicSyncEnabled() && _syncToMusicOnFirstPlay && !_musicTimeResetOnPlay)
 				{
-					_componentInstance._instance.SetPlayScheduledAdditive(_activeMusicTimeSettings.GetDelay(), 0.0);
+					_componentInstance._instance.SetPlayScheduledAdditive(_activeMusicTimeSettings.GetDelay(this), 0.0);
 				}
 				_selectedComponent.PlayInternal(zComponentInstance, 0f, 0.5f);
 			}
 		}
 
-		internal override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd = 0.0)
+		public override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd = 0.0)
 		{
 			if (IsMusicSyncEnabled())
 			{
@@ -256,14 +276,6 @@ namespace Fabric
 			else
 			{
 				base.StopInternal(stopInstances, forceStop, target, curve, scheduleEnd);
-			}
-		}
-
-		public override void Pause(bool pause)
-		{
-			if (_selectedComponent != null)
-			{
-				_selectedComponent.Pause(pause);
 			}
 		}
 
@@ -294,6 +306,16 @@ namespace Fabric
 			}
 		}
 
+		internal override bool OnMarker(double time)
+		{
+			if (_switchComponentSwitchType == SwitchComponentSwitchType.OnMarker)
+			{
+				DoSwitch(time);
+				return true;
+			}
+			return base.OnMarker(time);
+		}
+
 		public override bool UpdateInternal(ref Context context)
 		{
 			if (IsMusicSyncEnabled() && _activeMusicTimeSettings != null && (bool)_defferedSelectedComponent && _componentInstance != null)
@@ -314,7 +336,7 @@ namespace Fabric
 			return list;
 		}
 
-		bool IRTPPropertyListener.UpdateProperty(RTPProperty property, float value, RTPPropertyType type = RTPPropertyType.Set)
+		bool IRTPPropertyListener.UpdateProperty(RTPProperty property, float value, RTPPropertyType type)
 		{
 			if (UpdateProperty(property, value, type))
 			{

@@ -18,8 +18,8 @@ namespace Fabric
 		[HideInInspector]
 		public bool _is3D = true;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public string _globalParameterName;
 
 		[NonSerialized]
@@ -87,7 +87,7 @@ namespace Fabric
 				return 1f;
 			case AudioRolloffMode.Linear:
 			{
-				float num = ((minDistance < maxDistance) ? ((maxDistance - distance) / (maxDistance - minDistance)) : 1f);
+				float num = (minDistance < maxDistance) ? ((maxDistance - distance) / (maxDistance - minDistance)) : 1f;
 				if (rolloffMode != AudioRolloffMode.Linear)
 				{
 					return num * num;
@@ -126,7 +126,7 @@ namespace Fabric
 				for (int j = 0; j < 256; j++)
 				{
 					float num2 = samples[i, j];
-					float b = ((num2 < 0f) ? (0f - num2) : num2);
+					float b = (num2 < 0f) ? (0f - num2) : num2;
 					float a = stSpeakers.mChannels[i];
 					stSpeakers.mChannels[i] = Mathf.Max(a, b);
 					num += num2 * num2;

@@ -1,3 +1,4 @@
+using Fabric.MIDI;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -8,17 +9,10 @@ namespace Fabric
 {
 	public abstract class Component : MonoBehaviour, IEventListener, IRTPPropertyListener
 	{
-		public enum RTPPropertyEnum
+		public enum NotifyParentType
 		{
-			Volume = 0,
-			Pitch = 1,
-			Pan2D = 2,
-			PanLevel = 3,
-			SpreadLevel = 4,
-			DopplerLevel = 5,
-			Priority = 6,
-			ReverbZoneMix = 7,
-			Custom = 8
+			ComponentHasFinished,
+			AllComponentsHaveFinished
 		}
 
 		public class RuntimeProperties
@@ -37,6 +31,17 @@ namespace Fabric
 
 			public int _priority = 128;
 
+			public void Reset(Component component)
+			{
+				_volume = component.Volume;
+				_pitch = component.Pitch;
+				_pan2D = component.Pan2D;
+				_panLevel = component.PanLevel;
+				_priority = component.Priority;
+				_spreadLevel = component.SpreadLevel;
+				_dopplerLevel = component.DopplerLevel;
+			}
+
 			public void Reset()
 			{
 				_volume = 1f;
@@ -46,6 +51,110 @@ namespace Fabric
 				_spreadLevel = 0f;
 				_dopplerLevel = 1f;
 				_priority = 128;
+			}
+		}
+
+		[Serializable]
+		public class MIDIProperties
+		{
+			[SerializeField]
+			[HideInInspector]
+			public bool _overrideParentNoteTracking;
+
+			[HideInInspector]
+			[SerializeField]
+			public bool _noteTracking;
+
+			[HideInInspector]
+			[SerializeField]
+			public int _keyRangeMin;
+
+			[SerializeField]
+			[HideInInspector]
+			public int _keyRangeMax = 127;
+
+			[HideInInspector]
+			[SerializeField]
+			public int _velocityRangeMin;
+
+			[SerializeField]
+			[HideInInspector]
+			public int _velocityRangeMax = 127;
+
+			[SerializeField]
+			[HideInInspector]
+			public int _channelRangeMin = 1;
+
+			[SerializeField]
+			[HideInInspector]
+			public int _channelRangeMax = 16;
+
+			[HideInInspector]
+			[SerializeField]
+			public int _rootNote = -36;
+
+			[HideInInspector]
+			[SerializeField]
+			public int _transpose;
+
+			[SerializeField]
+			[HideInInspector]
+			public int _velocity;
+		}
+
+		private class sortVirtualizationInstancesByDistance : IComparer<VirtualizationEventInstance>
+		{
+			public int Compare(VirtualizationEventInstance a, VirtualizationEventInstance b)
+			{
+				if (a == null || b == null)
+				{
+					return 0;
+				}
+				if (a._distanceFromListener > b._distanceFromListener)
+				{
+					return 1;
+				}
+				if (a._distanceFromListener < b._distanceFromListener)
+				{
+					return -1;
+				}
+				return 0;
+			}
+		}
+
+		private class sortByNearestDistance : IComparer<ComponentInstance>
+		{
+			public int Compare(ComponentInstance a, ComponentInstance b)
+			{
+				if (a == null || b == null || a._parentGameObject == null || b._parentGameObject == null)
+				{
+					return 0;
+				}
+				float num = 0f;
+				float num2 = 0f;
+				if (a._parentGameObject == null || a._parentGameObject == null)
+				{
+					return 0;
+				}
+				if (FabricManager.Instance._audioListener != null)
+				{
+					num = Vector3.Distance(a._parentGameObject.transform.position, FabricManager.Instance._audioListener.transform.position);
+					num2 = Vector3.Distance(b._parentGameObject.transform.position, FabricManager.Instance._audioListener.transform.position);
+				}
+				else if (Camera.main != null)
+				{
+					num = Vector3.Distance(a._parentGameObject.transform.position, Camera.main.transform.position);
+					num2 = Vector3.Distance(b._parentGameObject.transform.position, Camera.main.transform.position);
+				}
+				if (num > num2)
+				{
+					return 1;
+				}
+				if (num < num2)
+				{
+					return -1;
+				}
+				return 0;
 			}
 		}
 
@@ -81,36 +190,17 @@ namespace Fabric
 			}
 		}
 
-		private class sortVirtualizationInstancesByDistance : IComparer<VirtualizationEventInstance>
+		public enum RTPPropertyEnum
 		{
-			public int Compare(VirtualizationEventInstance a, VirtualizationEventInstance b)
-			{
-				if (a == null || a._event == null || a._event.parentGameObject == null || b == null || b._event == null || b._event.parentGameObject == null)
-				{
-					return 0;
-				}
-				float num = 0f;
-				float num2 = 0f;
-				if (FabricManager.Instance._audioListener != null)
-				{
-					num = Vector3.Distance(a._event.parentGameObject.transform.position, FabricManager.Instance._audioListener.transform.position);
-					num2 = Vector3.Distance(b._event.parentGameObject.transform.position, FabricManager.Instance._audioListener.transform.position);
-				}
-				else if (Camera.main != null)
-				{
-					num = Vector3.Distance(a._event.parentGameObject.transform.position, Camera.main.transform.position);
-					num2 = Vector3.Distance(b._event.parentGameObject.transform.position, Camera.main.transform.position);
-				}
-				if (num > num2)
-				{
-					return 1;
-				}
-				if (num < num2)
-				{
-					return -1;
-				}
-				return 0;
-			}
+			Volume,
+			Pitch,
+			Pan2D,
+			PanLevel,
+			SpreadLevel,
+			DopplerLevel,
+			Priority,
+			ReverbZoneMix,
+			Custom
 		}
 
 		protected List<Component> _components = new List<Component>();
@@ -127,11 +217,17 @@ namespace Fabric
 		[HideInInspector]
 		public SideChain[] _sideChainComponents;
 
-		protected ComponentInstance[] _componentInstances;
+		[SerializeField]
+		[HideInInspector]
+		public int _numVirtualizationEvents = 100;
+
+		[NonSerialized]
+		private VirtualizationEventInstanceManager _virtualizationEventInstanceManager;
+
+		[NonSerialized]
+		public ComponentInstance[] _componentInstances;
 
 		private GameObject _instanceHolder;
-
-		protected System.Random _random = new System.Random();
 
 		protected Context _updateContext = new Context();
 
@@ -149,11 +245,13 @@ namespace Fabric
 
 		private double _playScheduledDelay;
 
+		private double _playScheduledTime;
+
 		[NonSerialized]
 		public double _scheduledDspTime;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		protected int _maxInstances = 1;
 
 		[HideInInspector]
@@ -172,8 +270,8 @@ namespace Fabric
 		[SerializeField]
 		protected bool _overrideParentVolume;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		protected float _volume = 1f;
 
 		[HideInInspector]
@@ -200,29 +298,33 @@ namespace Fabric
 		[HideInInspector]
 		protected bool _override2DProperties;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		protected float _pan2D;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		protected float _pan2DRandomization;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		protected bool _override3DProperties;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		protected int _priority = 128;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		protected float _panLevel = 1f;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		protected float _spreadLevel;
+
+		[HideInInspector]
+		[SerializeField]
+		protected bool _spatialize;
 
 		[SerializeField]
 		[HideInInspector]
@@ -232,28 +334,39 @@ namespace Fabric
 		[HideInInspector]
 		protected float _maxDistance = 500f;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		protected float _minDistance = 1f;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		protected AudioRolloffMode _rolloffMode;
+
+		[HideInInspector]
+		[SerializeField]
+		public ComponentCustomCurvesType _customCurvesType;
 
 		[SerializeField]
 		[HideInInspector]
+		public string _customCurvesName;
+
+		[NonSerialized]
+		protected CustomCurves _customCurves;
+
+		[HideInInspector]
+		[SerializeField]
 		protected bool _overrideFadeProperties;
 
 		[HideInInspector]
 		[SerializeField]
 		protected float _fadeInTime;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		protected float _fadeInCurve = 0.5f;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		protected float _fadeOutTime;
 
 		[SerializeField]
@@ -272,31 +385,39 @@ namespace Fabric
 		[HideInInspector]
 		protected bool _bypassEffects;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		protected bool _bypassListenerEffects;
 
 		[HideInInspector]
 		[SerializeField]
 		protected bool _bypassReverbZones;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public bool _overrideAudioMixerGroup;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public AudioMixerGroup _audioMixerGroup;
 
+		[NonSerialized]
 		[HideInInspector]
+		private GameObject _globalParentGameObject;
+
 		[SerializeField]
+		[HideInInspector]
+		public NotifyParentType _notifyParentComponent;
+
+		[SerializeField]
+		[HideInInspector]
 		public string _audioBusName;
 
 		[NonSerialized]
 		protected AudioBus _audioBus;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public bool _overrideAudioBus;
 
 		[SerializeField]
@@ -311,8 +432,8 @@ namespace Fabric
 		[HideInInspector]
 		public int _musicTimeSettingsIndex = -1;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public float _musicTempo = -1f;
 
 		[SerializeField]
@@ -322,6 +443,18 @@ namespace Fabric
 		[SerializeField]
 		[HideInInspector]
 		public int _musicTimeSignatureUpper;
+
+		[SerializeField]
+		[HideInInspector]
+		public bool _musicTimeResetOnPlay;
+
+		[HideInInspector]
+		[SerializeField]
+		public MIDIProperties _midiProperties = new MIDIProperties();
+
+		[SerializeField]
+		[HideInInspector]
+		protected bool _overrideSpatializeProperty;
 
 		[HideInInspector]
 		[SerializeField]
@@ -339,24 +472,24 @@ namespace Fabric
 		[HideInInspector]
 		protected bool _multipleInstancesPerGameObject = true;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public bool _componentVirtualization;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public bool _overrideVolumeThreshold;
 
 		[HideInInspector]
 		[SerializeField]
 		public float _volumeThreshold = 1f;
 
+		[NonSerialized]
 		[HideInInspector]
-		[SerializeField]
-		private List<VirtualizationEventInstance> _componentVirtualizationEvents = new List<VirtualizationEventInstance>();
+		public List<VirtualizationEventInstance> _componentVirtualizationEvents = new List<VirtualizationEventInstance>();
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public VirtualizationBehavior _virtualizationBehavior = VirtualizationBehavior.PlayFromStart;
 
 		private bool _componentVirtualizationActive;
@@ -377,13 +510,13 @@ namespace Fabric
 
 		protected RuntimeProperties _rtpProperties = new RuntimeProperties();
 
-		protected float _volumeOffset;
+		protected float _volumeOffset = 1f;
 
 		protected float _sideChainGain = 1f;
 
 		protected float _mixerVolume = 1f;
 
-		protected float _pitchOffset;
+		protected float _pitchOffset = 1f;
 
 		protected float _mixerPitch = 1f;
 
@@ -413,15 +546,33 @@ namespace Fabric
 
 		public string _onEventNotifyEventName;
 
+		private MidiEvent _midiEvent;
+
 		private IComparer<ComponentInstance> sortByFurthestDistanceComparer = new sortByFurthestDistance();
 
 		private sortVirtualizationInstancesByDistance _sortVirtualizationInstancesByDistance = new sortVirtualizationInstancesByDistance();
+
+		protected System.Random _random
+		{
+			get
+			{
+				return Generic._random;
+			}
+		}
 
 		public string Name
 		{
 			get
 			{
 				return _name;
+			}
+		}
+
+		public List<Component> Components
+		{
+			get
+			{
+				return _components;
 			}
 		}
 
@@ -477,7 +628,28 @@ namespace Fabric
 		{
 			get
 			{
-				return base.gameObject.GetComponent<EventListener>() != null;
+				if (!(base.gameObject.GetComponent<EventListener>() != null))
+				{
+					return IsInEventEditor;
+				}
+				return true;
+			}
+		}
+
+		public bool IsInEventEditor
+		{
+			get
+			{
+				GroupComponent groupComponent = IsExternalGroupComponent();
+				if (groupComponent == null && EventManager.Instance != null)
+				{
+					return EventManager.Instance._eventEditor.IsComponentPresent(this);
+				}
+				if (groupComponent._eventEditor != null)
+				{
+					return groupComponent._eventEditor.IsComponentPresent(this);
+				}
+				return false;
 			}
 		}
 
@@ -889,6 +1061,18 @@ namespace Fabric
 			}
 		}
 
+		public bool OverrideSpatializeProperties
+		{
+			get
+			{
+				return _overrideSpatializeProperty;
+			}
+			set
+			{
+				_overrideSpatializeProperty = value;
+			}
+		}
+
 		public bool BypassEffects
 		{
 			get
@@ -989,6 +1173,22 @@ namespace Fabric
 			}
 		}
 
+		public CustomCurves CustomCurves
+		{
+			get
+			{
+				if (_customCurves == null)
+				{
+					return FabricManager.Instance._customCurvesManager.GetCustomCurvesByName(_customCurvesName);
+				}
+				return _customCurves;
+			}
+			set
+			{
+				_customCurves = value;
+			}
+		}
+
 		bool IEventListener.IsDestroyed
 		{
 			get
@@ -1010,6 +1210,29 @@ namespace Fabric
 			}
 		}
 
+		public void UpdateComponentsArray()
+		{
+			_componentsArray = _components.ToArray();
+		}
+
+		public GroupComponent IsExternalGroupComponent()
+		{
+			if (base.transform.parent != null)
+			{
+				Component component = base.transform.parent.GetComponent<Component>();
+				if (component != null)
+				{
+					return component.IsExternalGroupComponent();
+				}
+			}
+			GroupComponent groupComponent = this as GroupComponent;
+			if ((bool)groupComponent && !groupComponent.IsFabricHierarchyPresent())
+			{
+				return groupComponent;
+			}
+			return null;
+		}
+
 		internal virtual void OnFinishPlaying(double time)
 		{
 			if (ParentComponent != null)
@@ -1018,12 +1241,13 @@ namespace Fabric
 			}
 		}
 
-		internal virtual void OnMarker(double time)
+		internal virtual bool OnMarker(double time)
 		{
 			if (ParentComponent != null)
 			{
-				ParentComponent.OnMarker(time);
+				return ParentComponent.OnMarker(time);
 			}
+			return true;
 		}
 
 		protected bool HasValidEventNotifier()
@@ -1085,11 +1309,22 @@ namespace Fabric
 			_scheduledDspTime = AudioSettings.dspTime;
 		}
 
+		internal void SetPlayScheduledTime(double time)
+		{
+			_playScheduledTime = time;
+		}
+
 		internal void ResetPlayScheduled()
 		{
 			_playScheduled = 0.0;
 			_playScheduledDelay = 0.0;
 			_scheduledDspTime = 0.0;
+			_playScheduledTime = 0.0;
+		}
+
+		internal void GetPlayScheduleTime(ref double playScheduledTime)
+		{
+			playScheduledTime = _playScheduledTime;
 		}
 
 		internal void GetPlayScheduled(ref double playScheduled, ref double playScheduledDelay)
@@ -1100,8 +1335,65 @@ namespace Fabric
 			playScheduledDelay = _playScheduledDelay;
 		}
 
+		internal void SetMIDIEvent(MidiEvent midiEvent)
+		{
+			_midiEvent = midiEvent;
+		}
+
+		internal MidiEvent GetMIDIEvent(ComponentInstance componentInstance)
+		{
+			if (_midiEvent != null)
+			{
+				return _midiEvent;
+			}
+			if (componentInstance != null)
+			{
+				return componentInstance._instance._midiEvent;
+			}
+			return null;
+		}
+
+		internal bool CheckMIDI(ComponentInstance componentInstance)
+		{
+			MidiEvent mIDIEvent = GetMIDIEvent(componentInstance);
+			int transpose = _midiProperties._transpose;
+			int velocity = _midiProperties._velocity;
+			if (mIDIEvent != null && _midiProperties != null && mIDIEvent.midiChannelEvent == MidiHelper.MidiChannelEvent.Note_On)
+			{
+				if (mIDIEvent.parameter1 < transpose + _midiProperties._keyRangeMin || mIDIEvent.parameter1 > transpose + _midiProperties._keyRangeMax)
+				{
+					return false;
+				}
+				if (mIDIEvent.parameter2 < velocity + _midiProperties._velocityRangeMin || mIDIEvent.parameter2 > velocity + _midiProperties._velocityRangeMax)
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		internal void ApplyMIDI(ComponentInstance componentInstance)
+		{
+			MidiEvent mIDIEvent = GetMIDIEvent(componentInstance);
+			if (mIDIEvent != null && mIDIEvent.midiChannelEvent == MidiHelper.MidiChannelEvent.Note_On)
+			{
+				float pitch = 1f;
+				if (_midiProperties._overrideParentNoteTracking && _midiProperties._noteTracking)
+				{
+					pitch = Mathf.Pow(2f, ((float)(int)mIDIEvent.parameter1 + (float)_midiProperties._rootNote + (float)_midiProperties._transpose) / 12f);
+				}
+				SetPitch(pitch);
+				float volume = (float)(mIDIEvent.parameter2 + _midiProperties._velocity) / 127f;
+				SetVolume(volume);
+			}
+		}
+
 		private void OnApplicationQuit()
 		{
+			if (_RTPManager != null)
+			{
+				_RTPManager.Reset();
+			}
 			_quitting = true;
 		}
 
@@ -1121,6 +1413,24 @@ namespace Fabric
 				}
 			}
 			_componentsArray = _components.ToArray();
+		}
+
+		public void MoveToComponent(Component targetComponent)
+		{
+			if (_parentComponent != null)
+			{
+				_parentComponent.RemoveComponent(this);
+			}
+			else
+			{
+				FabricManager.Instance.RemoveComponent(this);
+			}
+			_parentComponent = targetComponent;
+			for (int i = 1; i < _maxInstances; i++)
+			{
+				_componentInstances[i]._instance._parentComponent = targetComponent;
+			}
+			targetComponent.AddComponent(this);
 		}
 
 		public void AddComponent(Component component)
@@ -1164,7 +1474,7 @@ namespace Fabric
 		public void BuildComponentEventPathName(ref string path, int depth)
 		{
 			depth++;
-			if (_parentComponent != null)
+			if (_parentComponent != null && _parentComponent != this)
 			{
 				_parentComponent.BuildComponentEventPathName(ref path, depth);
 			}
@@ -1197,11 +1507,15 @@ namespace Fabric
 				GameObject gameObject = new GameObject("Instances");
 				if (!GetFabricManager.Instance()._showAllInstances)
 				{
-					gameObject.hideFlags = HideFlags.HideInHierarchy;
+					gameObject.hideFlags = HideFlags.HideAndDontSave;
+				}
+				else
+				{
+					gameObject.hideFlags = HideFlags.DontSave;
 				}
 				for (int j = 1; j < _maxInstances; j++)
 				{
-					GameObject gameObject2 = UnityEngine.Object.Instantiate(base.gameObject, base.gameObject.transform.position, base.gameObject.transform.rotation) as GameObject;
+					GameObject gameObject2 = UnityEngine.Object.Instantiate(base.gameObject, base.gameObject.transform.position, base.gameObject.transform.rotation);
 					gameObject2.name = gameObject2.name.Replace("(Clone)", "_" + j);
 					gameObject2.transform.parent = gameObject.transform;
 				}
@@ -1252,9 +1566,18 @@ namespace Fabric
 				}
 				_eventListeners = base.gameObject.GetComponents<EventListener>();
 				CollectChildrenComponents(this, isComponentInstance);
-				if (_eventListeners != null && _eventListeners.Length > 0)
+				if ((_eventListeners != null && _eventListeners.Length > 0) || IsInEventEditor)
 				{
-					_componentInstances = new ComponentInstance[(_maxInstances == 0) ? 1 : _maxInstances];
+					if (_maxInstances == 0)
+					{
+						_maxInstances = 1;
+					}
+					if (_componentVirtualization)
+					{
+						_virtualizationEventInstanceManager = new VirtualizationEventInstanceManager();
+						_virtualizationEventInstanceManager.Initialise(_numVirtualizationEvents, this);
+					}
+					_componentInstances = new ComponentInstance[_maxInstances];
 					ComponentInstance componentInstance = new ComponentInstance();
 					componentInstance._componentGameObject = base.gameObject;
 					componentInstance._componentInstanceHolder = this;
@@ -1273,36 +1596,53 @@ namespace Fabric
 					{
 						if (!GetFabricManager.Instance()._bakeComponentInstances)
 						{
+							if (!Application.isPlaying)
+							{
+								int childCount = base.transform.childCount;
+								for (int j = 0; j < childCount; j++)
+								{
+									GameObject gameObject = base.transform.GetChild(j).gameObject;
+									if (gameObject.name == "Instances")
+									{
+										UnityEngine.Object.DestroyImmediate(gameObject);
+										break;
+									}
+								}
+							}
 							_instanceHolder = new GameObject("Instances");
 						}
 						else
 						{
-							int childCount = base.transform.childCount;
-							for (int j = 0; j < childCount; j++)
+							int childCount2 = base.transform.childCount;
+							for (int k = 0; k < childCount2; k++)
 							{
-								GameObject gameObject = base.transform.GetChild(j).gameObject;
-								if (gameObject.name == "Instances")
+								GameObject gameObject2 = base.transform.GetChild(k).gameObject;
+								if (gameObject2.name == "Instances")
 								{
-									_instanceHolder = gameObject;
+									_instanceHolder = gameObject2;
 									break;
 								}
 							}
 						}
-						if (!FabricManager.Instance._showAllInstances)
+						if (!GetFabricManager.Instance()._showAllInstances)
 						{
-							_instanceHolder.hideFlags = HideFlags.HideInHierarchy;
+							_instanceHolder.hideFlags = HideFlags.HideAndDontSave;
 						}
-						for (int k = 1; k < _maxInstances; k++)
+						else
+						{
+							_instanceHolder.hideFlags = HideFlags.DontSave;
+						}
+						for (int l = 1; l < _maxInstances; l++)
 						{
 							ComponentInstance componentInstance2 = new ComponentInstance();
 							_initializationInProgress = true;
 							if (GetFabricManager.Instance()._bakeComponentInstances && _instanceHolder != null)
 							{
-								componentInstance2._componentGameObject = _instanceHolder.transform.GetChild(k - 1).gameObject;
+								componentInstance2._componentGameObject = _instanceHolder.transform.GetChild(l - 1).gameObject;
 							}
 							else
 							{
-								componentInstance2._componentGameObject = UnityEngine.Object.Instantiate(base.gameObject, base.gameObject.transform.position, base.gameObject.transform.rotation) as GameObject;
+								componentInstance2._componentGameObject = UnityEngine.Object.Instantiate(base.gameObject, base.gameObject.transform.position, base.gameObject.transform.rotation);
 							}
 							_initializationInProgress = false;
 							componentInstance2._componentInstanceHolder = this;
@@ -1310,7 +1650,7 @@ namespace Fabric
 							componentInstance2._instance.ComponentHolder = this;
 							componentInstance2._instance._isInstance = true;
 							componentInstance2._instance._parentComponent = _parentComponent;
-							componentInstance2._instance.name = componentInstance2._instance.name.Replace("(Clone)", "_" + k);
+							componentInstance2._instance.name = componentInstance2._instance.name.Replace("(Clone)", "_" + l);
 							componentInstance2._componentGameObject.GetComponent<Component>()._maxInstances = 0;
 							componentInstance2._componentGameObject.GetComponent<Component>().CollectChildrenComponents(componentInstance2._instance, true);
 							componentInstance2._parentGameObject = null;
@@ -1318,7 +1658,7 @@ namespace Fabric
 							{
 								componentInstance2._componentGameObject.transform.parent = _instanceHolder.transform;
 							}
-							_componentInstances[k] = componentInstance2;
+							_componentInstances[l] = componentInstance2;
 							componentInstance2._instance.OnInitialise();
 							componentInstance2._instance.Reset();
 						}
@@ -1331,14 +1671,14 @@ namespace Fabric
 				else
 				{
 					_eventListeners = base.gameObject.GetComponents<EventListener>();
-					for (int l = 0; l < _eventListeners.Length; l++)
+					for (int m = 0; m < _eventListeners.Length; m++)
 					{
-						EventListener eventListener3 = _eventListeners[l];
+						EventListener eventListener3 = _eventListeners[m];
 						eventListener3._eventID = EventManager.GetIDFromEventName(eventListener3._eventName);
 						EventManager.Instance.RegisterListener(this, eventListener3._eventName);
 						UnityEngine.Object.Destroy(base.gameObject.GetComponent<EventListener>());
 					}
-					base.gameObject.GetComponent<Component>()._maxInstances = 0;
+					base.gameObject.GetComponent<Component>()._maxInstances = 1;
 					_componentInstances = new ComponentInstance[1];
 					ComponentInstance componentInstance3 = new ComponentInstance();
 					componentInstance3._componentGameObject = base.gameObject;
@@ -1374,12 +1714,10 @@ namespace Fabric
 			{
 				_componentsArray[i].Destroy();
 			}
-			if (EventManager.IsInitialised() && _eventListeners != null)
+			UnregisterEventListeners();
+			if (_virtualizationEventInstanceManager != null)
 			{
-				for (int j = 0; j < _eventListeners.Length; j++)
-				{
-					EventManager.Instance.UnregisterListener(this, _eventListeners[j]._eventName);
-				}
+				_virtualizationEventInstanceManager.Shutdown();
 			}
 		}
 
@@ -1388,6 +1726,18 @@ namespace Fabric
 			if (_audioBusName != null)
 			{
 				_audioBus = FabricManager.Instance._audioBusManager.FindAudioBusByName(_audioBusName);
+			}
+		}
+
+		protected void InitialiseCustomCurves()
+		{
+			if (_customCurvesName != null && _customCurvesType == ComponentCustomCurvesType.Global)
+			{
+				_customCurves = FabricManager.Instance._customCurvesManager.GetCustomCurvesByName(_customCurvesName);
+			}
+			else
+			{
+				_customCurves = null;
 			}
 		}
 
@@ -1446,8 +1796,8 @@ namespace Fabric
 
 		protected virtual void OnInitialise(bool inPreviewMode = false)
 		{
-			_volumeOffset = 0f;
-			_pitchOffset = 0f;
+			_volumeOffset = 1f;
+			_pitchOffset = 1f;
 			_pan2DOffset = 0f;
 			_updateContext._panLevel = _panLevel;
 			_updateContext._spreadLevel = _spreadLevel;
@@ -1463,6 +1813,7 @@ namespace Fabric
 			_updateContext._bypassReverbZones = _bypassReverbZones;
 			_updateContext._audioMixerGroup = _audioMixerGroup;
 			InitialiseAudioBus();
+			InitialiseCustomCurves();
 			InitialiseDSPWrappers();
 			_name = base.name;
 		}
@@ -1506,11 +1857,13 @@ namespace Fabric
 					{
 						dictionary[item.FieldName] = item.GetValue();
 					}
-					continue;
 				}
-				foreach (Serialization.IField item2 in Serialization.EnumerateFields(instance))
+				else
 				{
-					item2.SetValue(dictionary[item2.FieldName]);
+					foreach (Serialization.IField item2 in Serialization.EnumerateFields(instance))
+					{
+						item2.SetValue(dictionary[item2.FieldName]);
+					}
 				}
 			}
 		}
@@ -1604,7 +1957,7 @@ namespace Fabric
 			return componentInstance;
 		}
 
-		internal ComponentInstance CreateInstance(GameObject parentGameObject)
+		internal ComponentInstance CreateInstance(GameObject parentGameObject, bool isRegisteringGameObject = false)
 		{
 			ComponentInstance componentInstance = null;
 			if (!_multipleInstancesPerGameObject)
@@ -1613,14 +1966,20 @@ namespace Fabric
 			}
 			if (componentInstance == null)
 			{
-				if (GetNumActiveComponentInstances() < _maxInstances)
+				if (GetNumActiveComponentInstances(isRegisteringGameObject) < _maxInstances)
 				{
-					componentInstance = GetFreeComponentInstance(parentGameObject);
+					componentInstance = GetFreeComponentInstance(parentGameObject, isRegisteringGameObject);
 				}
 				else
 				{
 					switch (_stealingBehaviour)
 					{
+					case ComponentStealingBehaviour.None:
+						if (HasValidEventNotifier())
+						{
+							NotifyEvent(EventNotificationType.OnStolenNone, this);
+						}
+						break;
 					case ComponentStealingBehaviour.Oldest:
 						componentInstance = StealOldest(parentGameObject);
 						if (HasValidEventNotifier())
@@ -1665,14 +2024,36 @@ namespace Fabric
 			}
 		}
 
-		internal virtual void Play(ComponentInstance zComponentInstance)
+		public void Play(double playScheduled, GameObject gameObject = null)
 		{
-			zComponentInstance._instance.ResetPlayScheduled();
-			PlayInternal(zComponentInstance, _fadeInTime, _fadeInCurve);
+			ComponentInstance componentInstance = CreateInstance(gameObject);
+			if (componentInstance != null)
+			{
+				componentInstance._instance.SetPlayScheduled(playScheduled, 0.0);
+				Play(componentInstance, false);
+				if (HasValidEventNotifier())
+				{
+					NotifyEvent(EventNotificationType.OnPlay, this);
+				}
+			}
 		}
 
-		internal virtual void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents = false)
+		internal virtual void Play(ComponentInstance zComponentInstance, bool resetPlayScheduled = true)
 		{
+			if (resetPlayScheduled)
+			{
+				zComponentInstance._instance.ResetPlayScheduled();
+			}
+			PlayInternal(zComponentInstance, _fadeInTime, _fadeInCurve);
+			if (HasValidEventNotifier())
+			{
+				NotifyEvent(EventNotificationType.OnPlay, this);
+			}
+		}
+
+		public virtual void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents = false)
+		{
+			ApplyMIDI(zComponentInstance);
 			ApplyRandomization();
 			float num;
 			float curve2;
@@ -1704,6 +2085,10 @@ namespace Fabric
 					_componentsArray[i].PlayInternal(zComponentInstance, num, curve2);
 				}
 			}
+			if (_musicTimeResetOnPlay && _activeMusicTimeSettings != null)
+			{
+				_activeMusicTimeSettings.SetNextBeatBarEvents();
+			}
 			_componentStatus = ComponentStatus.Playing;
 		}
 
@@ -1732,7 +2117,7 @@ namespace Fabric
 			StopInternal(stopInstances, forceStop, _fadeOutTime, _fadeOutCurve);
 		}
 
-		internal virtual void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd = 0.0)
+		public virtual void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd = 0.0)
 		{
 			Reset();
 			float num;
@@ -1982,11 +2367,16 @@ namespace Fabric
 		{
 			if (_pitchRandomization > 0f)
 			{
-				_pitchOffset = (float)(_random.NextDouble() * ((double)_pitchRandomization * 2.0)) - _pitchRandomization;
+				int num = (int)(12f * Mathf.Log(_pitchRandomization + 1f, 2f));
+				int num2 = _random.Next(-num, num);
+				float f = Mathf.Pow(2f, 0.0833333358f);
+				_pitchOffset = Mathf.Pow(f, num2);
 			}
 			if (_volumeRandomization > 0f)
 			{
-				_volumeOffset = (float)(_random.NextDouble() * (double)_volumeRandomization);
+				float num3 = AudioTools.LinearToDB(1f - _volumeRandomization);
+				float db = (float)(_random.NextDouble() * (double)num3);
+				_volumeOffset = AudioTools.DBToLinear(db);
 			}
 			if ((_override2DProperties || _parentComponent == null) && _pan2DRandomization != 0f)
 			{
@@ -2018,7 +2408,7 @@ namespace Fabric
 		private void RemoveVirtualizationEventInstance(VirtualizationEventInstance eventInstance)
 		{
 			_componentVirtualizationEvents.Remove(eventInstance);
-			VirtualizationEventInstance.Free(eventInstance);
+			_virtualizationEventInstanceManager.Free(eventInstance);
 			if (_componentVirtualizationEvents.Count == 0 && _componentVirtualizationActive)
 			{
 				_componentVirtualizationActive = false;
@@ -2031,19 +2421,23 @@ namespace Fabric
 			{
 				if (zEvent.EventAction == EventAction.PlaySound)
 				{
-					VirtualizationEventInstance eventInstance = VirtualizationEventInstance.Alloc(zEvent);
-					AddVirtualizationEventInstance(eventInstance);
-					SetComponentActive(true);
-					return EventStatus.Handled_Virtualized;
+					VirtualizationEventInstance virtualizationEventInstance = _virtualizationEventInstanceManager.Alloc(zEvent);
+					if (virtualizationEventInstance != null)
+					{
+						AddVirtualizationEventInstance(virtualizationEventInstance);
+						SetComponentActive(true);
+						return EventStatus.Handled_Virtualized;
+					}
+					return EventStatus.Failed_NotEnoughVirtualEvents;
 				}
 				if (zEvent.EventAction == EventAction.StopSound)
 				{
 					for (int i = 0; i < _componentVirtualizationEvents.Count; i++)
 					{
-						VirtualizationEventInstance virtualizationEventInstance = _componentVirtualizationEvents[i];
-						if (virtualizationEventInstance._event.parentGameObject == zEvent.parentGameObject)
+						VirtualizationEventInstance virtualizationEventInstance2 = _componentVirtualizationEvents[i];
+						if (virtualizationEventInstance2._event.parentGameObject == zEvent.parentGameObject)
 						{
-							RemoveVirtualizationEventInstance(virtualizationEventInstance);
+							RemoveVirtualizationEventInstance(virtualizationEventInstance2);
 						}
 					}
 				}
@@ -2051,7 +2445,7 @@ namespace Fabric
 				{
 					for (int j = 0; j < _componentVirtualizationEvents.Count; j++)
 					{
-						VirtualizationEventInstance.Free(_componentVirtualizationEvents[j]);
+						_virtualizationEventInstanceManager.Free(_componentVirtualizationEvents[j]);
 					}
 					_componentVirtualizationEvents.Clear();
 					_componentVirtualizationActive = false;
@@ -2066,7 +2460,7 @@ namespace Fabric
 			if (!_componentVirtualization && _overrideVolumeThreshold)
 			{
 				UpdateParentProperties();
-				if (_updateContext._volume < _volumeThreshold)
+				if (_updateContext._volume <= _volumeThreshold)
 				{
 					status = EventStatus.Not_Handled_VolumeThreshold;
 					return false;
@@ -2079,7 +2473,7 @@ namespace Fabric
 		{
 			if (_probability < 100)
 			{
-				System.Random random = new System.Random();
+				System.Random random = Generic._random;
 				int num = (int)(random.NextDouble() * 100.0);
 				if (num > _probability)
 				{
@@ -2091,12 +2485,16 @@ namespace Fabric
 
 		private EventStatus ProcessEvent(Event zEvent, ref ComponentInstance newComponentInstance)
 		{
-			GameObject parentGameObject = zEvent.parentGameObject;
-			if (parentGameObject == null)
-			{
-				return EventStatus.Failed_Invalid_GameObject;
-			}
 			EventStatus status = EventStatus.Failed_Uknown;
+			if (_globalParentGameObject != null)
+			{
+				zEvent.parentGameObject = _globalParentGameObject;
+			}
+			else if (zEvent.parentGameObject == null)
+			{
+				zEvent.parentGameObject = FabricManager.Instance.gameObject;
+			}
+			GameObject parentGameObject = zEvent.parentGameObject;
 			List<ComponentInstance> list = null;
 			switch (zEvent.EventAction)
 			{
@@ -2105,50 +2503,75 @@ namespace Fabric
 			{
 				if (_minimumPlaybackInterval > 0f && FabricTimer.Get() < _minimumPlaybackIntervalTimeStamp)
 				{
+					if (zEvent._onEventNotify != null)
+					{
+						_onEventNotify += zEvent._onEventNotify;
+						OnEventNotifyInvoker(EventNotificationType.OnPlayNotHandled, zEvent._eventName, null, null);
+						_onEventNotify -= zEvent._onEventNotify;
+					}
 					return EventStatus.Not_Handled_MinimumPlaybackInterval;
 				}
 				if (CheckProbability())
 				{
-					return EventStatus.Not_Handled_MinimumPlaybackInterval;
-				}
-				UpdateParentProperties();
-				ComponentInstance componentInstance19 = CreateInstance(parentGameObject);
-				if (componentInstance19 != null)
-				{
-					Component instance = componentInstance19._instance;
-					if (!instance.CanPlay(ref status))
-					{
-						return status;
-					}
-					instance._onEventNotifyEventName = "";
 					if (zEvent._onEventNotify != null)
 					{
-						instance._onEventNotify += zEvent._onEventNotify;
-						instance._onEventNotifyEventName = zEvent._eventName;
+						_onEventNotify += zEvent._onEventNotify;
+						OnEventNotifyInvoker(EventNotificationType.OnPlayNotHandled, zEvent._eventName, null, null);
+						_onEventNotify -= zEvent._onEventNotify;
 					}
-					instance.SetInitialiseParameters(zEvent._initialiseParameters);
-					if (zEvent.EventAction == EventAction.PlayScheduled)
-					{
-						componentInstance19._instance.SetPlayScheduled((double)zEvent._parameter, 0.0);
-					}
-					instance.Play(componentInstance19);
-					if (instance.IsPlaying())
-					{
-						status = EventStatus.Handled;
-						_minimumPlaybackIntervalTimeStamp = FabricTimer.Get() + _minimumPlaybackInterval;
-					}
-					newComponentInstance = componentInstance19;
+					return EventStatus.Not_Handled_MinimumPlaybackInterval;
 				}
+				ComponentInstance componentInstance18 = CreateInstance(parentGameObject);
+				if (componentInstance18 == null)
+				{
+					break;
+				}
+				Component instance = componentInstance18._instance;
+				instance.SetInitialiseParameters(zEvent._initialiseParameters);
+				componentInstance18._instance.UpdateParentProperties();
+				instance._onEventNotifyEventName = "";
+				if (zEvent._onEventNotify != null)
+				{
+					instance._onEventNotify += zEvent._onEventNotify;
+					instance._onEventNotifyEventName = zEvent._eventName;
+				}
+				if (!instance.CanPlay(ref status))
+				{
+					if (HasValidEventNotifier())
+					{
+						NotifyEvent(EventNotificationType.OnPlayNotHandled, this);
+					}
+					return status;
+				}
+				if (zEvent.EventAction == EventAction.PlayScheduled)
+				{
+					componentInstance18._instance.SetPlayScheduled((double)zEvent._parameter, 0.0);
+				}
+				else
+				{
+					componentInstance18._instance.ResetPlayScheduled();
+				}
+				instance.Play(componentInstance18, false);
+				if (instance.IsPlaying())
+				{
+					status = EventStatus.Handled;
+					_minimumPlaybackIntervalTimeStamp = FabricTimer.Get() + _minimumPlaybackInterval;
+				}
+				else if (HasValidEventNotifier())
+				{
+					NotifyEvent(EventNotificationType.OnPlayNotHandled, this);
+				}
+				newComponentInstance = componentInstance18;
 				break;
 			}
 			case EventAction.StopSound:
 				list = FindInstances(parentGameObject, false);
 				if (list != null && list.Count > 0)
 				{
-					for (int num12 = 0; num12 < list.Count; num12++)
+					for (int num11 = 0; num11 < list.Count; num11++)
 					{
-						ComponentInstance componentInstance16 = list[num12];
-						componentInstance16._instance.Stop();
+						ComponentInstance componentInstance15 = list[num11];
+						componentInstance15._instance.Stop();
 						status = EventStatus.Handled;
 					}
 				}
@@ -2157,11 +2580,11 @@ namespace Fabric
 				list = FindInstances(parentGameObject, false);
 				if (list != null && list.Count > 0)
 				{
-					for (int num14 = 0; num14 < list.Count; num14++)
+					for (int num13 = 0; num13 < list.Count; num13++)
 					{
-						ComponentInstance componentInstance18 = list[num14];
-						double scheduleEnd = componentInstance18._instance.GetCurrentTime() + (double)zEvent._parameter;
-						componentInstance18._instance.StopInternal(false, false, _fadeOutTime, _fadeOutCurve, scheduleEnd);
+						ComponentInstance componentInstance17 = list[num13];
+						double scheduleEnd = (double)zEvent._parameter;
+						componentInstance17._instance.StopInternal(false, false, _fadeOutTime, _fadeOutCurve, scheduleEnd);
 						status = EventStatus.Handled;
 					}
 				}
@@ -2173,10 +2596,10 @@ namespace Fabric
 				list = FindInstances(parentGameObject, false);
 				if (list != null && list.Count > 0)
 				{
-					for (int num7 = 0; num7 < list.Count; num7++)
+					for (int num6 = 0; num6 < list.Count; num6++)
 					{
-						ComponentInstance componentInstance11 = list[num7];
-						componentInstance11._instance.Pause(true);
+						ComponentInstance componentInstance10 = list[num6];
+						componentInstance10._instance.Pause(true);
 						status = EventStatus.Handled;
 					}
 				}
@@ -2207,10 +2630,10 @@ namespace Fabric
 				list = FindInstances(parentGameObject, false);
 				if (list != null && list.Count > 0)
 				{
-					for (int num8 = 0; num8 < list.Count; num8++)
+					for (int num7 = 0; num7 < list.Count; num7++)
 					{
-						ComponentInstance componentInstance12 = list[num8];
-						componentInstance12._instance._runtimeProperties._volume = (float)zEvent._parameter;
+						ComponentInstance componentInstance11 = list[num7];
+						componentInstance11._instance._runtimeProperties._volume = (float)zEvent._parameter;
 						status = EventStatus.Handled;
 					}
 				}
@@ -2224,10 +2647,10 @@ namespace Fabric
 				list = FindInstances(parentGameObject, false);
 				if (list != null && list.Count > 0)
 				{
-					for (int n = 0; n < list.Count; n++)
+					for (int m = 0; m < list.Count; m++)
 					{
-						ComponentInstance componentInstance6 = list[n];
-						componentInstance6._instance._runtimeProperties._pitch = (float)zEvent._parameter;
+						ComponentInstance componentInstance5 = list[m];
+						componentInstance5._instance._runtimeProperties._pitch = (float)zEvent._parameter;
 						status = EventStatus.Handled;
 					}
 				}
@@ -2258,10 +2681,10 @@ namespace Fabric
 				list = FindInstances(parentGameObject, false);
 				if (list != null && list.Count > 0)
 				{
-					for (int num10 = 0; num10 < list.Count; num10++)
+					for (int num9 = 0; num9 < list.Count; num9++)
 					{
-						ComponentInstance componentInstance14 = list[num10];
-						componentInstance14._instance.SetTime((float)zEvent._parameter);
+						ComponentInstance componentInstance13 = list[num9];
+						componentInstance13._instance.SetTime((float)zEvent._parameter);
 						status = EventStatus.Handled;
 					}
 				}
@@ -2275,10 +2698,10 @@ namespace Fabric
 				list = FindInstances(parentGameObject, false);
 				if (list != null && list.Count > 0)
 				{
-					for (int num = 0; num < list.Count; num++)
+					for (int n = 0; n < list.Count; n++)
 					{
-						ComponentInstance componentInstance7 = list[num];
-						componentInstance7._instance.ApplyFadeIn(_fadeInTime, _fadeInCurve, true);
+						ComponentInstance componentInstance6 = list[n];
+						componentInstance6._instance.ApplyFadeIn(_fadeInTime, _fadeInCurve, true);
 						status = EventStatus.Handled;
 					}
 				}
@@ -2292,10 +2715,10 @@ namespace Fabric
 				list = FindInstances(parentGameObject, false);
 				if (list != null && list.Count > 0)
 				{
-					for (int num13 = 0; num13 < list.Count; num13++)
+					for (int num12 = 0; num12 < list.Count; num12++)
 					{
-						ComponentInstance componentInstance17 = list[num13];
-						componentInstance17._instance.ApplyFadeOut(_fadeOutTime, _fadeOutCurve, true);
+						ComponentInstance componentInstance16 = list[num12];
+						componentInstance16._instance.ApplyFadeOut(_fadeOutTime, _fadeOutCurve, true);
 						status = EventStatus.Handled;
 					}
 				}
@@ -2312,12 +2735,12 @@ namespace Fabric
 				list = FindInstances(parentGameObject, false);
 				if (list != null && list.Count > 0)
 				{
-					for (int num6 = 0; num6 < list.Count; num6++)
+					for (int num5 = 0; num5 < list.Count; num5++)
 					{
-						ComponentInstance componentInstance10 = list[num6];
-						if (componentInstance10._instance._RTPManager != null)
+						ComponentInstance componentInstance9 = list[num5];
+						if (componentInstance9._instance._RTPManager != null)
 						{
-							status = componentInstance10._instance._RTPManager.SetParameter(zEvent);
+							status = componentInstance9._instance._RTPManager.SetParameter(zEvent);
 						}
 					}
 				}
@@ -2330,12 +2753,12 @@ namespace Fabric
 				list = FindInstances(parentGameObject, false);
 				if (list != null && list.Count > 0)
 				{
-					for (int l = 0; l < list.Count; l++)
+					for (int num14 = 0; num14 < list.Count; num14++)
 					{
-						ComponentInstance componentInstance4 = list[l];
-						if (componentInstance4._instance._RTPManager != null)
+						ComponentInstance componentInstance19 = list[num14];
+						if (componentInstance19._instance._RTPManager != null)
 						{
-							status = componentInstance4._instance._RTPManager.SetMarker(zEvent);
+							status = componentInstance19._instance._RTPManager.SetMarker(zEvent);
 						}
 					}
 				}
@@ -2348,12 +2771,12 @@ namespace Fabric
 				list = FindInstances(parentGameObject, false);
 				if (list != null && list.Count > 0)
 				{
-					for (int num11 = 0; num11 < list.Count; num11++)
+					for (int num10 = 0; num10 < list.Count; num10++)
 					{
-						ComponentInstance componentInstance15 = list[num11];
-						if (componentInstance15._instance._RTPManager != null)
+						ComponentInstance componentInstance14 = list[num10];
+						if (componentInstance14._instance._RTPManager != null)
 						{
-							status = componentInstance15._instance._RTPManager.KeyOffMarker(zEvent);
+							status = componentInstance14._instance._RTPManager.KeyOffMarker(zEvent);
 						}
 					}
 				}
@@ -2368,25 +2791,25 @@ namespace Fabric
 				DSPParameterData dSPParameterData = (DSPParameterData)zEvent._parameter;
 				if (list != null && list.Count > 0)
 				{
-					for (int num2 = 0; num2 < list.Count; num2++)
+					for (int num = 0; num < list.Count; num++)
 					{
-						ComponentInstance componentInstance8 = list[num2];
-						for (int num3 = 0; num3 < componentInstance8._instance._dspComponents.Length; num3++)
+						ComponentInstance componentInstance7 = list[num];
+						for (int num2 = 0; num2 < componentInstance7._instance._dspComponents.Length; num2++)
 						{
-							if (dSPParameterData._dspType == componentInstance8._instance._dspComponents[num3].Type)
+							if (dSPParameterData._dspType == componentInstance7._instance._dspComponents[num2].Type)
 							{
-								componentInstance8._instance._dspComponents[num3].SetParameterValue(dSPParameterData._parameter, dSPParameterData._value, dSPParameterData._time, dSPParameterData._curve);
+								componentInstance7._instance._dspComponents[num2].SetParameterValue(dSPParameterData._parameter, dSPParameterData._value, dSPParameterData._time, dSPParameterData._curve);
 								status = EventStatus.Handled;
 							}
 						}
 					}
 					break;
 				}
-				for (int num4 = 0; num4 < _dspComponents.Length; num4++)
+				for (int num3 = 0; num3 < _dspComponents.Length; num3++)
 				{
-					if (dSPParameterData._dspType == _dspComponents[num4].Type)
+					if (dSPParameterData._dspType == _dspComponents[num3].Type)
 					{
-						_dspComponents[num4].SetParameterValue(dSPParameterData._parameter, dSPParameterData._value, dSPParameterData._time, dSPParameterData._curve);
+						_dspComponents[num3].SetParameterValue(dSPParameterData._parameter, dSPParameterData._value, dSPParameterData._time, dSPParameterData._curve);
 						status = EventStatus.Handled;
 					}
 				}
@@ -2406,6 +2829,14 @@ namespace Fabric
 				{
 					UnregisterGameObject(parentGameObject);
 				}
+				status = EventStatus.Handled;
+				break;
+			case EventAction.SetGameObject:
+				_globalParentGameObject = parentGameObject;
+				status = EventStatus.Handled;
+				break;
+			case EventAction.UnsetGameObject:
+				_globalParentGameObject = null;
 				status = EventStatus.Handled;
 				break;
 			case EventAction.AddPreset:
@@ -2445,10 +2876,10 @@ namespace Fabric
 				list = FindInstances(parentGameObject, false);
 				if (list != null && list.Count > 0)
 				{
-					for (int num9 = 0; num9 < list.Count; num9++)
+					for (int num8 = 0; num8 < list.Count; num8++)
 					{
-						ComponentInstance componentInstance13 = list[num9];
-						componentInstance13._instance.LoadAudio();
+						ComponentInstance componentInstance12 = list[num8];
+						componentInstance12._instance.LoadAudio();
 					}
 				}
 				break;
@@ -2456,10 +2887,10 @@ namespace Fabric
 				list = FindInstances(parentGameObject, false);
 				if (list != null && list.Count > 0)
 				{
-					for (int num5 = 0; num5 < list.Count; num5++)
+					for (int num4 = 0; num4 < list.Count; num4++)
 					{
-						ComponentInstance componentInstance9 = list[num5];
-						componentInstance9._instance.UnloadAudio();
+						ComponentInstance componentInstance8 = list[num4];
+						componentInstance8._instance.UnloadAudio();
 					}
 				}
 				break;
@@ -2467,10 +2898,10 @@ namespace Fabric
 				list = FindInstances(parentGameObject, false);
 				if (list != null && list.Count > 0)
 				{
-					for (int m = 0; m < list.Count; m++)
+					for (int l = 0; l < list.Count; l++)
 					{
-						ComponentInstance componentInstance5 = list[m];
-						componentInstance5._instance.SetProperty("volume", zEvent._parameter);
+						ComponentInstance componentInstance4 = list[l];
+						componentInstance4._instance.SetProperty("volume", zEvent._parameter);
 						status = EventStatus.Handled;
 					}
 				}
@@ -2524,7 +2955,7 @@ namespace Fabric
 
 		private void RegisterGameObject(GameObject eventGameObject)
 		{
-			ComponentInstance componentInstance = CreateInstance(eventGameObject);
+			ComponentInstance componentInstance = CreateInstance(eventGameObject, true);
 			if (componentInstance != null)
 			{
 				componentInstance._parentGameObject = eventGameObject;
@@ -2617,6 +3048,17 @@ namespace Fabric
 			return false;
 		}
 
+		public void UnregisterEventListeners()
+		{
+			if (EventManager.IsInitialised() && _eventListeners != null)
+			{
+				for (int i = 0; i < _eventListeners.Length; i++)
+				{
+					EventManager.Instance.UnregisterListener(this, _eventListeners[i]._eventName);
+				}
+			}
+		}
+
 		public virtual EventStatus OnProcessEvent(Event zEvent, ComponentInstance zInstance)
 		{
 			return EventStatus.Not_Handled;
@@ -2668,7 +3110,7 @@ namespace Fabric
 			{
 				if (initialiseParameters._volume.IsDirty)
 				{
-					_volume = initialiseParameters._volume.Value;
+					_runtimeProperties._volume = initialiseParameters._volume.Value;
 				}
 				if (initialiseParameters._volumeRandomization.IsDirty)
 				{
@@ -2688,7 +3130,7 @@ namespace Fabric
 				}
 				if (initialiseParameters._pitch.IsDirty)
 				{
-					_pitch = initialiseParameters._pitch.Value;
+					_runtimeProperties._pitch = initialiseParameters._pitch.Value;
 				}
 				if (initialiseParameters._pitchRandomization.IsDirty)
 				{
@@ -2700,7 +3142,7 @@ namespace Fabric
 				}
 				if (initialiseParameters._pan2D.IsDirty)
 				{
-					_pan2D = initialiseParameters._pan2D.Value;
+					_runtimeProperties._pan2D = initialiseParameters._pan2D.Value;
 				}
 				if (initialiseParameters._spreadLevel.IsDirty)
 				{
@@ -2931,7 +3373,7 @@ namespace Fabric
 			}
 		}
 
-		public int GetNumActiveComponentInstances()
+		public int GetNumActiveComponentInstances(bool checkRegisteredGameObject = false)
 		{
 			int num = 0;
 			if (_componentInstances != null)
@@ -2939,7 +3381,7 @@ namespace Fabric
 				for (int i = 0; i < _componentInstances.Length; i++)
 				{
 					ComponentInstance componentInstance = _componentInstances[i];
-					if (componentInstance != null && componentInstance._instance.IsPlaying())
+					if (componentInstance != null && (componentInstance._instance.IsPlaying() || (checkRegisteredGameObject && componentInstance._parentGameObject != null)))
 					{
 						num++;
 					}
@@ -2953,14 +3395,14 @@ namespace Fabric
 			return _componentVirtualizationEvents.Count;
 		}
 
-		private ComponentInstance GetFreeComponentInstance(GameObject gameObject)
+		private ComponentInstance GetFreeComponentInstance(GameObject gameObject, bool checkRegisteredGameObject)
 		{
 			if (_componentInstances != null)
 			{
 				for (int i = 0; i < _componentInstances.Length; i++)
 				{
 					ComponentInstance componentInstance = _componentInstances[i];
-					if (!componentInstance._instance.IsPlaying())
+					if ((!checkRegisteredGameObject || !(componentInstance._parentGameObject != null)) && !componentInstance._instance.IsPlaying())
 					{
 						return componentInstance;
 					}
@@ -2985,7 +3427,7 @@ namespace Fabric
 			return null;
 		}
 
-		internal List<ComponentInstance> FindInstances(GameObject parentGameObject, bool createIfNoneFound = true)
+		public List<ComponentInstance> FindInstances(GameObject parentGameObject, bool createIfNoneFound = true)
 		{
 			findInstances.Clear();
 			if (_componentInstances != null)
@@ -3035,6 +3477,19 @@ namespace Fabric
 			}
 		}
 
+		public void ResizeMaxInstance(int maxInstances)
+		{
+			_maxInstances = maxInstances;
+			if (_maxInstances > 1)
+			{
+				Initialise(ParentComponent, false);
+			}
+			else
+			{
+				UnityEngine.Object.DestroyImmediate(_instanceHolder.gameObject);
+			}
+		}
+
 		private EventStatus UpdateVirtualizationEventInstance2(VirtualizationEventInstance eventInstance, Context context)
 		{
 			float num = 0f;
@@ -3055,7 +3510,7 @@ namespace Fabric
 			{
 				maxDistance = context._maxDistance;
 			}
-			bool flag = (double)context._volume >= ((!_overrideVolumeThreshold) ? FabricManager.Instance._volumeThreshold : ((double)_volumeThreshold));
+			bool flag = ((double)context._volume > ((!_overrideVolumeThreshold) ? FabricManager.Instance._volumeThreshold : ((double)_volumeThreshold))) ? true : false;
 			if (num < maxDistance && flag && !eventInstance._isPlaying)
 			{
 				eventInstance._event.EventAction = EventAction.PlaySound;
@@ -3095,17 +3550,25 @@ namespace Fabric
 			{
 				return;
 			}
-			_componentVirtualizationEvents.Sort(_sortVirtualizationInstancesByDistance);
+			bool flag = false;
 			for (int i = 0; i < _componentVirtualizationEvents.Count; i++)
 			{
-				VirtualizationEventInstance virtualizationEventInstance = _componentVirtualizationEvents[i];
+				flag |= _componentVirtualizationEvents[i].UpdateDistanceFromListener();
+			}
+			if (flag)
+			{
+				_componentVirtualizationEvents.Sort(_sortVirtualizationInstancesByDistance);
+			}
+			for (int j = 0; j < _componentVirtualizationEvents.Count; j++)
+			{
+				VirtualizationEventInstance virtualizationEventInstance = _componentVirtualizationEvents[j];
 				if (virtualizationEventInstance == null)
 				{
 					continue;
 				}
 				if (virtualizationEventInstance._event != null && virtualizationEventInstance._event.parentGameObject != null)
 				{
-					if (i < _maxInstances)
+					if (j < _maxInstances)
 					{
 						UpdateVirtualizationEventInstance2(virtualizationEventInstance, context);
 					}
@@ -3198,7 +3661,7 @@ namespace Fabric
 			{
 				_updateContext._volume = context._volume * _volume;
 			}
-			_updateContext._volume -= _volumeOffset;
+			_updateContext._volume *= _volumeOffset;
 			_updateContext._volume *= _sideChainGain;
 			_updateContext._volume *= _mixerVolume;
 			_updateContext._volume *= _runtimeProperties._volume;
@@ -3227,7 +3690,7 @@ namespace Fabric
 			{
 				_updateContext._pitch = context._pitch * _pitch;
 			}
-			_updateContext._pitch += _pitchOffset;
+			_updateContext._pitch *= _pitchOffset;
 			_updateContext._pitch *= _mixerPitch;
 			_updateContext._pitch *= _runtimeProperties._pitch;
 			_updateContext._pitch *= _rtpProperties._pitch;
@@ -3257,6 +3720,7 @@ namespace Fabric
 				_updateContext._minDistance = _minDistance;
 				_updateContext._maxDistance = _maxDistance;
 				_updateContext._rolloffMode = _rolloffMode;
+				_updateContext._customCurves = _customCurves;
 			}
 			else
 			{
@@ -3266,6 +3730,7 @@ namespace Fabric
 				_updateContext._minDistance = context._minDistance;
 				_updateContext._maxDistance = context._maxDistance;
 				_updateContext._rolloffMode = context._rolloffMode;
+				_updateContext._customCurves = context._customCurves;
 			}
 			if (_overrideBypassProperties || _parentComponent == null)
 			{
@@ -3287,6 +3752,14 @@ namespace Fabric
 			else
 			{
 				_updateContext._audioMixerGroup = context._audioMixerGroup;
+			}
+			if (_overrideSpatializeProperty || _parentComponent == null)
+			{
+				_updateContext._spatialize = _spatialize;
+			}
+			else
+			{
+				_updateContext._spatialize = context._spatialize;
 			}
 			if (_overrideAudioBus || _parentComponent == null)
 			{
@@ -3315,7 +3788,7 @@ namespace Fabric
 			List<RTPProperty> list = new List<RTPProperty>();
 			list.Add(new RTPProperty(0, RTPPropertyEnum.Volume.ToString(), 0f, 1f));
 			list.Add(new RTPProperty(1, RTPPropertyEnum.Pitch.ToString(), 0f, 3f));
-			list.Add(new RTPProperty(2, RTPPropertyEnum.Pan2D.ToString(), 0f, 1f));
+			list.Add(new RTPProperty(2, RTPPropertyEnum.Pan2D.ToString(), -1f, 1f));
 			list.Add(new RTPProperty(3, RTPPropertyEnum.PanLevel.ToString(), 0f, 1f));
 			list.Add(new RTPProperty(4, RTPPropertyEnum.SpreadLevel.ToString(), 0f, 360f));
 			list.Add(new RTPProperty(5, RTPPropertyEnum.DopplerLevel.ToString(), 0f, 5f));
@@ -3325,12 +3798,15 @@ namespace Fabric
 			DSPComponent[] componentsInChildren = base.gameObject.GetComponentsInChildren<DSPComponent>();
 			for (int i = 0; i < componentsInChildren.Length; i++)
 			{
-				componentsInChildren[i].OnInitialise(false);
+				if (!componentsInChildren[i].IsInitialized)
+				{
+					componentsInChildren[i].OnInitialise(false);
+				}
 				for (int j = 0; j < componentsInChildren[i].GetNumberOfParameters(); j++)
 				{
 					DSPParameter parameterByIndex = componentsInChildren[i].GetParameterByIndex(j);
-					string text = ((componentsInChildren[i].Type != DSPType.External) ? (componentsInChildren[i].GetTypeByName() + "/" + componentsInChildren[i].GetParameterNameByIndex(j)) : (componentsInChildren[i].GetTypeByName() + "/" + componentsInChildren[i].GetParameterNameByIndex(j)));
-					list.Add(new RTPProperty(num, text, parameterByIndex.Min, parameterByIndex.Max));
+					string name = (componentsInChildren[i].Type != DSPType.External) ? (componentsInChildren[i].GetTypeByName() + "/" + componentsInChildren[i].GetParameterNameByIndex(j)) : (componentsInChildren[i].GetTypeByName() + "/" + componentsInChildren[i].GetParameterNameByIndex(j));
+					list.Add(new RTPProperty(num, name, parameterByIndex.Min, parameterByIndex.Max));
 					num++;
 				}
 			}
@@ -3343,19 +3819,19 @@ namespace Fabric
 			return list;
 		}
 
-		bool IRTPPropertyListener.UpdateProperty(RTPProperty property, float value, RTPPropertyType type = RTPPropertyType.Set)
+		bool IRTPPropertyListener.UpdateProperty(RTPProperty property, float value, RTPPropertyType type)
 		{
 			return UpdateProperty(property, value, type);
 		}
 
-		protected bool UpdateProperty(RTPProperty property, float value, RTPPropertyType type = RTPPropertyType.Set)
+		protected bool UpdateProperty(RTPProperty property, float value, RTPPropertyType type)
 		{
 			bool flag = false;
 			if (property._componentName == "Component")
 			{
-				switch ((RTPPropertyEnum)property._property)
+				switch (property._property)
 				{
-				case RTPPropertyEnum.Volume:
+				case 0:
 					if (type == RTPPropertyType.Set)
 					{
 						Volume = value;
@@ -3366,7 +3842,7 @@ namespace Fabric
 					}
 					flag = true;
 					break;
-				case RTPPropertyEnum.Pitch:
+				case 1:
 					if (type == RTPPropertyType.Set)
 					{
 						Pitch = value;
@@ -3377,27 +3853,62 @@ namespace Fabric
 					}
 					flag = true;
 					break;
-				case RTPPropertyEnum.Pan2D:
-					Pan2D = value;
+				case 2:
+					if (type == RTPPropertyType.Set)
+					{
+						Pan2D = value;
+					}
+					else
+					{
+						_rtpProperties._pan2D = RTPParameterToProperty.SetValueByType(Pan2D, value, type);
+					}
 					flag = true;
 					break;
-				case RTPPropertyEnum.PanLevel:
-					PanLevel = value;
+				case 3:
+					if (type == RTPPropertyType.Set)
+					{
+						PanLevel = value;
+					}
+					else
+					{
+						_rtpProperties._panLevel = RTPParameterToProperty.SetValueByType(PanLevel, value, type);
+					}
 					flag = true;
 					break;
-				case RTPPropertyEnum.SpreadLevel:
-					SpreadLevel = value;
+				case 4:
+					if (type == RTPPropertyType.Set)
+					{
+						SpreadLevel = value;
+					}
+					else
+					{
+						_rtpProperties._spreadLevel = RTPParameterToProperty.SetValueByType(SpreadLevel, value, type);
+					}
 					flag = true;
 					break;
-				case RTPPropertyEnum.DopplerLevel:
-					DopplerLevel = value;
+				case 5:
+					if (type == RTPPropertyType.Set)
+					{
+						DopplerLevel = value;
+					}
+					else
+					{
+						_rtpProperties._dopplerLevel = RTPParameterToProperty.SetValueByType(DopplerLevel, value, type);
+					}
 					flag = true;
 					break;
-				case RTPPropertyEnum.Priority:
-					Priority = (int)value;
+				case 6:
+					if (type == RTPPropertyType.Set)
+					{
+						Priority = (int)value;
+					}
+					else
+					{
+						_rtpProperties._priority = (int)RTPParameterToProperty.SetValueByType(Priority, value, type);
+					}
 					flag = true;
 					break;
-				case RTPPropertyEnum.ReverbZoneMix:
+				case 7:
 					_reverbZoneMix = value;
 					flag = true;
 					break;
@@ -3440,7 +3951,11 @@ namespace Fabric
 			AudioListener audioListener = (AudioListener)UnityEngine.Object.FindObjectOfType(typeof(AudioListener));
 			if (audioListener == null && sceneViewCamera != null)
 			{
-				audioListener = sceneViewCamera.gameObject.AddComponent<AudioListener>();
+				audioListener = sceneViewCamera.GetComponent<AudioListener>();
+				if (audioListener == null)
+				{
+					audioListener = sceneViewCamera.gameObject.AddComponent<AudioListener>();
+				}
 			}
 			if (audioListener != null)
 			{

@@ -9,6 +9,123 @@ namespace Fabric
 {
 	public static class Serialization
 	{
+		public interface IField
+		{
+			string FieldName
+			{
+				get;
+			}
+
+			Type Type
+			{
+				get;
+			}
+
+			object GetValue();
+
+			void SetValue(object value);
+		}
+
+		public struct PrimitiveField : IField
+		{
+			private readonly string _fieldName;
+
+			private readonly FieldInfo _fieldInfo;
+
+			private readonly object _instance;
+
+			public string FieldName
+			{
+				get
+				{
+					return _fieldName;
+				}
+			}
+
+			public Type Type
+			{
+				get
+				{
+					return _fieldInfo.FieldType;
+				}
+			}
+
+			public object GetValue()
+			{
+				return _fieldInfo.GetValue(_instance);
+			}
+
+			public void SetValue(object value)
+			{
+				_fieldInfo.SetValue(_instance, value);
+			}
+
+			public PrimitiveField(string fieldName, FieldInfo fieldInfo, object instance)
+			{
+				_fieldName = fieldName;
+				_fieldInfo = fieldInfo;
+				_instance = instance;
+			}
+		}
+
+		public struct EnumField : IField
+		{
+			private readonly string _fieldName;
+
+			private readonly FieldInfo _fieldInfo;
+
+			private readonly object _instance;
+
+			public string FieldName
+			{
+				get
+				{
+					return _fieldName;
+				}
+			}
+
+			public Type Type
+			{
+				get
+				{
+					return _fieldInfo.FieldType;
+				}
+			}
+
+			public object GetValue()
+			{
+				return _fieldInfo.GetValue(_instance).ToString();
+			}
+
+			public void SetValue(object value)
+			{
+				string b = value as string;
+				string[] names = Enum.GetNames(Type);
+				int num = 0;
+				while (true)
+				{
+					if (num < names.Length)
+					{
+						if (names[num] == b)
+						{
+							break;
+						}
+						num++;
+						continue;
+					}
+					return;
+				}
+				_fieldInfo.SetValue(_instance, Enum.GetValues(Type).GetValue(num));
+			}
+
+			public EnumField(string fieldName, FieldInfo fieldInfo, object instance)
+			{
+				_fieldName = fieldName;
+				_fieldInfo = fieldInfo;
+				_instance = instance;
+			}
+		}
+
 		public struct ArraySizeVirtualField : IField
 		{
 			private readonly string _fieldName;
@@ -33,13 +150,6 @@ namespace Fabric
 				}
 			}
 
-			public ArraySizeVirtualField(string fieldName, FieldInfo fieldInfo, object instance)
-			{
-				_fieldName = fieldName;
-				_fieldInfo = fieldInfo;
-				_instance = instance;
-			}
-
 			public object GetValue()
 			{
 				Array array = (Array)_fieldInfo.GetValue(_instance);
@@ -56,6 +166,280 @@ namespace Fabric
 				}
 				_fieldInfo.SetValue(_instance, array);
 			}
+
+			public ArraySizeVirtualField(string fieldName, FieldInfo fieldInfo, object instance)
+			{
+				_fieldName = fieldName;
+				_fieldInfo = fieldInfo;
+				_instance = instance;
+			}
+		}
+
+		public struct PrimitiveArrayElementField : IField
+		{
+			private readonly string _fieldName;
+
+			private readonly Array _array;
+
+			private readonly int _index;
+
+			public string FieldName
+			{
+				get
+				{
+					return _fieldName;
+				}
+			}
+
+			public Type Type
+			{
+				get
+				{
+					return _array.GetType().GetElementType();
+				}
+			}
+
+			public object GetValue()
+			{
+				return _array.GetValue(_index);
+			}
+
+			public void SetValue(object value)
+			{
+				_array.SetValue(value, _index);
+			}
+
+			public PrimitiveArrayElementField(string fieldName, Array array, int index)
+			{
+				_fieldName = fieldName;
+				_array = array;
+				_index = index;
+			}
+		}
+
+		public struct EnumArrayElementField : IField
+		{
+			private readonly string _fieldName;
+
+			private readonly Array _array;
+
+			private readonly int _index;
+
+			public string FieldName
+			{
+				get
+				{
+					return _fieldName;
+				}
+			}
+
+			public Type Type
+			{
+				get
+				{
+					return _array.GetType().GetElementType();
+				}
+			}
+
+			public object GetValue()
+			{
+				return _array.GetValue(_index).ToString();
+			}
+
+			public void SetValue(object value)
+			{
+				string b = value as string;
+				string[] names = Enum.GetNames(Type);
+				int num = 0;
+				while (true)
+				{
+					if (num < names.Length)
+					{
+						if (names[num] == b)
+						{
+							break;
+						}
+						num++;
+						continue;
+					}
+					return;
+				}
+				_array.SetValue(Enum.GetValues(Type).GetValue(num), _index);
+			}
+
+			public EnumArrayElementField(string fieldName, Array array, int index)
+			{
+				_fieldName = fieldName;
+				_array = array;
+				_index = index;
+			}
+		}
+
+		public struct ListSizeVirtualField : IField
+		{
+			private readonly string _fieldName;
+
+			private readonly IList _list;
+
+			public string FieldName
+			{
+				get
+				{
+					return _fieldName;
+				}
+			}
+
+			public Type Type
+			{
+				get
+				{
+					return typeof(int);
+				}
+			}
+
+			public object GetValue()
+			{
+				return _list.Count;
+			}
+
+			public void SetValue(object value)
+			{
+				int num = (int)value;
+				int count = _list.Count;
+				if (count == num)
+				{
+					return;
+				}
+				if (count > num)
+				{
+					for (int num2 = count - 1; num2 >= num; num2--)
+					{
+						_list.RemoveAt(num2);
+					}
+					return;
+				}
+				Type type = _list.GetType().GetGenericArguments()[0];
+				object value2 = CreateInstance(type);
+				for (int i = count; i < num; i++)
+				{
+					_list.Add(value2);
+				}
+			}
+
+			public ListSizeVirtualField(string fieldName, IList list)
+			{
+				_fieldName = fieldName;
+				_list = list;
+			}
+		}
+
+		public struct PrimitiveListElementField : IField
+		{
+			private readonly string _fieldName;
+
+			private readonly IList _list;
+
+			private readonly int _index;
+
+			public string FieldName
+			{
+				get
+				{
+					return _fieldName;
+				}
+			}
+
+			public Type Type
+			{
+				get
+				{
+					return _list.GetType().GetGenericArguments()[0];
+				}
+			}
+
+			public object GetValue()
+			{
+				return _list[_index];
+			}
+
+			public void SetValue(object value)
+			{
+				_list[_index] = value;
+			}
+
+			public PrimitiveListElementField(string fieldName, IList list, int index)
+			{
+				_fieldName = fieldName;
+				_list = list;
+				_index = index;
+			}
+		}
+
+		public struct EnumListElementField : IField
+		{
+			private readonly string _fieldName;
+
+			private readonly IList _list;
+
+			private readonly int _index;
+
+			public string FieldName
+			{
+				get
+				{
+					return _fieldName;
+				}
+			}
+
+			public Type Type
+			{
+				get
+				{
+					return _list.GetType().GetGenericArguments()[0];
+				}
+			}
+
+			public object GetValue()
+			{
+				return _list[_index].ToString();
+			}
+
+			public void SetValue(object value)
+			{
+				string b = value as string;
+				string[] names = Enum.GetNames(Type);
+				int num = 0;
+				while (true)
+				{
+					if (num < names.Length)
+					{
+						if (names[num] == b)
+						{
+							break;
+						}
+						num++;
+						continue;
+					}
+					return;
+				}
+				_list[_index] = Enum.GetValues(Type).GetValue(num);
+			}
+
+			public EnumListElementField(string fieldName, IList list, int index)
+			{
+				_fieldName = fieldName;
+				_list = list;
+				_index = index;
+			}
+		}
+
+		private struct EnumerateFieldsTodo
+		{
+			public string Prefix;
+
+			public object Instance;
+
+			public Type Type;
 		}
 
 		public class CachedFieldScan
@@ -156,363 +540,6 @@ namespace Fabric
 			}
 		}
 
-		public struct EnumArrayElementField : IField
-		{
-			private readonly string _fieldName;
-
-			private readonly Array _array;
-
-			private readonly int _index;
-
-			public string FieldName
-			{
-				get
-				{
-					return _fieldName;
-				}
-			}
-
-			public Type Type
-			{
-				get
-				{
-					return _array.GetType().GetElementType();
-				}
-			}
-
-			public EnumArrayElementField(string fieldName, Array array, int index)
-			{
-				_fieldName = fieldName;
-				_array = array;
-				_index = index;
-			}
-
-			public object GetValue()
-			{
-				return _array.GetValue(_index).ToString();
-			}
-
-			public void SetValue(object value)
-			{
-				string text = value as string;
-				string[] names = Enum.GetNames(Type);
-				for (int i = 0; i < names.Length; i++)
-				{
-					if (names[i] == text)
-					{
-						_array.SetValue(Enum.GetValues(Type).GetValue(i), _index);
-						break;
-					}
-				}
-			}
-		}
-
-		private struct EnumerateFieldsTodo
-		{
-			public string Prefix;
-
-			public object Instance;
-
-			public Type Type;
-		}
-
-		public struct EnumField : IField
-		{
-			private readonly string _fieldName;
-
-			private readonly FieldInfo _fieldInfo;
-
-			private readonly object _instance;
-
-			public string FieldName
-			{
-				get
-				{
-					return _fieldName;
-				}
-			}
-
-			public Type Type
-			{
-				get
-				{
-					return _fieldInfo.FieldType;
-				}
-			}
-
-			public EnumField(string fieldName, FieldInfo fieldInfo, object instance)
-			{
-				_fieldName = fieldName;
-				_fieldInfo = fieldInfo;
-				_instance = instance;
-			}
-
-			public object GetValue()
-			{
-				return _fieldInfo.GetValue(_instance).ToString();
-			}
-
-			public void SetValue(object value)
-			{
-				string text = value as string;
-				string[] names = Enum.GetNames(Type);
-				for (int i = 0; i < names.Length; i++)
-				{
-					if (names[i] == text)
-					{
-						_fieldInfo.SetValue(_instance, Enum.GetValues(Type).GetValue(i));
-						break;
-					}
-				}
-			}
-		}
-
-		public struct EnumListElementField : IField
-		{
-			private readonly string _fieldName;
-
-			private readonly IList _list;
-
-			private readonly int _index;
-
-			public string FieldName
-			{
-				get
-				{
-					return _fieldName;
-				}
-			}
-
-			public Type Type
-			{
-				get
-				{
-					return _list.GetType().GetGenericArguments()[0];
-				}
-			}
-
-			public EnumListElementField(string fieldName, IList list, int index)
-			{
-				_fieldName = fieldName;
-				_list = list;
-				_index = index;
-			}
-
-			public object GetValue()
-			{
-				return _list[_index].ToString();
-			}
-
-			public void SetValue(object value)
-			{
-				string text = value as string;
-				string[] names = Enum.GetNames(Type);
-				for (int i = 0; i < names.Length; i++)
-				{
-					if (names[i] == text)
-					{
-						_list[_index] = Enum.GetValues(Type).GetValue(i);
-						break;
-					}
-				}
-			}
-		}
-
-		public interface IField
-		{
-			string FieldName { get; }
-
-			Type Type { get; }
-
-			object GetValue();
-
-			void SetValue(object value);
-		}
-
-		public struct ListSizeVirtualField : IField
-		{
-			private readonly string _fieldName;
-
-			private readonly IList _list;
-
-			public string FieldName
-			{
-				get
-				{
-					return _fieldName;
-				}
-			}
-
-			public Type Type
-			{
-				get
-				{
-					return typeof(int);
-				}
-			}
-
-			public ListSizeVirtualField(string fieldName, IList list)
-			{
-				_fieldName = fieldName;
-				_list = list;
-			}
-
-			public object GetValue()
-			{
-				return _list.Count;
-			}
-
-			public void SetValue(object value)
-			{
-				int num = (int)value;
-				int count = _list.Count;
-				if (count == num)
-				{
-					return;
-				}
-				if (count > num)
-				{
-					for (int num2 = count - 1; num2 >= num; num2--)
-					{
-						_list.RemoveAt(num2);
-					}
-					return;
-				}
-				Type type = _list.GetType().GetGenericArguments()[0];
-				object value2 = CreateInstance(type);
-				for (int i = count; i < num; i++)
-				{
-					_list.Add(value2);
-				}
-			}
-		}
-
-		public struct PrimitiveArrayElementField : IField
-		{
-			private readonly string _fieldName;
-
-			private readonly Array _array;
-
-			private readonly int _index;
-
-			public string FieldName
-			{
-				get
-				{
-					return _fieldName;
-				}
-			}
-
-			public Type Type
-			{
-				get
-				{
-					return _array.GetType().GetElementType();
-				}
-			}
-
-			public PrimitiveArrayElementField(string fieldName, Array array, int index)
-			{
-				_fieldName = fieldName;
-				_array = array;
-				_index = index;
-			}
-
-			public object GetValue()
-			{
-				return _array.GetValue(_index);
-			}
-
-			public void SetValue(object value)
-			{
-				_array.SetValue(value, _index);
-			}
-		}
-
-		public struct PrimitiveField : IField
-		{
-			private readonly string _fieldName;
-
-			private readonly FieldInfo _fieldInfo;
-
-			private readonly object _instance;
-
-			public string FieldName
-			{
-				get
-				{
-					return _fieldName;
-				}
-			}
-
-			public Type Type
-			{
-				get
-				{
-					return _fieldInfo.FieldType;
-				}
-			}
-
-			public PrimitiveField(string fieldName, FieldInfo fieldInfo, object instance)
-			{
-				_fieldName = fieldName;
-				_fieldInfo = fieldInfo;
-				_instance = instance;
-			}
-
-			public object GetValue()
-			{
-				return _fieldInfo.GetValue(_instance);
-			}
-
-			public void SetValue(object value)
-			{
-				_fieldInfo.SetValue(_instance, value);
-			}
-		}
-
-		public struct PrimitiveListElementField : IField
-		{
-			private readonly string _fieldName;
-
-			private readonly IList _list;
-
-			private readonly int _index;
-
-			public string FieldName
-			{
-				get
-				{
-					return _fieldName;
-				}
-			}
-
-			public Type Type
-			{
-				get
-				{
-					return _list.GetType().GetGenericArguments()[0];
-				}
-			}
-
-			public PrimitiveListElementField(string fieldName, IList list, int index)
-			{
-				_fieldName = fieldName;
-				_list = list;
-				_index = index;
-			}
-
-			public object GetValue()
-			{
-				return _list[_index];
-			}
-
-			public void SetValue(object value)
-			{
-				_list[_index] = value;
-			}
-		}
-
 		public static IEnumerable<FieldInfo> GetSerializableFields(Type type)
 		{
 			try
@@ -554,48 +581,47 @@ namespace Fabric
 					{
 						yield return new ArraySizeVirtualField(current.Prefix + field.Name + "#", field, current.Instance);
 						Array array = (Array)field.GetValue(current.Instance);
-						if (array == null)
+						if (array != null)
 						{
-							continue;
-						}
-						Type elementType = field.FieldType.GetElementType();
-						if (elementType.IsSubclassOf(typeof(UnityEngine.Object)) || elementType == typeof(UnityEngine.Object))
-						{
-							for (int i = 0; i < array.Length; i++)
+							Type elementType2 = field.FieldType.GetElementType();
+							if (elementType2.IsSubclassOf(typeof(UnityEngine.Object)) || elementType2 == typeof(UnityEngine.Object))
 							{
-								yield return new PrimitiveArrayElementField(current.Prefix + field.Name + "[" + i + "]", array, i);
-							}
-						}
-						else if (elementType.IsClass && elementType != typeof(string))
-						{
-							for (int j = 0; j < array.Length; j++)
-							{
-								object obj = array.GetValue(j);
-								if (obj == null)
+								for (int l = 0; l < array.Length; l++)
 								{
-									obj = CreateInstance(elementType);
-									array.SetValue(obj, j);
+									yield return new PrimitiveArrayElementField(current.Prefix + field.Name + "[" + l + "]", array, l);
 								}
-								todo.Enqueue(new EnumerateFieldsTodo
+							}
+							else if (elementType2.IsClass && elementType2 != typeof(string))
+							{
+								for (int num = 0; num < array.Length; num++)
 								{
-									Prefix = current.Prefix + field.Name + "[" + j + "].",
-									Instance = obj,
-									Type = elementType
-								});
+									object obj = array.GetValue(num);
+									if (obj == null)
+									{
+										obj = CreateInstance(elementType2);
+										array.SetValue(obj, num);
+									}
+									todo.Enqueue(new EnumerateFieldsTodo
+									{
+										Prefix = current.Prefix + field.Name + "[" + num + "].",
+										Instance = obj,
+										Type = elementType2
+									});
+								}
 							}
-						}
-						else if (elementType.IsEnum)
-						{
-							for (int k = 0; k < array.Length; k++)
+							else if (elementType2.IsEnum)
 							{
-								yield return new EnumArrayElementField(current.Prefix + field.Name + "[" + k + "]", array, k);
+								for (int n = 0; n < array.Length; n++)
+								{
+									yield return new EnumArrayElementField(current.Prefix + field.Name + "[" + n + "]", array, n);
+								}
 							}
-						}
-						else
-						{
-							for (int l = 0; l < array.Length; l++)
+							else
 							{
-								yield return new PrimitiveArrayElementField(current.Prefix + field.Name + "[" + l + "]", array, l);
+								for (int m = 0; m < array.Length; m++)
+								{
+									yield return new PrimitiveArrayElementField(current.Prefix + field.Name + "[" + m + "]", array, m);
+								}
 							}
 						}
 					}
@@ -608,43 +634,43 @@ namespace Fabric
 							field.SetValue(current.Instance, list);
 						}
 						yield return new ListSizeVirtualField(current.Prefix + field.Name + "#", list);
-						Type elementType2 = field.FieldType.GetGenericArguments()[0];
-						if (elementType2.IsSubclassOf(typeof(UnityEngine.Object)) || elementType2 == typeof(UnityEngine.Object))
+						Type elementType = field.FieldType.GetGenericArguments()[0];
+						if (elementType.IsSubclassOf(typeof(UnityEngine.Object)) || elementType == typeof(UnityEngine.Object))
 						{
-							for (int m = 0; m < list.Count; m++)
+							for (int i = 0; i < list.Count; i++)
 							{
-								yield return new PrimitiveListElementField(current.Prefix + field.Name + "[" + m + "]", list, m);
+								yield return new PrimitiveListElementField(current.Prefix + field.Name + "[" + i + "]", list, i);
 							}
 						}
-						else if (elementType2.IsClass && elementType2 != typeof(string))
+						else if (elementType.IsClass && elementType != typeof(string))
 						{
-							for (int n = 0; n < list.Count; n++)
+							for (int num2 = 0; num2 < list.Count; num2++)
 							{
-								object obj2 = list[n];
+								object obj2 = list[num2];
 								if (obj2 == null)
 								{
-									obj2 = (list[n] = CreateInstance(elementType2));
+									obj2 = (list[num2] = CreateInstance(elementType));
 								}
 								todo.Enqueue(new EnumerateFieldsTodo
 								{
-									Prefix = current.Prefix + field.Name + "[" + n + "].",
+									Prefix = current.Prefix + field.Name + "[" + num2 + "].",
 									Instance = obj2,
-									Type = elementType2
+									Type = elementType
 								});
 							}
 						}
-						else if (elementType2.IsEnum)
+						else if (elementType.IsEnum)
 						{
-							for (int num = 0; num < list.Count; num++)
+							for (int k = 0; k < list.Count; k++)
 							{
-								yield return new EnumListElementField(current.Prefix + field.Name + "[" + num + "]", list, num);
+								yield return new EnumListElementField(current.Prefix + field.Name + "[" + k + "]", list, k);
 							}
 						}
 						else
 						{
-							for (int num2 = 0; num2 < list.Count; num2++)
+							for (int j = 0; j < list.Count; j++)
 							{
-								yield return new PrimitiveListElementField(current.Prefix + field.Name + "[" + num2 + "]", list, num2);
+								yield return new PrimitiveListElementField(current.Prefix + field.Name + "[" + j + "]", list, j);
 							}
 						}
 					}

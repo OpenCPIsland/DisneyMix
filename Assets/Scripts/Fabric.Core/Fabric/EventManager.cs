@@ -7,6 +7,7 @@ using UnityEngine;
 namespace Fabric
 {
 	[AddComponentMenu("Fabric/EventsManager")]
+	[ExecuteInEditMode]
 	public class EventManager : MonoBehaviour
 	{
 		public class ActiveEvent
@@ -19,9 +20,20 @@ namespace Fabric
 
 			[NonSerialized]
 			public Component _component;
+
+			[NonSerialized]
+			public bool _componentInstanceFoldout = true;
+
+			[NonSerialized]
+			public bool _virtualEventsFoldout;
+
+			[NonSerialized]
+			public float _time;
 		}
 
-		private static EventManager _instance;
+		public delegate void OnLogEventHandler(Event postedEvent);
+
+		private static EventManager _instance = null;
 
 		private Dictionary<string, List<IEventListener>> _listeners = new Dictionary<string, List<IEventListener>>();
 
@@ -36,41 +48,42 @@ namespace Fabric
 		[SerializeField]
 		public List<string> _eventList = new List<string>();
 
+		[HideInInspector]
+		[SerializeField]
+		public EventEditor _eventEditor = new EventEditor();
+
 		[NonSerialized]
 		[HideInInspector]
 		public List<ActiveEvent> _activeEvents = new List<ActiveEvent>();
+
+		[NonSerialized]
+		[HideInInspector]
+		public float _activeEventPersistenceTime = 1f;
 
 		[HideInInspector]
 		public CodeProfiler profiler = new CodeProfiler();
 
 		[HideInInspector]
 		[SerializeField]
-		public int _logHistorySize;
-
-		[HideInInspector]
-		public Queue<EventLogEntry> _audioEventHistory = new Queue<EventLogEntry>();
-
-		[SerializeField]
-		[HideInInspector]
 		public bool _eventMenuListFoldout = true;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public bool _eventListFoldout;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public bool _forceQueueAllEvents;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public EventSequencer _eventSequencer = new EventSequencer();
 
 		private Event newEvent = new Event();
 
 		private Event overrideEvent = new Event();
 
-		private ParameterData parameter = default(ParameterData);
+		private ParameterData parameter = new ParameterData();
 
 		private DSPParameterData dspParameter = new DSPParameterData();
 
@@ -79,6 +92,11 @@ namespace Fabric
 		private GlobalSwitchParameterData globalSwitch = new GlobalSwitchParameterData();
 
 		private List<EventListener> eventListeners = new List<EventListener>(32);
+		
+////////////////////Fabric 2.5.0 Structs//////////////////		
+		[HideInInspector]
+		[SerializeField]
+		public bool _deployWithActiveEventList;
 
 		public static EventManager Instance
 		{
@@ -103,14 +121,38 @@ namespace Fabric
 			}
 		}
 
+		public static event OnLogEventHandler OnLogEvent;
+
 		private void Awake()
 		{
+			Init();
+		}
+		
+		public void Init()
+		{
+			_instance = this;
+			_eventEditor.Initialise();
 			_globalParameterManager.Init();
 		}
 
+		private void OnEnable()
+		{
+			if (Application.isEditor && !Application.isPlaying)
+			{
+				Awake();
+			}
+		}
+
+		public void Shutdown()
+		{
+			_eventEditor.Shutdown();
+			_globalParameterManager.Shutdown();
+			_instance = null;
+		}
+		
 		private void OnDestroy()
 		{
-			_globalParameterManager.Shutdown();
+			Shutdown();
 		}
 
 		public static bool IsInitialised()
@@ -259,28 +301,9 @@ namespace Fabric
 
 		private void LogEvent(Event postedEvent)
 		{
-			if (Application.isEditor && _logHistorySize > 0)
+			if (EventManager.OnLogEvent != null)
 			{
-				EventLogEntry eventLogEntry = new EventLogEntry();
-				eventLogEntry._descritpion = postedEvent._eventName;
-				eventLogEntry._eventAction = postedEvent.EventAction;
-				if (EventAction.SetParameter == postedEvent.EventAction)
-				{
-					eventLogEntry._value = ((ParameterData)postedEvent._parameter)._value;
-				}
-				else if (EventAction.SetVolume == postedEvent.EventAction || EventAction.SetPitch == postedEvent.EventAction || EventAction.SetPan == postedEvent.EventAction || EventAction.SetTime == postedEvent.EventAction)
-				{
-					eventLogEntry._value = (float)postedEvent._parameter;
-				}
-				eventLogEntry._triggerTime = FabricTimer.Get();
-				eventLogEntry._gameObject = postedEvent.parentGameObject;
-				eventLogEntry._gameObjectName = eventLogEntry._gameObject.name;
-				eventLogEntry._audioEvent = postedEvent;
-				if (_audioEventHistory.Count > _logHistorySize)
-				{
-					_audioEventHistory.Dequeue();
-				}
-				_audioEventHistory.Enqueue(eventLogEntry);
+				EventManager.OnLogEvent(postedEvent);
 			}
 		}
 
@@ -367,7 +390,7 @@ namespace Fabric
 			}
 			else
 			{
-				newEvent.parentGameObject = base.gameObject;
+				newEvent.parentGameObject = null;
 			}
 			newEvent._eventName = eventName;
 			newEvent.EventAction = eventAction;
@@ -382,10 +405,6 @@ namespace Fabric
 			if (postedEvent._eventName == "" || postedEvent._eventName == "Event_Unset")
 			{
 				return false;
-			}
-			if (postedEvent.parentGameObject == null)
-			{
-				postedEvent.parentGameObject = base.gameObject;
 			}
 			if (!addToQueue && !_forceQueueAllEvents && postedEvent._delay == 0f)
 			{
@@ -404,9 +423,21 @@ namespace Fabric
 		{
 			if (_forceQueueAllEvents)
 			{
-				parameter = default(ParameterData);
+				parameter = new ParameterData();
 			}
-			parameter._parameter = parameterName;
+			parameter._parameter = parameterName.GetHashCode();
+			parameter._index = -1;
+			parameter._value = value;
+			return PostEvent(eventName, EventAction.SetParameter, parameter, parentGameObject);
+		}
+
+		public bool SetParameter(string eventName, int parameterIndex, float value, GameObject parentGameObject = null)
+		{
+			if (_forceQueueAllEvents)
+			{
+				parameter = new ParameterData();
+			}
+			parameter._index = parameterIndex;
 			parameter._value = value;
 			return PostEvent(eventName, EventAction.SetParameter, parameter, parentGameObject);
 		}
@@ -427,6 +458,10 @@ namespace Fabric
 
 		public bool SetGlobalParameter(string parameterName, float value)
 		{
+			if (_forceQueueAllEvents)
+			{
+				globalParameter = new GlobalParameterData();
+			}
 			globalParameter._name = parameterName;
 			globalParameter._value = value;
 			return PostEvent("GlobalParameter", EventAction.SetGlobalParameter, globalParameter);
@@ -485,44 +520,40 @@ namespace Fabric
 					}
 					if (eventListener.GetEventListeners(eventName, eventListeners))
 					{
-						Event obj = ApplyOverrideEventActions(eventListeners, postedEvent, overrideEvent);
-						if (obj != null)
+						Event @event = ApplyOverrideEventActions(eventListeners, postedEvent, overrideEvent);
+						if (@event != null)
 						{
-							postedEvent.eventStatus = eventListener.Process(obj);
+							postedEvent.eventStatus = eventListener.Process(@event);
 						}
 					}
 					else
 					{
 						postedEvent.eventStatus = eventListener.Process(postedEvent);
 					}
-					if (!Application.isEditor || postedEvent.eventStatus != EventStatus.Handled || postedEvent.EventAction != EventAction.PlaySound)
+					if ((Application.isEditor || _deployWithActiveEventList) && postedEvent.EventAction == EventAction.PlaySound)
 					{
-						continue;
-					}
-					Component component = eventListener as Component;
-					if (!(component != null))
-					{
-						continue;
-					}
-					List<ComponentInstance> instances = component.FindInstances(postedEvent.parentGameObject, false);
-					int p;
-					for (p = 0; p < instances.Count; p++)
-					{
-						ActiveEvent activeEvent = _activeEvents.Find((ActiveEvent x) => instances[p]._instance == x._component);
-						if (activeEvent == null && instances[p]._instance._isComponentActive)
-						{
-							activeEvent = new ActiveEvent();
-							activeEvent._eventName = postedEvent._eventName;
-							activeEvent._parentGameObject = postedEvent.parentGameObject;
-							activeEvent._component = instances[p]._instance;
-							_activeEvents.Add(activeEvent);
-						}
+						AddActiveEvent(postedEvent, eventListener as Component);
 					}
 				}
-				LogEvent(postedEvent);
-				result = postedEvent.eventStatus == EventStatus.Handled;
+				result = ((postedEvent.eventStatus == EventStatus.Handled || postedEvent.eventStatus == EventStatus.Handled_Virtualized) ? true : false);
 			}
+			LogEvent(postedEvent);
 			return result;
+		}
+
+		public void AddActiveEvent(Event postedEvent, Component component)
+		{
+			if (component != null && (postedEvent.eventStatus == EventStatus.Handled || postedEvent.eventStatus == EventStatus.Handled_Virtualized))
+			{
+				ActiveEvent activeEvent = _activeEvents.Find((ActiveEvent x) => component == x._component);
+				if (activeEvent == null)
+				{
+					activeEvent = new ActiveEvent();
+					activeEvent._eventName = postedEvent._eventName;
+					activeEvent._component = component;
+					_activeEvents.Add(activeEvent);
+				}
+			}
 		}
 
 		public static int GetIDFromEventName(string eventName)
@@ -546,38 +577,50 @@ namespace Fabric
 
 		public bool PostEvent(int eventID, GameObject parentGameObject, InitialiseParameters initialiseParameters)
 		{
-			return PostEvent(eventID, EventAction.PlaySound, null, parentGameObject, initialiseParameters);
+			return PostEvent(eventID, EventAction.PlaySound, null, parentGameObject, initialiseParameters, false, null);
 		}
 
 		public bool PostEvent(int eventID, EventAction eventAction)
 		{
-			return PostEvent(eventID, eventAction, null, null, null);
+			return PostEvent(eventID, eventAction, null, null, null, false, null);
 		}
 
 		public bool PostEvent(int eventID, EventAction eventAction, object parameter)
 		{
-			return PostEvent(eventID, eventAction, parameter, null, null);
+			return PostEvent(eventID, eventAction, parameter, null, null, false, null);
 		}
 
 		public bool PostEvent(int eventID, EventAction eventAction, object parameter, GameObject parentGameObject)
 		{
-			return PostEvent(eventID, eventAction, parameter, parentGameObject, null);
+			return PostEvent(eventID, eventAction, parameter, parentGameObject, null, false, null);
 		}
 
 		public bool PostEvent(int eventID, EventAction eventAction, GameObject parentGameObject)
 		{
-			return PostEvent(eventID, eventAction, null, parentGameObject, null);
+			return PostEvent(eventID, eventAction, null, parentGameObject, null, false, null);
 		}
 
-		public void SetParameter(int eventID, string parameterName, float value, GameObject parentGameObject = null)
+		public bool SetParameter(int eventID, string parameterName, float value, GameObject parentGameObject = null)
 		{
 			if (_forceQueueAllEvents)
 			{
-				parameter = default(ParameterData);
+				parameter = new ParameterData();
 			}
-			parameter._parameter = parameterName;
+			parameter._parameter = parameterName.GetHashCode();
+			parameter._index = -1;
 			parameter._value = value;
-			PostEvent(eventID, EventAction.SetParameter, parameter, parentGameObject);
+			return PostEvent(eventID, EventAction.SetParameter, parameter, parentGameObject);
+		}
+
+		public bool SetParameter(int eventID, int parameterIndex, float value, GameObject parentGameObject = null)
+		{
+			if (_forceQueueAllEvents)
+			{
+				parameter = new ParameterData();
+			}
+			parameter._index = parameterIndex;
+			parameter._value = value;
+			return PostEvent(eventID, EventAction.SetParameter, parameter, parentGameObject);
 		}
 
 		public void SetDSPParameter(int eventID, DSPType dspType, string parameterName, float value, float time = 0f, float curve = 0.5f, GameObject parentGameObject = null)
@@ -594,7 +637,7 @@ namespace Fabric
 			PostEvent(eventID, EventAction.SetDSPParameter, dspParameter, parentGameObject);
 		}
 
-		public bool PostEvent(int eventID, EventAction eventAction, object parameter, GameObject parentGameObject, InitialiseParameters initialiseParameters, bool addToQueue = false)
+		public bool PostEvent(int eventID, EventAction eventAction, object parameter, GameObject parentGameObject, InitialiseParameters initialiseParameters, bool addToQueue, OnEventNotify onEventNotify)
 		{
 			if (parentGameObject != null)
 			{
@@ -602,12 +645,13 @@ namespace Fabric
 			}
 			else
 			{
-				newEvent.parentGameObject = base.gameObject;
+				newEvent.parentGameObject = null;
 			}
 			newEvent._eventID = eventID;
 			newEvent.EventAction = eventAction;
 			newEvent._parameter = parameter;
 			newEvent._initialiseParameters = initialiseParameters;
+			newEvent._onEventNotify = onEventNotify;
 			return PostEventID(newEvent, addToQueue);
 		}
 
@@ -660,10 +704,10 @@ namespace Fabric
 					}
 					if (eventListener.GetEventListeners(eventID, eventListeners))
 					{
-						Event obj = ApplyOverrideEventActions(eventListeners, postedEvent, overrideEvent);
-						if (obj != null)
+						Event @event = ApplyOverrideEventActions(eventListeners, postedEvent, overrideEvent);
+						if (@event != null)
 						{
-							postedEvent.eventStatus = eventListener.Process(obj);
+							postedEvent.eventStatus = eventListener.Process(@event);
 						}
 					}
 					else
@@ -671,40 +715,53 @@ namespace Fabric
 						postedEvent.eventStatus = eventListener.Process(postedEvent);
 					}
 				}
-				LogEvent(postedEvent);
-				result = postedEvent.eventStatus == EventStatus.Handled;
+				result = ((postedEvent.eventStatus == EventStatus.Handled) ? true : false);
 			}
+			LogEvent(postedEvent);
 			return result;
 		}
 
-		private void Update()
+		public void UpdateInternal()
 		{
 			profiler.Begin();
 			for (int i = 0; i < _eventQueue.Count; i++)
 			{
-				Event obj = _eventQueue[i];
-				if (obj.parentGameObject == null)
+				Event @event = _eventQueue[i];
+				if (@event.parentGameObject == null)
 				{
 					_eventQueue.RemoveAt(i);
 				}
-				else if (obj._delayTimer < obj._delay)
+				else if (@event._delayTimer < @event._delay)
 				{
-					obj._delayTimer += FabricTimer.GetRealtimeDelta();
+					@event._delayTimer += FabricTimer.GetRealtimeDelta();
 				}
-				else if (ProcessEvent(obj))
+				else if (ProcessEvent(@event))
 				{
 					_eventQueue.RemoveAt(i);
 				}
 			}
+			_eventEditor.Update();
 			_globalParameterManager.Update();
-			if (Application.isEditor)
+			if (Application.isEditor || _deployWithActiveEventList)
 			{
 				for (int j = 0; j < _activeEvents.Count; j++)
 				{
 					ActiveEvent activeEvent = _activeEvents[j];
 					if (activeEvent._component == null || !activeEvent._component.IsComponentActive())
 					{
-						_activeEvents.Remove(_activeEvents[j]);
+						if (activeEvent._time == 0f)
+						{
+							activeEvent._time = _activeEventPersistenceTime;
+						}
+						else
+						{
+							activeEvent._time -= FabricTimer.GetRealtimeDelta();
+						}
+						if (activeEvent._time <= 0f)
+						{
+							_activeEvents.Remove(activeEvent);
+							activeEvent._time = 0f;
+						}
 					}
 				}
 			}
@@ -755,8 +812,8 @@ namespace Fabric
 		{
 			for (int i = 0; i < _eventList.Count; i++)
 			{
-				string text = _eventList[i];
-				if (eventName == text)
+				string b = _eventList[i];
+				if (eventName == b)
 				{
 					return i;
 				}

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Fabric.TimelineComponent
 {
 	[AddComponentMenu("Fabric/Components/TimelineComponent")]
-	public class TimelineComponent : Component
+	public class TimelineComponent : Component, IRTPPropertyListener
 	{
 		private TimelineParameter[] _parametersList;
 
@@ -21,10 +21,13 @@ namespace Fabric.TimelineComponent
 			base.OnInitialise(inPreviewMode);
 		}
 
-		internal override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
+		public override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
 		{
-			ResetParameters();
-			base.PlayInternal(zComponentInstance, _fadeInTime, _fadeInCurve, dontPlayComponents);
+			if (CheckMIDI(zComponentInstance))
+			{
+				ResetParameters();
+				base.PlayInternal(zComponentInstance, _fadeInTime, _fadeInCurve, dontPlayComponents);
+			}
 		}
 
 		public TimelineParameter[] GetParameterList(bool update = false)
@@ -224,11 +227,49 @@ namespace Fabric.TimelineComponent
 			for (int i = 0; i < _parametersList.Length; i++)
 			{
 				TimelineParameter timelineParameter = _parametersList[i];
-				if (timelineParameter._name == parameterData._parameter)
+				if ((parameterData._index >= 0) ? (i == parameterData._index) : (timelineParameter._ID == parameterData._parameter))
 				{
 					timelineParameter.SetValue(parameterData._value);
 				}
 			}
+		}
+
+		List<RTPProperty> IRTPPropertyListener.CollectProperties()
+		{
+			if (_parametersList == null)
+			{
+				_parametersList = GetParameterList(true);
+			}
+			List<RTPProperty> list = CollectProperties();
+			if (_parametersList != null)
+			{
+				for (int i = 0; i < _parametersList.Length; i++)
+				{
+					TimelineParameter timelineParameter = _parametersList[i];
+					list.Add(new RTPProperty(8, timelineParameter._name, timelineParameter._min, timelineParameter._max));
+				}
+			}
+			return list;
+		}
+
+		bool IRTPPropertyListener.UpdateProperty(RTPProperty property, float value, RTPPropertyType type)
+		{
+			if (UpdateProperty(property, value, type))
+			{
+				return true;
+			}
+			if (property._property == 8)
+			{
+				for (int i = 0; i < _parametersList.Length; i++)
+				{
+					TimelineParameter timelineParameter = _parametersList[i];
+					if (timelineParameter._name == property._name)
+					{
+						timelineParameter.SetValue(value);
+					}
+				}
+			}
+			return false;
 		}
 	}
 }

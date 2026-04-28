@@ -14,12 +14,12 @@ namespace Fabric
 
 		private Preset[] _presetList;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public string _currentSwitchedPreset = "";
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public bool _enableHierarchyChangeDetector = true;
 
 		bool IEventListener.IsDestroyed
@@ -186,14 +186,21 @@ namespace Fabric
 			{
 				return;
 			}
-			for (int i = 0; i < _activePresets.Count; i++)
+			int num = 0;
+			while (true)
 			{
-				if (_activePresets[i] == preset)
+				if (num < _activePresets.Count)
 				{
-					preset.Deactivate();
-					break;
+					if (_activePresets[num] == preset)
+					{
+						break;
+					}
+					num++;
+					continue;
 				}
+				return;
 			}
+			preset.Deactivate();
 		}
 
 		public void SetPresetEventName(string presetName, string eventName)

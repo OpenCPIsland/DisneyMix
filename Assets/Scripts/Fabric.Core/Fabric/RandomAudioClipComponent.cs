@@ -6,8 +6,6 @@ namespace Fabric
 	[AddComponentMenu("Fabric/Components/RandomAudioClipComponent")]
 	public class RandomAudioClipComponent : AudioComponent
 	{
-		private System.Random _randomComponents = new System.Random();
-
 		private AudioClip _selectedAudioClip;
 
 		private int[] _randomNoRepeatIndexes;
@@ -22,8 +20,8 @@ namespace Fabric
 		[SerializeField]
 		public int[] _randomWeights;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public bool _shareRandomNoRepeatHistory;
 
 		[SerializeField]
@@ -31,12 +29,12 @@ namespace Fabric
 
 		private ShuffleBag<int> _shuffleBag = new ShuffleBag<int>();
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public bool _looped;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public bool _delayOnFirstPlay;
 
 		[HideInInspector]
@@ -50,6 +48,14 @@ namespace Fabric
 		[HideInInspector]
 		[SerializeField]
 		public float _delayMaxRandomization;
+
+		private System.Random _randomComponents
+		{
+			get
+			{
+				return Generic._random;
+			}
+		}
 
 		private void OnDestroy()
 		{
@@ -88,14 +94,17 @@ namespace Fabric
 			return true;
 		}
 
-		internal override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
+		public override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
 		{
-			if (_delayOnFirstPlay)
+			if (CheckMIDI(zComponentInstance))
 			{
-				float num = _loopDelay + UnityEngine.Random.Range(_delayRandomization, _delayMaxRandomization);
-				zComponentInstance._instance.SetPlayScheduledAdditive(num, 0.0);
+				if (_delayOnFirstPlay)
+				{
+					float num = _loopDelay + UnityEngine.Random.Range(_delayRandomization, _delayMaxRandomization);
+					zComponentInstance._instance.SetPlayScheduledAdditive(num, 0.0);
+				}
+				PlayRandomomponent(zComponentInstance);
 			}
-			PlayRandomomponent(zComponentInstance);
 		}
 
 		private void PlayRandomomponent(ComponentInstance zComponentInstance)
@@ -147,7 +156,7 @@ namespace Fabric
 			{
 				_randomNoRepeatIndexes[i] = i;
 			}
-            FabShuffle<int>.Shuffle(_randomNoRepeatIndexes, _randomComponents);
+			MyArray<int>.Shuffle(_randomNoRepeatIndexes, _randomComponents);
 		}
 
 		private int GetNextRandomNoRepeatIndex()
@@ -158,7 +167,7 @@ namespace Fabric
 				if (_randomNoRepeatIndex == -1 || _randomNoRepeatIndex >= _audioClips.Length)
 				{
 					int num = _randomNoRepeatIndexes[_randomNoRepeatIndexes.Length - 1];
-                    FabShuffle<int>.Shuffle(_randomNoRepeatIndexes, _randomComponents);
+					MyArray<int>.Shuffle(_randomNoRepeatIndexes, _randomComponents);
 					if (num == _randomNoRepeatIndexes[0])
 					{
 						int num2 = _randomNoRepeatIndexes[0];

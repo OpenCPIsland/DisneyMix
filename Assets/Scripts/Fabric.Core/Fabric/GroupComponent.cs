@@ -3,13 +3,14 @@ using UnityEngine;
 
 namespace Fabric
 {
+	[ExecuteInEditMode]
 	[AddComponentMenu("Fabric/Components/GroupComponent")]
 	public class GroupComponent : Component
 	{
 		private bool _solo;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public bool _showInMixerView = true;
 
 		[HideInInspector]
@@ -20,8 +21,8 @@ namespace Fabric
 		[HideInInspector]
 		public bool _isRegisteredWithMainHierarchy;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public bool _ignoreUnloadUnusedAssets = true;
 
 		[NonSerialized]
@@ -31,6 +32,9 @@ namespace Fabric
 		[NonSerialized]
 		[HideInInspector]
 		public static bool _createProxy = true;
+
+		[SerializeField]
+		public EventEditor _eventEditor;
 
 		private bool finishedPlayingOncePerFrame;
 
@@ -55,15 +59,33 @@ namespace Fabric
 			return false;
 		}
 
-		internal override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents = false)
+		public override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents = false)
 		{
-			finishedPlayingOncePerFrame = false;
-			base.PlayInternal(zComponentInstance, target, curve, dontPlayComponents);
+			if (CheckMIDI(zComponentInstance))
+			{
+				finishedPlayingOncePerFrame = false;
+				base.PlayInternal(zComponentInstance, target, curve, dontPlayComponents);
+			}
 		}
 
 		internal override void OnFinishPlaying(double time)
 		{
-			if (!finishedPlayingOncePerFrame)
+			if (_notifyParentComponent == NotifyParentType.AllComponentsHaveFinished)
+			{
+				int num = 0;
+				for (int i = 0; i < _componentsArray.Length; i++)
+				{
+					if (_componentsArray[i].IsComponentActive())
+					{
+						num++;
+					}
+				}
+				if (num <= 1)
+				{
+					base.OnFinishPlaying(time);
+				}
+			}
+			else if (!finishedPlayingOncePerFrame)
 			{
 				base.OnFinishPlaying(time);
 				finishedPlayingOncePerFrame = true;
@@ -82,16 +104,55 @@ namespace Fabric
 
 		public void Awake()
 		{
-			if (!Component._initializationInProgress && !(FabricManager.Instance == null) && !IsFabricHierarchyPresent() && !_isInstance && _targetGroupComponentPath != null)
+			RegisterWithMainHierarchy();
+		}
+
+		private void OnEnable()
+		{
+			if (Application.isEditor && !Application.isPlaying)
 			{
-				_isRegisteredWithMainHierarchy = FabricManager.Instance.RegisterGroupComponent(this, _targetGroupComponentPath, _createProxy);
+				UnregisterWithMainHierarchy();
+				RegisterWithMainHierarchy();
+			}
+		}
+
+		private void Update()
+		{
+			if (_eventEditor != null)
+			{
+				_eventEditor.Update();
 			}
 		}
 
 		private void OnDestroy()
 		{
-			if (!_quitting && !IsFabricHierarchyPresent() && !(FabricManager.Instance == null) && _isRegisteredWithMainHierarchy)
+			if (!_quitting && !IsFabricHierarchyPresent() && !(FabricManager.Instance == null))
 			{
+				UnregisterWithMainHierarchy();
+				Destroy();
+			}
+		}
+
+		public void RegisterWithMainHierarchy()
+		{
+			if (!Component._initializationInProgress && !(FabricManager.Instance == null) && !IsFabricHierarchyPresent() && !_isInstance)
+			{
+				if (_eventEditor != null)
+				{
+					_eventEditor.Initialise();
+				}
+				_isRegisteredWithMainHierarchy = FabricManager.Instance.RegisterGroupComponent(this, _targetGroupComponentPath, _createProxy);
+			}
+		}
+
+		public void UnregisterWithMainHierarchy()
+		{
+			if (_isRegisteredWithMainHierarchy)
+			{
+				if (_eventEditor != null)
+				{
+					_eventEditor.Shutdown();
+				}
 				_isRegisteredWithMainHierarchy = FabricManager.Instance.UnregisterGroupComponent(this);
 				if (!_ignoreUnloadUnusedAssets)
 				{

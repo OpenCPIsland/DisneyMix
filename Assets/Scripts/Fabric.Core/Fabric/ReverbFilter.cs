@@ -98,7 +98,12 @@ namespace Fabric
 
 		public override UnityEngine.Component CreateComponent(GameObject gameObject)
 		{
-			return gameObject.AddComponent<AudioReverbFilter>();
+			AudioReverbFilter audioReverbFilter = gameObject.GetComponent<AudioReverbFilter>();
+			if (audioReverbFilter == null)
+			{
+				audioReverbFilter = gameObject.AddComponent<AudioReverbFilter>();
+			}
+			return audioReverbFilter;
 		}
 
 		public override string GetTypeByName()
@@ -108,7 +113,7 @@ namespace Fabric
 
 		public override void UpdateParameters()
 		{
-			if (!_dryLevel.HasReachedTarget() && !_reverbLevel.HasReachedTarget() && !_reflectionsLevel.HasReachedTarget())
+			if (_dryLevel.HasReachedTarget() && _reverbLevel.HasReachedTarget() && _reflectionsLevel.HasReachedTarget())
 			{
 				return;
 			}
@@ -126,6 +131,7 @@ namespace Fabric
 					audioReverbFilter.reverbLevel = _reverbLevel.GetValue();
 				}
 			}
+			base.UpdateParameters();
 		}
 	}
 }

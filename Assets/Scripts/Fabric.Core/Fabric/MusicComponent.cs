@@ -32,6 +32,7 @@ namespace Fabric
 		private MusicTransitionState _musicTransitionState;
 
 		[HideInInspector]
+		[SerializeField]
 		public bool _syncToMusicOnFirstPlay = true;
 
 		protected override void OnInitialise(bool inPreviewMode = false)
@@ -64,8 +65,12 @@ namespace Fabric
 			return result;
 		}
 
-		internal override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
+		public override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
 		{
+			if (!CheckMIDI(zComponentInstance))
+			{
+				return;
+			}
 			base.PlayInternal(zComponentInstance, target, curve, true);
 			if (!(_defaultComponent != null))
 			{
@@ -73,9 +78,9 @@ namespace Fabric
 			}
 			if (_activeMusicTimeSettings != null)
 			{
-				if (_syncToMusicOnFirstPlay)
+				if (_syncToMusicOnFirstPlay && !_musicTimeResetOnPlay)
 				{
-					_componentInstance._instance.SetPlayScheduledAdditive(_activeMusicTimeSettings.GetDelay(), 0.0);
+					_componentInstance._instance.SetPlayScheduledAdditive(_activeMusicTimeSettings.GetDelay(this), 0.0);
 				}
 				_activeMusicTimeSettings._onBeatDetected += OnBeat;
 				_activeMusicTimeSettings._onBarDetected += OnBar;
@@ -84,7 +89,7 @@ namespace Fabric
 			_currentlyPlayingComponent = _defaultComponent;
 		}
 
-		internal override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd = 0.0)
+		public override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd = 0.0)
 		{
 			base.StopInternal(stopInstances, forceStop, target, curve, scheduleEnd);
 			if (_activeMusicTimeSettings != null)
@@ -106,16 +111,19 @@ namespace Fabric
 			}
 		}
 
-		internal override void OnMarker(double time)
+		internal override bool OnMarker(double time)
 		{
-			if (_activeTransition != null)
+			if (_activeTransition == null)
 			{
-				MusicTransition.MusicTransitionHolder activeTransitionComponentFromState = _activeTransition.GetActiveTransitionComponentFromState(_musicTransitionState);
-				if (activeTransitionComponentFromState != null && activeTransitionComponentFromState._musicSyncType == MusicSyncType.OnMarker)
-				{
-					PlayNext(time);
-				}
+				return false;
 			}
+			MusicTransition.MusicTransitionHolder activeTransitionComponentFromState = _activeTransition.GetActiveTransitionComponentFromState(_musicTransitionState);
+			if (activeTransitionComponentFromState != null && activeTransitionComponentFromState._musicSyncType == MusicSyncType.OnMarker)
+			{
+				PlayNext(time);
+				return true;
+			}
+			return false;
 		}
 
 		private void OnBeat(double time)
@@ -217,15 +225,23 @@ namespace Fabric
 					}
 				}
 			}
-			for (int j = 0; j < _components.Count; j++)
+			int num = 0;
+			Component component;
+			while (true)
 			{
-				Component component = _components[j];
-				if (component.name == name)
+				if (num < _components.Count)
 				{
-					_toComponent = component;
-					break;
+					component = _components[num];
+					if (component.name == name)
+					{
+						break;
+					}
+					num++;
+					continue;
 				}
+				return;
 			}
+			_toComponent = component;
 		}
 	}
 }

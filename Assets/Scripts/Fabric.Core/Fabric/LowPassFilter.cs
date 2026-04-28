@@ -27,7 +27,12 @@ namespace Fabric
 
 		public override UnityEngine.Component CreateComponent(GameObject gameObject)
 		{
-			return gameObject.AddComponent<AudioLowPassFilter>();
+			AudioLowPassFilter audioLowPassFilter = gameObject.GetComponent<AudioLowPassFilter>();
+			if (audioLowPassFilter == null)
+			{
+				audioLowPassFilter = gameObject.AddComponent<AudioLowPassFilter>();
+			}
+			return audioLowPassFilter;
 		}
 
 		public override string GetTypeByName()
@@ -37,7 +42,7 @@ namespace Fabric
 
 		public override void UpdateParameters()
 		{
-			if (!_cutoffFrequency.HasReachedTarget() && !_lowpassResonaceQ.HasReachedTarget())
+			if (_cutoffFrequency.HasReachedTarget() && _lowpassResonaceQ.HasReachedTarget())
 			{
 				return;
 			}
@@ -51,6 +56,7 @@ namespace Fabric
 					audioLowPassFilter.lowpassResonanceQ = _lowpassResonaceQ.GetValue();
 				}
 			}
+			base.UpdateParameters();
 		}
 	}
 }

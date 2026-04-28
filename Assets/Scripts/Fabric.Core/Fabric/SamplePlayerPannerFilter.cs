@@ -9,24 +9,24 @@ namespace Fabric
 		[HideInInspector]
 		public DSPParameter _FrontLeftChannel = new DSPParameter(1f, 0f, 1f);
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public DSPParameter _FrontRightChannel = new DSPParameter(1f, 0f, 1f);
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public DSPParameter _CenterChannel = new DSPParameter(1f, 0f, 1f);
 
 		[SerializeField]
 		[HideInInspector]
 		public DSPParameter _LFEChannel = new DSPParameter(1f, 0f, 1f);
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public DSPParameter _RearLeftChannel = new DSPParameter(1f, 0f, 1f);
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public DSPParameter _RearRightChannel = new DSPParameter(1f, 0f, 1f);
 
 		private SamplePlayerComponent _samplePlayerComponent;
@@ -52,7 +52,7 @@ namespace Fabric
 
 		public override void UpdateParameters()
 		{
-			if (_FrontLeftChannel.HasReachedTarget() || _FrontRightChannel.HasReachedTarget() || _CenterChannel.HasReachedTarget() || _RearLeftChannel.HasReachedTarget() || _RearRightChannel.HasReachedTarget() || _LFEChannel.HasReachedTarget())
+			if (!_FrontLeftChannel.HasReachedTarget() || !_FrontRightChannel.HasReachedTarget() || !_CenterChannel.HasReachedTarget() || !_RearLeftChannel.HasReachedTarget() || !_RearRightChannel.HasReachedTarget() || !_LFEChannel.HasReachedTarget())
 			{
 				FabricTimer.Get();
 				if (_samplePlayerComponent != null)
@@ -64,6 +64,7 @@ namespace Fabric
 					_samplePlayerComponent._channelGains[4] = _RearLeftChannel.GetValue();
 					_samplePlayerComponent._channelGains[5] = _RearRightChannel.GetValue();
 				}
+				base.UpdateParameters();
 			}
 		}
 	}

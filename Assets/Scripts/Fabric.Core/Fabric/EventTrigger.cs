@@ -8,7 +8,7 @@ namespace Fabric
 	{
 		private Event _event = new Event();
 
-		private ParameterData parameter = default(ParameterData);
+		private ParameterData parameter = new ParameterData();
 
 		private DSPParameterData dspParameter = new DSPParameterData();
 
@@ -34,26 +34,38 @@ namespace Fabric
 
 		[SerializeField]
 		[HideInInspector]
+		public EventTriggerEnterType _eventTriggerOnEnter;
+
+		[SerializeField]
+		[HideInInspector]
+		public string _triggerEnterTag = "";
+
+		[HideInInspector]
+		[SerializeField]
 		public object _parameter;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public bool _trigger;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public string _eventValue = "";
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public float _eventParameter = 1f;
 
-		[HideInInspector]
 		[SerializeField]
-		public string _eventParameterName = "";
+		[HideInInspector]
+		public double _eventScheduleParameter;
 
 		[SerializeField]
 		[HideInInspector]
+		public string _eventParameterName = "";
+
+		[HideInInspector]
+		[SerializeField]
 		public float _delay;
 
 		[HideInInspector]
@@ -68,12 +80,16 @@ namespace Fabric
 		[HideInInspector]
 		public bool _ignoreGameObject;
 
+		[SerializeField]
+		[HideInInspector]
+		public bool _overrideParentGameObject;
+
 		[HideInInspector]
 		[SerializeField]
 		public bool _addToQueue;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public float _min;
 
 		[SerializeField]
@@ -84,8 +100,8 @@ namespace Fabric
 		[HideInInspector]
 		public DSPType _dspType;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public float _timeToTarget;
 
 		[HideInInspector]
@@ -95,104 +111,31 @@ namespace Fabric
 		[HideInInspector]
 		public GameObject _parentGameObject;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public bool _useEventID;
 
+		[NonSerialized]
 		[HideInInspector]
-		private System.Random rnd = new System.Random();
+		public int _postCount;
+
+		[SerializeField]
+		[HideInInspector]
+		public int _postCountMax;
+
+		[HideInInspector]
+		private System.Random rnd
+		{
+			get
+			{
+				return Generic._random;
+			}
+		}
 
 		private void PostEventByName(string name)
 		{
-			if (_probability < 100)
-			{
-				int num = (int)(rnd.NextDouble() * 100.0);
-				if (num > _probability)
-				{
-					return;
-				}
-			}
 			_event._eventName = name;
-			if (_useEventID)
-			{
-				_event._eventID = EventManager.GetIDFromEventName(name);
-			}
-			_event.EventAction = _eventAction;
-			_event._delay = _delay;
-			if (!_ignoreGameObject)
-			{
-				if (_parentGameObject == null)
-				{
-					_parentGameObject = base.gameObject;
-				}
-				_event.parentGameObject = _parentGameObject;
-			}
-			else
-			{
-				_event.parentGameObject = null;
-			}
-			if (_eventAction == EventAction.SetPitch || _eventAction == EventAction.SetVolume || _eventAction == EventAction.SetPan || _eventAction == EventAction.SetTime || _eventAction == EventAction.SetVolumeProperty || _eventAction == EventAction.SetPitchProperty)
-			{
-				_event._parameter = _eventParameter;
-			}
-			else if (_eventAction == EventAction.SetParameter)
-			{
-				parameter._parameter = _eventParameterName;
-				parameter._value = _eventParameter;
-				_event._parameter = parameter;
-			}
-			else if (_eventAction == EventAction.SetDSPParameter)
-			{
-				dspParameter._dspType = _dspType;
-				dspParameter._parameter = _eventParameterName;
-				dspParameter._value = _eventParameter;
-				dspParameter._time = _timeToTarget;
-				dspParameter._curve = _curve;
-				_event._parameter = dspParameter;
-			}
-			else if (_eventAction == EventAction.SwitchPreset)
-			{
-				if (switchPresetData != null)
-				{
-					_event._parameter = switchPresetData;
-				}
-			}
-			else if (_eventAction == EventAction.SetGlobalParameter)
-			{
-				if (globalParameterData != null)
-				{
-					_event._parameter = globalParameterData;
-				}
-			}
-			else if (_eventAction == EventAction.SetGlobalSwitch)
-			{
-				if (globalSwitchParameterData != null)
-				{
-					_event._parameter = globalSwitchParameterData;
-				}
-			}
-			else if (_eventAction == EventAction.TransitionToSnapshot)
-			{
-				if (switchPresetData != null)
-				{
-					_event._parameter = transitionToSnapshotData;
-				}
-			}
-			else
-			{
-				_event._parameter = _eventValue;
-			}
-			if (EventManager.Instance != null)
-			{
-				if (_useEventID)
-				{
-					EventManager.Instance.PostEventID(_event);
-				}
-				else
-				{
-					EventManager.Instance.PostEvent(_event);
-				}
-			}
+			PostEvent();
 		}
 
 		public void PostEvent()
@@ -204,6 +147,14 @@ namespace Fabric
 				{
 					return;
 				}
+			}
+			if (_postCountMax > 0)
+			{
+				if (_postCount >= _postCountMax)
+				{
+					return;
+				}
+				_postCount++;
 			}
 			_event._eventName = _eventName;
 			if (_useEventID)
@@ -230,7 +181,7 @@ namespace Fabric
 			}
 			else if (_eventAction == EventAction.SetParameter)
 			{
-				parameter._parameter = _eventParameterName;
+				parameter._parameter = _eventParameterName.GetHashCode();
 				parameter._value = _eventParameter;
 				_event._parameter = parameter;
 			}
@@ -265,9 +216,17 @@ namespace Fabric
 			{
 				_event._parameter = _eventParameterName;
 			}
+			else if (_eventAction == EventAction.LoadAudioMixer || _eventAction == EventAction.UnloadAudioMixer)
+			{
+				_event._parameter = _eventParameterName;
+			}
 			else if (_eventAction == EventAction.TransitionToSnapshot)
 			{
 				_event._parameter = transitionToSnapshotData;
+			}
+			else if (_eventAction == EventAction.PlayScheduled || _eventAction == EventAction.StopScheduled)
+			{
+				_event._parameter = _eventScheduleParameter;
 			}
 			else
 			{
@@ -306,19 +265,81 @@ namespace Fabric
 			}
 		}
 
-		private void OnTriggerEnter()
+		private void PostOnTrigger(Collider collider)
 		{
-			if (_eventTriggerType == EventTriggerType.TriggerEnter)
+			if (_eventTriggerOnEnter == EventTriggerEnterType.OnAudioListener)
+			{
+				AudioListener component = collider.gameObject.GetComponent<AudioListener>();
+				if ((bool)component)
+				{
+					PostEvent();
+				}
+			}
+			else if (_eventTriggerOnEnter == EventTriggerEnterType.OnTag)
+			{
+				if (collider.CompareTag(_triggerEnterTag))
+				{
+					PostEvent();
+				}
+			}
+			else
 			{
 				PostEvent();
 			}
 		}
 
-		private void OnTriggerExit()
+		private void PostOnTrigger2D(Collider2D collider)
+		{
+			if (_eventTriggerOnEnter == EventTriggerEnterType.OnAudioListener)
+			{
+				AudioListener component = collider.gameObject.GetComponent<AudioListener>();
+				if ((bool)component)
+				{
+					PostEvent();
+				}
+			}
+			else if (_eventTriggerOnEnter == EventTriggerEnterType.OnTag)
+			{
+				if (collider.CompareTag(_triggerEnterTag))
+				{
+					PostEvent();
+				}
+			}
+			else
+			{
+				PostEvent();
+			}
+		}
+
+		private void OnTriggerEnter(Collider collider)
+		{
+			if (_eventTriggerType == EventTriggerType.TriggerEnter)
+			{
+				PostOnTrigger(collider);
+			}
+		}
+
+		private void OnTriggerExit(Collider collider)
 		{
 			if (_eventTriggerType == EventTriggerType.TriggerExit)
 			{
-				PostEvent();
+				PostOnTrigger(collider);
+			}
+		}
+
+		private void TriggerEnter2D(Collider2D collider)
+		{
+			if (_eventTriggerType == EventTriggerType.TriggerEnter2D)
+			{
+				PostOnTrigger2D(collider);
+			}
+		}
+
+		private void TriggerExit2D(Collider2D collider)
+		{
+			if (_eventTriggerType == EventTriggerType.TriggerExit2D)
+			{
+				PostOnTrigger2D(collider);
 			}
 		}
 
@@ -330,9 +351,41 @@ namespace Fabric
 			}
 		}
 
+		private void OnCollisionEnter2D()
+		{
+			if (_eventTriggerType == EventTriggerType.CollisionEnter2D)
+			{
+				PostEvent();
+			}
+		}
+
 		private void OnCollisionExit()
 		{
-			if (_eventTriggerType == EventTriggerType.CollisionExit)
+			if (_eventTriggerType == EventTriggerType.CollisionExit2D)
+			{
+				PostEvent();
+			}
+		}
+
+		private void OnCollisionExit2D()
+		{
+			if (_eventTriggerType == EventTriggerType.CollisionEnter)
+			{
+				PostEvent();
+			}
+		}
+
+		private void OnParticleCollision()
+		{
+			if (_eventTriggerType == EventTriggerType.OnParticleCollision)
+			{
+				PostEvent();
+			}
+		}
+
+		private void OnJointBreak()
+		{
+			if (_eventTriggerType == EventTriggerType.OnJointBreak)
 			{
 				PostEvent();
 			}
@@ -389,6 +442,14 @@ namespace Fabric
 		private void OnMouseExit()
 		{
 			if (_eventTriggerType == EventTriggerType.MouseExit)
+			{
+				PostEvent();
+			}
+		}
+
+		private void OnMouseUpAsButton()
+		{
+			if (_eventTriggerType == EventTriggerType.OnMouseUpAsButton)
 			{
 				PostEvent();
 			}

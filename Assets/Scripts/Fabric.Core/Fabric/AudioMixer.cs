@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -7,7 +8,11 @@ namespace Fabric
 	[AddComponentMenu("Fabric/Mixing/AudioMixer")]
 	public class AudioMixer : MonoBehaviour, IEventListener
 	{
-		public UnityEngine.Audio.AudioMixer _audioMixer;
+		[SerializeField]
+		public List<UnityEngine.Audio.AudioMixer> _audioMixers = new List<UnityEngine.Audio.AudioMixer>();
+
+		[NonSerialized]
+		public bool _destroy;
 
 		bool IEventListener.IsDestroyed
 		{
@@ -17,29 +22,59 @@ namespace Fabric
 			}
 		}
 
-		private void Start()
+		private void Awake()
 		{
 			EventManager.Instance.RegisterListener(this, "AudioMixer");
 		}
 
 		EventStatus IEventListener.Process(Event zEvent)
 		{
-			if (_audioMixer == null)
+			if (_audioMixers.Count == 0)
 			{
 				return EventStatus.Not_Handled;
 			}
-			EventAction eventAction = zEvent.EventAction;
-			if (eventAction == EventAction.TransitionToSnapshot)
+			switch (zEvent.EventAction)
+			{
+			case EventAction.LoadAudioMixer:
+			{
+				UnityEngine.Audio.AudioMixer audioMixer3 = Resources.Load((string)zEvent._parameter) as UnityEngine.Audio.AudioMixer;
+				if (audioMixer3 != null)
+				{
+					_audioMixers.Add(audioMixer3);
+				}
+				break;
+			}
+			case EventAction.UnloadAudioMixer:
+			{
+				UnityEngine.Audio.AudioMixer audioMixer2 = _audioMixers.Find((UnityEngine.Audio.AudioMixer x) => x.name.Contains((string)zEvent._parameter));
+				if (audioMixer2 != null)
+				{
+					_audioMixers.Remove(audioMixer2);
+					Resources.UnloadAsset(audioMixer2);
+				}
+				break;
+			}
+			case EventAction.TransitionToSnapshot:
 			{
 				TransitionToSnapshotData transitionToSnapshotData = (TransitionToSnapshotData)zEvent._parameter;
-				if (transitionToSnapshotData != null)
+				if (transitionToSnapshotData == null)
 				{
-					AudioMixerSnapshot audioMixerSnapshot = _audioMixer.FindSnapshot(transitionToSnapshotData._snapshot);
-					if (audioMixerSnapshot != null)
+					break;
+				}
+				for (int i = 0; i < _audioMixers.Count; i++)
+				{
+					UnityEngine.Audio.AudioMixer audioMixer = _audioMixers[i];
+					if (audioMixer != null)
 					{
-						audioMixerSnapshot.TransitionTo(transitionToSnapshotData._timeToReach);
+						AudioMixerSnapshot audioMixerSnapshot = audioMixer.FindSnapshot(transitionToSnapshotData._snapshot);
+						if (audioMixerSnapshot != null)
+						{
+							audioMixerSnapshot.TransitionTo(transitionToSnapshotData._timeToReach);
+						}
 					}
 				}
+				break;
+			}
 			}
 			return EventStatus.Handled;
 		}

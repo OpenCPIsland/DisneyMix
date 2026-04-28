@@ -15,8 +15,12 @@ namespace Fabric.TimelineComponent
 		[SerializeField]
 		public string _name;
 
+		[NonSerialized]
 		[HideInInspector]
+		public int _ID;
+
 		[SerializeField]
+		[HideInInspector]
 		public float _min;
 
 		[HideInInspector]
@@ -31,24 +35,24 @@ namespace Fabric.TimelineComponent
 		[HideInInspector]
 		public float _velocity;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public float _seekSpeed;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		private float _seekTarget;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		private float _value;
 
 		[SerializeField]
 		[HideInInspector]
 		public bool _resetToDefaultValue;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public RTPMarkers _markers = new RTPMarkers();
 
 		private float _defaultValue;
@@ -59,6 +63,7 @@ namespace Fabric.TimelineComponent
 		{
 			_value = _seekTarget;
 			_defaultValue = _value;
+			_ID = _name.GetHashCode();
 		}
 
 		public void Reset()

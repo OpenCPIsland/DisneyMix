@@ -14,12 +14,22 @@ namespace Fabric
 		[HideInInspector]
 		public string sampleFileName = "";
 
-		[HideInInspector]
 		[SerializeField]
-		public float[] _channelGains = new float[8] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f };
+		[HideInInspector]
+		public float[] _channelGains = new float[8]
+		{
+			1f,
+			1f,
+			1f,
+			1f,
+			1f,
+			1f,
+			1f,
+			1f
+		};
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public int _leftLoopMarker;
 
 		[SerializeField]
@@ -45,7 +55,7 @@ namespace Fabric
 					{
 						sampleFileInstance._start = _leftLoopMarker;
 						sampleFileInstance._end = _rightLoopMarker;
-						base.AudioClip = AudioClip.Create(sampleFileName + " (Custom)", _rightLoopMarker, sampleFileByIndex._channels, (int)sampleFileByIndex._sampleRate, sampleFileByIndex._threeD, true, OnAudioRead);
+						base.AudioClip = AudioClip.Create(sampleFileName + " (Custom)", _rightLoopMarker, sampleFileByIndex._channels, (int)sampleFileByIndex._sampleRate, true, OnAudioRead);
 						sampleFileInstance._loop = base.Loop;
 					}
 				}
@@ -82,7 +92,7 @@ namespace Fabric
 			}
 		}
 
-		internal override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
+		public override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
 		{
 			if (sampleFileInstance != null)
 			{

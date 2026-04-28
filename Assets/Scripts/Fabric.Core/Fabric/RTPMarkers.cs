@@ -25,6 +25,32 @@ namespace Fabric
 			return null;
 		}
 
+		public bool AddMarker(string label, float position)
+		{
+			if (GetMarker(label) != null)
+			{
+				return false;
+			}
+			_markers.Add(new RTPMarker(label, position));
+			return true;
+		}
+
+		public bool RemoveMarker(string label)
+		{
+			RTPMarker marker = GetMarker(label);
+			if (marker != null)
+			{
+				_markers.Remove(marker);
+				return true;
+			}
+			return false;
+		}
+
+		public void RemoveMarker(RTPMarker rtpMarker)
+		{
+			_markers.Remove(rtpMarker);
+		}
+
 		public void KeyOffMarker()
 		{
 			if (_keyOffMarker != null)

@@ -60,11 +60,11 @@ namespace Fabric
 			Gizmos.color = Color.red;
 			float num = 0.25f;
 			Gizmos.DrawCube(base.transform.position, new Vector3(num, num, num));
-			_CRSpline.GizmoDraw(_time, _splineColor);
+			_CRSpline.GizmoDraw(_time, _splineColor, base.gameObject);
 			if ((bool)_audioListener)
 			{
 				float t = 0f;
-				Vector3 nearestPointToListener = _CRSpline.GetNearestPointToListener(_audioListener.transform.position, ref t);
+				Vector3 nearestPointToListener = _CRSpline.GetNearestPointToListener(_audioListener.transform.position, ref t, base.gameObject);
 				Gizmos.DrawLine(nearestPointToListener, _audioListener.transform.position);
 			}
 		}
@@ -80,7 +80,7 @@ namespace Fabric
 				}
 				return;
 			}
-			Vector3 nearestPointToListener = _CRSpline.GetNearestPointToListener(_audioListener.transform.position, ref t);
+			Vector3 nearestPointToListener = _CRSpline.GetNearestPointToListener(_audioListener.transform.position, ref t, base.gameObject);
 			if (_audioSplineSource != null)
 			{
 				_audioSplineSource.gameObject.transform.position = nearestPointToListener;

@@ -7,10 +7,12 @@ namespace Fabric
 	[Serializable]
 	public class GlobalParameterManager : IEventListener
 	{
+		[Serializable]
 		public class GlobalParametersFastList : FastList<string, GlobalParameter>
 		{
 		}
 
+		[Serializable]
 		public class GlobalSwitchFastList : FastList<string, GlobalSwitch>
 		{
 		}

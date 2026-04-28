@@ -46,6 +46,22 @@ namespace Fabric
 			{
 				ConvertAndWrite(fileStream, samples.ToArray());
 				WriteHeader(fileStream, 44100, 2, samples.Count);
+				fileStream.Close();
+			}
+			return true;
+		}
+
+		public static bool Save(string filename, float[] source = null)
+		{
+			if (!filename.ToLower().EndsWith(".wav"))
+			{
+				filename += ".wav";
+			}
+			using (FileStream fileStream = CreateEmpty(filename))
+			{
+				ConvertAndWrite(fileStream, source);
+				WriteHeader(fileStream, 44100, 1, source.Length);
+				fileStream.Close();
 			}
 			return true;
 		}

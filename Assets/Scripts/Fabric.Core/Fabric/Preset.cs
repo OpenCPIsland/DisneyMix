@@ -7,16 +7,16 @@ namespace Fabric
 	[AddComponentMenu("Fabric/Mixing/DynamicMixer/Preset")]
 	public class Preset : MonoBehaviour
 	{
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public bool _isPersistent;
 
 		[HideInInspector]
 		[SerializeField]
 		public bool _allowAutoGroupComponentUpdates = true;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public string _eventName;
 
 		[SerializeField]
@@ -183,14 +183,21 @@ namespace Fabric
 			{
 				return;
 			}
-			for (int i = 0; i < _groupPreset.Length; i++)
+			int num = 0;
+			while (true)
 			{
-				if (_groupPreset[i].GroupComponent != null && _groupPreset[i].GroupComponent.Name == groupComponent.Name)
+				if (num < _groupPreset.Length)
 				{
-					UnityEngine.Object.DestroyImmediate(_groupPreset[i]);
-					break;
+					if (_groupPreset[num].GroupComponent != null && _groupPreset[num].GroupComponent.Name == groupComponent.Name)
+					{
+						break;
+					}
+					num++;
+					continue;
 				}
+				return;
 			}
+			UnityEngine.Object.DestroyImmediate(_groupPreset[num]);
 		}
 
 		public GroupPreset GetGroupComponentByID(int id)

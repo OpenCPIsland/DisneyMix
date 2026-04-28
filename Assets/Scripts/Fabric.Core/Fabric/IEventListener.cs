@@ -5,7 +5,10 @@ namespace Fabric
 {
 	public interface IEventListener
 	{
-		bool IsDestroyed { get; }
+		bool IsDestroyed
+		{
+			get;
+		}
 
 		EventStatus Process(Event postedEvent);
 

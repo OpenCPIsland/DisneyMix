@@ -16,16 +16,16 @@ namespace Fabric
 			public MusicSyncType _musicSyncType;
 		}
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public MusicTransitionHolder _fromComponent = new MusicTransitionHolder();
 
 		[HideInInspector]
 		[SerializeField]
 		public MusicTransitionHolder _transition = new MusicTransitionHolder();
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public MusicTransitionHolder _toComponent = new MusicTransitionHolder();
 
 		public MusicTransitionHolder GetActiveTransitionComponentFromState(MusicTransitionState state)

@@ -37,6 +37,28 @@ namespace Fabric
 		[SerializeField]
 		public AudioMixerGroup _audioMixerGroup;
 
+		public bool IncrementInstance()
+		{
+			_instancesActive++;
+			if (!_limitInstances || _instancesActive <= _instanceLimit)
+			{
+				return true;
+			}
+			_instancesActive = _instanceLimit;
+			return false;
+		}
+
+		public bool DecrementInstance()
+		{
+			_instancesActive--;
+			if (_instancesActive >= 0)
+			{
+				return true;
+			}
+			_instancesActive = 0;
+			return false;
+		}
+
 		public bool IncrementAudioComponent()
 		{
 			if (!_limitAudioComponents)
@@ -52,6 +74,11 @@ namespace Fabric
 			return false;
 		}
 
+		public int GetActiveInstances()
+		{
+			return _instancesActive;
+		}
+
 		public bool DecrementAudioComponent()
 		{
 			if (_limitAudioComponents)
@@ -64,6 +91,11 @@ namespace Fabric
 				_audioComponentsActive = 0;
 			}
 			return false;
+		}
+
+		public int GetActiveAudioComponents()
+		{
+			return _audioComponentsActive;
 		}
 	}
 }

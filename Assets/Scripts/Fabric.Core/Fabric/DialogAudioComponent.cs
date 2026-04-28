@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Fabric
 {
@@ -12,9 +12,11 @@ namespace Fabric
 		[SerializeField]
 		public string _audioClipReference;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public DialogAudioLoadedFrom _dialogAudioLoadedFrom;
+
+		private bool _loadPlayCoroutineActive;
 
 		public string AudioClipReference
 		{
@@ -34,7 +36,12 @@ namespace Fabric
 			base.Destroy();
 		}
 
-		private void OnLevelWasLoaded()
+		private void Awake()
+		{
+			SceneManager.sceneLoaded += SceneLoaded;
+		}
+
+		private void SceneLoaded(Scene scene, LoadSceneMode m)
 		{
 			if (base.CurrentState != AudioComponentState.Playing)
 			{
@@ -67,12 +74,12 @@ namespace Fabric
 
 		protected void LoadLanguageAudioClip(LanguageProperties language)
 		{
-			string text = language._languageFolder + "/" + _audioClipReference.Replace(".wav", "");
-			text += language._languagePrefix;
-			text = text.Replace("\\", "/");
+			string str = language._languageFolder + "/" + _audioClipReference.Replace(".wav", "");
+			str += language._languagePrefix;
+			str = str.Replace("\\", "/");
 			if (_dialogAudioLoadedFrom == DialogAudioLoadedFrom.Resources)
 			{
-				base.AudioClip = Resources.Load(text) as AudioClip;
+				base.AudioClip = (Resources.Load(str) as AudioClip);
 			}
 		}
 
@@ -84,9 +91,11 @@ namespace Fabric
 				LanguageProperties language = FabricManager.Instance.GetLanguagePropertiesByIndex(languageIndex);
 				if (language != null)
 				{
+					_loadPlayCoroutineActive = true;
 					yield return StartCoroutine(FabricManager.Instance._customAudioClipLoader.LoadAudioClip(_audioClipReference, language));
 					base.AudioClip = FabricManager.Instance._customAudioClipLoader._audioClip;
-					_003C_003En__FabricatedMethod3(zComponentInstance, target, curve, dontPlayComponents);
+					base.PlayInternal(zComponentInstance, target, curve, dontPlayComponents);
+					_loadPlayCoroutineActive = false;
 				}
 			}
 		}
@@ -117,27 +126,31 @@ namespace Fabric
 
 		protected override void Reset()
 		{
+			_loadPlayCoroutineActive = false;
 			base.Reset();
 		}
 
-		internal override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
+		public override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
 		{
-			if (_dialogAudioLoadedFrom == DialogAudioLoadedFrom.CustomAudioClipLoader && FabricManager.Instance._customAudioClipLoader != null)
+			if (CheckMIDI(zComponentInstance))
 			{
-				StartCoroutine(LoadPlayCoroutine(zComponentInstance, target, curve, dontPlayComponents));
-				return;
+				if (_dialogAudioLoadedFrom == DialogAudioLoadedFrom.CustomAudioClipLoader && FabricManager.Instance._customAudioClipLoader != null)
+				{
+					StartCoroutine(LoadPlayCoroutine(zComponentInstance, target, curve, dontPlayComponents));
+					return;
+				}
+				Load();
+				base.PlayInternal(zComponentInstance, target, curve, dontPlayComponents);
 			}
-			Load();
-			base.PlayInternal(zComponentInstance, target, curve, dontPlayComponents);
 		}
 
-		protected override void StopAudioComponent()
+		protected override void StopAudioComponent(bool notifyParent)
 		{
 			base.StopAudioComponent();
 			UnLoad();
 		}
 
-		internal override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd)
+		public override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd)
 		{
 			base.StopInternal(stopInstances, forceStop, target, curve, scheduleEnd);
 			if (forceStop)
@@ -155,6 +168,24 @@ namespace Fabric
 		public void SetAudioClipReference(string audioClipReference)
 		{
 			_audioClipReference = audioClipReference;
+		}
+
+		public override bool IsPlaying()
+		{
+			if (_loadPlayCoroutineActive || (base.AudioClip != null && base.AudioClip.loadState == AudioDataLoadState.Loading))
+			{
+				return true;
+			}
+			return base.IsPlaying();
+		}
+
+		public override bool IsComponentActive()
+		{
+			if (_loadPlayCoroutineActive || (base.AudioClip != null && base.AudioClip.loadState == AudioDataLoadState.Loading))
+			{
+				return true;
+			}
+			return base.IsComponentActive();
 		}
 
 		public override EventStatus OnProcessEvent(Event zEvent, ComponentInstance zInstance)
@@ -179,12 +210,6 @@ namespace Fabric
 				}
 			}
 			return result;
-		}
-
-		[CompilerGenerated]
-		private void _003C_003En__FabricatedMethod3(ComponentInstance P_0, float P_1, float P_2, bool P_3)
-		{
-			base.PlayInternal(P_0, P_1, P_2, P_3);
 		}
 	}
 }

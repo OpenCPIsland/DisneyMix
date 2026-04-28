@@ -17,5 +17,11 @@ namespace Fabric
 
 		[NonSerialized]
 		public bool _keyOff;
+
+		public RTPMarker(string label, float value)
+		{
+			_label = label;
+			_value = value;
+		}
 	}
 }

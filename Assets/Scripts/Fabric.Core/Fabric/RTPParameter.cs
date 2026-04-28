@@ -1,5 +1,5 @@
-using System;
 using Fabric.TimelineComponent;
+using System;
 using UnityEngine;
 
 namespace Fabric
@@ -11,9 +11,13 @@ namespace Fabric
 
 		private static float MIN_NORMALISED_RANGE = 0f;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public string Name = "";
+
+		[NonSerialized]
+		[HideInInspector]
+		public int _ID;
 
 		[SerializeField]
 		public float _value;
@@ -22,27 +26,27 @@ namespace Fabric
 		[HideInInspector]
 		public float _min;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public float _max = 1f;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public ParameterLoopBehaviour _loopBehaviour;
 
 		[HideInInspector]
 		[SerializeField]
 		public float _velocity;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public float _seekSpeed;
 
 		[SerializeField]
 		private float _seekTarget;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public bool _resetToDefaultValue = true;
 
 		private float _defaultValue;
@@ -53,16 +57,32 @@ namespace Fabric
 		[SerializeField]
 		public RTPMarkers _markers = new RTPMarkers();
 
+		public RTPParameter()
+		{
+		}
+
+		public RTPParameter(float value, float min, float max)
+		{
+			_value = value;
+			_min = min;
+			_max = max;
+		}
+
 		public void Init()
 		{
 			_value = _seekTarget;
 			_defaultValue = _value;
 			_direction = 1f;
+			_ID = Name.GetHashCode();
 		}
 
-		public void Reset()
+		public void Reset(bool randomise = false)
 		{
-			if (_resetToDefaultValue)
+			if (randomise)
+			{
+				_value = (_seekTarget = UnityEngine.Random.Range(0f, 1f));
+			}
+			else if (_resetToDefaultValue)
 			{
 				_value = (_seekTarget = _defaultValue);
 			}
@@ -70,12 +90,39 @@ namespace Fabric
 			_direction = 1f;
 		}
 
+		public void SetSeekSpeed(float value)
+		{
+			_seekSpeed = value;
+		}
+
+		public float GetSeekSpeed()
+		{
+			return _seekSpeed;
+		}
+
+		public float GetValue()
+		{
+			return RTPManager.CalculateNewValueRange(_seekTarget, _min, _max, 0f, 1f);
+		}
+
+		public float GetNormalisedValue()
+		{
+			return _seekTarget;
+		}
+
 		public void SetValue(float value)
 		{
 			AudioTools.Limit(ref value, _min, _max);
-			float num = 1f / (_max - _min);
-			value *= num;
-			_seekTarget = value;
+			_seekTarget = RTPManager.CalculateNewValueRange(value, 0f, 1f, _min, _max);
+		}
+
+		public void SetValueFromMarker(string label)
+		{
+			RTPMarker marker = _markers.GetMarker(label);
+			if (marker != null)
+			{
+				SetValue(marker._value);
+			}
 		}
 
 		public void SetNormalisedValue(float value)
@@ -85,7 +132,7 @@ namespace Fabric
 
 		public float GetCurrentValue()
 		{
-			return Mathf.Lerp(_min, _max, _value);
+			return RTPManager.CalculateNewValueRange(_value, _min, _max, 0f, 1f);
 		}
 
 		public float GetNormalisedCurrentValue()

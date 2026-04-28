@@ -6,12 +6,12 @@ namespace Fabric.TimelineComponent
 	[AddComponentMenu("")]
 	public class RandomPoolManager : Component
 	{
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public Dictionary<string, RandomComponent> _definitionsTable = new Dictionary<string, RandomComponent>();
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public string projectName;
 	}
 }

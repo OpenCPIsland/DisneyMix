@@ -24,6 +24,9 @@ namespace Fabric
 		[NonSerialized]
 		public string _componentName = "";
 
+		[NonSerialized]
+		public float _value;
+
 		public RTPProperty(int property, string name, float min, float max)
 		{
 			_property = property;

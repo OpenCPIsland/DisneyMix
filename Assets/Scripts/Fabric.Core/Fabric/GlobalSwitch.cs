@@ -7,11 +7,6 @@ namespace Fabric
 	[Serializable]
 	public class GlobalSwitch
 	{
-		public interface IListener
-		{
-			bool OnSwitch(Switch _switch);
-		}
-
 		[Serializable]
 		public class Switch
 		{
@@ -23,6 +18,11 @@ namespace Fabric
 
 			[SerializeField]
 			public float _RTPParameterMax;
+		}
+
+		public interface IListener
+		{
+			bool OnSwitch(Switch _switch);
 		}
 
 		[SerializeField]
@@ -39,14 +39,29 @@ namespace Fabric
 
 		private Switch _activeSwitch;
 
+		public bool AddSwitch(string name)
+		{
+			for (int i = 0; i < _switches.Count; i++)
+			{
+				if (_switches[i]._name == name)
+				{
+					return false;
+				}
+			}
+			Switch @switch = new Switch();
+			@switch._name = name;
+			_switches.Add(@switch);
+			return true;
+		}
+
 		public bool SetActiveSwitch(string name)
 		{
 			for (int i = 0; i < _switches.Count; i++)
 			{
-				Switch obj = _switches[i];
-				if (name == obj._name)
+				Switch @switch = _switches[i];
+				if (name == @switch._name)
 				{
-					_activeSwitch = obj;
+					_activeSwitch = @switch;
 					NotifyListeners();
 					return true;
 				}

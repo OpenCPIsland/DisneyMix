@@ -26,6 +26,55 @@ namespace Fabric
 			}
 		}
 
+		public void Clear()
+		{
+			_keys.Clear();
+			_data.Clear();
+			_fastList.Clear();
+		}
+
+		public Key[] Keys()
+		{
+			return _keys.ToArray();
+		}
+
+		public int GetIndexByData(Data data)
+		{
+			for (int i = 0; i < _data.Count; i++)
+			{
+				if (_data[i].Equals(data))
+				{
+					return i;
+				}
+			}
+			return -1;
+		}
+
+		public int GetIndexByKey(Key key)
+		{
+			for (int i = 0; i < _keys.Count; i++)
+			{
+				if (_keys[i].Equals(key))
+				{
+					return i;
+				}
+			}
+			return -1;
+		}
+
+		public bool UpdateKey(Key oldKey, Key newKey)
+		{
+			for (int i = 0; i < _keys.Count; i++)
+			{
+				if (_keys[i].Equals(oldKey) && !_keys.Contains(newKey))
+				{
+					_keys[i] = newKey;
+					return true;
+				}
+			}
+			return false;
+		}
+
 		public Data FindItem(Key key)
 		{
 			if (_fastList.ContainsKey(key))
@@ -54,6 +103,44 @@ namespace Fabric
 				return _data[index];
 			}
 			return default(Data);
+		}
+
+		public void Remove(Key name)
+		{
+			for (int i = 0; i < _keys.Count; i++)
+			{
+				if (_keys[i].Equals(name))
+				{
+					_keys.RemoveAt(i);
+					_data.RemoveAt(i);
+					break;
+				}
+			}
+			if (_fastList.ContainsKey(name))
+			{
+				_fastList.Remove(name);
+			}
+		}
+
+		public void Add(Key name, Data item)
+		{
+			if (!Contains(name))
+			{
+				_keys.Add(name);
+				_data.Add(item);
+			}
+		}
+
+		public bool Contains(Key name)
+		{
+			for (int i = 0; i < _keys.Count; i++)
+			{
+				if (_keys[i].Equals(name))
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 }

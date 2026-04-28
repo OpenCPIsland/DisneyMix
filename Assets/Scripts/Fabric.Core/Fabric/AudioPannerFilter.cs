@@ -13,8 +13,8 @@ namespace Fabric
 		[SerializeField]
 		public DSPParameter _FrontRightChannel = new DSPParameter(1f, 0f, 1f);
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public DSPParameter _CenterChannel = new DSPParameter(1f, 0f, 1f);
 
 		[HideInInspector]
@@ -25,16 +25,16 @@ namespace Fabric
 		[SerializeField]
 		public DSPParameter _SideLeftChannel = new DSPParameter(1f, 0f, 1f);
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public DSPParameter _SideRightChannel = new DSPParameter(1f, 0f, 1f);
 
 		[HideInInspector]
 		[SerializeField]
 		public DSPParameter _RearLeftChannel = new DSPParameter(1f, 0f, 1f);
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public DSPParameter _RearRightChannel = new DSPParameter(1f, 0f, 1f);
 
 		public override void OnInitialise(bool addToAudioSourceGameObject)
@@ -57,7 +57,12 @@ namespace Fabric
 
 		public override UnityEngine.Component CreateComponent(GameObject gameObject)
 		{
-			return gameObject.AddComponent<AudioPanner>();
+			AudioPanner audioPanner = gameObject.GetComponent<AudioPanner>();
+			if (audioPanner == null)
+			{
+				audioPanner = gameObject.AddComponent<AudioPanner>();
+			}
+			return audioPanner;
 		}
 
 		public override string GetTypeByName()
@@ -87,6 +92,7 @@ namespace Fabric
 					audioPanner._channelGains[7] = _SideRightChannel.GetValue();
 				}
 			}
+			base.UpdateParameters();
 		}
 	}
 }

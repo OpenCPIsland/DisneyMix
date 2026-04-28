@@ -35,17 +35,16 @@ namespace Fabric
 
 		public void Update()
 		{
-			if (!(Time.time - _lastCheckForChangesTime > 1f))
+			if (Time.time - _lastCheckForChangesTime > 1f)
 			{
-				return;
-			}
-			_lastCheckForChangesTime = Time.time;
-			foreach (KeyValuePair<string, object> item in _fieldScan.Update())
-			{
-				_targetFields[item.Key].SetValue(item.Value);
-				if (item.Key.EndsWith("#"))
+				_lastCheckForChangesTime = Time.time;
+				foreach (KeyValuePair<string, object> item in _fieldScan.Update())
 				{
-					ScanTarget();
+					_targetFields[item.Key].SetValue(item.Value);
+					if (item.Key.EndsWith("#"))
+					{
+						ScanTarget();
+					}
 				}
 			}
 		}

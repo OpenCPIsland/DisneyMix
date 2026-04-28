@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Fabric
 {
@@ -12,8 +13,8 @@ namespace Fabric
 		[HideInInspector]
 		private string _audioClipReference;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		private string _fallbackLocation;
 
 		public string AudioClipReference
@@ -28,7 +29,10 @@ namespace Fabric
 			}
 		}
 
-		protected abstract AssetBundle AssetBundle { get; }
+		protected abstract AssetBundle AssetBundle
+		{
+			get;
+		}
 
 		public override void Destroy()
 		{
@@ -36,7 +40,12 @@ namespace Fabric
 			base.Destroy();
 		}
 
-		private void OnLevelWasLoaded()
+		private void Awake()
+		{
+			SceneManager.sceneLoaded += SceneLoaded;
+		}
+
+		private void SceneLoaded(Scene scene, LoadSceneMode m)
 		{
 			if (base.CurrentState != AudioComponentState.Playing)
 			{
@@ -48,14 +57,14 @@ namespace Fabric
 		{
 			if (base.AudioClip == null)
 			{
-				string text = _audioClipReference.Replace(".wav", "") + "_SL";
+				string str = _audioClipReference.Replace(".wav", "") + "_SL";
 				GameObject gameObject = null;
 				AssetBundle assetBundle = AssetBundle;
 				m_loadedFrom = AudioResourceLoadedFrom.None;
 				bool flag = assetBundle != null;
 				if (!gameObject)
 				{
-					string path = _fallbackLocation + text;
+					string path = _fallbackLocation + str;
 					gameObject = (GameObject)Resources.Load(path, typeof(GameObject));
 					if (gameObject != null)
 					{
@@ -90,7 +99,7 @@ namespace Fabric
 				Object.Destroy(m_streamLoader);
 			}
 			m_streamLoader = null;
-			if (m_loadedFrom != AudioResourceLoadedFrom.None)
+			if (m_loadedFrom != 0)
 			{
 				base.AudioClip = null;
 			}
@@ -112,19 +121,19 @@ namespace Fabric
 			base.Reset();
 		}
 
-		internal override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
+		public override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
 		{
 			Load();
 			base.PlayInternal(zComponentInstance, target, curve, dontPlayComponents);
 		}
 
-		protected override void StopAudioComponent()
+		protected override void StopAudioComponent(bool notifyParent)
 		{
 			base.StopAudioComponent();
 			UnLoad();
 		}
 
-		internal override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd = 0.0)
+		public override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd = 0.0)
 		{
 			base.StopInternal(stopInstances, forceStop, target, curve, scheduleEnd);
 			if (forceStop)

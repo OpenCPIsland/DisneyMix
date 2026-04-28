@@ -33,6 +33,18 @@ namespace Fabric
 			}
 		}
 
+		public bool UseAudioClipPath
+		{
+			get
+			{
+				return _useAudioClipPath;
+			}
+			set
+			{
+				_useAudioClipPath = value;
+			}
+		}
+
 		public int RefCount
 		{
 			get
@@ -43,7 +55,7 @@ namespace Fabric
 
 		public void LoadAudioData()
 		{
-			if (_audioClip != null)
+			if (_audioClip != null && _audioClip.loadState != AudioDataLoadState.Loaded)
 			{
 				_audioClip.LoadAudioData();
 			}
@@ -57,6 +69,11 @@ namespace Fabric
 				_audioClip.UnloadAudioData();
 			}
 			_loadAudioDataEventAction = false;
+		}
+
+		public void SetAudioClipPath(string path)
+		{
+			_audioClipPath = path;
 		}
 
 		public bool IsAudioClipPathSet()
@@ -79,11 +96,11 @@ namespace Fabric
 			{
 				if (_audioClip == null && IsAudioClipPathSet())
 				{
-					_audioClip = Resources.Load(_audioClipPath) as AudioClip;
+					_audioClip = (Resources.Load(_audioClipPath) as AudioClip);
 				}
 				else if (_audioClip != null)
 				{
-					if (!_loadAudioDataEventAction)
+					if (!_loadAudioDataEventAction && _audioClip.loadState != AudioDataLoadState.Loaded)
 					{
 						_audioClip.LoadAudioData();
 					}

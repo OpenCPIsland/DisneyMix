@@ -51,6 +51,18 @@ namespace Fabric
 			}
 		}
 
+		public int GetSplinePointIndex(AudioSplinePoint point)
+		{
+			for (int i = 0; i < pts.Length; i++)
+			{
+				if (pts[i] == point)
+				{
+					return i;
+				}
+			}
+			return -1;
+		}
+
 		public void BakeSpline(float resolution)
 		{
 			int num = 5000;
@@ -67,20 +79,20 @@ namespace Fabric
 			}
 		}
 
-		public Vector3 GetNearestPointToListener(Vector3 position, ref float t)
+		public Vector3 GetNearestPointToListener(Vector3 position, ref float t, GameObject go)
 		{
 			float num = float.MaxValue;
 			int num2 = 0;
 			for (int i = 0; i < _bakedPoints.Length; i++)
 			{
-				float num3 = Vector3.Distance(_bakedPoints[i], position);
+				float num3 = Vector3.Distance(go.transform.TransformPoint(_bakedPoints[i]), position);
 				if (num3 < num)
 				{
 					num2 = i;
 					num = num3;
 				}
 			}
-			Vector3 result = (_prevBakedPoint = Vector3.Lerp(_bakedPoints[num2], _prevBakedPoint, 0.9f));
+			Vector3 result = _prevBakedPoint = Vector3.Lerp(go.transform.TransformPoint(_bakedPoints[num2]), _prevBakedPoint, 0.9f);
 			t = (float)num2 / (float)_bakedPoints.Length;
 			return result;
 		}
@@ -114,17 +126,36 @@ namespace Fabric
 				float num3 = t * (float)num - (float)num2;
 				if (pts[num2] != null)
 				{
-					Vector3 position = pts[num2].transform.position;
-					Vector3 position2 = pts[num2 + 1].transform.position;
-					Vector3 position3 = pts[num2 + 2].transform.position;
-					Vector3 position4 = pts[num2 + 3].transform.position;
-					return 0.5f * ((-position + 3f * position2 - 3f * position3 + position4) * (num3 * num3 * num3) + (2f * position - 5f * position2 + 4f * position3 - position4) * (num3 * num3) + (-position + position3) * num3 + 2f * position2);
+					Vector3 localPosition = pts[num2].transform.localPosition;
+					Vector3 localPosition2 = pts[num2 + 1].transform.localPosition;
+					Vector3 localPosition3 = pts[num2 + 2].transform.localPosition;
+					Vector3 localPosition4 = pts[num2 + 3].transform.localPosition;
+					return 0.5f * ((-localPosition + 3f * localPosition2 - 3f * localPosition3 + localPosition4) * (num3 * num3 * num3) + (2f * localPosition - 5f * localPosition2 + 4f * localPosition3 - localPosition4) * (num3 * num3) + (-localPosition + localPosition3) * num3 + 2f * localPosition2);
 				}
 			}
 			return default(Vector3);
 		}
 
-		public void GizmoDraw(float t, Color splineColor)
+		public Vector3 Velocity(float t)
+		{
+			if (pts.Length >= 3)
+			{
+				int num = pts.Length - 3;
+				int num2 = Mathf.Min(Mathf.FloorToInt(t * (float)num), num - 1);
+				float num3 = t * (float)num - (float)num2;
+				if (pts[num2] != null)
+				{
+					Vector3 localPosition = pts[num2].transform.localPosition;
+					Vector3 localPosition2 = pts[num2 + 1].transform.localPosition;
+					Vector3 localPosition3 = pts[num2 + 2].transform.localPosition;
+					Vector3 localPosition4 = pts[num2 + 3].transform.localPosition;
+					return 1.5f * (-localPosition + 3f * localPosition2 - 3f * localPosition3 + localPosition4) * (num3 * num3) + (2f * localPosition - 5f * localPosition2 + 4f * localPosition3 - localPosition4) * num3 + 0.5f * localPosition3 - 0.5f * localPosition;
+				}
+			}
+			return default(Vector3);
+		}
+
+		public void GizmoDraw(float t, Color splineColor, GameObject gameObject)
 		{
 			if (pts != null)
 			{
@@ -133,7 +164,7 @@ namespace Fabric
 				for (int i = 1; i <= 60; i++)
 				{
 					float t2 = (float)i / 60f;
-					Vector3 vector = Interp(t2);
+					Vector3 vector = gameObject.transform.TransformPoint(Interp(t2));
 					Gizmos.DrawLine(vector, to);
 					to = vector;
 				}

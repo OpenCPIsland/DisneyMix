@@ -11,8 +11,8 @@ namespace Fabric.TimelineComponent
 		[SerializeField]
 		public TimelineRegion[] _regions;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public ParameterToProperty[] _parameters;
 
 		[HideInInspector]
@@ -51,14 +51,14 @@ namespace Fabric.TimelineComponent
 			UpdateRegionEnvelopes();
 		}
 
-		internal override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
+		public override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
 		{
 			base.PlayInternal(zComponentInstance, target, curve, true);
 			_layerIsActive = true;
 			UpdateRegionEnvelopes();
 		}
 
-		internal override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd = 0.0)
+		public override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd = 0.0)
 		{
 			base.StopInternal(stopInstances, forceStop, target, curve, scheduleEnd);
 			_layerIsActive = false;
@@ -205,34 +205,41 @@ namespace Fabric.TimelineComponent
 				return;
 			}
 			Array.Sort(_regions, (TimelineRegion r1, TimelineRegion r2) => r1._x.CompareTo(r2._x));
-			for (int num = 0; num < _regions.Length; num++)
+			for (int i = 0; i < _regions.Length; i++)
 			{
-				_regions[num].ResetVolumeEnvelope();
+				_regions[i].ResetVolumeEnvelope();
 			}
-			for (int num2 = 0; num2 < _regions.Length - 1; num2++)
+			for (int j = 0; j < _regions.Length - 1; j++)
 			{
-				TimelineRegion timelineRegion = _regions[num2];
-				TimelineRegion timelineRegion2 = _regions[num2 + 1];
-				float num3 = timelineRegion._x + timelineRegion._width;
-				if (num3 > timelineRegion2._x)
+				TimelineRegion timelineRegion = _regions[j];
+				TimelineRegion timelineRegion2 = _regions[j + 1];
+				float num = timelineRegion._x + timelineRegion._width;
+				if (num > timelineRegion2._x)
 				{
-					float num4 = num3 - timelineRegion2._x;
-					timelineRegion._volumeEnvelope._points[2]._x -= num4;
-					timelineRegion2._volumeEnvelope._points[1]._x += num4;
+					float num2 = num - timelineRegion2._x;
+					timelineRegion._volumeEnvelope._points[2]._x -= num2;
+					timelineRegion2._volumeEnvelope._points[1]._x += num2;
 				}
 			}
 		}
 
 		public void DeleteParameterToProperty(ParameterToProperty parameterToProperty)
 		{
-			for (int i = 0; i < _parameters.Length; i++)
+			int num = 0;
+			while (true)
 			{
-				if (_parameters[i] == parameterToProperty)
+				if (num < _parameters.Length)
 				{
-					_parameters = MyArray<ParameterToProperty>.RemoveAt(_parameters, i);
-					break;
+					if (_parameters[num] == parameterToProperty)
+					{
+						break;
+					}
+					num++;
+					continue;
 				}
+				return;
 			}
+			_parameters = MyArray<ParameterToProperty>.RemoveAt(_parameters, num);
 		}
 
 		public static void DeepCopy(ParameterToProperty source, ParameterToProperty target)
@@ -250,14 +257,21 @@ namespace Fabric.TimelineComponent
 
 		public void PasteParameterToProperty(ParameterToProperty source, ParameterToProperty target)
 		{
-			for (int i = 0; i < _parameters.Length; i++)
+			int num = 0;
+			while (true)
 			{
-				if (_parameters[i] == target)
+				if (num < _parameters.Length)
 				{
-					DeepCopy(source, target);
-					break;
+					if (_parameters[num] == target)
+					{
+						break;
+					}
+					num++;
+					continue;
 				}
+				return;
 			}
+			DeepCopy(source, target);
 		}
 
 		public void AddParameterToProperty()

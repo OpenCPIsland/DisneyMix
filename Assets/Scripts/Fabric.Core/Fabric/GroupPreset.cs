@@ -9,20 +9,20 @@ namespace Fabric
 		[SerializeField]
 		public GroupComponent _groupComponent;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		private float _volume;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		private float _pitch;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		private float _fadeInTime;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		private float _fadeInCurve = 0.5f;
 
 		[SerializeField]

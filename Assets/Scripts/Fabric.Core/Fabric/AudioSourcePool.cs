@@ -3,94 +3,12 @@ using UnityEngine;
 
 namespace Fabric
 {
+	[ExecuteInEditMode]
 	public class AudioSourcePool : MonoBehaviour
 	{
-		public class AudioVoice : MonoBehaviour
-		{
-			private enum AudioVoiceState
-			{
-				Stopped = 0,
-				Playing = 1,
-				Stopping = 2,
-				Paused = 3
-			}
-
-			public AudioSource _audioSource;
-
-			public Component _component;
-
-			private IAudioSourcePoolListener _listener;
-
-			private InterpolatedParameter _fadeParameter = new InterpolatedParameter(0f);
-
-			private AudioVoiceState _state;
-
-			private float _volume;
-
-			private bool _callStop;
-
-			public void Init()
-			{
-				_audioSource = base.gameObject.AddComponent<AudioSource>();
-				_state = AudioVoiceState.Stopped;
-			}
-
-			public bool IsPlaying()
-			{
-				if (_state == AudioVoiceState.Stopped)
-				{
-					return false;
-				}
-				return true;
-			}
-
-			public void Play(Component component, float fadeInTime)
-			{
-				_fadeParameter.SetTarget(FabricTimer.Get(), 1f, fadeInTime, 0.5f);
-				_audioSource.volume = 0f;
-				_component = component;
-				_listener = component as IAudioSourcePoolListener;
-				_state = AudioVoiceState.Playing;
-			}
-
-			public void Stop(float fadeOutTime, bool callStop)
-			{
-				if (fadeOutTime > 0f)
-				{
-					_fadeParameter.SetTarget(FabricTimer.Get(), 0f, fadeOutTime, 0.5f);
-					_volume = _audioSource.volume;
-					_callStop = callStop;
-					_state = AudioVoiceState.Stopping;
-				}
-				else
-				{
-					StopAudioVoice();
-				}
-			}
-
-			private void StopAudioVoice()
-			{
-				if (_callStop)
-				{
-					_audioSource.Stop();
-				}
-				_component = null;
-				_audioSource.clip = null;
-				_state = AudioVoiceState.Stopped;
-			}
-
-			public void UpdateInternal()
-			{
-				_audioSource.volume = _volume * _fadeParameter.Get(FabricTimer.Get());
-				if (_state == AudioVoiceState.Stopping && _fadeParameter.HasReachedTarget())
-				{
-					StopAudioVoice();
-				}
-			}
-		}
-
 		public interface IAudioSourcePoolListener
 		{
+			bool AudioSourceStolen();
 		}
 
 		private Queue<AudioVoice> _audioVoicePool;
@@ -99,35 +17,28 @@ namespace Fabric
 
 		private List<AudioVoice> _freeingVoicesList;
 
-		private static GameObject _container;
-
 		private float _fadeInTime;
 
 		private float _fadeOutTime = 0.5f;
 
-		private static AudioSourcePool _instance = null;
+		private static AudioSourcePool _instance;
 
-		public static AudioSourcePool Instance
+		private void OnEnable()
 		{
-			get
-			{
-				if (_instance == null)
-				{
-					_container = new GameObject("AudioSourcePool");
-					_container.transform.parent = FabricManager.Instance.gameObject.transform;
-					_instance = _container.AddComponent<AudioSourcePool>();
-				}
-				return _instance;
-			}
+			AudioSourcePool audioSourcePool = _instance = FabricManager.Instance.AudioSourcePoolManager;
 		}
 
-		public static bool IsInitialised()
+		public static AudioSourcePool Create()
 		{
-			if (!(_instance != null))
-			{
-				return false;
-			}
-			return true;
+			GameObject gameObject = new GameObject("AudioSourcePool");
+			gameObject.transform.parent = FabricManager.Instance.gameObject.transform;
+			return gameObject.AddComponent<AudioSourcePool>();
+		}
+
+		public static void Destroy()
+		{
+			FabricManager.Instance.AudioSourcePoolManager.Shutdown();
+			Object.DestroyImmediate(FabricManager.Instance.AudioSourcePoolManager.gameObject);
 		}
 
 		public int Size()
@@ -139,31 +50,106 @@ namespace Fabric
 			return _audioVoicePool.Count;
 		}
 
+		public void Refresh()
+		{
+			AudioVoice[] componentsInChildren = base.gameObject.GetComponentsInChildren<AudioVoice>(true);
+			_audioVoicePool = new Queue<AudioVoice>(componentsInChildren);
+			_allocatedList = new List<AudioVoice>(_audioVoicePool.Count);
+			_freeingVoicesList = new List<AudioVoice>(_audioVoicePool.Count);
+		}
+
+		public void Resize(int count)
+		{
+			if (count > 0 && count != _audioVoicePool.Count)
+			{
+				AudioVoice[] componentsInChildren = GetComponentsInChildren<AudioVoice>(true);
+				AudioVoice[] array = componentsInChildren;
+				foreach (AudioVoice audioVoice in array)
+				{
+					Object.DestroyImmediate(audioVoice.gameObject);
+				}
+				CreateVoicePool(count);
+			}
+		}
+
 		public void Initialise(int count, float fadeInTime, float fadeOutTime)
 		{
-			if (count == 0)
+			if (count != 0)
 			{
-				return;
+				_audioVoicePool = new Queue<AudioVoice>();
+				_allocatedList = new List<AudioVoice>(count);
+				_freeingVoicesList = new List<AudioVoice>(count);
+				_fadeInTime = fadeInTime;
+				_fadeOutTime = fadeOutTime;
+				CreateVoicePool(count);
 			}
-			_audioVoicePool = new Queue<AudioVoice>();
-			_allocatedList = new List<AudioVoice>(count);
-			_freeingVoicesList = new List<AudioVoice>(count);
-			_fadeInTime = fadeInTime;
-			_fadeOutTime = fadeOutTime;
-			for (int i = 0; i < count; i++)
+		}
+
+		public void CreateVoicePool(int count)
+		{
+			int num = 0;
+			while (true)
 			{
-				GameObject gameObject = new GameObject();
-				gameObject.name = "AudioVoice_" + i;
-				AudioVoice audioVoice = gameObject.AddComponent<AudioVoice>();
-				if (audioVoice == null)
+				if (num >= count)
 				{
-					DebugLog.Print("Failed to allocate audio source in the pool!", DebugLevel.Error);
+					return;
+				}
+				GameObject gameObject = null;
+				AudioVoice audioVoice = null;
+				bool addAudioSource = true;
+				if (FabricManager.Instance._VRAudioManager != null && FabricManager.Instance._VRAudioManager._vrSolutions.Count > 0)
+				{
+					gameObject = FabricManager.Instance._VRAudioManager.GetAudioSource();
+					if ((bool)gameObject)
+					{
+						addAudioSource = false;
+					}
+					else
+					{
+						gameObject = new GameObject();
+					}
+				}
+				else
+				{
+					gameObject = new GameObject();
+				}
+				gameObject.name = "AudioVoice_" + num;
+				audioVoice = gameObject.AddComponent<AudioVoice>();
+				if (audioVoice == null || gameObject == null)
+				{
 					break;
 				}
-				audioVoice.Init();
-				audioVoice.transform.parent = _container.transform;
+				audioVoice.Init(addAudioSource);
+				audioVoice.transform.parent = base.transform;
 				Generic.SetGameObjectActive(audioVoice.gameObject, false);
 				_audioVoicePool.Enqueue(audioVoice);
+				num++;
+			}
+			DebugLog.Print("Failed to allocate audio source in the pool!", DebugLevel.Error);
+		}
+
+		public void Shutdown()
+		{
+			if (_audioVoicePool != null)
+			{
+				for (int i = 0; i < _audioVoicePool.Count; i++)
+				{
+					Object.DestroyImmediate(_audioVoicePool.Dequeue());
+				}
+			}
+			if (_allocatedList != null)
+			{
+				for (int j = 0; j < _allocatedList.Count; j++)
+				{
+					Object.DestroyImmediate(_allocatedList[j]);
+				}
+			}
+			if (_freeingVoicesList != null)
+			{
+				for (int k = 0; k < _freeingVoicesList.Count; k++)
+				{
+					Object.DestroyImmediate(_allocatedList[k]);
+				}
 			}
 		}
 
@@ -180,7 +166,7 @@ namespace Fabric
 			}
 			_allocatedList.Add(audioVoice);
 			Generic.SetGameObjectActive(audioVoice.gameObject, true);
-			audioVoice.Play(component, _fadeInTime);
+			audioVoice.Set(component, _fadeInTime);
 			return audioVoice._audioSource;
 		}
 
@@ -199,19 +185,25 @@ namespace Fabric
 
 		public void Update()
 		{
-			if (_freeingVoicesList == null)
+			if (_freeingVoicesList != null)
 			{
-				return;
-			}
-			for (int i = 0; i < _freeingVoicesList.Count; i++)
-			{
-				AudioVoice audioVoice = _freeingVoicesList[i];
-				audioVoice.UpdateInternal();
-				if (!audioVoice.IsPlaying())
+				for (int i = 0; i < _freeingVoicesList.Count; i++)
 				{
-					Generic.SetGameObjectActive(audioVoice.gameObject, false);
-					_freeingVoicesList.Remove(audioVoice);
-					_audioVoicePool.Enqueue(audioVoice);
+					AudioVoice audioVoice = _freeingVoicesList[i];
+					audioVoice.UpdateInternal();
+					if (!audioVoice.IsPlaying())
+					{
+						Generic.SetGameObjectActive(audioVoice.gameObject, false);
+						_freeingVoicesList.Remove(audioVoice);
+						_audioVoicePool.Enqueue(audioVoice);
+					}
+				}
+			}
+			if (_allocatedList != null)
+			{
+				for (int j = 0; j < _allocatedList.Count; j++)
+				{
+					_allocatedList[j].UpdateInternal();
 				}
 			}
 		}

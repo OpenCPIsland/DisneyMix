@@ -32,5 +32,15 @@ namespace Fabric
 			array[index] = item;
 			return array;
 		}
+
+		public static T[] Resize(T[] source, int size)
+		{
+			T[] array = new T[size];
+			if (array.Length >= source.Length)
+			{
+				Array.Copy(source, 0, array, 0, source.Length);
+			}
+			return array;
+		}
 	}
 }

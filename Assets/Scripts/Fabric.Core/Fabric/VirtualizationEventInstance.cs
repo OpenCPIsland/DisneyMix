@@ -1,12 +1,12 @@
-using System.Collections.Generic;
+using UnityEngine;
 
 namespace Fabric
 {
-	internal class VirtualizationEventInstance
+	public class VirtualizationEventInstance
 	{
-		private static Queue<VirtualizationEventInstance> _eventInstancePool = new Queue<VirtualizationEventInstance>();
-
 		public Event _event;
+
+		public Component _rootComponent;
 
 		public ComponentInstance _componentInstance;
 
@@ -16,36 +16,32 @@ namespace Fabric
 
 		public float _time;
 
-		public static void Initialise(int size)
+		public float _distanceFromListener = float.MaxValue;
+
+		public VirtualizationEventInstance(Component component)
 		{
-			for (int i = 0; i < size; i++)
-			{
-				_eventInstancePool.Enqueue(new VirtualizationEventInstance());
-			}
+			_rootComponent = component;
 		}
 
-		public static VirtualizationEventInstance Alloc(Event e)
+		public bool UpdateDistanceFromListener()
 		{
-			if (_eventInstancePool.Count == 0)
+			if (_rootComponent == null || _event.parentGameObject == null)
 			{
-				DebugLog.Print("VirtualizationEventInstance: Failed to allocate event instance", DebugLevel.Error);
-				return null;
+				return false;
 			}
-			VirtualizationEventInstance virtualizationEventInstance = _eventInstancePool.Dequeue();
-			Event obj = new Event();
-			obj.Copy(e);
-			virtualizationEventInstance._event = obj;
-			return virtualizationEventInstance;
-		}
-
-		public static void Free(VirtualizationEventInstance instance)
-		{
-			instance._componentInstance = null;
-			instance._event = null;
-			instance._isPlaying = false;
-			instance._dspTime = 0.0;
-			instance._time = 0f;
-			_eventInstancePool.Enqueue(instance);
+			if (FabricManager.Instance._audioListener != null)
+			{
+				_distanceFromListener = Vector3.Distance(_event.parentGameObject.transform.position, FabricManager.Instance._audioListener.transform.position);
+			}
+			else
+			{
+				if (!(Camera.main != null))
+				{
+					return false;
+				}
+				_distanceFromListener = Vector3.Distance(_event.parentGameObject.transform.position, Camera.main.transform.position);
+			}
+			return _distanceFromListener < _rootComponent.MaxDistance;
 		}
 	}
 }

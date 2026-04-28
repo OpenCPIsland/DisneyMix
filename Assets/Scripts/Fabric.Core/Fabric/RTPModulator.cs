@@ -10,12 +10,12 @@ namespace Fabric
 		[SerializeField]
 		public ModulatorType type;
 
-		[SerializeField]
 		[Range(0f, 20000f)]
+		[SerializeField]
 		public float frequency = 10000f;
 
-		[Range(0f, 1f)]
 		[SerializeField]
+		[Range(0f, 1f)]
 		public float phase;
 
 		[SerializeField]

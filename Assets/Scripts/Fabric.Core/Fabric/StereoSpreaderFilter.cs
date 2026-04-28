@@ -17,7 +17,12 @@ namespace Fabric
 
 		public override UnityEngine.Component CreateComponent(GameObject gameObject)
 		{
-			return gameObject.AddComponent<StereoSpreader>();
+			StereoSpreader stereoSpreader = gameObject.GetComponent<StereoSpreader>();
+			if (stereoSpreader == null)
+			{
+				stereoSpreader = gameObject.AddComponent<StereoSpreader>();
+			}
+			return stereoSpreader;
 		}
 
 		public override string GetTypeByName()
@@ -27,6 +32,7 @@ namespace Fabric
 
 		public override void UpdateParameters()
 		{
+			base.UpdateParameters();
 		}
 	}
 }

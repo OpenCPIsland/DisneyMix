@@ -20,6 +20,11 @@ namespace Fabric
 			{
 				return _value;
 			}
+			set
+			{
+				_value = value;
+				_isDirty = true;
+			}
 		}
 	}
 }

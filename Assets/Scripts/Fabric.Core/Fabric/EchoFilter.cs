@@ -5,16 +5,16 @@ namespace Fabric
 	[AddComponentMenu("Fabric/DSP/EchoFilter")]
 	public class EchoFilter : DSPComponent
 	{
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public DSPParameter _delay = new DSPParameter(500f, 10f, 5000f);
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public DSPParameter _decayRatio = new DSPParameter(0.5f, 0f, 1f);
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public DSPParameter _dryMix = new DSPParameter(1f, 0f, 1f);
 
 		[SerializeField]
@@ -37,7 +37,12 @@ namespace Fabric
 
 		public override UnityEngine.Component CreateComponent(GameObject gameObject)
 		{
-			return gameObject.AddComponent<AudioEchoFilter>();
+			AudioEchoFilter audioEchoFilter = gameObject.GetComponent<AudioEchoFilter>();
+			if (audioEchoFilter == null)
+			{
+				audioEchoFilter = gameObject.AddComponent<AudioEchoFilter>();
+			}
+			return audioEchoFilter;
 		}
 
 		public override string GetTypeByName()
@@ -47,7 +52,7 @@ namespace Fabric
 
 		public override void UpdateParameters()
 		{
-			if (!_delay.HasReachedTarget() && !_decayRatio.HasReachedTarget() && !_wetMix.HasReachedTarget() && !_dryMix.HasReachedTarget())
+			if (_delay.HasReachedTarget() && _decayRatio.HasReachedTarget() && _wetMix.HasReachedTarget() && _dryMix.HasReachedTarget())
 			{
 				return;
 			}
@@ -63,6 +68,7 @@ namespace Fabric
 					audioEchoFilter.dryMix = _dryMix.GetValue();
 				}
 			}
+			base.UpdateParameters();
 		}
 	}
 }

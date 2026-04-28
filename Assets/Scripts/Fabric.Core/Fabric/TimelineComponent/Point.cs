@@ -33,5 +33,14 @@ namespace Fabric.TimelineComponent
 			point._curveType = curveType;
 			return point;
 		}
+
+		public static Point Alloc(float x, float y)
+		{
+			Point point = new Point();
+			point._x = x;
+			point._y = y;
+			point._curveType = CurveTypes.Linear;
+			return point;
+		}
 	}
 }

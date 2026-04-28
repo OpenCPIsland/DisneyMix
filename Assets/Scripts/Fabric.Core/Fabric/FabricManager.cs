@@ -4,15 +4,16 @@ using UnityEngine;
 
 namespace Fabric
 {
+	[ExecuteInEditMode]
 	[AddComponentMenu("Fabric/FabricManager")]
 	public class FabricManager : MonoBehaviour
 	{
 		public enum OnApplicationPauseBehavior
 		{
-			IgnoreNone = 0,
-			IgnorePauseTrue = 1,
-			IgnorePauseFalse = 2,
-			IgnoreAll = 3
+			IgnoreNone,
+			IgnorePauseTrue,
+			IgnorePauseFalse,
+			IgnoreAll
 		}
 
 		public delegate void SpringBoardHandler();
@@ -33,6 +34,9 @@ namespace Fabric
 
 		[NonSerialized]
 		public CustomAudioClipLoader _customAudioClipLoader;
+
+		[NonSerialized]
+		public ICustomRTPParameter _customRTPParameter;
 
 		[HideInInspector]
 		[SerializeField]
@@ -82,8 +86,8 @@ namespace Fabric
 		[SerializeField]
 		public bool _createEventListeners;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public bool _useFullPathForEventListeners;
 
 		[SerializeField]
@@ -98,6 +102,10 @@ namespace Fabric
 		[HideInInspector]
 		public AudioBusManager _audioBusManager = new AudioBusManager();
 
+		[HideInInspector]
+		[SerializeField]
+		public CustomCurvesManager _customCurvesManager = new CustomCurvesManager();
+
 		[SerializeField]
 		[HideInInspector]
 		public bool _enableDebugLog;
@@ -106,56 +114,82 @@ namespace Fabric
 		[SerializeField]
 		public bool _bakeComponentInstances;
 
-		[SerializeField]
 		[HideInInspector]
-		public bool _allowExternalGroupComponents;
+		[SerializeField]
+		public bool _allowExternalGroupComponents = true;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public Vector3 _forceAxisVector = default(Vector3);
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		private List<LanguageProperties> _languages = new List<LanguageProperties>();
 
 		[HideInInspector]
 		[SerializeField]
 		private int _activeLanguage = -1;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public int _defaultLanguage = -1;
 
 		[SerializeField]
 		[HideInInspector]
 		private SampleManager _sampleManager = new SampleManager();
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public List<MusicTimeSittings> _musicTimeSignatures = new List<MusicTimeSittings>();
 
 		[NonSerialized]
 		[HideInInspector]
 		internal List<MusicTimeSittings> _componentMusicTimeSettings = new List<MusicTimeSittings>();
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public string _fabricEditorPath = "Assets/Fabric/Editor";
 
 		[SerializeField]
 		[HideInInspector]
-		public int _numVirtualizationEvents = 1000;
+		public VRAudioManager _VRAudioManager = new VRAudioManager();
 
-		[SerializeField]
 		[HideInInspector]
-		public OnApplicationPauseBehavior _onApplicationPauseBehavior;
+		[SerializeField]
+		public AudioSourcePool _audioSourcePoolManager;
 
+		[NonSerialized]
+		[HideInInspector]
+		public static bool _componentPreviewerUpdateIsActive = false;
+
+		[HideInInspector]
+		[SerializeField]
+		public OnApplicationPauseBehavior _onApplicationPauseBehavior;
+		
 		private bool _isInitialised;
 
 		protected static SpringBoardHandler SpringBoardEventInvoker;
+		
+		private static bool _quitting = false;
 
 		[HideInInspector]
-		public AudioListener _audioListener { get; set; }
+		public AudioListener _audioListener
+		{
+			get;
+			set;
+		}
+
+		public AudioSourcePool AudioSourcePoolManager
+		{
+			get
+			{
+				return _audioSourcePoolManager;
+			}
+			set
+			{
+				_audioSourcePoolManager = value;
+			}
+		}
 
 		public static bool IsSpringBoardEventInvokerSet
 		{
@@ -182,6 +216,10 @@ namespace Fabric
 					}
 				}
 				return _instance;
+			}
+			set
+			{
+				_instance = value;
 			}
 		}
 
@@ -266,15 +304,46 @@ namespace Fabric
 				return;
 			}
 			_instance = this;
+			if (_VRAudioManager.HasVRSolutions())
+			{
+				FabricAudioListener fabricAudioListener = (FabricAudioListener)UnityEngine.Object.FindObjectOfType(typeof(FabricAudioListener));
+				if (fabricAudioListener != null)
+				{
+					GameObject audioListener = _VRAudioManager.GetAudioListener();
+					if (audioListener != null)
+					{
+						audioListener.transform.parent = fabricAudioListener.gameObject.transform;
+					}
+				}
+				if (_audioSourcePool == 0)
+				{
+					_audioSourcePool = 100;
+				}
+			}
 			if (_audioSourcePool > 0)
 			{
-				AudioSourcePool.Instance.Initialise(_audioSourcePool, _audioSourcePoolFadeInTime, _audioSourcePoolFadeOutTime);
+				if (_audioSourcePoolManager == null)
+				{
+					_audioSourcePoolManager = base.gameObject.GetComponentInChildren<AudioSourcePool>();
+					if (_audioSourcePoolManager == null)
+					{
+						_audioSourcePoolManager = AudioSourcePool.Create();
+					}
+					_audioSourcePoolManager.Initialise(_audioSourcePool, _audioSourcePoolFadeInTime, _audioSourcePoolFadeOutTime);
+				}
+				if (_audioSourcePoolManager != null)
+				{
+					_audioSourcePoolManager.Refresh();
+				}
 			}
-			VirtualizationEventInstance.Initialise(_numVirtualizationEvents);
+			InitialiseComponents();
 			RefreshComponents();
 			if (_dontDestroyOnLoad)
 			{
-				UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
+				if (Application.isPlaying)
+				{
+					UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
+				}
 				DebugLog.Print("FabricManager initialised (DontDestroyOnLoad flag enabled)");
 			}
 			else
@@ -307,14 +376,117 @@ namespace Fabric
 			}
 		}
 
-		private void OnEnable()
+		public void OnEnable()
 		{
+			if (Application.isEditor && !Application.isPlaying)
+			{
+				_isInitialised = false;
+				Awake();
+				Start();
+			}
 		}
 
-		private void Update()
+		public static void UpdateHierarchy(Component component = null)
+		{
+			GameObject gameObject = null;
+			List<Component> list = null;
+			if (component == null && Instance != null)
+			{
+				gameObject = Instance.gameObject;
+				list = Instance._components;
+			}
+			else if (component != null)
+			{
+				gameObject = component.gameObject;
+				list = component.Components;
+			}
+			if (gameObject == null || list == null)
+			{
+				return;
+			}
+			for (int i = 0; i < gameObject.transform.childCount; i++)
+			{
+				Component component2 = gameObject.transform.GetChild(i).GetComponent<Component>();
+				if (!(component2 != null) || component2.IsInstance)
+				{
+					continue;
+				}
+				GroupComponent groupComponent = component2 as GroupComponent;
+				if (groupComponent != null && groupComponent._isRegisteredWithMainHierarchy)
+				{
+					groupComponent.UnregisterWithMainHierarchy();
+				}
+				bool flag = false;
+				for (int j = 0; j < list.Count; j++)
+				{
+					if (list[j] == component2)
+					{
+						flag = true;
+						break;
+					}
+				}
+				if (!flag)
+				{
+					list.Add(component2);
+					if (component != null)
+					{
+						component.UpdateComponentsArray();
+					}
+					if (component2.ParentComponent != null)
+					{
+						component2.ParentComponent.Initialise(component, false);
+					}
+					else
+					{
+						component2.Initialise(component, false);
+					}
+					Instance.RefreshComponents();
+				}
+				else
+				{
+					UpdateHierarchy(component2);
+				}
+			}
+			for (int k = 0; k < list.Count; k++)
+			{
+				bool flag2 = false;
+				for (int l = 0; l < gameObject.transform.childCount; l++)
+				{
+					Component component3 = gameObject.transform.GetChild(l).GetComponent<Component>();
+					GroupComponentProxy component4 = gameObject.transform.GetChild(l).GetComponent<GroupComponentProxy>();
+					if (component3 == list[k] || (component4 != null && component4._groupComponent == list[k]))
+					{
+						flag2 = true;
+						break;
+					}
+				}
+				if (!flag2)
+				{
+					Component component5 = list[k];
+					GroupComponent groupComponent2 = component5 as GroupComponent;
+					list.Remove(component5);
+					if (component != null)
+					{
+						component.UpdateComponentsArray();
+					}
+					if (component5.ParentComponent != null)
+					{
+						component5.ParentComponent.Initialise(component, false);
+					}
+					if (groupComponent2 != null)
+					{
+						groupComponent2.RegisterWithMainHierarchy();
+					}
+					Instance.RefreshComponents();
+				}
+			}
+		}
+
+		public void Update()
 		{
 			profiler.Begin();
 			FabricTimer.Update();
+			EventManager.Instance.UpdateInternal();
 			for (int i = 0; i < _components.Count; i++)
 			{
 				_updateContext.Reset();
@@ -326,9 +498,9 @@ namespace Fabric
 			}
 			UpdateMusicTimeSettings();
 			UpdateGroupComponentProxies(ref _updateContext);
-			if (AudioSourcePool.IsInitialised())
+			if (AudioSourcePoolManager != null)
 			{
-				AudioSourcePool.Instance.Update();
+				AudioSourcePoolManager.Update();
 			}
 			profiler.End();
 		}
@@ -420,10 +592,10 @@ namespace Fabric
 			if (_globalComponentTable.ContainsKey(destinationComponent))
 			{
 				Component component = _globalComponentTable[destinationComponent];
-				UnityEngine.Object obj = Resources.Load(prefabName);
-				if (obj != null)
+				UnityEngine.Object @object = Resources.Load(prefabName);
+				if (@object != null)
 				{
-					GameObject gameObject = UnityEngine.Object.Instantiate(obj) as GameObject;
+					GameObject gameObject = UnityEngine.Object.Instantiate(@object) as GameObject;
 					gameObject.name = gameObject.name.Replace("(Clone)", "");
 					string key = destinationComponent + "_" + gameObject.name;
 					if (_globalComponentTable.ContainsKey(key))
@@ -520,6 +692,7 @@ namespace Fabric
 				if (createProxy)
 				{
 					GameObject gameObject = new GameObject();
+					gameObject.hideFlags = HideFlags.DontSave;
 					GroupComponentProxy groupComponentProxy = gameObject.AddComponent<GroupComponentProxy>();
 					groupComponentProxy._groupComponent = groupComponent;
 					groupComponentProxy.name = groupComponent.name + "_Proxy";
@@ -566,7 +739,7 @@ namespace Fabric
 				DebugLog.Print("External GroupComponent registration is disabled");
 				return false;
 			}
-			bool result = false;
+			bool result = true;
 			if (groupComponent != null)
 			{
 				if (!ignoreFadeOut)
@@ -619,16 +792,16 @@ namespace Fabric
 					for (int k = 0; k < _groupComponentProxies.Count; k++)
 					{
 						GroupComponentProxy groupComponentProxy2 = _groupComponentProxies[k];
-						if (groupComponentProxy2._groupComponent == groupComponent)
+						if (groupComponentProxy2 != null && groupComponentProxy2._groupComponent == groupComponent)
 						{
 							_groupComponentProxies.Remove(groupComponentProxy2);
-							UnityEngine.Object.DestroyObject(groupComponentProxy2.gameObject);
+							UnityEngine.Object.DestroyImmediate(groupComponentProxy2.gameObject);
 							break;
 						}
 					}
 					DebugLog.Print("GroupComponent [" + groupComponent.name + "] unregistered succesfuly");
 				}
-				result = true;
+				result = false;
 			}
 			else
 			{
@@ -725,8 +898,8 @@ namespace Fabric
 				{
 					_globalComponentTable.Remove(path);
 				}
-				AudioComponent audioComponent = component as AudioComponent;
-				if (audioComponent != null && _audioComponents.ContainsKey(path))
+				AudioComponent x = component as AudioComponent;
+				if (x != null && _audioComponents.ContainsKey(path))
 				{
 					_audioComponents.Remove(path);
 				}
@@ -739,13 +912,8 @@ namespace Fabric
 			}
 		}
 
-		private void RefreshComponents()
+		private void InitialiseComponents()
 		{
-			uint num = 0u;
-			if (Application.isEditor)
-			{
-				num = UnityEngine.Profiling.Profiler.usedHeapSize;
-			}
 			int childCount = base.transform.childCount;
 			_components.Clear();
 			for (int i = 0; i < childCount; i++)
@@ -757,21 +925,22 @@ namespace Fabric
 					_components.Add(component);
 				}
 			}
+		}
+
+		internal void RefreshComponents()
+		{
 			_globalComponentTable.Clear();
 			Component[] components = GetComponents();
 			base.gameObject.name = base.gameObject.name.Replace("(Clone)", "");
-			for (int j = 0; j < components.Length; j++)
+			for (int i = 0; i < components.Length; i++)
 			{
-				AddChildComponentsToGlobalTable(components[j], base.gameObject.name);
+				AddChildComponentsToGlobalTable(components[i], base.gameObject.name);
 			}
-			if (Application.isEditor)
-			{
-				uint usedHeapSize = UnityEngine.Profiling.Profiler.usedHeapSize;
-				_totalMemoryUsed = usedHeapSize - num;
-				Component[] array = UnityEngine.Object.FindObjectsOfType(typeof(Component)) as Component[];
-				AudioSource[] array2 = UnityEngine.Object.FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
-				_totalNumberOfGameObjectsUsed = array.Length + array2.Length;
-			}
+		}
+
+		internal void RemoveComponent(Component component)
+		{
+			_components.Remove(component);
 		}
 
 		public void BakeComponentInstances()
@@ -817,7 +986,7 @@ namespace Fabric
 
 		public Component GetComponentByName(string destinationComponent)
 		{
-			if (_globalComponentTable.ContainsKey(destinationComponent))
+			if (destinationComponent != null && _globalComponentTable.ContainsKey(destinationComponent))
 			{
 				return _globalComponentTable[destinationComponent];
 			}
@@ -866,14 +1035,21 @@ namespace Fabric
 
 		public void SetLanguageByName(string language)
 		{
-			for (int i = 0; i < _languages.Count; i++)
+			int num = 0;
+			while (true)
 			{
-				if (_languages[i]._name == language)
+				if (num < _languages.Count)
 				{
-					_activeLanguage = i;
-					break;
+					if (_languages[num]._name == language)
+					{
+						break;
+					}
+					num++;
+					continue;
 				}
+				return;
 			}
+			_activeLanguage = num;
 		}
 
 		public void SetLanguageByIndex(int languageIndex)
@@ -960,6 +1136,89 @@ namespace Fabric
 				}
 			}
 			_previewObjects.Clear();
+		}
+		
+		
+//////////////////////From Fabric 2.5.0 /////////////
+		[HideInInspector]
+		[SerializeField]
+		public bool _enableEditorPreviewer;
+		
+		[HideInInspector]
+		[SerializeField]
+		public bool _checkOnApplicationFocus;
+		
+		public void RestartPreviewer()
+		{
+			if (_enableEditorPreviewer)
+			{
+				EnablePreviewer(false);
+				EnablePreviewer(true);
+			}
+		}
+		
+		public void EnablePreviewer(bool enable)
+		{
+			if (enable)
+			{
+				_isInitialised = false;
+				Awake();
+				Start();
+				EventManager.Instance.Init();
+				return;
+			}
+			EventManager.Instance.Shutdown();
+			Component[] componentsInChildren = base.gameObject.GetComponentsInChildren<Component>(true);
+			for (int i = 0; i < componentsInChildren.Length; i++)
+			{
+				componentsInChildren[i].Destroy();
+			}
+			_components.Clear();
+		}
+		
+		private void OnApplicationFocus(bool pause)
+		{
+			if (_checkOnApplicationFocus)
+			{
+				OnApplicationPause(!pause);
+			}
+		}
+		
+		public static bool ExecuteFunction()
+		{
+			bool result = true;
+			if (Application.isEditor)
+			{
+				result = (Application.isPlaying ? true : false);
+				if (Instance != null && Instance._enableEditorPreviewer)
+				{
+					result = true;
+				}
+			}
+			return result;
+		}
+		
+		private void OnApplicationQuit()
+		{
+			_quitting = true;
+		}
+		
+		public static bool ExecuteFunctionOnDestroy()
+		{
+			bool result = true;
+			if (Application.isEditor)
+			{
+				result = false;
+				if (Instance != null && Instance._enableEditorPreviewer)
+				{
+					result = true;
+				}
+			}
+			else if (_quitting)
+			{
+				result = false;
+			}
+			return result;
 		}
 	}
 }

@@ -4,26 +4,26 @@ using UnityEngine;
 namespace Fabric
 {
 	[AddComponentMenu("Fabric/Components/IntroLoopOutroComponent")]
-	[ExecuteInEditMode]
 	public class IntroLoopOutroComponent : Component
 	{
 		public enum Stage
 		{
-			Intro = 0,
-			Loop = 1,
-			Outro = 2,
-			NumStages = 3
+			Intro,
+			Loop,
+			Outro,
+			NumStages
 		}
 
 		[HideInInspector]
+		[SerializeField]
 		public Component[] _stages = new Component[3];
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public float _transitionOffset;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public float _transitionOffsetRandomization;
 
 		[HideInInspector]
@@ -45,12 +45,15 @@ namespace Fabric
 			return false;
 		}
 
-		internal override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
+		public override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
 		{
-			base.PlayInternal(zComponentInstance, _fadeInTime, _fadeInCurve, true);
-			_waitToStop = false;
-			PlayStage(Stage.Intro);
-			PlayStage(Stage.Loop);
+			if (CheckMIDI(zComponentInstance))
+			{
+				base.PlayInternal(zComponentInstance, _fadeInTime, _fadeInCurve, true);
+				_waitToStop = false;
+				PlayStage(Stage.Intro);
+				PlayStage(Stage.Loop);
+			}
 		}
 
 		private void PlayStage(Stage stage, double time = 0.0)
@@ -59,7 +62,7 @@ namespace Fabric
 			{
 				return;
 			}
-			double num = (double)_transitionOffset + _random.NextDouble() * (double)_transitionOffsetRandomization;
+			double num = (double)_transitionOffset + base._random.NextDouble() * (double)_transitionOffsetRandomization;
 			if (stage == Stage.Loop)
 			{
 				if (num < 0.0)
@@ -101,7 +104,7 @@ namespace Fabric
 			_isCoroutineActive = false;
 		}
 
-		internal override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd = 0.0)
+		public override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd = 0.0)
 		{
 			if (_activeStage == Stage.Intro || _activeStage == Stage.Outro)
 			{

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Fabric
 {
@@ -144,8 +145,8 @@ namespace Fabric
 					_soloComponents.Add(groupComponent);
 				}
 				component.ToString().LastIndexOf(".");
-				string text = component.name;
-				int num = text.Length * 10;
+				string name = component.name;
+				int num = name.Length * 10;
 				float num2 = slotHeight;
 				if (num < 120)
 				{
@@ -161,8 +162,8 @@ namespace Fabric
 				{
 					num2 += 120f;
 				}
-				GUILayout.BeginArea(new Rect(x, y, num, GetActualSize(num2)), text, GUI.skin.window);
-				MixerSlot(text, groupComponent);
+				GUILayout.BeginArea(new Rect(x, y, num, GetActualSize(num2)), name, GUI.skin.window);
+				MixerSlot(name, groupComponent);
 				if ((bool)component2)
 				{
 					DrawVolumeMeters(component2, GetActualSize(num - 10));
@@ -200,7 +201,8 @@ namespace Fabric
 
 		private void Update()
 		{
-			if (Input.GetKeyDown(KeyCode.M))
+			// Use the new Input System for key press detection
+			if (Keyboard.current != null && Keyboard.current.mKey.wasPressedThisFrame)
 			{
 				if (toggleMixer)
 				{

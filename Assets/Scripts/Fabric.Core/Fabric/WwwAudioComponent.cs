@@ -10,15 +10,15 @@ namespace Fabric
 		[HideInInspector]
 		public wwwFileLocation _fileLocation;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public AudioType _audioType = AudioType.WAV;
 
 		[HideInInspector]
 		public bool _is3D;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public bool _isStreaming = true;
 
 		[SerializeField]
@@ -29,12 +29,12 @@ namespace Fabric
 		[SerializeField]
 		public bool _loadOnStart;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public bool _ignoreUnloadUnusedAssets;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		private string _audioClipReference;
 
 		private WWW www;
@@ -128,24 +128,24 @@ namespace Fabric
 
 		private string GetAudioClipReferenceFilename()
 		{
-			string text = "";
+			string str = "";
 			if (_fileLocation == wwwFileLocation.DataPath)
 			{
-				text = GetDataPath();
+				str = GetDataPath();
 			}
 			else if (_fileLocation == wwwFileLocation.PersistentDataPath)
 			{
-				text = GetPersistentPath();
+				str = GetPersistentPath();
 			}
 			else if (_fileLocation == wwwFileLocation.StreamingAssetsPath)
 			{
-				text = GetStreamingPath();
+				str = GetStreamingPath();
 			}
 			else if (_fileLocation == wwwFileLocation.Http)
 			{
 				return _audioClipReference;
 			}
-			return text + "//" + _audioClipReference;
+			return str + "//" + _audioClipReference;
 		}
 
 		private string GetPersistentPath()
@@ -163,21 +163,24 @@ namespace Fabric
 			return "file://" + Application.dataPath;
 		}
 
-		internal override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
+		public override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
 		{
-			if (!_loadOnStart)
+			if (CheckMIDI(zComponentInstance))
 			{
-				SetComponentActive(true);
-				_currentState = AudioComponentState.WaitingToPlay;
-				StartCoroutine(LoadPlayCoroutine(zComponentInstance, target, curve, dontPlayComponents));
-			}
-			else
-			{
-				PlayInternalWait(zComponentInstance, target, curve, dontPlayComponents);
+				if (!_loadOnStart)
+				{
+					SetComponentActive(true);
+					_currentState = AudioComponentState.WaitingToPlay;
+					StartCoroutine(LoadPlayCoroutine(zComponentInstance, target, curve, dontPlayComponents));
+				}
+				else
+				{
+					PlayInternalWait(zComponentInstance, target, curve, dontPlayComponents);
+				}
 			}
 		}
 
-		protected override void StopAudioComponent()
+		protected override void StopAudioComponent(bool notifyParent)
 		{
 			base.StopAudioComponent();
 			if (!_loadOnStart)
@@ -186,7 +189,7 @@ namespace Fabric
 			}
 		}
 
-		internal override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduledEnd)
+		public override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduledEnd)
 		{
 			base.StopInternal(stopInstances, forceStop, target, curve, scheduledEnd);
 			if (forceStop && !_loadOnStart)

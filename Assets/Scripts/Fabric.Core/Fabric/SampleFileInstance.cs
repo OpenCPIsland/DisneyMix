@@ -25,6 +25,15 @@ namespace Fabric
 			_sampleFile = sampleFile;
 		}
 
+		public string Name()
+		{
+			if (_sampleFile != null)
+			{
+				return _sampleFile.Name();
+			}
+			return "Invalid SampleFile!!";
+		}
+
 		public void Reset(int start = 0)
 		{
 			_position = start;

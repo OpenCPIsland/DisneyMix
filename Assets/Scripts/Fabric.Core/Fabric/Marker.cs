@@ -15,6 +15,9 @@ namespace Fabric
 		[SerializeField]
 		public float offsetTime;
 
+		[SerializeField]
+		public MarkerType type = MarkerType.Notify;
+
 		[NonSerialized]
 		public float frequency;
 	}

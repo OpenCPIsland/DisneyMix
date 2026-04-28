@@ -12,10 +12,11 @@ namespace Fabric
 		public Component _currentlyPlayingComponent;
 
 		[HideInInspector]
+		[SerializeField]
 		public Component[] _playlist;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public bool[] _playlistPlayToEnd;
 
 		private int _prevPlayingComponentIndex;
@@ -24,40 +25,48 @@ namespace Fabric
 
 		private bool _advanceEventTriggered;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public bool _resetOnFirstPlay;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public bool _syncToMusicOnFirstPlay = true;
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public float _transitionOffset;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public float _transitionOffsetRandomization;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public SequenceComponentType _sequenceType;
 
 		[HideInInspector]
 		[SerializeField]
 		public SequenceComponentPlayMode _sequencePlayMode;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public SequenceComponentAdvanceMode _sequenceAdvanceMode = SequenceComponentAdvanceMode.OnAdvanceSequenceEventAction;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public bool _syncAdvanceBetweenInstances;
 
+		[NonSerialized]
 		[HideInInspector]
-		public int _playingComponentIndex { get; set; }
+		private bool _stopInProgress;
+
+		[HideInInspector]
+		public int _playingComponentIndex
+		{
+			get;
+			set;
+		}
 
 		protected override void OnInitialise(bool inPreviewMode = false)
 		{
@@ -75,32 +84,38 @@ namespace Fabric
 			return true;
 		}
 
-		internal override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
+		public override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
 		{
-			if (!IsPlaying() && _resetOnFirstPlay)
+			if (CheckMIDI(zComponentInstance))
 			{
-				_playingComponentIndex = 0;
-				_prevPlayingComponentIndex = 0;
+				if (!IsPlaying() && _resetOnFirstPlay)
+				{
+					_playingComponentIndex = 0;
+					_prevPlayingComponentIndex = 0;
+				}
+				if (!_syncAdvanceBetweenInstances && _sequenceAdvanceMode != 0)
+				{
+					_playingComponentIndex = 0;
+				}
+				_onlyStopOnce = true;
+				_advanceEventTriggered = false;
+				_stopInProgress = false;
+				base.PlayInternal(zComponentInstance, _fadeInTime, _fadeInCurve, true);
+				double playScheduledDelay = (double)_transitionOffset + base._random.NextDouble() * (double)_transitionOffsetRandomization;
+				double playScheduled = 0.0;
+				if (_activeMusicTimeSettings != null && IsMusicSyncEnabled() && _syncToMusicOnFirstPlay && !_musicTimeResetOnPlay)
+				{
+					playScheduled = _activeMusicTimeSettings.GetDelay(this);
+				}
+				_componentInstance._instance.SetPlayScheduledAdditive(playScheduled, playScheduledDelay);
+				PlayNextEntry();
 			}
-			if (!_syncAdvanceBetweenInstances && _sequenceAdvanceMode != SequenceComponentAdvanceMode.OnPlayEventAction)
-			{
-				_playingComponentIndex = 0;
-			}
-			_onlyStopOnce = true;
-			_advanceEventTriggered = false;
-			base.PlayInternal(zComponentInstance, _fadeInTime, _fadeInCurve, true);
-			double playScheduledDelay = (double)_transitionOffset + _random.NextDouble() * (double)_transitionOffsetRandomization;
-			double playScheduled = 0.0;
-			if (_activeMusicTimeSettings != null && IsMusicSyncEnabled() && _syncToMusicOnFirstPlay)
-			{
-				playScheduled = _activeMusicTimeSettings.GetDelay();
-			}
-			_componentInstance._instance.SetPlayScheduledAdditive(playScheduled, playScheduledDelay);
-			PlayNextEntry();
 		}
 
-		internal override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd = 0.0)
+		public override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd = 0.0)
 		{
+			ResetSequence();
+			_stopInProgress = true;
 			base.StopInternal(stopInstances, forceStop, target, curve, scheduleEnd);
 		}
 
@@ -167,16 +182,23 @@ namespace Fabric
 					for (int j = 0; j < list.Count; j++)
 					{
 						ComponentInstance componentInstance = list[j];
-						if ((_playlistPlayToEnd[_prevPlayingComponentIndex] || IsMusicSyncEnabled()) && _currentlyPlayingComponent != null && _currentlyPlayingComponent.IsPlaying())
+						if (!((SequenceComponent)componentInstance._instance)._stopInProgress)
 						{
-							((SequenceComponent)componentInstance._instance)._advanceEventTriggered = true;
-							continue;
+							if ((_playlistPlayToEnd[_prevPlayingComponentIndex] || IsMusicSyncEnabled()) && _currentlyPlayingComponent != null && _currentlyPlayingComponent.IsPlaying())
+							{
+								((SequenceComponent)componentInstance._instance)._advanceEventTriggered = true;
+								continue;
+							}
+							((SequenceComponent)componentInstance._instance).PlayNextEntry();
+							result = EventStatus.Handled;
+							if (HasValidEventNotifier())
+							{
+								NotifyEvent(EventNotificationType.OnSequenceAdvance, _currentlyPlayingComponent);
+							}
 						}
-						((SequenceComponent)componentInstance._instance).PlayNextEntry();
-						result = EventStatus.Handled;
-						if (HasValidEventNotifier())
+						else
 						{
-							NotifyEvent(EventNotificationType.OnSequenceAdvance, _currentlyPlayingComponent);
+							result = EventStatus.Not_Handled_Stopped;
 						}
 					}
 				}
@@ -209,9 +231,18 @@ namespace Fabric
 
 		private void ResetSequence()
 		{
-			_playingComponentIndex = 0;
-			_prevPlayingComponentIndex = 0;
+			if (_sequenceType != SequenceComponentType.PlayOnAdvance || _sequenceAdvanceMode != 0)
+			{
+				_playingComponentIndex = 0;
+				_prevPlayingComponentIndex = 0;
+			}
+			_stopInProgress = false;
 			Reset();
+		}
+
+		internal override bool OnMarker(double time)
+		{
+			return AdvanceSequence(time);
 		}
 
 		internal override void OnFinishPlaying(double time)
@@ -232,22 +263,22 @@ namespace Fabric
 			return base.UpdateInternal(ref context);
 		}
 
-		private void AdvanceSequence(double time)
+		private bool AdvanceSequence(double time)
 		{
 			if ((IsPlaying() && _sequenceType == SequenceComponentType.PlayContinuous) || _advanceEventTriggered)
 			{
-				double num = (double)_transitionOffset + _random.NextDouble() * (double)_transitionOffsetRandomization;
+				double num = (double)_transitionOffset + base._random.NextDouble() * (double)_transitionOffsetRandomization;
 				_componentInstance._instance.SetPlayScheduled(time + num, num);
 				if (!PlayNextEntry(num, time))
 				{
 					base.OnFinishPlaying(time);
+					return false;
 				}
 				_advanceEventTriggered = false;
+				return true;
 			}
-			else
-			{
-				base.OnFinishPlaying(time);
-			}
+			base.OnFinishPlaying(time);
+			return false;
 		}
 	}
 }

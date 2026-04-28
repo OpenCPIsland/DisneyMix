@@ -1,13 +1,18 @@
+using System;
 using UnityEngine;
 
 namespace Fabric
 {
-	public struct ParameterData
+	[Serializable]
+	public class ParameterData
 	{
 		[SerializeField]
 		public float _value;
 
 		[SerializeField]
-		public string _parameter;
+		public int _parameter;
+
+		[SerializeField]
+		public int _index = -1;
 	}
 }

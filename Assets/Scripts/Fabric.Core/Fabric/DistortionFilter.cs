@@ -22,7 +22,12 @@ namespace Fabric
 
 		public override UnityEngine.Component CreateComponent(GameObject gameObject)
 		{
-			return gameObject.AddComponent<AudioDistortionFilter>();
+			AudioDistortionFilter audioDistortionFilter = gameObject.GetComponent<AudioDistortionFilter>();
+			if (audioDistortionFilter == null)
+			{
+				audioDistortionFilter = gameObject.AddComponent<AudioDistortionFilter>();
+			}
+			return audioDistortionFilter;
 		}
 
 		public override string GetTypeByName()
@@ -32,7 +37,7 @@ namespace Fabric
 
 		public override void UpdateParameters()
 		{
-			if (!_distortionLevel.HasReachedTarget())
+			if (_distortionLevel.HasReachedTarget())
 			{
 				return;
 			}
@@ -45,6 +50,7 @@ namespace Fabric
 					audioDistortionFilter.distortionLevel = _distortionLevel.GetValue();
 				}
 			}
+			base.UpdateParameters();
 		}
 	}
 }

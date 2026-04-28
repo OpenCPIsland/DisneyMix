@@ -42,6 +42,9 @@ namespace Fabric
 		[SerializeField]
 		public int _priority;
 
+		[NonSerialized]
+		public bool _forceEventAction;
+
 		public EventStatus eventStatus
 		{
 			get
@@ -64,6 +67,24 @@ namespace Fabric
 			_delay = fromEvent._delay;
 			_delayTimer = fromEvent._delayTimer;
 			_initialiseParameters = fromEvent._initialiseParameters;
+			_onEventNotify = fromEvent._onEventNotify;
+			_eventCategory = fromEvent._eventCategory;
+			_priority = fromEvent._priority;
+		}
+
+		public void Reset()
+		{
+			_eventName = "";
+			EventAction = EventAction.PlaySound;
+			eventStatus = EventStatus.Not_Handled;
+			parentGameObject = null;
+			_parameter = null;
+			_delay = 0f;
+			_delayTimer = 0f;
+			_initialiseParameters = null;
+			_onEventNotify = null;
+			_eventCategory = null;
+			_priority = 0;
 		}
 	}
 }

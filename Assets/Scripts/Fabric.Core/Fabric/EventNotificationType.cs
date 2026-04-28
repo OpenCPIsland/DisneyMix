@@ -2,19 +2,23 @@ namespace Fabric
 {
 	public enum EventNotificationType
 	{
-		OnFinished = 0,
-		OnStolenOldest = 1,
-		OnStolenNewest = 2,
-		OnStolenFarthest = 3,
-		OnAudioComponentStopped = 4,
-		OnSequenceNextEntry = 5,
-		OnSequenceAdvance = 6,
-		OnSequenceEnd = 7,
-		OnSequenceLoop = 8,
-		OnSwitch = 9,
-		OnMarker = 10,
-		OnRegionSet = 11,
-		OnRegionQueued = 12,
-		OnRegionEnd = 13
+		OnFinished,
+		OnStolenOldest,
+		OnStolenNewest,
+		OnStolenFarthest,
+		OnAudioComponentStopped,
+		OnSequenceNextEntry,
+		OnSequenceAdvance,
+		OnSequenceEnd,
+		OnSequenceLoop,
+		OnSwitch,
+		OnMarker,
+		OnRegionSet,
+		OnRegionQueued,
+		OnRegionEnd,
+		OnAudioComponentPlay,
+		OnPlay,
+		OnPlayNotHandled,
+		OnStolenNone
 	}
 }

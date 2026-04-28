@@ -25,6 +25,34 @@ namespace Fabric
 			_instance = this;
 		}
 
+		public void Destroy()
+		{
+			for (int i = 0; i < _sampleFileList.Count; i++)
+			{
+				_sampleFileList[i].Destroy();
+			}
+		}
+
+		public void AddSampleFile(SampleFile sampleFile)
+		{
+			_sampleFileList.Add(sampleFile);
+		}
+
+		public void RemoveSampleFile(SampleFile sampleFile)
+		{
+			_sampleFileList.Remove(sampleFile);
+		}
+
+		public string[] ToStringArray()
+		{
+			string[] array = new string[_sampleFileList.Count];
+			for (int i = 0; i < array.Length; i++)
+			{
+				array[i] = _sampleFileList[i].Name();
+			}
+			return array;
+		}
+
 		public int GetSampleFileIndexByName(string name)
 		{
 			for (int i = 0; i < _sampleFileList.Count; i++)
@@ -35,6 +63,11 @@ namespace Fabric
 				}
 			}
 			return -1;
+		}
+
+		public int GetNumSampleFiles()
+		{
+			return _sampleFileList.Count;
 		}
 
 		public SampleFile GetSampleFileByIndex(int index)

@@ -43,6 +43,10 @@ namespace Fabric
 
 		public AudioBus _audioBus;
 
+		public bool _spatialize;
+
+		public CustomCurves _customCurves;
+
 		public void Reset()
 		{
 			_volume = 1f;
@@ -62,6 +66,8 @@ namespace Fabric
 			_depth = 0;
 			_audioMixerGroup = null;
 			_audioBus = null;
+			_spatialize = false;
+			_customCurves = null;
 		}
 	}
 }

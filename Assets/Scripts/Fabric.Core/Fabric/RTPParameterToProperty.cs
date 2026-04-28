@@ -1,5 +1,5 @@
-using System;
 using Fabric.TimelineComponent;
+using System;
 using UnityEngine;
 
 namespace Fabric
@@ -32,7 +32,7 @@ namespace Fabric
 		public RTPPropertyType _propertyType;
 
 		[SerializeField]
-		public Envelope _envelope = new Envelope();
+		public Fabric.TimelineComponent.Envelope _envelope = new Fabric.TimelineComponent.Envelope();
 
 		public static float SetValueByType(float in1, float in2, RTPPropertyType type = RTPPropertyType.Set)
 		{

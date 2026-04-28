@@ -6,9 +6,9 @@ namespace Fabric
 	[Serializable]
 	public class MusicTimeSittings
 	{
-		public delegate void OnBarHandler(double timeOffset);
-
 		public delegate void OnBeatHandler(double timeOffset);
+
+		public delegate void OnBarHandler(double timeOffset);
 
 		[SerializeField]
 		public string _name = "";
@@ -24,6 +24,9 @@ namespace Fabric
 
 		[SerializeField]
 		public MusicSyncType _syncType = MusicSyncType.OnBar;
+
+		[SerializeField]
+		public Component _syncTarget;
 
 		[NonSerialized]
 		public double _lookAheadTime = 1.0;
@@ -92,6 +95,11 @@ namespace Fabric
 			{
 				_lookAheadTime = _notesPerSecond;
 			}
+			SetNextBeatBarEvents();
+		}
+
+		public void SetNextBeatBarEvents()
+		{
 			_nextBeatTimeEvent = AudioSettings.dspTime + (double)_notesPerSecond;
 			_nextBarTimeEvent = AudioSettings.dspTime + (double)_barsPerSecond;
 		}
@@ -136,6 +144,51 @@ namespace Fabric
 				num += (double)((float)numBeats * _notesPerSecond);
 			}
 			return num;
+		}
+
+		public double GetDelay(MusicSyncType syncType)
+		{
+			switch (syncType)
+			{
+			case MusicSyncType.OnBeat:
+				return _nextBeatTimeEvent - AudioSettings.dspTime;
+			case MusicSyncType.OnBar:
+				return _nextBarTimeEvent - AudioSettings.dspTime;
+			default:
+				return 0.0;
+			}
+		}
+
+		public double GetDelay(Component instance, int numBeats = 0)
+		{
+			double num = 0.0;
+			if (_syncTarget != null)
+			{
+				float num2 = (float)_syncTarget.GetCurrentTime();
+				num = GetDelay(num2);
+				float num3 = num2 + (float)num;
+				instance.SetPlayScheduledTime(num3);
+			}
+			else
+			{
+				num = GetDelay(numBeats);
+			}
+			return num;
+		}
+
+		public double GetDelay(double time)
+		{
+			double num = time + (double)_notesPerSecond;
+			double num2 = time + (double)_notesPerSecond;
+			if (_syncType == MusicSyncType.OnBeat)
+			{
+				return num - time;
+			}
+			if (_syncType == MusicSyncType.OnBar)
+			{
+				return num2 - time;
+			}
+			return 0.0;
 		}
 
 		public bool CheckIfNextEventIsWithinRange(ref double offset)

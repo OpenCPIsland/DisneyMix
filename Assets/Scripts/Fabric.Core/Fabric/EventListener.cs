@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Fabric
 {
+	[ExecuteInEditMode]
 	[AddComponentMenu("Fabric/Events/Listener")]
 	public class EventListener : MonoBehaviour
 	{
@@ -9,16 +10,28 @@ namespace Fabric
 		[HideInInspector]
 		public string _eventName = "_UnSet_";
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public int _eventID;
 
 		[SerializeField]
 		[HideInInspector]
 		public bool _overrideEventTriggerAction;
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public OverrideParameters _overrideParameters;
+
+		private void OnDestroy()
+		{
+			if (FabricManager._componentPreviewerUpdateIsActive)
+			{
+				Component component = base.gameObject.GetComponent<Component>();
+				if (component != null)
+				{
+					component.UnregisterEventListeners();
+				}
+			}
+		}
 	}
 }

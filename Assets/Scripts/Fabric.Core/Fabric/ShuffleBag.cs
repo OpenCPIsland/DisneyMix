@@ -5,11 +5,17 @@ namespace Fabric
 {
 	public class ShuffleBag<T>
 	{
-		private Random random = new Random();
-
 		private List<T> values = new List<T>();
 
 		private int cursor;
+
+		private Random random
+		{
+			get
+			{
+				return Generic._random;
+			}
+		}
 
 		public void add(T value)
 		{
@@ -56,6 +62,16 @@ namespace Fabric
 			{
 				add(value);
 			}
+		}
+
+		public List<T> getMany(int quantity)
+		{
+			List<T> list = new List<T>(quantity);
+			for (int i = 0; i < quantity; i++)
+			{
+				list.Add(get());
+			}
+			return list;
 		}
 
 		public void clear()

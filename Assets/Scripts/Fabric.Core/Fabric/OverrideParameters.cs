@@ -39,6 +39,12 @@ namespace Fabric
 			{
 				return _floatParameter;
 			}
+			set
+			{
+				Reset();
+				_floatParameter = value;
+				_type = OverrideParameterType.Float;
+			}
 		}
 
 		public string StringParameter
@@ -46,6 +52,12 @@ namespace Fabric
 			get
 			{
 				return _stringParameter;
+			}
+			set
+			{
+				Reset();
+				_stringParameter = value;
+				_type = OverrideParameterType.String;
 			}
 		}
 
@@ -55,6 +67,12 @@ namespace Fabric
 			{
 				return _switchPresetData;
 			}
+			set
+			{
+				Reset();
+				_switchPresetData = value;
+				_type = OverrideParameterType.SwitchPresetData;
+			}
 		}
 
 		public DSPParameterData DSPParameterData
@@ -62,6 +80,12 @@ namespace Fabric
 			get
 			{
 				return _dspParameterData;
+			}
+			set
+			{
+				Reset();
+				_dspParameterData = value;
+				_type = OverrideParameterType.DSPParameterData;
 			}
 		}
 
@@ -71,6 +95,22 @@ namespace Fabric
 			{
 				return _transitionToSnapshotData;
 			}
+			set
+			{
+				Reset();
+				_transitionToSnapshotData = value;
+				_type = OverrideParameterType.TransitionToSnapshotData;
+			}
+		}
+
+		public void Reset()
+		{
+			_type = OverrideParameterType.Float;
+			_floatParameter = 1f;
+			_stringParameter = "";
+			_switchPresetData = null;
+			_dspParameterData = null;
+			_transitionToSnapshotData = null;
 		}
 	}
 }

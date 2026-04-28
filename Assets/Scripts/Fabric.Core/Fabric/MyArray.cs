@@ -2,7 +2,7 @@ using System;
 
 namespace Fabric
 {
-	internal static class FabShuffle<T>
+	internal static class MyArray<T>
 	{
 		public static void Shuffle(T[] array, Random rng)
 		{

@@ -62,7 +62,7 @@ namespace Fabric
 					currentIndex = 0;
 					return;
 				}
-				EventNotificationType eventNotificationType = ((currentIndex != 0) ? events[currentIndex - 1].notificationType : notificationType);
+				EventNotificationType eventNotificationType = (currentIndex != 0) ? events[currentIndex - 1].notificationType : notificationType;
 				if (type == eventNotificationType)
 				{
 					PostEvent(GetNextEventName());
@@ -114,6 +114,10 @@ namespace Fabric
 				return true;
 			}
 			return false;
+		}
+
+		public void Update()
+		{
 		}
 	}
 }

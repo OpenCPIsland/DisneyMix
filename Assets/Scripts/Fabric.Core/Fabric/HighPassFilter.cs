@@ -9,8 +9,8 @@ namespace Fabric
 		[SerializeField]
 		public DSPParameter _cutoffFrequency = new DSPParameter(5000f, 0f, 22000f);
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public DSPParameter _highpassResonaceQ = new DSPParameter(0.5f, 0f, 10f);
 
 		public override void OnInitialise(bool addToAudioSourceGameObject)
@@ -27,7 +27,12 @@ namespace Fabric
 
 		public override UnityEngine.Component CreateComponent(GameObject gameObject)
 		{
-			return gameObject.AddComponent<AudioHighPassFilter>();
+			AudioHighPassFilter audioHighPassFilter = gameObject.GetComponent<AudioHighPassFilter>();
+			if (audioHighPassFilter == null)
+			{
+				audioHighPassFilter = gameObject.AddComponent<AudioHighPassFilter>();
+			}
+			return audioHighPassFilter;
 		}
 
 		public override string GetTypeByName()
@@ -37,7 +42,7 @@ namespace Fabric
 
 		public override void UpdateParameters()
 		{
-			if (!_cutoffFrequency.HasReachedTarget() && !_highpassResonaceQ.HasReachedTarget())
+			if (_cutoffFrequency.HasReachedTarget() && _highpassResonaceQ.HasReachedTarget())
 			{
 				return;
 			}
@@ -51,6 +56,7 @@ namespace Fabric
 					audioHighPassFilter.highpassResonanceQ = _highpassResonaceQ.GetValue();
 				}
 			}
+			base.UpdateParameters();
 		}
 	}
 }

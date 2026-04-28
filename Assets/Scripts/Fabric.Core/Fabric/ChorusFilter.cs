@@ -5,16 +5,16 @@ namespace Fabric
 	[AddComponentMenu("Fabric/DSP/ChorusFilter")]
 	public class ChorusFilter : DSPComponent
 	{
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public DSPParameter _dryMix = new DSPParameter(0.5f, 0f, 1f);
 
 		[SerializeField]
 		[HideInInspector]
 		public DSPParameter _wetMix1 = new DSPParameter(0.5f, 0f, 1f);
 
-		[HideInInspector]
 		[SerializeField]
+		[HideInInspector]
 		public DSPParameter _wetMix2 = new DSPParameter(0.5f, 0f, 1f);
 
 		[SerializeField]
@@ -29,8 +29,8 @@ namespace Fabric
 		[SerializeField]
 		public DSPParameter _rate = new DSPParameter(0.8f, 0f, 20f);
 
-		[SerializeField]
 		[HideInInspector]
+		[SerializeField]
 		public DSPParameter _depth = new DSPParameter(0.03f, 0f, 1f);
 
 		[SerializeField]
@@ -57,7 +57,12 @@ namespace Fabric
 
 		public override UnityEngine.Component CreateComponent(GameObject gameObject)
 		{
-			return gameObject.AddComponent<AudioChorusFilter>();
+			AudioChorusFilter audioChorusFilter = gameObject.GetComponent<AudioChorusFilter>();
+			if (audioChorusFilter == null)
+			{
+				audioChorusFilter = gameObject.AddComponent<AudioChorusFilter>();
+			}
+			return audioChorusFilter;
 		}
 
 		public override string GetTypeByName()
@@ -67,7 +72,7 @@ namespace Fabric
 
 		public override void UpdateParameters()
 		{
-			if (!_dryMix.HasReachedTarget() && !_wetMix1.HasReachedTarget() && !_wetMix2.HasReachedTarget() && !_wetMix3.HasReachedTarget() && !_delay.HasReachedTarget() && !_rate.HasReachedTarget() && !_depth.HasReachedTarget() && !_feedback.HasReachedTarget())
+			if (_dryMix.HasReachedTarget() && _wetMix1.HasReachedTarget() && _wetMix2.HasReachedTarget() && _wetMix3.HasReachedTarget() && _delay.HasReachedTarget() && _rate.HasReachedTarget() && _depth.HasReachedTarget() && _feedback.HasReachedTarget())
 			{
 				return;
 			}
@@ -84,9 +89,9 @@ namespace Fabric
 					audioChorusFilter.delay = _delay.GetValue();
 					audioChorusFilter.rate = _rate.GetValue();
 					audioChorusFilter.depth = _depth.GetValue();
-					audioChorusFilter.feedback = _feedback.GetValue();
 				}
 			}
+			base.UpdateParameters();
 		}
 	}
 }

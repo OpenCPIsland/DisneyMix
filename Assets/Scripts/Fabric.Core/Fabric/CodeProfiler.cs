@@ -34,6 +34,11 @@ namespace Fabric
 
 		public static bool enabled;
 
+		public void Reset()
+		{
+			maxMsPerFrame = 0f;
+		}
+
 		public void Begin()
 		{
 			if (enabled)

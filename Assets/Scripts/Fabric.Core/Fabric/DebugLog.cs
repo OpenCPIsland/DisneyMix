@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using UnityEngine;
 
@@ -18,11 +19,14 @@ namespace Fabric
 
 		private static StringBuilder _stringBuilder = new StringBuilder(512, 512);
 
+		[NonSerialized]
+		public bool _destroy;
+
 		public static DebugLog Instance
 		{
 			get
 			{
-				if (Application.isEditor && FabricManager.Instance._enableDebugLog && _instance == null && FabricManager.IsInitialised())
+				if (Application.isEditor && FabricManager.IsInitialised() && FabricManager.Instance._enableDebugLog && _instance == null)
 				{
 					_instance = FabricManager.Instance.GetComponent<DebugLog>();
 					if (_instance == null)

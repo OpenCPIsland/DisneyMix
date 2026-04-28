@@ -7,8 +7,6 @@ namespace Fabric
 	[AddComponentMenu("Fabric/Components/RandomComponent")]
 	public class RandomComponent : Component, IRTPPropertyListener
 	{
-		private System.Random _randomComponents = new System.Random();
-
 		private Component _selectedComponent;
 
 		private int[] _randomNoRepeatIndexes;
@@ -33,10 +31,20 @@ namespace Fabric
 
 		[SerializeField]
 		[HideInInspector]
-		public float _delay;
+		public RandomComponentTriggerMode _triggerMode;
 
 		[SerializeField]
 		[HideInInspector]
+		public float _delay;
+
+		[NonSerialized]
+		private float _retriggerTimer;
+
+		[NonSerialized]
+		public float _retriggerTime;
+
+		[HideInInspector]
+		[SerializeField]
 		public float _delayRandomization;
 
 		[SerializeField]
@@ -49,21 +57,48 @@ namespace Fabric
 
 		private ShuffleBag<int> _shuffleBag = new ShuffleBag<int>();
 
+		[NonSerialized]
+		[HideInInspector]
+		private ComponentStatus _status = ComponentStatus.Stopped;
+
+		private System.Random _randomComponents
+		{
+			get
+			{
+				return Generic._random;
+			}
+		}
+
 		protected override void OnInitialise(bool inPreviewMode = false)
 		{
 			base.OnInitialise(inPreviewMode);
 			InitialiseRandomComponent(_playMode);
 		}
 
-		internal override void OnFinishPlaying(double time)
+		private bool PlayNextRandom(double time)
 		{
 			if (_componentInstance != null && _looped)
 			{
 				float num = _delay + UnityEngine.Random.Range(_delayRandomization, _delayMaxRandomization);
 				_componentInstance._instance.SetPlayScheduled(time + (double)num, 0.0);
 				PlayRandomomponent(_componentInstance);
+				return true;
 			}
-			else
+			return false;
+		}
+
+		internal override bool OnMarker(double time)
+		{
+			if (_triggerMode == RandomComponentTriggerMode.WaitOnMarker && !PlayNextRandom(time))
+			{
+				return base.OnMarker(time);
+			}
+			return false;
+		}
+
+		internal override void OnFinishPlaying(double time)
+		{
+			if (_triggerMode == RandomComponentTriggerMode.WaitToFinish && !PlayNextRandom(time))
 			{
 				base.OnFinishPlaying(time);
 			}
@@ -76,6 +111,19 @@ namespace Fabric
 				return base.IsLooped();
 			}
 			return true;
+		}
+
+		public override bool IsComponentActive()
+		{
+			if (_looped && _playMode == RandomComponentPlayMode.RandomNoRepeat && _triggerMode == RandomComponentTriggerMode.Retrigger)
+			{
+				if (_status == ComponentStatus.Stopped)
+				{
+					return false;
+				}
+				return true;
+			}
+			return base.IsComponentActive();
 		}
 
 		public void InitialiseRandomComponent(RandomComponentPlayMode playMode)
@@ -92,20 +140,50 @@ namespace Fabric
 			{
 				_randomNoRepeatIndexes[i] = i;
 			}
-			FabShuffle<int>.Shuffle(_randomNoRepeatIndexes, _randomComponents);
+			MyArray<int>.Shuffle(_randomNoRepeatIndexes, _randomComponents);
 		}
 
-		internal override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
+		public override void PlayInternal(ComponentInstance zComponentInstance, float target, float curve, bool dontPlayComponents)
 		{
-			if (_components.Count != 0)
+			if (CheckMIDI(zComponentInstance) && _components.Count != 0)
 			{
+				if (_selectedComponent != null)
+				{
+					_selectedComponent.Stop();
+				}
 				base.PlayInternal(zComponentInstance, target, curve, true);
+				float num = 0f;
 				if (_delayOnFirstPlay)
 				{
-					float num = _delay + UnityEngine.Random.Range(_delayRandomization, _delayMaxRandomization);
+					num = _delay + UnityEngine.Random.Range(_delayRandomization, _delayMaxRandomization);
 					_componentInstance._instance.SetPlayScheduledAdditive(num, 0.0);
 				}
 				PlayRandomomponent(zComponentInstance);
+				if (_looped && _playMode == RandomComponentPlayMode.RandomNoRepeat && _triggerMode == RandomComponentTriggerMode.Retrigger)
+				{
+					_retriggerTime = 0f;
+					_retriggerTime = num;
+				}
+				_status = ComponentStatus.Playing;
+			}
+		}
+
+		public override void StopInternal(bool stopInstances, bool forceStop, float target, float curve, double scheduleEnd = 0.0)
+		{
+			if (_looped && _playMode == RandomComponentPlayMode.RandomNoRepeat && _triggerMode == RandomComponentTriggerMode.Retrigger)
+			{
+				_retriggerTime = 0f;
+				_retriggerTimer = 0f;
+			}
+			base.StopInternal(stopInstances, forceStop, target, curve, scheduleEnd);
+			_status = ComponentStatus.Stopped;
+		}
+
+		private void RetriggerPlayFunction()
+		{
+			if (_status != ComponentStatus.Paused)
+			{
+				PlayRandomomponent(_componentInstance);
 			}
 		}
 
@@ -117,7 +195,7 @@ namespace Fabric
 				if (_randomNoRepeatIndex == -1 || _randomNoRepeatIndex >= _components.Count)
 				{
 					int num = _randomNoRepeatIndexes[_randomNoRepeatIndexes.Length - 1];
-                    FabShuffle<int>.Shuffle(_randomNoRepeatIndexes, _randomComponents);
+					MyArray<int>.Shuffle(_randomNoRepeatIndexes, _randomComponents);
 					if (num == _randomNoRepeatIndexes[0])
 					{
 						int num2 = _randomNoRepeatIndexes[0];
@@ -165,14 +243,6 @@ namespace Fabric
 			}
 		}
 
-		public override void Pause(bool pause)
-		{
-			if (_selectedComponent != null)
-			{
-				_selectedComponent.Pause(pause);
-			}
-		}
-
 		public void InitialiseWeights()
 		{
 			Component[] childComponents = GetChildComponents();
@@ -184,6 +254,23 @@ namespace Fabric
 					_randomWeights[i] = 100;
 				}
 			}
+		}
+
+		public override bool UpdateInternal(ref Context context)
+		{
+			if (_looped && _playMode == RandomComponentPlayMode.RandomNoRepeat && _triggerMode == RandomComponentTriggerMode.Retrigger)
+			{
+				float realtimeDelta = FabricTimer.GetRealtimeDelta();
+				_retriggerTimer += realtimeDelta;
+				if (_retriggerTimer >= _retriggerTime)
+				{
+					_componentInstance._instance.SetPlayScheduled(_retriggerTimer - _retriggerTime, 0.0);
+					PlayRandomomponent(_componentInstance);
+					_retriggerTime = _delay + UnityEngine.Random.Range(_delayRandomization, _delayMaxRandomization);
+					_retriggerTimer = 0f;
+				}
+			}
+			return base.UpdateInternal(ref context);
 		}
 
 		public void UpdateWeights()
@@ -201,12 +288,12 @@ namespace Fabric
 		List<RTPProperty> IRTPPropertyListener.CollectProperties()
 		{
 			List<RTPProperty> list = CollectProperties();
-			list.Add(new RTPProperty(8, "Delay", 0f, 1f));
-			list.Add(new RTPProperty(9, "Delay Randomization", 0f, 1f));
+			list.Add(new RTPProperty(8, "Delay", 0f, 60f));
+			list.Add(new RTPProperty(9, "Delay Randomization", 0f, 60f));
 			return list;
 		}
 
-		bool IRTPPropertyListener.UpdateProperty(RTPProperty property, float value, RTPPropertyType type = RTPPropertyType.Set)
+		bool IRTPPropertyListener.UpdateProperty(RTPProperty property, float value, RTPPropertyType type)
 		{
 			if (UpdateProperty(property, value, type))
 			{
@@ -217,6 +304,10 @@ namespace Fabric
 				if (property._name == "Delay")
 				{
 					_delay = RTPParameterToProperty.SetValueByType(_delay, value, type);
+					if (_triggerMode == RandomComponentTriggerMode.Retrigger)
+					{
+						_retriggerTime = _delay;
+					}
 					return true;
 				}
 				if (property._name == "Delay Randomization")

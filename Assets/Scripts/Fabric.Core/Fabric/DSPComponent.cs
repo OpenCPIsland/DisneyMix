@@ -11,13 +11,27 @@ namespace Fabric
 
 		protected string _name;
 
-		public DSPType Type { get; set; }
+		private bool _isInitialized;
+
+		public DSPType Type
+		{
+			get;
+			set;
+		}
 
 		public string Name
 		{
 			get
 			{
 				return _name;
+			}
+		}
+
+		public bool IsInitialized
+		{
+			get
+			{
+				return _isInitialized;
 			}
 		}
 
@@ -51,6 +65,7 @@ namespace Fabric
 				}
 			}
 			_name = dspComponent;
+			_isInitialized = true;
 		}
 
 		public void AddDSPInstance(UnityEngine.Component dspComponentInstance)
@@ -79,6 +94,10 @@ namespace Fabric
 
 		public virtual void UpdateParameters()
 		{
+			foreach (KeyValuePair<string, DSPParameter> parameter in _parameters)
+			{
+				parameter.Value.ResetDirtyFlag();
+			}
 		}
 
 		protected void AddParameter(string parameter, DSPParameter dspParameter)
@@ -86,7 +105,7 @@ namespace Fabric
 			if (!_parameters.ContainsKey(parameter))
 			{
 				_parameters.Add(parameter, dspParameter);
-				dspParameter.SetValue(dspParameter.GetTargetValue());
+				dspParameter.SetValue(dspParameter.GetTargetValue(), 0f, 0.5f, true);
 			}
 		}
 

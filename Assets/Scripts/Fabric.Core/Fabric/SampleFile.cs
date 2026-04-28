@@ -58,6 +58,20 @@ namespace Fabric
 			_refCount++;
 		}
 
+		private void DecRef()
+		{
+			_refCount--;
+		}
+
+		public void Destroy()
+		{
+			DecRef();
+			if (_refCount == 0)
+			{
+				_data = null;
+			}
+		}
+
 		public string Name()
 		{
 			return _name;
