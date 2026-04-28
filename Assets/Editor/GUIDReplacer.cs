@@ -10,13 +10,13 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 using System.Linq;
 
-public class GuidAndAssetReplacer : EditorWindow
+public class GUIDReplacer : EditorWindow
 {
     private Vector2 scrollPos;
 
     private List<GuidPair> guidPairs = new List<GuidPair>();
     private int selectedTab = 0;
-    private string[] tabs = new string[] { "Sprite", "Texture", "Audio", "Material", "Animation", "Mesh", "Prefab", "MonoBehaviour", "Audio Mixer", "Sprite Restorer" };
+    private string[] tabs = new string[] { "Sprite", "Texture", "Audio", "Material", "Animation", "Mesh", "Prefab", "MonoBehaviour", "Font", "Audio Mixer", "Sprite Restorer" };
 
     private List<AssetPair>[] assetPairs;
     private List<AssetPair> animationClipPairs = new List<AssetPair>();
@@ -27,15 +27,16 @@ public class GuidAndAssetReplacer : EditorWindow
     private List<AudioMixerGroupMapping> audioMixerGroupMappings = new List<AudioMixerGroupMapping>();
     private Vector2 mixerGroupScroll;
 
-    private Texture2D selectedTexture;
+    private List<Texture2D> selectedTextures = new List<Texture2D>();
     private Vector2 spriteRestorerScroll;
+    private Vector2 spriteRestorerTextureScroll;
     private List<string> foundAssetPaths = new List<string>();
     private Dictionary<string, Sprite> originalSprites = new Dictionary<string, Sprite>();
     private Dictionary<string, Sprite> newSprites = new Dictionary<string, Sprite>();
 
     private string[] ignoreFolders = new string[] { "meshes", "fbx", "sourceassets", "mesh", "models", "costumes", "costumefbxs", "model" };
 
-    private static readonly string Manual = 
+    private static readonly string Manual =
         "There is a duplicate button for assets that has multiple duplications. " +
         "Once you get the amount of stuff that you want (can be multiple of assets), press replace. It will run. " +
         "After it finishes, press File -> Save project. \n" +
@@ -51,10 +52,10 @@ public class GuidAndAssetReplacer : EditorWindow
     private Rect manualIconRect;
     private bool showManualTooltip = false;
 
-    [MenuItem("Project/Editor/GUID Replacer")]
+    [MenuItem("Project/Tools/Editor/GUID Replacer")]
     public static void ShowWindow()
     {
-        GetWindow<GuidAndAssetReplacer>("GUID & Asset Replacer");
+        GetWindow<GUIDReplacer>("GUID & Asset Replacer");
     }
 
     private void OnEnable()
@@ -120,11 +121,11 @@ public class GuidAndAssetReplacer : EditorWindow
         {
             DrawAnimationTab();
         }
-        else if (selectedTab == 8)
+        else if (selectedTab == 9)
         {
             DrawAudioMixerTab();
         }
-        else if (selectedTab == 9)
+        else if (selectedTab == 10)
         {
             DrawSpriteRestorerTab();
         }
@@ -135,7 +136,7 @@ public class GuidAndAssetReplacer : EditorWindow
 
         GUILayout.Space(20);
 
-        if (selectedTab != 9 && GUILayout.Button("Start Replacement", GUILayout.Height(30)))
+        if (selectedTab != 10 && GUILayout.Button("Start Replacement", GUILayout.Height(30)))
         {
             if (EditorUtility.DisplayDialog("Confirm Replacement",
                 "Are you sure you want to perform the replacement? This operation will modify files.\n\nNote: Sprite references may not resolve if not imported properly.",
@@ -193,13 +194,13 @@ public class GuidAndAssetReplacer : EditorWindow
     private static string GetFileID(UnityEngine.Object obj)
     {
         if (obj == null) return string.Empty;
-        
+
         string path = AssetDatabase.GetAssetPath(obj);
         if (string.IsNullOrEmpty(path)) return string.Empty;
-        
+
         string metaFile = path + ".meta";
         if (!File.Exists(metaFile)) return string.Empty;
-        
+
         string[] lines = File.ReadAllLines(metaFile);
         foreach (string line in lines)
         {
@@ -211,44 +212,17 @@ public class GuidAndAssetReplacer : EditorWindow
         return string.Empty;
     }
 
-private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath, Dictionary<string, string> guidMap, Dictionary<string, string> fileIdMap)
-{
-    string content = File.ReadAllText(animFilePath);
-    bool updated = false;
-
-    foreach (var oldGuid in guidMap.Keys)
+    private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath, Dictionary<string, string> guidMap, Dictionary<string, string> fileIdMap)
     {
-        string newGuid = guidMap[oldGuid];
+        string content = File.ReadAllText(animFilePath);
+        bool updated = false;
 
-        string pattern = $@"\{{\s*fileID:\s*21300000,\s*guid:\s*{oldGuid},\s*type:\s*\d+\s*\}}";
-        string replacement = $"{{fileID: 21300000, guid: {newGuid}, type: 3}}";
-        var replaced = System.Text.RegularExpressions.Regex.Replace(content, pattern, replacement);
-
-        if (replaced != content)
-        {
-            updated = true;
-            content = replaced;
-        }
-
-        string blockPattern = $@"fileID:\s*21300000\s*\n\s*guid:\s*{oldGuid}\s*\n\s*type:\s*\d+";
-        string blockReplacement = $"fileID: 21300000\nguid: {newGuid}\ntype: 3";
-        replaced = System.Text.RegularExpressions.Regex.Replace(content, blockPattern, blockReplacement);
-
-        if (replaced != content)
-        {
-            updated = true;
-            content = replaced;
-        }
-    }
-
-    foreach (var oldFileId in fileIdMap.Keys)
-    {
-        string newFileId = fileIdMap[oldFileId];
         foreach (var oldGuid in guidMap.Keys)
         {
             string newGuid = guidMap[oldGuid];
-            string pattern = $@"\{{\s*fileID:\s*{oldFileId},\s*guid:\s*{oldGuid},\s*type:\s*\d+\s*\}}";
-            string replacement = $"{{fileID: {newFileId}, guid: {newGuid}, type: 3}}";
+
+            string pattern = $@"\{{\s*fileID:\s*21300000,\s*guid:\s*{oldGuid},\s*type:\s*\d+\s*\}}";
+            string replacement = $"{{fileID: 21300000, guid: {newGuid}, type: 3}}";
             var replaced = System.Text.RegularExpressions.Regex.Replace(content, pattern, replacement);
 
             if (replaced != content)
@@ -257,8 +231,8 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                 content = replaced;
             }
 
-            string blockPattern = $@"fileID:\s*{oldFileId}\s*\n\s*guid:\s*{oldGuid}\s*\n\s*type:\s*\d+";
-            string blockReplacement = $"fileID: {newFileId}\nguid: {newGuid}\ntype: 3";
+            string blockPattern = $@"fileID:\s*21300000\s*\n\s*guid:\s*{oldGuid}\s*\n\s*type:\s*\d+";
+            string blockReplacement = $"fileID: 21300000\nguid: {newGuid}\ntype: 3";
             replaced = System.Text.RegularExpressions.Regex.Replace(content, blockPattern, blockReplacement);
 
             if (replaced != content)
@@ -267,55 +241,82 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                 content = replaced;
             }
         }
-    }
 
-    if (updated)
-    {
-        File.WriteAllText(animFilePath, content, Encoding.UTF8);
-        Debug.Log($"YAML GUID replacement in {animFilePath}");
-    }
-}
-
-    private void ReplaceAnimClipSpriteReferencesYAML(Dictionary<string, string> guidMap, Dictionary<string, string> fileIdMap)
-{
-    string[] animFiles = Directory.GetFiles(Application.dataPath, "*.anim", SearchOption.AllDirectories);
-    int modified = 0;
-    foreach (string filePath in animFiles)
-    {
-        string content = File.ReadAllText(filePath);
-        bool updated = false;
-
-        foreach (var oldGuid in guidMap.Keys)
-        {
-            string newGuid = guidMap[oldGuid];
-            if (content.Contains(oldGuid))
-            {
-                content = content.Replace(oldGuid, newGuid);
-                updated = true;
-            }
-        }
         foreach (var oldFileId in fileIdMap.Keys)
         {
             string newFileId = fileIdMap[oldFileId];
-            content = System.Text.RegularExpressions.Regex.Replace(
-                content,
-                $"fileID: ?{oldFileId}, guid:",
-                $"fileID: {newFileId}, guid:",
-                System.Text.RegularExpressions.RegexOptions.None,
-                System.TimeSpan.FromMilliseconds(100)
-            );
+            foreach (var oldGuid in guidMap.Keys)
+            {
+                string newGuid = guidMap[oldGuid];
+                string pattern = $@"\{{\s*fileID:\s*{oldFileId},\s*guid:\s*{oldGuid},\s*type:\s*\d+\s*\}}";
+                string replacement = $"{{fileID: {newFileId}, guid: {newGuid}, type: 3}}";
+                var replaced = System.Text.RegularExpressions.Regex.Replace(content, pattern, replacement);
+
+                if (replaced != content)
+                {
+                    updated = true;
+                    content = replaced;
+                }
+
+                string blockPattern = $@"fileID:\s*{oldFileId}\s*\n\s*guid:\s*{oldGuid}\s*\n\s*type:\s*\d+";
+                string blockReplacement = $"fileID: {newFileId}\nguid: {newGuid}\ntype: 3";
+                replaced = System.Text.RegularExpressions.Regex.Replace(content, blockPattern, blockReplacement);
+
+                if (replaced != content)
+                {
+                    updated = true;
+                    content = replaced;
+                }
+            }
         }
+
         if (updated)
         {
-            File.WriteAllText(filePath, content, Encoding.UTF8);
-            modified++;
-            Debug.Log($"YAML GUID replacement in {filePath}");
+            File.WriteAllText(animFilePath, content, Encoding.UTF8);
+            Debug.Log($"YAML GUID replacement in {animFilePath}");
         }
     }
-    if (modified > 0)
-        AssetDatabase.Refresh();
-    Debug.Log($"YAML anim GUID replacement: {modified} files modified.");
-}
+
+    private void ReplaceAnimClipSpriteReferencesYAML(Dictionary<string, string> guidMap, Dictionary<string, string> fileIdMap)
+    {
+        string[] animFiles = Directory.GetFiles(Application.dataPath, "*.anim", SearchOption.AllDirectories);
+        int modified = 0;
+        foreach (string filePath in animFiles)
+        {
+            string content = File.ReadAllText(filePath);
+            bool updated = false;
+
+            foreach (var oldGuid in guidMap.Keys)
+            {
+                string newGuid = guidMap[oldGuid];
+                if (content.Contains(oldGuid))
+                {
+                    content = content.Replace(oldGuid, newGuid);
+                    updated = true;
+                }
+            }
+            foreach (var oldFileId in fileIdMap.Keys)
+            {
+                string newFileId = fileIdMap[oldFileId];
+                content = System.Text.RegularExpressions.Regex.Replace(
+                    content,
+                    $"fileID: ?{oldFileId}, guid:",
+                    $"fileID: {newFileId}, guid:",
+                    System.Text.RegularExpressions.RegexOptions.None,
+                    System.TimeSpan.FromMilliseconds(100)
+                );
+            }
+            if (updated)
+            {
+                File.WriteAllText(filePath, content, Encoding.UTF8);
+                modified++;
+                Debug.Log($"YAML GUID replacement in {filePath}");
+            }
+        }
+        if (modified > 0)
+            AssetDatabase.Refresh();
+        Debug.Log($"YAML anim GUID replacement: {modified} files modified.");
+    }
 
     private void ReplaceSpriteReferencesUsingGuids()
     {
@@ -323,22 +324,22 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
         {
             Dictionary<string, string> spriteGuidMap = new Dictionary<string, string>();
             Dictionary<string, string> spriteFileIdMap = new Dictionary<string, string>();
-            
+
             foreach (var pair in assetPairs[0])
             {
                 if (pair.findAsset != null && pair.replaceAsset != null)
                 {
                     string findGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(pair.findAsset));
                     string replaceGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(pair.replaceAsset));
-                    
+
                     string findFileId = GetFileID(pair.findAsset);
                     string replaceFileId = GetFileID(pair.replaceAsset);
-                    
+
                     if (!string.IsNullOrEmpty(findGuid) && !string.IsNullOrEmpty(replaceGuid))
                     {
                         spriteGuidMap[findGuid] = replaceGuid;
                     }
-                    
+
                     if (!string.IsNullOrEmpty(findFileId) && !string.IsNullOrEmpty(replaceFileId))
                     {
                         spriteFileIdMap[findFileId] = replaceFileId;
@@ -360,7 +361,7 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
             {
                 string filePath = files[i].Replace("\\", "/");
 
-                if (EditorUtility.DisplayCancelableProgressBar("Replacing sprite references...", 
+                if (EditorUtility.DisplayCancelableProgressBar("Replacing sprite references...",
                     Path.GetFileName(filePath), (float)i / files.Length))
                 {
                     break;
@@ -398,7 +399,7 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                 {
                     string findPattern = "fileID: " + pair.Key;
                     string replacePattern = "fileID: " + pair.Value;
-                    
+
                     if (content.Contains(findPattern))
                     {
                         content = content.Replace(findPattern, replacePattern);
@@ -425,19 +426,45 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
 
     private void DrawSpriteRestorerTab()
     {
-        GUILayout.Label("Select a PNG texture in the Project window first.", EditorStyles.wordWrappedLabel);
+        GUILayout.Label("Add one or more PNG textures below, then scan and restore.", EditorStyles.wordWrappedLabel);
         GUILayout.Space(5);
 
-        selectedTexture = EditorGUILayout.ObjectField("Selected PNG", selectedTexture, typeof(Texture2D), false) as Texture2D;
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("Add PNG Texture"))
+            selectedTextures.Add(null);
+        if (selectedTextures.Count > 0 && GUILayout.Button("Clear List", GUILayout.Width(90)))
+            selectedTextures.Clear();
+        EditorGUILayout.EndHorizontal();
 
-        if (GUILayout.Button("Find & Restore Sprites for Selected PNG"))
+        if (selectedTextures.Count > 0)
         {
-            if (selectedTexture == null)
+            for (int i = 0; i < selectedTextures.Count; i++)
             {
-                EditorUtility.DisplayDialog("Error", "Please select a PNG texture first.", "OK");
+                EditorGUILayout.BeginHorizontal();
+                selectedTextures[i] = EditorGUILayout.ObjectField($"PNG {i + 1}", selectedTextures[i], typeof(Texture2D), false) as Texture2D;
+                if (GUILayout.Button("Duplicate", GUILayout.Width(75)))
+                    selectedTextures.Insert(i + 1, selectedTextures[i]);
+                if (GUILayout.Button("Remove", GUILayout.Width(60)))
+                {
+                    selectedTextures.RemoveAt(i);
+                    i--;
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+        }
+
+        GUILayout.Space(5);
+
+        if (GUILayout.Button("Find & Restore Sprites for Selected PNGs"))
+        {
+            bool anyValid = false;
+            foreach (var t in selectedTextures)
+                if (t != null) { anyValid = true; break; }
+            if (!anyValid)
+            {
+                EditorUtility.DisplayDialog("Error", "Please add at least one PNG texture first.", "OK");
                 return;
             }
-
             FindSpriteAssets();
         }
 
@@ -445,11 +472,9 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
 
         if (foundAssetPaths.Count > 0)
         {
-            GUILayout.Label($"Found {foundAssetPaths.Count} sprite assets referencing {selectedTexture.name}:");
-            spriteRestorerScroll = EditorGUILayout.BeginScrollView(spriteRestorerScroll, GUILayout.Height(150));
+            GUILayout.Label($"Found {foundAssetPaths.Count} sprite assets referencing selected textures:");
             foreach (var path in foundAssetPaths)
                 EditorGUILayout.LabelField(path);
-            EditorGUILayout.EndScrollView();
 
             if (GUILayout.Button("Restore Slices"))
             {
@@ -484,12 +509,14 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
         originalSprites.Clear();
         assetPairs[0].Clear();
 
-        string texturePath = AssetDatabase.GetAssetPath(selectedTexture);
-        if (string.IsNullOrEmpty(texturePath))
+        var validTextures = selectedTextures.Where(t => t != null).ToList();
+        if (validTextures.Count == 0)
         {
-            EditorUtility.DisplayDialog("Error", "Failed to get path of selected PNG.", "OK");
+            EditorUtility.DisplayDialog("Error", "No valid PNG textures selected.", "OK");
             return;
         }
+
+        var texturePaths = new HashSet<string>(validTextures.Select(t => AssetDatabase.GetAssetPath(t)).Where(p => !string.IsNullOrEmpty(p)));
 
         string[] guids = AssetDatabase.FindAssets("t:Sprite", new[] { "Assets" });
 
@@ -501,8 +528,14 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
             string path = AssetDatabase.GUIDToAssetPath(guid);
             EditorUtility.DisplayProgressBar("Searching sprites", path, (float)progress / total);
 
+            if (texturePaths.Contains(path))
+            {
+                progress++;
+                continue;
+            }
+
             Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
-            if (sprite != null && sprite.texture == selectedTexture)
+            if (sprite != null && validTextures.Any(t => sprite.texture == t))
             {
                 foundAssetPaths.Add(path);
                 originalSprites[path] = sprite;
@@ -514,102 +547,121 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
 
         if (foundAssetPaths.Count == 0)
         {
-            EditorUtility.DisplayDialog("Result", "No sprites found referencing the selected PNG.", "OK");
+            EditorUtility.DisplayDialog("Result", "No sprites found referencing the selected PNGs.", "OK");
         }
     }
 
     private void RestoreSlices()
-{
-    string texturePath = AssetDatabase.GetAssetPath(selectedTexture);
-    TextureImporter importer = AssetImporter.GetAtPath(texturePath) as TextureImporter;
-
-    if (importer == null)
     {
-        EditorUtility.DisplayDialog("Error", "Failed to get TextureImporter for the selected PNG.", "OK");
-        return;
-    }
-
-    var factory = new SpriteDataProviderFactories();
-    factory.Init();
-    var dataProvider = factory.GetSpriteEditorDataProviderFromObject(importer);
-    
-    if (dataProvider == null)
-    {
-        Debug.LogError("Failed to get sprite data provider");
-        return;
-    }
-
-    dataProvider.InitSpriteEditorDataProvider();
-
-    List<SpriteRect> spriteRects = new List<SpriteRect>(dataProvider.GetSpriteRects());
-    Dictionary<string, SpriteRect> existingSprites = spriteRects.ToDictionary(x => x.name, x => x);
-
-    newSprites.Clear();
-    assetPairs[0].Clear();
-
-    int progress = 0;
-    int total = foundAssetPaths.Count;
-
-    foreach (var path in foundAssetPaths)
-    {
-        EditorUtility.DisplayProgressBar("Restoring slices", path, (float)progress / total);
-
-        Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
-        if (sprite != null)
+        var validTextures = selectedTextures.Where(t => t != null).ToList();
+        if (validTextures.Count == 0)
         {
-            SpriteRect spriteRect;
-            if (!existingSprites.TryGetValue(sprite.name, out spriteRect))
+            EditorUtility.DisplayDialog("Error", "No valid PNG textures selected.", "OK");
+            return;
+        }
+
+        newSprites.Clear();
+        assetPairs[0].Clear();
+
+        int totalRestored = 0;
+
+        foreach (var tex in validTextures)
+        {
+            string texturePath = AssetDatabase.GetAssetPath(tex);
+            TextureImporter importer = AssetImporter.GetAtPath(texturePath) as TextureImporter;
+
+            if (importer == null)
             {
-                spriteRect = new SpriteRect()
+                Debug.LogWarning($"Failed to get TextureImporter for {texturePath}");
+                continue;
+            }
+
+            var factory = new SpriteDataProviderFactories();
+            factory.Init();
+            var dataProvider = factory.GetSpriteEditorDataProviderFromObject(importer);
+
+            if (dataProvider == null)
+            {
+                Debug.LogError($"Failed to get sprite data provider for {texturePath}");
+                continue;
+            }
+
+            dataProvider.InitSpriteEditorDataProvider();
+
+            List<SpriteRect> spriteRects = new List<SpriteRect>(dataProvider.GetSpriteRects());
+            Dictionary<string, SpriteRect> existingSprites = spriteRects.ToDictionary(x => x.name, x => x);
+
+            var pathsForThisTexture = foundAssetPaths.Where(p =>
+            {
+                Sprite s = originalSprites.ContainsKey(p) ? originalSprites[p] : null;
+                return s != null && s.texture == tex;
+            }).ToList();
+
+            int progress = 0;
+            int total = pathsForThisTexture.Count;
+
+            foreach (var path in pathsForThisTexture)
+            {
+                EditorUtility.DisplayProgressBar($"Restoring slices for {tex.name}", path, (float)progress / Mathf.Max(total, 1));
+
+                Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+                if (sprite != null)
                 {
-                    name = sprite.name,
-                    rect = sprite.rect,
-                    alignment = SpriteAlignment.Custom,
-                    pivot = new Vector2(sprite.pivot.x / sprite.rect.width, sprite.pivot.y / sprite.rect.height),
-                    border = sprite.border,
-                    spriteID = GUID.Generate()
-                };
-                spriteRects.Add(spriteRect);
+                    SpriteRect spriteRect;
+                    if (!existingSprites.TryGetValue(sprite.name, out spriteRect))
+                    {
+                        spriteRect = new SpriteRect()
+                        {
+                            name = sprite.name,
+                            rect = sprite.rect,
+                            alignment = SpriteAlignment.Custom,
+                            pivot = new Vector2(sprite.pivot.x / sprite.rect.width, sprite.pivot.y / sprite.rect.height),
+                            border = sprite.border,
+                            spriteID = GUID.Generate()
+                        };
+                        spriteRects.Add(spriteRect);
+                        existingSprites[spriteRect.name] = spriteRect;
+                    }
+                    else
+                    {
+                        spriteRect.rect = sprite.rect;
+                        spriteRect.pivot = new Vector2(sprite.pivot.x / sprite.rect.width, sprite.pivot.y / sprite.rect.height);
+                        spriteRect.border = sprite.border;
+                    }
+
+                    AssetPair pair = new AssetPair();
+                    pair.findAsset = sprite;
+                    pair.replaceAsset = null;
+                    assetPairs[0].Add(pair);
+                }
+                progress++;
             }
-            else
+
+            dataProvider.SetSpriteRects(spriteRects.ToArray());
+            dataProvider.Apply();
+            AssetDatabase.ImportAsset(texturePath, ImportAssetOptions.ForceUpdate);
+
+            Sprite[] allSprites = AssetDatabase.LoadAllAssetsAtPath(texturePath).OfType<Sprite>().ToArray();
+            foreach (var pair in assetPairs[0])
             {
-                spriteRect.rect = sprite.rect;
-                spriteRect.pivot = new Vector2(sprite.pivot.x / sprite.rect.width, sprite.pivot.y / sprite.rect.height);
-                spriteRect.border = sprite.border;
+                Sprite oldSprite = pair.findAsset as Sprite;
+                if (oldSprite != null && oldSprite.texture == tex)
+                {
+                    Sprite newSprite = allSprites.FirstOrDefault(s => s.name == oldSprite.name);
+                    if (newSprite != null)
+                    {
+                        pair.replaceAsset = newSprite;
+                        newSprites[AssetDatabase.GetAssetPath(oldSprite)] = newSprite;
+                    }
+                }
             }
 
-            AssetPair pair = new AssetPair();
-            pair.findAsset = sprite;
-            pair.replaceAsset = null;
-            assetPairs[0].Add(pair);
+            totalRestored += spriteRects.Count;
         }
-        progress++;
+
+        EditorUtility.ClearProgressBar();
+        EditorUtility.DisplayDialog("Done", $"Restored sprite slices across {validTextures.Count} texture(s). Total slices: {totalRestored}.", "OK");
     }
-
-    dataProvider.SetSpriteRects(spriteRects.ToArray());
-    
-    dataProvider.Apply();
-
-    AssetDatabase.ImportAsset(texturePath, ImportAssetOptions.ForceUpdate);
-
-    Sprite[] allSprites = AssetDatabase.LoadAllAssetsAtPath(texturePath).OfType<Sprite>().ToArray();
-    foreach (var pair in assetPairs[0])
-    {
-        Sprite oldSprite = pair.findAsset as Sprite;
-        if (oldSprite != null)
-        {
-            Sprite newSprite = allSprites.FirstOrDefault(s => s.name == oldSprite.name);
-            if (newSprite != null)
-            {
-                pair.replaceAsset = newSprite;
-                newSprites[AssetDatabase.GetAssetPath(oldSprite)] = newSprite;
-            }
-        }
-    }
-
-    EditorUtility.ClearProgressBar();
-    EditorUtility.DisplayDialog("Done", $"Restored {spriteRects.Count} sprite slices on {selectedTexture.name}.", "OK");
-}
 
     private void ReplaceSpriteReferences()
     {
@@ -623,13 +675,13 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
         {
             Dictionary<Sprite, Sprite> spriteReplacements = new Dictionary<Sprite, Sprite>();
             Dictionary<string, string> fileIdReplacements = new Dictionary<string, string>();
-            
+
             foreach (var pair in assetPairs[0])
             {
                 if (pair.findAsset is Sprite findSprite && pair.replaceAsset is Sprite replaceSprite)
                 {
                     spriteReplacements[findSprite] = replaceSprite;
-                    
+
                     string findFileId = GetFileID(findSprite);
                     string replaceFileId = GetFileID(replaceSprite);
                     if (!string.IsNullOrEmpty(findFileId) && !string.IsNullOrEmpty(replaceFileId))
@@ -647,7 +699,7 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
             {
                 string filePath = files[i].Replace("\\", "/");
 
-                if (EditorUtility.DisplayCancelableProgressBar("Replacing sprite references...", 
+                if (EditorUtility.DisplayCancelableProgressBar("Replacing sprite references...",
                     Path.GetFileName(filePath), (float)i / files.Length))
                 {
                     break;
@@ -720,7 +772,7 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                 else if (mainAsset is AnimationClip animationClip)
                 {
                     bool clipModified = false;
-                    
+
                     EditorCurveBinding[] bindings = AnimationUtility.GetObjectReferenceCurveBindings(animationClip);
                     foreach (EditorCurveBinding binding in bindings)
                     {
@@ -735,7 +787,7 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                                 {
                                     foreach (var pair in assetPairs[0])
                                     {
-                                        if (pair.findAsset is Sprite findSprite && 
+                                        if (pair.findAsset is Sprite findSprite &&
                                             pair.replaceAsset is Sprite replaceSprite)
                                         {
                                             if (sprite == findSprite)
@@ -746,7 +798,7 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                                                 continue;
                                             }
 
-                                            if (sprite.texture == findSprite.texture && 
+                                            if (sprite.texture == findSprite.texture &&
                                                 sprite.name == findSprite.name)
                                             {
                                                 keyframes[k].value = replaceSprite;
@@ -759,8 +811,8 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                                     foreach (var restoredPair in newSprites)
                                     {
                                         Sprite restoredSprite = restoredPair.Value as Sprite;
-                                        if (restoredSprite != null && 
-                                            sprite.texture == restoredSprite.texture && 
+                                        if (restoredSprite != null &&
+                                            sprite.texture == restoredSprite.texture &&
                                             sprite.name == restoredSprite.name)
                                         {
                                             keyframes[k].value = restoredSprite;
@@ -788,7 +840,7 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                         {
                             foreach (var pair in assetPairs[0])
                             {
-                                if (pair.findAsset is Sprite findSprite && 
+                                if (pair.findAsset is Sprite findSprite &&
                                     pair.replaceAsset is Sprite replaceSprite)
                                 {
                                     if (sprite == findSprite)
@@ -799,7 +851,7 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                                         continue;
                                     }
 
-                                    if (sprite.texture == findSprite.texture && 
+                                    if (sprite.texture == findSprite.texture &&
                                         sprite.name == findSprite.name)
                                     {
                                         spriteProperty.objectReferenceValue = replaceSprite;
@@ -822,25 +874,25 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                 {
                     string content = File.ReadAllText(filePath);
                     bool contentModified = false;
-                    
+
                     foreach (var pair in fileIdReplacements)
                     {
                         string findPattern = "fileID: " + pair.Key;
                         string replacePattern = "fileID: " + pair.Value;
-                        
+
                         if (content.Contains(findPattern))
                         {
                             content = content.Replace(findPattern, replacePattern);
                             contentModified = true;
                         }
                     }
-                    
+
                     if (contentModified)
                     {
                         File.WriteAllText(filePath, content, Encoding.UTF8);
                         fileModified = true;
                     }
-                    
+
                     var allObjects = new List<UnityEngine.Object>();
                     if (mainAsset is GameObject go)
                         allObjects.AddRange(go.GetComponentsInChildren<Component>(true));
@@ -876,12 +928,71 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            EditorUtility.DisplayDialog("Done", $"Replaced sprite references in {modifiedFiles} files.", "OK");
+
+            int animClipModified = 0;
+            string[] animGuids = AssetDatabase.FindAssets("t:AnimationClip");
+            for (int i = 0; i < animGuids.Length; i++)
+            {
+                string animAssetPath = AssetDatabase.GUIDToAssetPath(animGuids[i]);
+                EditorUtility.DisplayProgressBar("Replacing sprites in animation clips...", Path.GetFileName(animAssetPath), (float)i / animGuids.Length);
+
+                AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(animAssetPath);
+                if (clip == null)
+                {
+                    var allClips = AssetDatabase.LoadAllAssetsAtPath(animAssetPath).OfType<AnimationClip>();
+                    foreach (var embeddedClip in allClips)
+                    {
+                        if (ApplyAnimClipSpriteReplacement(embeddedClip, spriteReplacements))
+                        {
+                            EditorUtility.SetDirty(embeddedClip);
+                            animClipModified++;
+                        }
+                    }
+                    continue;
+                }
+
+                if (ApplyAnimClipSpriteReplacement(clip, spriteReplacements))
+                {
+                    EditorUtility.SetDirty(clip);
+                    animClipModified++;
+                    Debug.Log($"Animation clip sprite replacement via AnimationUtility in {animAssetPath}");
+                }
+            }
+
+            EditorUtility.ClearProgressBar();
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            EditorUtility.DisplayDialog("Done", $"Replaced sprite references in {modifiedFiles} files. Also updated {animClipModified} animation clip(s) directly.", "OK");
         }
         finally
         {
             EditorUtility.ClearProgressBar();
         }
+    }
+
+    private bool ApplyAnimClipSpriteReplacement(AnimationClip clip, Dictionary<Sprite, Sprite> spriteReplacements)
+    {
+        bool clipModified = false;
+        EditorCurveBinding[] bindings = AnimationUtility.GetObjectReferenceCurveBindings(clip);
+        foreach (EditorCurveBinding binding in bindings)
+        {
+            ObjectReferenceKeyframe[] keyframes = AnimationUtility.GetObjectReferenceCurve(clip, binding);
+            bool curveModified = false;
+            for (int k = 0; k < keyframes.Length; k++)
+            {
+                if (keyframes[k].value is Sprite sprite && spriteReplacements.TryGetValue(sprite, out Sprite replacement))
+                {
+                    keyframes[k].value = replacement;
+                    curveModified = true;
+                }
+            }
+            if (curveModified)
+            {
+                AnimationUtility.SetObjectReferenceCurve(clip, binding, keyframes);
+                clipModified = true;
+            }
+        }
+        return clipModified;
     }
 
     private void DeleteOldSpriteAssets()
@@ -1391,6 +1502,7 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
             case 5: return typeof(Mesh);
             case 6: return typeof(GameObject);
             case 7: return typeof(ScriptableObject);
+            case 8: return typeof(Font);
             default: return typeof(Object);
         }
     }
@@ -1610,7 +1722,7 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                 if (mainAsset is AnimationClip animationClip)
                 {
                     bool clipModified = false;
-                    
+
                     EditorCurveBinding[] bindings = AnimationUtility.GetObjectReferenceCurveBindings(animationClip);
                     foreach (EditorCurveBinding binding in bindings)
                     {
@@ -1625,7 +1737,7 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                                 {
                                     foreach (var pair in assetPairs[0])
                                     {
-                                        if (pair.findAsset is Sprite findSprite && 
+                                        if (pair.findAsset is Sprite findSprite &&
                                             pair.replaceAsset is Sprite replaceSprite)
                                         {
                                             if (sprite == findSprite)
@@ -1636,7 +1748,7 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                                                 continue;
                                             }
 
-                                            if (sprite.texture == findSprite.texture && 
+                                            if (sprite.texture == findSprite.texture &&
                                                 sprite.name == findSprite.name)
                                             {
                                                 keyframes[k].value = replaceSprite;
@@ -1649,8 +1761,8 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                                     foreach (var restoredPair in newSprites)
                                     {
                                         Sprite restoredSprite = restoredPair.Value as Sprite;
-                                        if (restoredSprite != null && 
-                                            sprite.texture == restoredSprite.texture && 
+                                        if (restoredSprite != null &&
+                                            sprite.texture == restoredSprite.texture &&
                                             sprite.name == restoredSprite.name)
                                         {
                                             keyframes[k].value = restoredSprite;
@@ -1678,7 +1790,7 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                         {
                             foreach (var pair in assetPairs[0])
                             {
-                                if (pair.findAsset is Sprite findSprite && 
+                                if (pair.findAsset is Sprite findSprite &&
                                     pair.replaceAsset is Sprite replaceSprite)
                                 {
                                     if (sprite == findSprite)
@@ -1689,7 +1801,7 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                                         continue;
                                     }
 
-                                    if (sprite.texture == findSprite.texture && 
+                                    if (sprite.texture == findSprite.texture &&
                                         sprite.name == findSprite.name)
                                     {
                                         spriteProperty.objectReferenceValue = replaceSprite;
@@ -1711,7 +1823,7 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                 else if (mainAsset is AnimatorController controller)
                 {
                     bool controllerModified = false;
-                    
+
                     foreach (var layer in controller.layers)
                     {
                         foreach (var state in layer.stateMachine.states)
@@ -1737,51 +1849,51 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                         log += $"Modified animator controller references in {assetPath}\n";
                     }
                 }
-    else if (mainAsset is AnimatorOverrideController overrideController)
-{
-    bool overrideModified = false;
-    
-    List<KeyValuePair<AnimationClip, AnimationClip>> overrides = 
-        new List<KeyValuePair<AnimationClip, AnimationClip>>(overrideController.overridesCount);
-    overrideController.GetOverrides(overrides);
-    
-    for (int j = 0; j < overrides.Count; j++)
-    {
-        var currentOverride = overrides[j];
-        bool clipModified = false;
-        AnimationClip newOriginalClip = currentOverride.Key;
-        AnimationClip newOverrideClip = currentOverride.Value;
+                else if (mainAsset is AnimatorOverrideController overrideController)
+                {
+                    bool overrideModified = false;
 
-        foreach (var pair in animationClipPairs)
-        {
-            if (pair.findAsset != null && currentOverride.Key == pair.findAsset)
-            {
-                newOriginalClip = (AnimationClip)pair.replaceAsset;
-                clipModified = true;
-            }
-            
-            if (pair.findAsset != null && currentOverride.Value == pair.findAsset)
-            {
-                newOverrideClip = (AnimationClip)pair.replaceAsset;
-                clipModified = true;
-            }
-        }
+                    List<KeyValuePair<AnimationClip, AnimationClip>> overrides =
+                        new List<KeyValuePair<AnimationClip, AnimationClip>>(overrideController.overridesCount);
+                    overrideController.GetOverrides(overrides);
 
-        if (clipModified)
-        {
-            overrides[j] = new KeyValuePair<AnimationClip, AnimationClip>(newOriginalClip, newOverrideClip);
-            overrideModified = true;
-        }
-    }
+                    for (int j = 0; j < overrides.Count; j++)
+                    {
+                        var currentOverride = overrides[j];
+                        bool clipModified = false;
+                        AnimationClip newOriginalClip = currentOverride.Key;
+                        AnimationClip newOverrideClip = currentOverride.Value;
 
-    if (overrideModified)
-    {
-        overrideController.ApplyOverrides(overrides);
-        EditorUtility.SetDirty(overrideController);
-        fileModified = true;
-        log += $"Modified animator override controller references in {assetPath}\n";
-    }
-}
+                        foreach (var pair in animationClipPairs)
+                        {
+                            if (pair.findAsset != null && currentOverride.Key == pair.findAsset)
+                            {
+                                newOriginalClip = (AnimationClip)pair.replaceAsset;
+                                clipModified = true;
+                            }
+
+                            if (pair.findAsset != null && currentOverride.Value == pair.findAsset)
+                            {
+                                newOverrideClip = (AnimationClip)pair.replaceAsset;
+                                clipModified = true;
+                            }
+                        }
+
+                        if (clipModified)
+                        {
+                            overrides[j] = new KeyValuePair<AnimationClip, AnimationClip>(newOriginalClip, newOverrideClip);
+                            overrideModified = true;
+                        }
+                    }
+
+                    if (overrideModified)
+                    {
+                        overrideController.ApplyOverrides(overrides);
+                        EditorUtility.SetDirty(overrideController);
+                        fileModified = true;
+                        log += $"Modified animator override controller references in {assetPath}\n";
+                    }
+                }
                 else if (mainAsset is Material mat)
                 {
                     bool matModified = false;
@@ -1832,106 +1944,106 @@ private void ReplaceAnimClipSpriteReferencesYAML_SingleFile(string animFilePath,
                     }
                 }
 
-if (mainAsset != null)
-{
-    bool objectModified = false;
-    var allObjects = new List<UnityEngine.Object>();
-    if (mainAsset is GameObject go)
-        allObjects.AddRange(go.GetComponentsInChildren<Component>(true));
-    allObjects.Add(mainAsset);
-
-    foreach (var obj in allObjects)
-    {
-        if (obj == null) continue;
-
-        SerializedObject so = new SerializedObject(obj);
-        SerializedProperty prop = so.GetIterator();
-
-        while (prop.NextVisible(true))
-        {
-            if (prop.propertyType != SerializedPropertyType.ObjectReference) continue;
-
-            UnityEngine.Object val = prop.objectReferenceValue;
-
-            for (int tabIdx = 0; tabIdx < tabs.Length - 1; tabIdx++)
-            {
-                if (tabIdx != 4)
+                if (mainAsset != null)
                 {
-                    foreach (var assetPair in assetPairs[tabIdx])
+                    bool objectModified = false;
+                    var allObjects = new List<UnityEngine.Object>();
+                    if (mainAsset is GameObject go)
+                        allObjects.AddRange(go.GetComponentsInChildren<Component>(true));
+                    allObjects.Add(mainAsset);
+
+                    foreach (var obj in allObjects)
                     {
-                        if (assetPair.findAsset != null && val == assetPair.findAsset)
+                        if (obj == null) continue;
+
+                        SerializedObject so = new SerializedObject(obj);
+                        SerializedProperty prop = so.GetIterator();
+
+                        while (prop.NextVisible(true))
                         {
-                            prop.objectReferenceValue = assetPair.replaceAsset;
-                            objectModified = true;
+                            if (prop.propertyType != SerializedPropertyType.ObjectReference) continue;
+
+                            UnityEngine.Object val = prop.objectReferenceValue;
+
+                            for (int tabIdx = 0; tabIdx < tabs.Length - 1; tabIdx++)
+                            {
+                                if (tabIdx != 4)
+                                {
+                                    foreach (var assetPair in assetPairs[tabIdx])
+                                    {
+                                        if (assetPair.findAsset != null && val == assetPair.findAsset)
+                                        {
+                                            prop.objectReferenceValue = assetPair.replaceAsset;
+                                            objectModified = true;
+                                        }
+                                    }
+                                }
+                            }
+
+                            foreach (var pair in animationClipPairs)
+                            {
+                                if (pair.findAsset != null && val == pair.findAsset)
+                                {
+                                    prop.objectReferenceValue = pair.replaceAsset;
+                                    objectModified = true;
+                                }
+                            }
+                            foreach (var pair in animatorControllerPairs)
+                            {
+                                if (pair.findAsset != null && val == pair.findAsset)
+                                {
+                                    prop.objectReferenceValue = pair.replaceAsset;
+                                    objectModified = true;
+                                }
+                            }
+                            foreach (var pair in animatorOverrideControllerPairs)
+                            {
+                                if (pair.findAsset != null && val == pair.findAsset)
+                                {
+                                    prop.objectReferenceValue = pair.replaceAsset;
+                                    objectModified = true;
+                                }
+                            }
                         }
+
+                        if (objectModified)
+                            so.ApplyModifiedProperties();
+                    }
+
+                    if (objectModified)
+                    {
+                        fileModified = true;
+                        log += $"Replaced object references in {assetPath}\n";
+                    }
+
+                    if (Path.GetExtension(filePath).ToLower() == ".anim")
+                    {
+                        Dictionary<string, string> guidMap = new Dictionary<string, string>();
+                        Dictionary<string, string> fileIdMap = new Dictionary<string, string>();
+                        if (assetPairs != null && assetPairs.Length > 0)
+                        {
+                            foreach (var pair in assetPairs[0])
+                            {
+                                if (pair.findAsset != null && pair.replaceAsset != null)
+                                {
+                                    string findGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(pair.findAsset));
+                                    string replaceGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(pair.replaceAsset));
+                                    string findFileId = GetFileID(pair.findAsset);
+                                    string replaceFileId = GetFileID(pair.replaceAsset);
+
+                                    if (!string.IsNullOrEmpty(findGuid) && !string.IsNullOrEmpty(replaceGuid))
+                                        guidMap[findGuid] = replaceGuid;
+                                    if (!string.IsNullOrEmpty(findFileId) && !string.IsNullOrEmpty(replaceFileId))
+                                        fileIdMap[findFileId] = replaceFileId;
+                                }
+                            }
+                        }
+                        ReplaceAnimClipSpriteReferencesYAML_SingleFile(filePath, guidMap, fileIdMap);
                     }
                 }
-            }
 
-            foreach (var pair in animationClipPairs)
-            {
-                if (pair.findAsset != null && val == pair.findAsset)
-                {
-                    prop.objectReferenceValue = pair.replaceAsset;
-                    objectModified = true;
-                }
-            }
-            foreach (var pair in animatorControllerPairs)
-            {
-                if (pair.findAsset != null && val == pair.findAsset)
-                {
-                    prop.objectReferenceValue = pair.replaceAsset;
-                    objectModified = true;
-                }
-            }
-            foreach (var pair in animatorOverrideControllerPairs)
-            {
-                if (pair.findAsset != null && val == pair.findAsset)
-                {
-                    prop.objectReferenceValue = pair.replaceAsset;
-                    objectModified = true;
-                }
-            }
-        }
-
-        if (objectModified)
-            so.ApplyModifiedProperties();
-    }
-
-    if (objectModified)
-    {
-        fileModified = true;
-        log += $"Replaced object references in {assetPath}\n";
-    }
-
-    if (Path.GetExtension(filePath).ToLower() == ".anim")
-    {
-        Dictionary<string, string> guidMap = new Dictionary<string, string>();
-        Dictionary<string, string> fileIdMap = new Dictionary<string, string>();
-        if (assetPairs != null && assetPairs.Length > 0)
-        {
-            foreach (var pair in assetPairs[0])
-            {
-                if (pair.findAsset != null && pair.replaceAsset != null)
-                {
-                    string findGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(pair.findAsset));
-                    string replaceGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(pair.replaceAsset));
-                    string findFileId = GetFileID(pair.findAsset);
-                    string replaceFileId = GetFileID(pair.replaceAsset);
-
-                    if (!string.IsNullOrEmpty(findGuid) && !string.IsNullOrEmpty(replaceGuid))
-                        guidMap[findGuid] = replaceGuid;
-                    if (!string.IsNullOrEmpty(findFileId) && !string.IsNullOrEmpty(replaceFileId))
-                        fileIdMap[findFileId] = replaceFileId;
-                }
-            }
-        }
-        ReplaceAnimClipSpriteReferencesYAML_SingleFile(filePath, guidMap, fileIdMap);
-    }
-}
-
-if (fileModified)
-    modifiedFiles++;
+                if (fileModified)
+                    modifiedFiles++;
 
             }
         }
