@@ -2,52 +2,18 @@ using System;
 
 namespace LitJson
 {
-	internal struct ArrayMetadata
-	{
-		private Type element_type;
+    internal struct ArrayMetadata
+    {
+        private Type _elementType;
 
-		private bool is_array;
+        public Type ElementType
+        {
+            get => _elementType ?? typeof(JsonData);
+            set => _elementType = value;
+        }
 
-		private bool is_list;
+        public bool IsArray { get; set; }
 
-		public Type ElementType
-		{
-			get
-			{
-				if (element_type == null)
-				{
-					return typeof(JsonData);
-				}
-				return element_type;
-			}
-			set
-			{
-				element_type = value;
-			}
-		}
-
-		public bool IsArray
-		{
-			get
-			{
-				return is_array;
-			}
-			set
-			{
-				is_array = value;
-			}
-		}
-
-		public bool IsList
-		{
-			get
-			{
-				return is_list;
-			}
-			set
-			{
-				is_list = value;
-			}
-		}
-	}
+        public bool IsList  { get; set; }
+    }
 }
