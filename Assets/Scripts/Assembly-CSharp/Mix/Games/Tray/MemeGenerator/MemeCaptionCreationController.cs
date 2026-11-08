@@ -22,7 +22,7 @@ namespace Mix.Games.Tray.MemeGenerator
 
 		public Image MemeImage;
 
-		public NativeTextView MemeNativeTextField;
+		public InputField MemeNativeTextField;
 
 		public MemeCaptionText topText;
 

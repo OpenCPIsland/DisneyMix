@@ -106,10 +106,16 @@ namespace Mix
 			return AccessibilityManager.Instance.GetStatusBarHeight();
 		}
 
-		public string GetDeviceString()
-		{
-			return (Application.Platform != 11) ? "iphone" : "android";
-		}
+public string GetDeviceString()
+{
+#if UNITY_ANDROID && !UNITY_EDITOR
+    return "android";
+#elif UNITY_STANDALONE_WIN || UNITY_EDITOR
+    return "windows64";
+#else
+    return "iphone";
+#endif
+}
 
 		public bool UseLocalPrefabs()
 		{

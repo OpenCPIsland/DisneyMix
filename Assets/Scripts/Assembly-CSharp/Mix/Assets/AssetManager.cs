@@ -637,6 +637,7 @@ namespace Mix.Assets
             if (index != -1)
             {
                 // 2. Use string interpolation and range operator for cleanliness
+				Debug.Log($"GetStreamingFilePath: Found platform folder in URL. Returning path: {Path.Combine($"{PathProtocol}{Application.StreamingAssetsPath}", url[index..])}");
                 return Path.Combine($"{PathProtocol}{Application.StreamingAssetsPath}", url[index..]);
             }
 
@@ -1016,7 +1017,7 @@ namespace Mix.Assets
 			{
 				return null;
 			}
-			if (aPath.StartsWith("http://") || aPath.StartsWith("https://"))
+			if (aPath.StartsWith("http://") || aPath.StartsWith("https://") || aPath.StartsWith("file://"))
 			{
 				return aPath;
 			}

@@ -18,16 +18,6 @@ namespace Mix.Games.Tray.Fireworks
 				Debug.Log("FireworkDebugController is attached to GameObject: " + controller.gameObject.name);
 			}
 
-			// Look for "SceneBackground" prefab in the scene, but not under uiRoot
-			var allSceneBackgrounds = FindObjectsOfType<GameObject>();
-			foreach (var go in allSceneBackgrounds)
-			{
-				if (go.name == "SceneBackground" && (go.transform.parent == null || go.transform.parent.name != "uiRoot"))
-				{
-					Debug.Log("Found SceneBackground GameObject (not under uiRoot): " + go.name);
-					StartCoroutine(SetOptimizedUIShaderAfterDelay(go, 1f));
-				}
-			}
 
 			if (launcher != null)
 			{

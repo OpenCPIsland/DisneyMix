@@ -18,7 +18,7 @@ namespace Mix.Games.Tray.MemeGenerator
 
 		private string mCurrentText;
 
-		public NativeTextView mNativeTextView;
+		public InputField mNativeTextView;
 
 		public Color textEnteredColor;
 
@@ -72,38 +72,77 @@ namespace Mix.Games.Tray.MemeGenerator
 			return mText == aSelected;
 		}
 
-		public void SetActive(bool aIsActive)
-		{
-			if (aIsActive)
-			{
-				mText.color = textEnteredColor;
-				highlightedTextComponent.enabled = true;
-				mNativeTextView.gameObject.SetActive(true);
-				if (IsEmpty())
-				{
-					mNativeTextView.Value = string.Empty;
-				}
-				else
-				{
-					mNativeTextView.Value = Caption;
-				}
-				mNativeTextView.SelectInput();
-				mNativeTextView.KeyboardValueChanged += OnKeyboardValueChanged;
-			}
-			else
-			{
-				if (IsEmpty())
-				{
-					Caption = string.Empty;
-					mText.color = defaultColor;
-				}
-				highlightedTextComponent.enabled = false;
-				mNativeTextView.gameObject.SetActive(false);
-				mNativeTextView.KeyboardValueChanged -= OnKeyboardValueChanged;
-			}
-			mIsActive = aIsActive;
-		}
+public void SetActive(bool aIsActive)
+{
+    // Lazy fallback: ensure mText is cached if Awake hasn't run yet
+    if (mText == null)
+    {
+        mText = GetComponent<Text>();
+    }
 
+    if (aIsActive)
+    {
+        if (mText != null)
+        {
+            mText.color = textEnteredColor;
+        }
+
+        if (highlightedTextComponent != null)
+        {
+            highlightedTextComponent.enabled = true;
+        }
+
+        if (mNativeTextView != null)
+        {
+            mNativeTextView.gameObject.SetActive(true);
+
+            if (IsEmpty())
+            {
+                mNativeTextView.text = string.Empty;
+            }
+            else
+            {
+                mNativeTextView.text = Caption;
+            }
+
+            mNativeTextView.onValueChanged.RemoveListener(OnKeyboardValueChangedHandler);
+            mNativeTextView.onValueChanged.AddListener(OnKeyboardValueChangedHandler);
+
+            mNativeTextView.Select();
+            mNativeTextView.ActivateInputField();
+        }
+    }
+    else
+    {
+        if (IsEmpty())
+        {
+            Caption = string.Empty;
+            if (mText != null)
+            {
+                mText.color = defaultColor;
+            }
+        }
+
+        if (highlightedTextComponent != null)
+        {
+            highlightedTextComponent.enabled = false;
+        }
+
+        if (mNativeTextView != null)
+        {
+            mNativeTextView.onValueChanged.RemoveListener(OnKeyboardValueChangedHandler);
+            mNativeTextView.gameObject.SetActive(false);
+        }
+    }
+
+    mIsActive = aIsActive;
+}
+
+// Helper handler method matching UnityAction<string>
+private void OnKeyboardValueChangedHandler(string aValue)
+{
+    OnKeyboardValueChanged(mNativeTextView, aValue);
+}
 		public bool IsEmpty()
 		{
 			if (string.IsNullOrEmpty(mCurrentText.Trim()))
@@ -132,7 +171,7 @@ namespace Mix.Games.Tray.MemeGenerator
 			SetActive(false);
 		}
 
-		private void OnKeyboardValueChanged(NativeTextView aInput, string aValue)
+		private void OnKeyboardValueChanged(InputField aInput, string aValue)
 		{
 			Caption = aValue.ToUpper();
 		}
@@ -149,9 +188,9 @@ namespace Mix.Games.Tray.MemeGenerator
 			if (mIsActive)
 			{
 				base.transform.localEulerAngles = new Vector3(0f, 0f, Mathf.Sin(Time.time * activeWobbleFrequency) * activeWobbleAmount);
-				if (!mNativeTextView.IsNullOrDisposed() && !string.Equals(Caption, mNativeTextView.Value))
+				if (!mNativeTextView.IsNullOrDisposed() && !string.Equals(Caption, mNativeTextView.text))
 				{
-					Caption = mNativeTextView.Value;
+					Caption = mNativeTextView.text;
 				}
 			}
 			else

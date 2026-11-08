@@ -264,23 +264,38 @@ namespace Mix.Games
 
 		public event EventHandler<GameStateUpdatedEventArgs> OnGameStateUpdated;
 
-		void IBundleObject.OnBundleAssetObject(UnityEngine.Object aGameObject, object aUserData)
-		{
-			Hashtable hashtable = aUserData as Hashtable;
-			string aUrl = hashtable["BundleUrl"].ToString();
-			int referenceCount = MonoSingleton<AssetManager>.Instance.GetReferenceCount(aUrl);
-			if (referenceCount > -1 && hashtable != null)
-			{
-				if (hashtable.ContainsKey("SessionAsset"))
-				{
-					OnGameSessionAssetLoaded(aUserData);
-				}
-				else
-				{
-					OnGameLoaded(aUserData);
-				}
-			}
-		}
+void IBundleObject.OnBundleAssetObject(UnityEngine.Object aGameObject, object aUserData)
+{
+    Hashtable hashtable = aUserData as Hashtable;
+    if (hashtable == null || !hashtable.ContainsKey("BundleUrl"))
+    {
+        Debug.LogError("[GameManager] OnBundleAssetObject received invalid user data.");
+        return;
+    }
+
+    string aUrl = hashtable["BundleUrl"].ToString();
+    
+    // If the bundle failed to load (aGameObject is null), handle the error state
+    if (aGameObject == null)
+    {
+        Debug.LogError($"[GameManager] Failed to load bundle asset at URL: {aUrl}");
+        SetSessionState(GameSessionState.ERROR);
+        return;
+    }
+
+    int referenceCount = MonoSingleton<AssetManager>.Instance.GetReferenceCount(aUrl);
+    if (referenceCount > -1)
+    {
+        if (hashtable.ContainsKey("SessionAsset"))
+        {
+            OnGameSessionAssetLoaded(aUserData);
+        }
+        else
+        {
+            OnGameLoaded(aUserData);
+        }
+    }
+}
 
 		void IGameSession.HandleSessionState(GameSession aSession, GameSessionState aSessionState)
 		{
@@ -840,6 +855,7 @@ namespace Mix.Games
 			mListener.SetGamePanel(GameTrayState.GAME);
 			mListener.UpdateGameLoader(aGame.GetLogo());
 			ActiveSession.State = GameSessionState.LOADING;
+			MonoSingleton<AssetManager>.Instance.AreBlockingCallsSuppressedForGameplay = false;
 			hashtable["BundleUrl"] = aGame.GetHd();
 			Debug.Log("Loading bundle: " + aGame.GetHd());
 			MonoSingleton<AssetManager>.Instance.LoadABundle(this, hashtable["BundleUrl"].ToString(), hashtable, string.Empty);

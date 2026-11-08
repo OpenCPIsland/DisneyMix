@@ -128,19 +128,27 @@ namespace Mix.AssetBundles
 			}
 		}
 
-		private void SetStreamingAssetsLoad(AssetBundleData aAssetBundleData)
-		{
-			bool flag = Caching.IsVersionCached(aAssetBundleData.URL, aAssetBundleData.Version);
-			bool isConnected = MonoSingleton<ConnectionManager>.Instance.IsConnected;
-			if (!isConnected && aAssetBundleData.InStreamingAssets && !flag)
-			{
-				aAssetBundleData.ForceStreamingAssetsLoad = true;
-			}
-			else if (isConnected && !aAssetBundleData.HashNew && aAssetBundleData.InStreamingAssets)
-			{
-				aAssetBundleData.ForceStreamingAssetsLoad = true;
-			}
-		}
+private void SetStreamingAssetsLoad(AssetBundleData aAssetBundleData)
+{
+    bool flag = Caching.IsVersionCached(aAssetBundleData.URL, aAssetBundleData.Version);
+    bool isConnected = MonoSingleton<ConnectionManager>.Instance.IsConnected;
+
+    bool urlIsRemote = aAssetBundleData.URL != null &&
+        (aAssetBundleData.URL.StartsWith("http://") || aAssetBundleData.URL.StartsWith("https://"));
+
+    if (aAssetBundleData.InStreamingAssets && !urlIsRemote)
+    {
+        aAssetBundleData.ForceStreamingAssetsLoad = true;   // no web URL to fall back on
+    }
+    else if (!isConnected && aAssetBundleData.InStreamingAssets && !flag)
+    {
+        aAssetBundleData.ForceStreamingAssetsLoad = true;
+    }
+    else if (isConnected && !aAssetBundleData.HashNew && aAssetBundleData.InStreamingAssets)
+    {
+        aAssetBundleData.ForceStreamingAssetsLoad = true;
+    }
+}
 
 		private void LoadAssetBundle(AssetBundleData aAssetBundleData)
 		{

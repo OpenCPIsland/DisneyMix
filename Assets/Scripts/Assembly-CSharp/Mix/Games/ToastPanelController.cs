@@ -2,6 +2,7 @@ using DG.Tweening;
 using Mix.Games.Tray;
 using Mix.Native;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Mix.Games
 {
@@ -15,6 +16,9 @@ namespace Mix.Games
 
 		private const float PANEL_RETRY_TIME = 0.5f;
 
+		// If the native keyboard never reports a height (Editor / no plugin), open the panel anyway after this delay.
+		private const float NO_NATIVE_KEYBOARD_FALLBACK_TIME = 0.3f;
+
 		private NativeKeyboard keyboard;
 
 		private float currentKeyboardHeight;
@@ -27,13 +31,15 @@ namespace Mix.Games
 
 		private RectTransform panelRect;
 
-		private NativeTextView nativeTextView;
+		private InputField nativeTextView;
 
 		private int statusBarHeight;
 
 		private int screenHeight;
 
 		private float heightScale;
+
+		private bool toastShown;
 
 		public event OnAnimationComplete ToastPanelAnimationComplete;
 
@@ -46,15 +52,35 @@ namespace Mix.Games
 			keyboard = MonoSingleton<NativeKeyboardManager>.Instance.Keyboard;
 			contentRect = contentObject.GetComponent<RectTransform>();
 			panelRect = basePanelObject.GetComponent<RectTransform>();
-			nativeTextView = base.gameObject.GetComponentInChildren<NativeTextView>();
+			nativeTextView = base.gameObject.GetComponentInChildren<InputField>();
 		}
 
 		private void OnEnable()
 		{
-			keyboard.OnNativeKeyboardHeightChanged += ShowToastPanel;
-			keyboard.OnNativeKeyboardReturnKeyPressed += ToastPanelOnKeyboardReturn;
+			toastShown = false;
+			if (keyboard != null)
+			{
+				// -= first so re-enabling never double-subscribes
+				keyboard.OnNativeKeyboardHeightChanged -= ShowToastPanel;
+				keyboard.OnNativeKeyboardReturnKeyPressed -= ToastPanelOnKeyboardReturn;
+				keyboard.OnNativeKeyboardHeightChanged += ShowToastPanel;
+				keyboard.OnNativeKeyboardReturnKeyPressed += ToastPanelOnKeyboardReturn;
+			}
+			else
+			{
+				Debug.LogWarning("[ToastPanelController] Native keyboard is null; using fallback to show the panel.");
+			}
 			panelRect.sizeDelta = Vector2.zero;
 			ShowKeyboard();
+			Invoke(nameof(ShowWithoutNativeKeyboard), NO_NATIVE_KEYBOARD_FALLBACK_TIME);
+		}
+
+		private void ShowWithoutNativeKeyboard()
+		{
+			if (!toastShown)
+			{
+				ShowToastPanelWithHeight(0);
+			}
 		}
 
 		public void ShowKeyboardRetry()
@@ -83,23 +109,31 @@ namespace Mix.Games
 				Invoke("ShowKeyboardRetry", 0.5f);
 				return;
 			}
-			nativeTextView.SelectInput();
-			nativeTextView.Selected = false;
+			nativeTextView.Select();
+			//nativeTextView.Selected = false;
 		}
 
 		private void OnDisable()
 		{
+			CancelInvoke();
 			DOTween.Kill(base.gameObject);
 		}
 
-		private bool isSelectable(NativeTextView aNativeTextView)
+		private bool isSelectable(InputField aNativeTextView)
 		{
-			return !aNativeTextView.Selected && aNativeTextView.interactable;
+			return !aNativeTextView.isFocused && aNativeTextView.interactable;
 		}
 
+		// Called by the native keyboard plugin when its height is known.
 		private void ShowToastPanel(object sender, NativeKeyboardHeightChangedEventArgs args)
 		{
-			int num = args.Height;
+			ShowToastPanelWithHeight(args.Height);
+		}
+
+		private void ShowToastPanelWithHeight(int num)
+		{
+			toastShown = true;
+			CancelInvoke(nameof(ShowWithoutNativeKeyboard));
 			MonoSingleton<GameManager>.Instance.IsToastPanelActive = true;
 			if (DebugSceneIndicator.IsMainScene)
 			{
@@ -131,12 +165,15 @@ namespace Mix.Games
 			panelRect.DOSizeDelta(Vector2.zero, 0.375f, true).SetEase(Ease.InQuad).OnComplete(HideComplete)
 				.OnUpdate(RepositionTextView)
 				.SetId(base.gameObject);
-			keyboard.Hide();
+			if (keyboard != null)
+			{
+				keyboard.Hide();
+			}
 		}
 
 		private void RepositionTextView()
 		{
-			nativeTextView.Reposition();
+			nativeTextView.ForceLabelUpdate();
 		}
 
 		private void ShowComplete()

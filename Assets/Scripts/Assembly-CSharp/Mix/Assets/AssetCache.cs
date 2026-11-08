@@ -123,22 +123,22 @@ namespace Mix.Assets
 						num += (long)(audioComponent.AudioClip.length * 6f * 1024f);
 					}
 				}
-				else if (component is SkinnedMeshRenderer skinnedMeshRenderer)
-				{
-					Material[] sharedMaterials = skinnedMeshRenderer.sharedMaterials;
-					if (sharedMaterials == null)
-					{
-						continue;
-					}
-					Material[] array2 = sharedMaterials;
-					foreach (Material material in array2)
-					{
-						if (material != null && material.mainTexture != null)
-						{
-							num += material.mainTexture.width * material.mainTexture.height * 8;
-						}
-					}
-				}
+	else if (component is SkinnedMeshRenderer skinnedMeshRenderer)
+{
+    Material[] sharedMaterials = skinnedMeshRenderer.sharedMaterials;
+    if (sharedMaterials == null)
+    {
+        continue;
+    }
+    Material[] array2 = sharedMaterials;
+    foreach (Material material in array2)
+    {
+        if (material != null && material.HasProperty("_MainTex") && material.mainTexture != null)
+        {
+            num += material.mainTexture.width * material.mainTexture.height * 8;
+        }
+    }
+}
 				else if (component is Image image)
 				{
 					if (image != null && image.mainTexture != null)

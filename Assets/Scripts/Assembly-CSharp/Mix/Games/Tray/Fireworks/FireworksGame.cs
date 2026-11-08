@@ -807,7 +807,7 @@ namespace Mix.Games.Tray.Fireworks
 			}
 			else if (mGameStage == FireworksStage.EnterMessage)
 			{
-				string value = FireworksTextInput.nativeTextView.Value;
+				string value = FireworksTextInput.nativeTextView.text;
 				if (value != null && (mMessage == null || !value.Equals(mMessage)))
 				{
 					FireworksTextInput.OnMessageTextChanged(value);
