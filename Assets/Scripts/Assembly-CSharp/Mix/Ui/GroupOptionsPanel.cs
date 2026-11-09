@@ -37,7 +37,7 @@ namespace Mix.Ui
 
 		public Text Title;
 
-		public NativeTextView NativeInput;
+		public InputField NativeInput;
 
 		public ScrollView Scroller;
 
@@ -52,6 +52,8 @@ namespace Mix.Ui
 		private long categoryId;
 
 		private bool inited;
+
+		private bool wasFocused;
 
 		private SdkEvents eventGenerator = new SdkEvents();
 
@@ -104,8 +106,8 @@ namespace Mix.Ui
 
 		private void Start()
 		{
-			NativeInput.KeyboardFocusChanged += OnKeyboardFocusChanged;
-			NativeInput.Value = GetEditedThreadTitle();
+			NativeInput.onEndEdit.AddListener(OnEndEdit);
+			NativeInput.text = GetEditedThreadTitle();
 			MixSession.User.OnUnfriended += eventGenerator.AddEventHandler<AbstractUnfriendedEventArgs>(this, RemovedFriendFromApi);
 			foreach (IOutgoingFriendInvitation outgoingFriendInvitation in MixSession.User.OutgoingFriendInvitations)
 			{
@@ -117,7 +119,7 @@ namespace Mix.Ui
 
 		private void OnDestroy()
 		{
-			NativeInput.KeyboardFocusChanged -= OnKeyboardFocusChanged;
+			NativeInput.onEndEdit.RemoveListener(OnEndEdit);
 			if (MixSession.User != null)
 			{
 				MixSession.User.OnUnfriended -= eventGenerator.GetEventHandler<AbstractUnfriendedEventArgs>(this, RemovedFriendFromApi);
@@ -130,6 +132,15 @@ namespace Mix.Ui
 			{
 				thread.OnMemberAdded -= eventGenerator.GetEventHandler<AbstractChatThreadMemberAddedEventArgs>(thread, OnNewMemberAdded);
 				thread.OnMemberRemoved -= eventGenerator.GetEventHandler<AbstractChatThreadMemberRemovedEventArgs>(thread, OnMemberRemoved);
+			}
+		}
+
+		private void Update()
+		{
+			if (NativeInput.isFocused != wasFocused)
+			{
+				wasFocused = NativeInput.isFocused;
+				HighlightedNickname.SetActive(wasFocused);
 			}
 		}
 
@@ -148,7 +159,8 @@ namespace Mix.Ui
 		private string GetEditedThreadTitle()
 		{
 			string threadTitle = thread.GetThreadTitle();
-			return (string.IsNullOrEmpty(threadTitle) || threadTitle.Length <= NativeInput.maxCharacters) ? threadTitle : threadTitle.Substring(0, NativeInput.maxCharacters);
+			int max = NativeInput.characterLimit;
+			return (string.IsNullOrEmpty(threadTitle) || max <= 0 || threadTitle.Length <= max) ? threadTitle : threadTitle.Substring(0, max);
 		}
 
 		public void Toggle(IChatThread aThread, IGroupOptionsPanel aListener)
@@ -223,7 +235,7 @@ namespace Mix.Ui
 		public void ClosePanel()
 		{
 			listener.OnClosing();
-			MonoSingleton<NativeKeyboardManager>.Instance.Keyboard.Hide();
+			NativeInput.DeactivateInputField();
 		}
 
 		public void OnNewMemberAdded(object sender, AbstractChatThreadMemberAddedEventArgs args)
@@ -233,15 +245,19 @@ namespace Mix.Ui
 			{
 				ClearMemberList();
 				BuildMemberList();
-				NativeInput.Value = GetEditedThreadTitle();
+				NativeInput.text = GetEditedThreadTitle();
 			}
 		}
 
 		public void OnMemberRemoved(object sender, AbstractChatThreadMemberRemovedEventArgs args)
 		{
 			IRemoteChatMember remoteMemberById = thread.GetRemoteMemberById(args.MemberId);
+			if (remoteMemberById == null)
+			{
+				return;
+			}
 			RemoveUserFromDict(remoteMemberById, remoteMemberById.IsFriend() ? friendItems : nonFriendItems);
-			NativeInput.Value = GetEditedThreadTitle();
+			NativeInput.text = GetEditedThreadTitle();
 		}
 
 		private void RemoveUserFromDict(IRemoteChatMember userToRemove, Dictionary<long, RosterFriendListItem> items)
@@ -264,17 +280,18 @@ namespace Mix.Ui
 			}
 		}
 
-		private void OnKeyboardFocusChanged(NativeTextView aField, bool aState)
+		private void OnEndEdit(string value)
 		{
-			string trimmedInput = aField.Value.Trim();
-			HighlightedNickname.SetActive(aState);
-			if (aState)
+			HighlightedNickname.SetActive(false);
+			string trimmedInput = (value ?? string.Empty).Trim();
+			// onEndEdit fires on both blur and submit; skip the network call if nothing changed
+			if (trimmedInput == GetEditedThreadTitle())
 			{
 				return;
 			}
 			if (trimmedInput != string.Empty)
 			{
-				aField.Value = trimmedInput;
+				NativeInput.text = trimmedInput;
 				if (thread is IOneOnOneChatThread)
 				{
 					((IOneOnOneChatThread)thread).SetNickname(trimmedInput, actionGenerator.CreateAction(delegate(ISetChatThreadNicknameResult res)
@@ -288,6 +305,7 @@ namespace Mix.Ui
 							GenericPanel genericPanel = (GenericPanel)Singleton<PanelManager>.Instance.ShowPanel(Panels.GENERIC);
 							genericPanel.ShowSimpleError("customtokens.global.generic_error");
 							listener.OnNicknameUpdated(((IOneOnOneChatThread)thread).Nickname.Nickname);
+							NativeInput.text = GetEditedThreadTitle();
 						}
 					}));
 				}
@@ -304,6 +322,7 @@ namespace Mix.Ui
 							GenericPanel genericPanel = (GenericPanel)Singleton<PanelManager>.Instance.ShowPanel(Panels.GENERIC);
 							genericPanel.ShowSimpleError("customtokens.global.generic_error");
 							listener.OnNicknameUpdated(((IGroupChatThread)thread).Nickname.Nickname);
+							NativeInput.text = GetEditedThreadTitle();
 						}
 					}));
 				}
@@ -317,13 +336,14 @@ namespace Mix.Ui
 						if (res.Success)
 						{
 							listener.OnNicknameUpdated(thread.GetThreadTitle());
-							NativeInput.Value = GetEditedThreadTitle();
+							NativeInput.text = GetEditedThreadTitle();
 						}
 						else
 						{
 							GenericPanel genericPanel = (GenericPanel)Singleton<PanelManager>.Instance.ShowPanel(Panels.GENERIC);
 							genericPanel.ShowSimpleError("customtokens.global.generic_error");
 							listener.OnNicknameUpdated(((IOneOnOneChatThread)thread).Nickname.Nickname);
+							NativeInput.text = GetEditedThreadTitle();
 						}
 					}));
 				}
@@ -334,13 +354,14 @@ namespace Mix.Ui
 						if (res != null && res.Success)
 						{
 							listener.OnNicknameUpdated(thread.GetThreadTitle());
-							NativeInput.Value = GetEditedThreadTitle();
+							NativeInput.text = GetEditedThreadTitle();
 						}
 						else
 						{
 							GenericPanel genericPanel = (GenericPanel)Singleton<PanelManager>.Instance.ShowPanel(Panels.GENERIC);
 							genericPanel.ShowSimpleError("customtokens.global.generic_error");
 							listener.OnNicknameUpdated(((IGroupChatThread)thread).Nickname.Nickname);
+							NativeInput.text = GetEditedThreadTitle();
 						}
 					}));
 				}
