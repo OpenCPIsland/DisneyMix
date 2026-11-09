@@ -2,8 +2,11 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!1045 &1
 EditorBuildSettings:
-  serializedVersion: 2
   m_ObjectHideFlags: 0
+  serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/StaticAssets/Scenes/scn_Main.unity
+    guid: e61d5bf496faed1479dfb157bdeb41a8
+  m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

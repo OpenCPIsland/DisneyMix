@@ -452,10 +452,35 @@ namespace Mix.Avatar
                 image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
         }
 
-        public void RenderAvatarSnapshotWithCancel(IAvatarHolder aAvatarHolder, GameObject aNormalTarget, string aTransformSearchString, Action aCancelSnapshot)
+public void RenderAvatarSnapshotWithCancel(IAvatarHolder aAvatarHolder, GameObject aNormalTarget, string aTransformSearchString, Action aCancelSnapshot)
+{
+    if (aAvatarHolder == null || aNormalTarget == null || aNormalTarget.IsNullOrDisposed())
+        return;
+
+    Transform target = aNormalTarget.transform.Find(aTransformSearchString);
+    if (target == null)
+        return;
+
+    Image image = target.GetComponent<Image>();
+    if (image == null)
+        return;
+
+    // Make sure the placeholder chain is visible
+    for (Transform p = target; p != null && p != aNormalTarget.transform; p = p.parent)
+        p.gameObject.SetActive(true);
+
+    IAvatar dna = aAvatarHolder.Avatar; // check the real member name on IAvatarHolder
+    GetSnapshotFromDna(dna, 0, 256, (success, sprite) =>
+    {
+        if (image == null || image.gameObject.IsNullOrDisposed())
+            return; // chat item was destroyed while rendering
+        if (success && sprite != null)
         {
-            // Implementation omitted for brevity — unchanged from original
+            image.sprite = sprite;
+            image.enabled = true;
         }
+    });
+}
 
         public GameObject CreateAvatarObject(bool flipped = false)
         {

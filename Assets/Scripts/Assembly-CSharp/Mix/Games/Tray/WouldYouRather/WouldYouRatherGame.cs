@@ -69,6 +69,14 @@ namespace Mix.Games.Tray.WouldYouRather
 		[Header("Outro Sequence")]
 		public List<Transform> cardFinalPositions;
 
+		[Header("ML Scene Shader")]
+		[Tooltip("Assign Custom/MLSceneShader here so it is included in builds.")]
+		public Shader mlSceneShader;
+
+		private const string ML_SCENE_PATH = "Table Art/CardsofDoom_ML_Scene/MLScene";
+
+		private Material mMLSceneMaterial;
+
 		[HideInInspector]
 		public bool shuffleEnabled;
 
@@ -229,11 +237,107 @@ namespace Mix.Games.Tray.WouldYouRather
 
 		private void Start()
 		{
+			//ApplyMLSceneShader();
 			hints.storyHint.text = GetStoryHint();
 			hints.selectCardsHint.text = BaseGameController.Instance.Session.GetLocalizedString("customtokens.wouldyourather.two_card_hint");
 			GameController.LoadData(this, "data/CardsOfDoom/CardsOfDoom.gz", "CardsOfDoom.txt", ParseJsonData);
 			ShakeDetector.StartShakeDetection(base.gameObject, ShuffleCards, 0.25f);
 			StartShakeHint();
+		}
+
+		private void ApplyMLSceneShader()
+		{
+			// would_you_rather(Clone) is the parent of this component's GameObject.
+			Transform gameRoot = (base.transform.parent != null) ? base.transform.parent : base.transform.root;
+			Transform mlScene = gameRoot.Find(ML_SCENE_PATH);
+			if (mlScene == null)
+			{
+				foreach (Transform t in gameRoot.GetComponentsInChildren<Transform>(true))
+				{
+					if (t.name == "MLScene")
+					{
+						mlScene = t;
+						break;
+					}
+				}
+			}
+			if (mlScene == null)
+			{
+				Debug.LogWarning("WouldYouRatherGame: MLScene not found.");
+				return;
+			}
+			Shader shader = (mlSceneShader != null) ? mlSceneShader : Shader.Find("Custom/MLSceneShader");
+			if (shader == null)
+			{
+				Debug.LogWarning("WouldYouRatherGame: Custom/MLSceneShader not found. Assign it on the component.");
+				return;
+			}
+
+			Renderer rend = mlScene.GetComponent<Renderer>();
+			UnityEngine.UI.Graphic graphic = mlScene.GetComponent<UnityEngine.UI.Graphic>();
+			Material oldMat = (rend != null) ? rend.sharedMaterial : ((graphic != null) ? graphic.material : null);
+
+			// Clone the existing material and only swap its shader, so the texture/tiling/offset carry over.
+			mMLSceneMaterial = (oldMat != null) ? new Material(oldMat) : new Material(shader);
+			mMLSceneMaterial.shader = shader;
+			if (oldMat != null && mMLSceneMaterial.GetTexture("_MainTex") == null)
+			{
+				Texture tex = null;
+				Vector2 offset = Vector2.zero;
+				Vector2 scale = Vector2.one;
+				Shader oldShader = oldMat.shader;
+				for (int i = 0; i < oldShader.GetPropertyCount(); i++)
+				{
+					if (oldShader.GetPropertyType(i) != UnityEngine.Rendering.ShaderPropertyType.Texture)
+					{
+						continue;
+					}
+					string propName = oldShader.GetPropertyName(i);
+					Texture candidate = oldMat.GetTexture(propName);
+					if (candidate != null)
+					{
+						tex = candidate;
+						offset = oldMat.GetTextureOffset(propName);
+						scale = oldMat.GetTextureScale(propName);
+						break;
+					}
+				}
+				if (tex == null && graphic != null)
+				{
+					tex = graphic.mainTexture;
+				}
+				if (tex != null)
+				{
+					mMLSceneMaterial.SetTexture("_MainTex", tex);
+					mMLSceneMaterial.SetTextureOffset("_MainTex", offset);
+					mMLSceneMaterial.SetTextureScale("_MainTex", scale);
+				}
+				else
+				{
+					Debug.LogWarning("WouldYouRatherGame: no texture found on MLScene's original material.");
+				}
+			}
+
+			if (rend != null)
+			{
+				rend.sharedMaterial = mMLSceneMaterial;
+			}
+			else if (graphic != null)
+			{
+				graphic.material = mMLSceneMaterial;
+			}
+			else
+			{
+				Debug.LogWarning("WouldYouRatherGame: MLScene has no Renderer or UI Graphic.");
+			}
+		}
+
+		private void OnDestroy()
+		{
+			if (mMLSceneMaterial != null)
+			{
+				UnityEngine.Object.Destroy(mMLSceneMaterial);
+			}
 		}
 
 		private string GetStoryHint()

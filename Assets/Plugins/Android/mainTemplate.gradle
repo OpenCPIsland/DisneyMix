@@ -6,7 +6,8 @@ apply from: '../shared/common.gradle'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 // Android Resolver Dependencies Start
-    implementation 'com.unity3d.ads:unity-ads:[4.16.3,4.17[' // Packages/com.unity.ads/Editor/Source/Dependencies.xml:7
+    implementation 'androidx.browser:browser:1.8.0' // Assets/Editor/DiscordRPC/DiscordPartnerSdkDependencies.xml:3
+    implementation 'androidx.core:core:1.13.1' // Assets/Editor/DiscordRPC/DiscordPartnerSdkDependencies.xml:4
 // Android Resolver Dependencies End
 **DEPS**}
 

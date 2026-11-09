@@ -108,9 +108,11 @@ namespace Mix
 
 public string GetDeviceString()
 {
-#if UNITY_ANDROID && !UNITY_EDITOR
+#if UNITY_ANDROID
     return "android";
-#elif UNITY_STANDALONE_WIN || UNITY_EDITOR
+#elif UNITY_ANDROID && UNITY_EDITOR
+    return "android";
+#elif UNITY_STANDALONE_WIN && UNITY_EDITOR
     return "windows64";
 #else
     return "iphone";

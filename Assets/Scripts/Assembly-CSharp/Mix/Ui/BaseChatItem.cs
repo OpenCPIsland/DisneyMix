@@ -273,6 +273,7 @@ namespace Mix.Ui
 			IAvatarHolder avatarHolderFromId = thread.GetAvatarHolderFromId(message.SenderId);
 			Transform transform = instance.transform.Find(text);
 			Transform transform2 = instance.transform.Find("Content/AvatarLeft/ImageTarget");
+			Debug.Log($"[Avatar] mine={message.IsMine()} path={text} target={(transform != null)} holder={(avatarHolderFromId != null)} sender={message.SenderId}");
 			if (thread is IOfficialAccountChatThread)
 			{
 				if (!message.IsMine())
