@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: f2ae60e03a1e511429846b16877f8525
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 7060084430399954343
+    second: avtr_mouth_0008_eric_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_mouth_0008_eric_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ad514e22657af160800000000000000
+      internalID: 7060084430399954343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -11.985794, y: -30.524687}
       - {x: -56.985794, y: 9.475313}

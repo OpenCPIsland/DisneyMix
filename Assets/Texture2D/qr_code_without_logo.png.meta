@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 43697e834fc6f224d9072ee553f93108
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 8456349955445308889
+    second: qr_code_without_logo_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: qr_code_without_logo_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 290
+        height: 290
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9dd35b61b7dfa5570800000000000000
+      internalID: 8456349955445308889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 104.99999, y: 33}
       - {x: 35, y: 33}

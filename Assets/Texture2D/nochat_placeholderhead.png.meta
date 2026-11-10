@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 8ed708cbd5810fd4f975647477fe4c8c
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -5769453334147485748
+    second: nochat_placeholderhead_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: nochat_placeholderhead_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 118
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ccf22fda2c8ceefa0800000000000000
+      internalID: -5769453334147485748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 58.499992, y: -58.499996}
       - {x: -58.500004, y: -58.499996}

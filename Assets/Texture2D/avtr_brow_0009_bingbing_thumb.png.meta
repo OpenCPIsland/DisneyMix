@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 62de1c27532954144b1ee21048ae8eb6
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 280755343868071249
+    second: avtr_brow_0009_bingbing_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_brow_0009_bingbing_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15d8c0c6f7175e300800000000000000
+      internalID: 280755343868071249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -51.5, y: -18.478691}
       - {x: -53.499996, y: -17.478691}

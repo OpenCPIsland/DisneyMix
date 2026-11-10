@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 09c86da61344fd244b2b70086fcae935
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -8553799184469234339
+    second: avtr_brow_0009_flat_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_brow_0009_flat_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5d6fa136fcca4980800000000000000
+      internalID: -8553799184469234339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -60.475323, y: -11.475317}
       - {x: -61.47532, y: -10.475317}

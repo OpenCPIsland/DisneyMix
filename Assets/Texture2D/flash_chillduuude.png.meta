@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 04baf2fc8704fcf4fbd76147bef2ab9b
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 6416283300194842480
+    second: flash_chillduuude_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: flash_chillduuude_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0777266aaa73b0950800000000000000
+      internalID: 6416283300194842480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 196.5, y: -70.5}
       - {x: 168.5, y: -68.5}

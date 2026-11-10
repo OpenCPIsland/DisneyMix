@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: efe3887c0e292d9489d61d5a8fcde819
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 7278999707963457867
+    second: fireworks_ui_sceneSelection_frozen_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: fireworks_ui_sceneSelection_frozen_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 512
+        height: 437
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4185592ba3340560800000000000000
+      internalID: 7278999707963457867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 256, y: -218.5}
       - {x: -256, y: -218.5}

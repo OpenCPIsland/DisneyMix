@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: c9f03f3fabf63e048a9023d4b54f851c
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -7116810353280948803
+    second: avtr_brow_2103_ipmupnkhaughty_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_brow_2103_ipmupnkhaughty_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db5eddea0b20c3d90800000000000000
+      internalID: -7116810353280948803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -55.516605, y: -12.487599}
       - {x: -56.516605, y: -9.487599}

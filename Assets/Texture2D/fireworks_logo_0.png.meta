@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 413c197a1e1d81342b91c755b439a92f
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 6488178803465619698
+    second: fireworks_logo_0_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: fireworks_logo_0_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 256
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f889c3fe34aa0a50800000000000000
+      internalID: 6488178803465619698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -97, y: 64}
       - {x: 85, y: 64}

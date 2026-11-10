@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 518a8442d1e1758488cdad46d5626353
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -7045502917110888741
+    second: logoTrain_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: logoTrain_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 550
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd680a1fc68593e90800000000000000
+      internalID: -7045502917110888741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -135.5247, y: -20.986626}
       - {x: -258.52472, y: -20.986626}

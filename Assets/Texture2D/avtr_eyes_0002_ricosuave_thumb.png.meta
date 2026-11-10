@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 85bbb3fb5c6af5a41a22e9fd99e2b696
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -3438788125693044064
+    second: avtr_eyes_0002_ricosuave_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_eyes_0002_ricosuave_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0aa1c3e4b68f640d0800000000000000
+      internalID: -3438788125693044064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -28.024685, y: -38.524685}
       - {x: -44.024685, y: -27.524685}

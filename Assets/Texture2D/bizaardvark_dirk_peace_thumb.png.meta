@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 7bc9f79cacb39354bb1da065fa788f16
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -1521964636117981595
+    second: bizaardvark_dirk_peace_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: bizaardvark_dirk_peace_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5662b772a35e0eae0800000000000000
+      internalID: -1521964636117981595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 64, y: -34.500004}
       - {x: -64, y: -34.500004}

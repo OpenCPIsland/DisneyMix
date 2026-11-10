@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: b513b61b280d8d04ba6417bf7f9ca51b
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 8774972611593694463
+    second: olaf_warmhugs_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: olaf_warmhugs_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffce2d33917f6c970800000000000000
+      internalID: 8774972611593694463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -60.01937, y: 17.024685}
       - {x: -63.019375, y: 19.024685}

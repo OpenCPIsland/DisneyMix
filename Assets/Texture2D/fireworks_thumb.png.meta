@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: a6cd355794ff92442aca2fc88143f4e7
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 1543109625053527189
+    second: fireworks_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: fireworks_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59c3dca370a3a6510800000000000000
+      internalID: 1543109625053527189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 64, y: -64}
       - {x: -64, y: -64}

@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 1c55f4fc968412c4cb74717e417a90a1
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -2622711334732178364
+    second: finnick_partyanimal_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: finnick_partyanimal_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44cd5e0dfe14a9bd0800000000000000
+      internalID: -2622711334732178364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -56, y: -34.475315}
       - {x: -64, y: -27.475317}

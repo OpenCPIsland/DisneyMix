@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 359e2fe50e2ada34aa55997e6da0dd80
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -3693890717407302883
+    second: mickey_onaboat_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: mickey_onaboat_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 590
+        height: 443
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1b23dda6f9acbcc0800000000000000
+      internalID: -3693890717407302883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 295, y: -221.49998}
       - {x: -295, y: -221.49998}

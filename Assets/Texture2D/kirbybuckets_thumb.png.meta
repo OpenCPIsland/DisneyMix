@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 657b9b59c109a5743b67dcccb2b56afb
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -7699262130089330538
+    second: kirbybuckets_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: kirbybuckets_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 698786792e9b62590800000000000000
+      internalID: -7699262130089330538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -30.515, y: 39.478546}
       - {x: -11.514999, y: 63.478546}

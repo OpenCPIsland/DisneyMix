@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 2b43a0f272c0b9e478905c9043cb5529
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 6713537792727522876
+    second: transitionTexture_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: transitionTexture_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3e1fa97d074b2d50800000000000000
+      internalID: 6713537792727522876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 512, y: -512}
       - {x: -512, y: -512}

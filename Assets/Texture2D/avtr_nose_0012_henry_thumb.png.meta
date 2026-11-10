@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 8311763f78fea3742a37f31308c91314
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 1946887056081703420
+    second: avtr_nose_0012_henry_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_nose_0012_henry_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf15e83667bb40b10800000000000000
+      internalID: 1946887056081703420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -12.475601, y: -58.52469}
       - {x: -36.4756, y: -39.52469}

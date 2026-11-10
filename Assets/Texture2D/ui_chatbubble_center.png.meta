@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 10912f266ce9edc43b229ecc4939c488
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -4227646613190321105
+    second: ui_chatbubble_center_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: ui_chatbubble_center_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 56
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2c58e8edc16455c0800000000000000
+      internalID: -4227646613190321105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -26, y: -20.5}
       - {x: -28, y: -15.5}

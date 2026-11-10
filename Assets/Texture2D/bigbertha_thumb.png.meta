@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: c7e41e698b86a784ca4933b57214f408
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 4102214357289947779
+    second: bigbertha_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: bigbertha_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 38256c6393efde830800000000000000
+      internalID: 4102214357289947779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -52.999996, y: -32}
       - {x: -61, y: -17}

@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: aa8c1104cc352f24a86afa278d6c9808
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -6911210949416508995
+    second: fireworks_ui_fireworkIcon_fountain2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: fireworks_ui_fireworkIcon_fountain2_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db12d3832427610a0800000000000000
+      internalID: -6911210949416508995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -1, y: 6.9822884}
       - {x: -4, y: 13.982289}

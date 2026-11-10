@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: bbcc97ec706dfb14f9d42b7112fe9883
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -5891911792717696179
+    second: cod_ui_cardBase_postItem_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: cod_ui_cardBase_postItem_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 112
+        height: 151
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d437023f079bb3ea0800000000000000
+      internalID: -5891911792717696179
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -49, y: -2.5}
       - {x: -56, y: 47.5}

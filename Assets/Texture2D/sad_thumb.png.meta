@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 5512aa3427489104c8db834cf9889e7d
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 4531226768656294934
+    second: sad_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: sad_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 614ef761db622ee30800000000000000
+      internalID: 4531226768656294934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -56.038063, y: -4.9866257}
       - {x: -44.038063, y: 15.013374}

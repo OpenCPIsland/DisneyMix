@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 6a8f565d77ebd394f82bba2de9840a83
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 7219947189854306851
+    second: avtr_gahf_3010_gjim_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_gahf_3010_gjim_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 322885c57b7623460800000000000000
+      internalID: 7219947189854306851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -47.024685, y: -52.512283}
       - {x: -62.024685, y: -21.512283}

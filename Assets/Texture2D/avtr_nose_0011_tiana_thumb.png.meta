@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 67adddafe60188a4d94ec6d0d44d0ec1
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 5170199654163805661
+    second: avtr_nose_0011_tiana_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_nose_0011_tiana_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd5f74c413d30c740800000000000000
+      internalID: 5170199654163805661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -34.509872, y: -59.53806}
       - {x: -57.50987, y: -29.53806}

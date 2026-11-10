@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 71b97ff9f17dbd14d9f88e26a2ac786a
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -4559382073511178545
+    second: avtr_gAccHead_3001_gchunkycat_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_gAccHead_3001_gchunkycat_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fce05192922d9b0c0800000000000000
+      internalID: -4559382073511178545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -61.024685, y: -42.512283}
       - {x: -62.024685, y: -34.512283}

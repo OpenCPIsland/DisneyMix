@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: bc9e7ea4517b0de4098dd9eb119640bc
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -1693848490139353318
+    second: avtr_mouth_0016_aladdin_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_mouth_0016_aladdin_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1f79e9c5cd3e78e0800000000000000
+      internalID: -1693848490139353318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -27, y: -39.0166}
       - {x: -35, y: -23.016602}

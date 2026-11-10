@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: ba5a1eebc66d9a24d929eb7dc11b233b
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -96244289168792961
+    second: ui_wb_button_bottombevel_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: ui_wb_button_bottombevel_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 33
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f722f6434521aaef0800000000000000
+      internalID: -96244289168792961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -16.5, y: -9}
       - {x: -16.5, y: 9}

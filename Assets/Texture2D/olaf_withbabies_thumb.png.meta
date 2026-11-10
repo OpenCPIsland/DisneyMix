@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: e32645c2a600de641a824e6d681b4aa1
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 3775411854009769444
+    second: olaf_withbabies_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: olaf_withbabies_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ed1d070415f46430800000000000000
+      internalID: 3775411854009769444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -20.000002, y: -64}
       - {x: -27.000004, y: -49}

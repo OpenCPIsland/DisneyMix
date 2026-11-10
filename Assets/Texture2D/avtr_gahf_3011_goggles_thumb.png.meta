@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: e06171f6ecd82c246bb00b7d96ed5c90
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 8797026725259912125
+    second: avtr_gahf_3011_goggles_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_gahf_3011_goggles_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db32cbea231551a70800000000000000
+      internalID: 8797026725259912125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -44.524685, y: -53.512283}
       - {x: -60.52468, y: -42.512283}

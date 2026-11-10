@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 9b1563fb091ce0d4798423ec348e2db0
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -8203214867480118209
+    second: fireworks_ui_fireworkIcon_inception_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: fireworks_ui_fireworkIcon_inception_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3cf4af5a83582e80800000000000000
+      internalID: -8203214867480118209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -28.5, y: -46}
       - {x: -55.499996, y: -34}

@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 1dc14d1258e24a14a8369326c16d06cf
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -313752175894235398
+    second: gem_icon_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: gem_icon_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af67150fe0455abf0800000000000000
+      internalID: -313752175894235398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -53, y: -53.013374}
       - {x: -58, y: -39.01338}

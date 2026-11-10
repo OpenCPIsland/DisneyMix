@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 7852bdc6c042ee04386e34b44f281508
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 6016883107961146459
+    second: nickwilde_trustme_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: nickwilde_trustme_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5c8211de43408350800000000000000
+      internalID: 6016883107961146459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -182.5, y: 12}
       - {x: -188.5, y: 24}

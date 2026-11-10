@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 876a3fb46c0b9ca42af451fbce0bc64c
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -1399411004450701854
+    second: livesIcon_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: livesIcon_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 84
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ed71f81b1b449ce0800000000000000
+      internalID: -1399411004450701854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -12.500004, y: -32}
       - {x: -36.500004, y: -1}

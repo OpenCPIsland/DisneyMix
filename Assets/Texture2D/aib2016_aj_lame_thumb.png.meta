@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 84800c5e8a13b894f936c0e028fa1430
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 7823389459453073424
+    second: aib2016_aj_lame_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: aib2016_aj_lame_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0185c366343429c60800000000000000
+      internalID: 7823389459453073424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -57, y: -36.031605}
       - {x: -64, y: -32.031605}

@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 5355e74e4eb92ca4f9c355ce424ca054
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -4821815152862633768
+    second: avtr_nose_0009_bingbing_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_nose_0009_bingbing_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d0e6016aa8751db0800000000000000
+      internalID: -4821815152862633768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 18.014997, y: -62.02469}
       - {x: -29.985003, y: -62.02469}

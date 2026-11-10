@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: ae31dd0481ab05141bb85d782903c5dd
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -6895399732742423976
+    second: avtr_eyes_0013_sabine_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_eyes_0013_sabine_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85a7099f97e9e40a0800000000000000
+      internalID: -6895399732742423976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -9, y: -49.991917}
       - {x: -64, y: -49.991917}

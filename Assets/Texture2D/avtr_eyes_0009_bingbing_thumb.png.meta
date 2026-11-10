@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: c67bdea8b1e06264d8a2b54dc3287c13
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -889737124551549006
+    second: avtr_eyes_0009_bingbing_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_eyes_0009_bingbing_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bf90ab9cc407a3f0800000000000000
+      internalID: -889737124551549006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -53.51649, y: -29.024687}
       - {x: -54.51649, y: -26.024687}

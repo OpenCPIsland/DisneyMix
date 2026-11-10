@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 956d6295edc5ee248812e7e2d8669953
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 7149853794837106198
+    second: avtr_eyes_0012_malmond_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_eyes_0012_malmond_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61e8e351522693360800000000000000
+      internalID: 7149853794837106198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -40.983395, y: 20.024685}
       - {x: -41.983395, y: 29.024685}

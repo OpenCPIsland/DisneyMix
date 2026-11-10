@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 39eec9f751a35d64ca80ce3837e9a293
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 3451607167364404996
+    second: cod_ui_postItembackground_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: cod_ui_postItembackground_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 375
+        height: 215
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40792fa6e6296ef20800000000000000
+      internalID: 3451607167364404996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -182.5, y: -107.50001}
       - {x: -187.5, y: -101.5}

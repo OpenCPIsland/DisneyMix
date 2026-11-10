@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 9d52ede172824f04cbd8b09ce5c2c20f
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -6343749191447111913
+    second: celebrate_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: celebrate_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7179f9398b976f7a0800000000000000
+      internalID: -6343749191447111913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -43.007862, y: -41.447292}
       - {x: -61.007862, y: -11.447293}

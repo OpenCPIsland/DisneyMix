@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 07ceffe8e64ad2e4193f10fe0bac0f66
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 5414807376847876366
+    second: avtr_brow_0007_meri_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_brow_0007_meri_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e01be20de92452b40800000000000000
+      internalID: 5414807376847876366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 54.524685, y: -16.031607}
       - {x: 45.52468, y: -16.031607}

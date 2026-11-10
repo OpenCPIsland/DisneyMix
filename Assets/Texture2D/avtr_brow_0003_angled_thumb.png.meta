@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 9f07f5abd5f500b48910082f9ca01988
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 2401513964196872333
+    second: avtr_brow_0003_angled_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_brow_0003_angled_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8048170a34e35120800000000000000
+      internalID: 2401513964196872333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -58.01169, y: -17.975317}
       - {x: -61.011684, y: -15.975317}

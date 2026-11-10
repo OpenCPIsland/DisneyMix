@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 7f394c4375ac58b4b82ccee0d1895b9b
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 5570342016137215151
+    second: heart_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: heart_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: facba4dfc84dd4d40800000000000000
+      internalID: 5570342016137215151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -3.524685, y: -36.009872}
       - {x: -17.524685, y: -19.009872}

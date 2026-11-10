@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 09e076f9887790f47a8ee95a88e1dc2a
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -2443087262786851039
+    second: runner_paused_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: runner_paused_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 760
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12fee4a1419681ed0800000000000000
+      internalID: -2443087262786851039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 380, y: -50}
       - {x: -380, y: -50}

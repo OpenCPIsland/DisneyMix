@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 0e561900c292d9b45b07095d90661af3
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 3963439883995050782
+    second: avtr_mouth_0022_mater_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_mouth_0022_mater_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e13f3264397f00730800000000000000
+      internalID: 3963439883995050782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -44.968395, y: 48.031605}
       - {x: 16.031605, y: 48.031605}

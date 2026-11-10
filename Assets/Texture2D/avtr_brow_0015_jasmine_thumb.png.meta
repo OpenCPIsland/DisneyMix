@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: ee38bc4795e418448b40537c2680d2c9
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 9166533479143634525
+    second: avtr_brow_0015_jasmine_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_brow_0015_jasmine_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d56f41602a1163f70800000000000000
+      internalID: 9166533479143634525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -1.4753189, y: -18.968397}
       - {x: -42.47532, y: -18.968397}

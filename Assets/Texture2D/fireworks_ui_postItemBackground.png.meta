@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 8cd1127d7a823ae4fb739dfe3bc3cebf
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 3133212653366827971
+    second: fireworks_ui_postItemBackground_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: fireworks_ui_postItemBackground_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 375
+        height: 215
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3cb50b9ce486b7b20800000000000000
+      internalID: 3133212653366827971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -182.5, y: -106.50001}
       - {x: -187.5, y: -100.5}

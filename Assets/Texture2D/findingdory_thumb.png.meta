@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: c7f902bf4bbd439459b4ee93a16bcfa5
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -3221819735590713592
+    second: findingdory_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: findingdory_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 807c5c9350cc943d0800000000000000
+      internalID: -3221819735590713592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 48.975315, y: -28.01338}
       - {x: -2.024685, y: -63.01338}

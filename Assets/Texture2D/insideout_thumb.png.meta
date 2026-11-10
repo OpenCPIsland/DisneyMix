@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 4f686dee206e1c54fabf9639c4ae50aa
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -7285242687519439605
+    second: insideout_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: insideout_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0544e3ef5e95ea90800000000000000
+      internalID: -7285242687519439605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -17.987713, y: -63.538063}
       - {x: -39.987713, y: -47.538063}

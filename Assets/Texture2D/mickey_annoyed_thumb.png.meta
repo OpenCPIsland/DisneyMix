@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: a21e5750d59558b42bd6c73789bf6b8a
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 6962502011745369845
+    second: mickey_annoyed_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: mickey_annoyed_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fe7606d0b6cf9060800000000000000
+      internalID: 6962502011745369845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 40.475315, y: -50}
       - {x: 23.475315, y: -64}

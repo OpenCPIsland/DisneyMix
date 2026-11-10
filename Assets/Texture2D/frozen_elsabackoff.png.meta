@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: a4a7831dbdf8b38419ad0a54ddab6b75
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 1453950720610010844
+    second: frozen_elsabackoff_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: frozen_elsabackoff_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 590
+        height: 443
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd602ee1a787d2410800000000000000
+      internalID: 1453950720610010844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 295, y: -221.49998}
       - {x: -295, y: -221.49998}

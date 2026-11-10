@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 2d2a4ac80b5c53c449fbcc7004e17d6f
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -8766439525112604087
+    second: mickey_sad_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: mickey_sad_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94a18b0d2b9575680800000000000000
+      internalID: -8766439525112604087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -50, y: -60.016495}
       - {x: -64, y: 0.98350906}

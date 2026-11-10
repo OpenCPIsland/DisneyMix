@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 34aaab3169949e94386f1e9f3f7d3832
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 8525863675372559732
+    second: aud_black_angry_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: aud_black_angry_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47ddcfd37d3f15670800000000000000
+      internalID: 8525863675372559732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -63, y: -26.000004}
       - {x: -64, y: -21.000004}

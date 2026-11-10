@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 262e5425a4b834e4c99d70d1d768d8cc
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -1732148520197268052
+    second: avtr_brow_0010_kawena_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_brow_0010_kawena_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cad5c63291c26f7e0800000000000000
+      internalID: -1732148520197268052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 48.99669, y: -19.968397}
       - {x: -52.00331, y: -19.968397}

@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: db3d188feb8713f42b664f7796936cd0
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 2619347583979128781
+    second: avtr_eyes_0013_elsa_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_eyes_0013_elsa_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc78a5eefbac95420800000000000000
+      internalID: 2619347583979128781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 50.505127, y: -46}
       - {x: 42.505127, y: -46}

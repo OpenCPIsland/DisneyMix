@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: ed485fc6bf05d0f42bf59b8a69a26cdb
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 5004631481335756153
+    second: judyhopps_busted_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: judyhopps_busted_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97531cc01d5047540800000000000000
+      internalID: 5004631481335756153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -184, y: -60.500004}
       - {x: -196, y: -45.5}

@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 766675b811a14b44e9d5bd2ff493610a
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 5933440908537332253
+    second: avtr_nose_0007_meri_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_nose_0007_meri_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d128321d111d75250800000000000000
+      internalID: 5933440908537332253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -30.491924, y: -54.51338}
       - {x: -31.491922, y: -32.51338}

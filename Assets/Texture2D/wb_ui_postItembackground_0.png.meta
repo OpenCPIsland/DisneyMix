@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: a655c756e1f39c84c98facc764dec632
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 2804192344680232003
+    second: wb_ui_postItembackground_0_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: wb_ui_postItembackground_0_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 375
+        height: 215
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 344f88a841e7ae620800000000000000
+      internalID: 2804192344680232003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -182.5, y: -107.50001}
       - {x: -187.5, y: -101.5}

@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 58cc5bde874b267439d5d5371b844e24
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -3057762186977833798
+    second: avtr_nose_0005_qorianka_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_nose_0005_qorianka_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abc809ddd75a095d0800000000000000
+      internalID: -3057762186977833798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -15.514496, y: -27.531605}
       - {x: -25.514496, y: -20.531605}

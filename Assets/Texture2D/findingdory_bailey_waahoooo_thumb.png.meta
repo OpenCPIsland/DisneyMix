@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: ff35d517f17bc5c449766a72eaa639cf
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -6432394836131624188
+    second: findingdory_bailey_waahoooo_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: findingdory_bailey_waahoooo_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40b41511afa8bb6a0800000000000000
+      internalID: -6432394836131624188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -37, y: -34.031605}
       - {x: -50, y: -14.031605}

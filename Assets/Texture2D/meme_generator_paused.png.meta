@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: cc78a0758afb03344a094ed45e41dd4d
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 9590544773133883
+    second: meme_generator_paused_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: meme_generator_paused_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 760
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b36b766bc82122000800000000000000
+      internalID: 9590544773133883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 380, y: -50}
       - {x: -380, y: -50}

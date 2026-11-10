@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: df5805ccbcad5ac45b2b888e98256e84
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 2078628194457738539
+    second: mickey_lol_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: mickey_lol_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2dd3ce6455c8dc10800000000000000
+      internalID: 2078628194457738539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -26.487598, y: -64}
       - {x: -46.4876, y: -57}

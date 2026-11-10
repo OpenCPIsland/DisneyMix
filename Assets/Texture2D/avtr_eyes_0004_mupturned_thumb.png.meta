@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: a983a6feae766b64db28c1d77cfeb6a9
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -8922422446784801477
+    second: avtr_eyes_0004_mupturned_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_eyes_0004_mupturned_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b359b63ce003d2480800000000000000
+      internalID: -8922422446784801477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -28.024685, y: -32.50808}
       - {x: -40.024685, y: -21.50808}

@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 5daecf4411b690a4cbd15406d5dfdc87
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -2880366567657464466
+    second: avtr_eyes_0004_rory_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_eyes_0004_rory_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6d9dd71ed1e608d0800000000000000
+      internalID: -2880366567657464466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -42.0166, y: -15.5}
       - {x: -49.0166, y: 1.5}

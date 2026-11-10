@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: f3e7d35bcf14c9c4c8dbbd9c91c3918e
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -3245972934364546088
+    second: avtr_tacc_8006_aearth_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_tacc_8006_aearth_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8db3ba860dcf3f2d0800000000000000
+      internalID: -3245972934364546088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 57, y: -61.46194}
       - {x: -64, y: -61.46194}

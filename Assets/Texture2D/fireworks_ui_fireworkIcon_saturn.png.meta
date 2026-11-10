@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: b4327367452a58d4a8a5e88b102ee19a
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 8829771978983594189
+    second: fireworks_ui_fireworkIcon_saturn_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: fireworks_ui_fireworkIcon_saturn_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc8d30f25d6a98a70800000000000000
+      internalID: 8829771978983594189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -57.512947, y: -50.512283}
       - {x: -59.512943, y: -40.512283}

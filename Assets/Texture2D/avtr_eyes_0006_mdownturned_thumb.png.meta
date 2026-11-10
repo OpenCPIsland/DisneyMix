@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: beb2abf6286489242a72a91d56264124
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 3834375116715888079
+    second: avtr_eyes_0006_mdownturned_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_eyes_0006_mdownturned_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcd827f6adf663530800000000000000
+      internalID: 3834375116715888079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -23.5, y: -41.516605}
       - {x: -40.5, y: -36.516605}

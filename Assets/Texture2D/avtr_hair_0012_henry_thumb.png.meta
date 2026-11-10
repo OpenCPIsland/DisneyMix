@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: ba9555fe0803f2e48acd0df5a29c2b74
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -6200200069580442345
+    second: avtr_hair_0012_henry_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_hair_0012_henry_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7153e4403e674f9a0800000000000000
+      internalID: -6200200069580442345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 57, y: -61.46194}
       - {x: -64, y: -61.46194}

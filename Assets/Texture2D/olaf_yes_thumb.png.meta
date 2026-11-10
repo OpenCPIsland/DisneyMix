@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: a01b16da756a2a24c94e178c4a1c8c2b
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 8489954618481092147
+    second: olaf_yes_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: olaf_yes_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 336a0c96eb062d570800000000000000
+      internalID: 8489954618481092147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 7.9753113, y: -41}
       - {x: -10.024689, y: -48}

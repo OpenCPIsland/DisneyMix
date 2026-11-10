@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: cdb0ca823fb5ed947b6dc9c6312eb2db
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -3657264806961419132
+    second: findingdory_dory_howareyou_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: findingdory_dory_howareyou_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48ce68bf809ce3dc0800000000000000
+      internalID: -3657264806961419132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -60.000004, y: -34.019917}
       - {x: -64, y: -27.019918}

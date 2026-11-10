@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 841ab2ef63e789047badbddaca9856b9
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -8563629587770134537
+    second: avtr_eyes_0015_flower_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_eyes_0015_flower_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ffafe01340e72980800000000000000
+      internalID: -8563629587770134537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 30.5, y: -46}
       - {x: 22.5, y: -46}

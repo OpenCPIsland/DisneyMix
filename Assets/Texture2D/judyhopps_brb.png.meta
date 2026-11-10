@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 2172a9da88741cb489d97362da8ccacd
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 1617497626494097484
+    second: judyhopps_brb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: judyhopps_brb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c48d73c7581827610800000000000000
+      internalID: 1617497626494097484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -158.5, y: -23.5}
       - {x: -192.5, y: -6.5}

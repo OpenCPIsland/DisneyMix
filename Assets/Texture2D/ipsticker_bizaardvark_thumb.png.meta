@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: ad068277a32817144a851675d2104389
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 2592357038997606533
+    second: ipsticker_bizaardvark_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: ipsticker_bizaardvark_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5809f68fdf6e9f320800000000000000
+      internalID: 2592357038997606533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 64, y: -64}
       - {x: -64, y: -64}

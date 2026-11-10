@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 74d485b192779d34db6f98390c327bb5
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 4141033056890741338
+    second: disneyAccountLogo_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: disneyAccountLogo_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 434
+        height: 114
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a526f1700a7e77930800000000000000
+      internalID: 4141033056890741338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 65.53804, y: -4}
       - {x: 62.53804, y: -3}

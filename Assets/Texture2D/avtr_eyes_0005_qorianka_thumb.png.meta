@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: c11d64ed2a8dea748af15ced819bf518
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -3958008036211475546
+    second: avtr_eyes_0005_qorianka_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_eyes_0005_qorianka_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ab397759a45219c0800000000000000
+      internalID: -3958008036211475546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 29.49399, y: -53.475315}
       - {x: 25.493988, y: -49.475315}

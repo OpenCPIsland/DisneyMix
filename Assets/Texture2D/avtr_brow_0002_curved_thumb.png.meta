@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 0c36efc8ba0d22f4b8a421b180a4881b
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 8522112971643606712
+    second: avtr_brow_0002_curved_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_brow_0002_curved_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b6d09a7890a44670800000000000000
+      internalID: 8522112971643606712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -57.5, y: -19.524687}
       - {x: -62.5, y: -6.524687}

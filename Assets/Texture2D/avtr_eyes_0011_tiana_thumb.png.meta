@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: ed42bd7515a372148ab3a429d39dc255
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 5546035624688917275
+    second: avtr_eyes_0011_tiana_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_eyes_0011_tiana_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1b9e39340a77fc40800000000000000
+      internalID: 5546035624688917275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 54.475315, y: -47.025658}
       - {x: 50.47532, y: -47.025658}

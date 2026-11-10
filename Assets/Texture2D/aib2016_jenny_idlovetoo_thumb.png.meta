@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 3fbeaa46371df7b49aa8b85991955153
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 335569336274232631
+    second: aib2016_jenny_idlovetoo_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: aib2016_jenny_idlovetoo_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 735a32e888e28a400800000000000000
+      internalID: 335569336274232631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 64, y: -34.00692}
       - {x: -64, y: -34.00692}

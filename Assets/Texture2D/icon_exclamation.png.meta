@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 5e7ab237d0362ff4f9fce8ba904533d0
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -3419313931503044714
+    second: icon_exclamation_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: icon_exclamation_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 697773978182c80d0800000000000000
+      internalID: -3419313931503044714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -10, y: -15.000001}
       - {x: -12, y: 6}

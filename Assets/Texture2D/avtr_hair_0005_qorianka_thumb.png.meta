@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 65f3caa542181e242b14f082e530f1af
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 1717470775793954475
+    second: avtr_hair_0005_qorianka_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_hair_0005_qorianka_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bae205f229ea5d710800000000000000
+      internalID: 1717470775793954475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 39, y: -61.478546}
       - {x: -64, y: -61.478546}

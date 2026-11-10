@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 41c1d83156ca0394eba16ee8d298b863
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 6465969784466929311
+    second: swr_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: swr_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f967f83c24dbbb950800000000000000
+      internalID: 6465969784466929311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -9.983395, y: -64}
       - {x: -43.983395, y: -64}

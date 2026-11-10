@@ -112,6 +112,8 @@ public string GetDeviceString()
     return "android";
 #elif UNITY_ANDROID && UNITY_EDITOR
     return "android";
+#elif UNITY_STANDALONE_WIN
+    return "windows64";
 #elif UNITY_STANDALONE_WIN && UNITY_EDITOR
     return "windows64";
 #else

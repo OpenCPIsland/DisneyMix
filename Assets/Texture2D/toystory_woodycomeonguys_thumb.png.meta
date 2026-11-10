@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: ad178c1f7d845a04f831ec96e28a671b
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 905875420416072658
+    second: toystory_woodycomeonguys_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: toystory_woodycomeonguys_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 220
+        height: 165
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2db58a435e0529c00800000000000000
+      internalID: 905875420416072658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 110, y: -82.5}
       - {x: -110, y: -82.5}

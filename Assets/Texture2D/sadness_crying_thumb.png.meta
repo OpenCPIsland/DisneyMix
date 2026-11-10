@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 94e4bb5f833a8764f941923cc4f46f4c
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 3330404672787458989
+    second: sadness_crying_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: sadness_crying_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dab2cc79769f73e20800000000000000
+      internalID: 3330404672787458989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -31.512398, y: -52}
       - {x: -46.512398, y: 4}

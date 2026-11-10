@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 743a3b517014a064182801d9f148a533
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 1301562344384821836
+    second: avtr_nose_0010_kawena_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_nose_0010_kawena_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4af4166e04101210800000000000000
+      internalID: 1301562344384821836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 47.973583, y: -20.031603}
       - {x: 46.973583, y: -21.0316}

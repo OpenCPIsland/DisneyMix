@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 4dc501bd7d01b8145990f6bf30159db1
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -8147781797360000385
+    second: fireworks_ui_fireworkIcon_baymax_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: fireworks_ui_fireworkIcon_baymax_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f72a6f4cf934dee80800000000000000
+      internalID: -8147781797360000385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -40.500828, y: -41.5}
       - {x: -59.500828, y: -27.5}

@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 59ef12b2b649f1b43bb32ba7d3dbaa14
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 8046830799012838420
+    second: avtr_missing_thumb_0_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: avtr_missing_thumb_0_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41c35de4af51caf60800000000000000
+      internalID: 8046830799012838420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -22.000002, y: 28.999998}
       - {x: 15.999998, y: 28.999998}

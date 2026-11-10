@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 5b460066efaf80045af34a2d32ee4e24
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 1797827643536896047
+    second: heart_active_0_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: heart_active_0_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f20f46c67ba23f810800000000000000
+      internalID: 1797827643536896047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -3, y: -16.02877}
       - {x: -16, y: -6.0287695}

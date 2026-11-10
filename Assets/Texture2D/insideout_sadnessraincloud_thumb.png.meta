@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 01d4067b5cbaabf4eb4c006b78ab9fbf
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 2871068798840485968
+    second: insideout_sadnessraincloud_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: insideout_sadnessraincloud_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 220
+        height: 165
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05838986cd518d720800000000000000
+      internalID: 2871068798840485968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 110, y: -82.5}
       - {x: -110, y: -82.5}

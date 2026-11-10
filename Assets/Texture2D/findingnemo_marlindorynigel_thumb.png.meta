@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 2a4c204fa5281274ba943a160134df52
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 6138865359606333529
+    second: findingnemo_marlindorynigel_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: findingnemo_marlindorynigel_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 220
+        height: 165
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 950494bf481a13550800000000000000
+      internalID: 6138865359606333529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 110, y: -82.5}
       - {x: -110, y: -82.5}

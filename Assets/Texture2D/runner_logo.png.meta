@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 74d5e2070996818459d46a45ed312696
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 9193800931238613787
+    second: runner_logo_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: runner_logo_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 256
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1312227c31f69f70800000000000000
+      internalID: 9193800931238613787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: -124, y: -51.48759}
       - {x: -128, y: -49.487595}

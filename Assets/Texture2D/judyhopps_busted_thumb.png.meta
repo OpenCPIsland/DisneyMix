@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 42d35a343b03ccf448f93973943f3ec6
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -5432053234739156685
+    second: judyhopps_busted_thumb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,7 +137,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: judyhopps_busted_thumb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3396c5efc587d94b0800000000000000
+      internalID: -5432053234739156685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline:
     - - {x: 51, y: -34.531605}
       - {x: -64, y: -34.531605}
