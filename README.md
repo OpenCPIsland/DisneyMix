@@ -18,11 +18,11 @@
 ### 📈 Project Status
 - [x] **Client status:** Mostly stable, few bugs here and there that need fixing, mostly shaders.
 - [x] **Mobile Support:** Stable.
-- [>] **Desktop Support:** Needs heavy work.
-- [>] **Chatting:** Basic functionality should work; improvements for a smoother experience are planned.
-- [>] **Social Features:** Currently being researched in client to reimplement server-side.
-- [>] **Input Systems:** Transitioning broken custom input bars to the native Unity Input Field.
-- [>] **Content:** Some games and stickers are currently missing; these will either be restored or removed in future builds.
+- [x] **Desktop Support:** Stable.
+- [x] **Chatting:** Stable.
+- [x] **Social Features:** Stable.
+- [>] **Input Systems:** Most custom input bars to the native Unity Input Field.
+- [>] **Content:** 3/7 games work. Plans for the others will be updated.
 - [x] ~~**Official Accounts:** Implemented in server but disabled from the client. Not planned for public release.~~
 
 
