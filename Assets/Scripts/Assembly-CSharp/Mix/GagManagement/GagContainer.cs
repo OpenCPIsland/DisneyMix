@@ -304,7 +304,7 @@ namespace Mix.GagManagement
 
 			// Start monitoring the shader for this gag
 			if (shaderUpdateCoroutine != null) StopCoroutine(shaderUpdateCoroutine);
-			shaderUpdateCoroutine = StartCoroutine(ContinuouslyPatchShaders(gameObject));
+			//shaderUpdateCoroutine = StartCoroutine(ContinuouslyPatchShaders(gameObject));
 
 			hasLoggedWaitingForAudio = false;
 			hasLoggedGagPlaying = false;
