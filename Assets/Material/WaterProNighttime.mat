@@ -2,90 +2,63 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: WaterProNighttime
   m_Shader: {fileID: 4800000, guid: 629d3bbd00730894a8d0361d1db6df9f, type: 3}
-  m_ShaderKeywords:
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TexEnvs:
-    - first:
-        name: _BumpMap
-      second:
+    - _BumpMap:
         m_Texture: {fileID: 2800000, guid: 013574ef15889094399b130257498d74, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _Fresnel
-      second:
+    - _Fresnel:
         m_Texture: {fileID: 2800000, guid: fe056801dd5f2864595a80ad2ab7c2c7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _ReflectionTex
-      second:
+    - _ReflectionTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _ReflectiveColor
-      second:
+    - _ReflectiveColor:
         m_Texture: {fileID: 2800000, guid: 872ffd7296a123943af6333d98234293, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _RefractionTex
-      second:
+    - _RefractionTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
-    - first:
-        name: _ReflDistort
-      second: 1.5
-    - first:
-        name: _RefrDistort
-      second: 0
-    - first:
-        name: _WaveScale
-      second: 0.02
+    - _ReflDistort: 1.5
+    - _RefrDistort: 0
+    - _WaveScale: 0.02
     m_Colors:
-    - first:
-        name: WaveSpeed
-      second: {r: 9, g: 4.5, b: -8, a: -3.5}
-    - first:
-        name: _BumpMap_ST
-      second: {r: 1, g: 1, b: 0, a: 0}
-    - first:
-        name: _Color
-      second: {r: 1, g: 1, b: 1, a: 1}
-    - first:
-        name: _Fresnel_ST
-      second: {r: 1, g: 1, b: 0, a: 0}
-    - first:
-        name: _HorizonColor
-      second: {r: 0.038927343, g: 0.08719723, b: 0.2647059, a: 0}
-    - first:
-        name: _MainTex_ST
-      second: {r: 1, g: 1, b: 0, a: 0}
-    - first:
-        name: _ReflectionTex_ST
-      second: {r: 1, g: 1, b: 0, a: 0}
-    - first:
-        name: _ReflectiveColorCube_ST
-      second: {r: 1, g: 1, b: 0, a: 0}
-    - first:
-        name: _ReflectiveColor_ST
-      second: {r: 1, g: 1, b: 0, a: 0}
-    - first:
-        name: _RefrColor
-      second: {r: 1, g: 1, b: 1, a: 1}
-    - first:
-        name: _RefractionTex_ST
-      second: {r: 1, g: 1, b: 0, a: 0}
+    - WaveSpeed: {r: 9, g: 4.5, b: -8, a: -3.5}
+    - _BumpMap_ST: {r: 1, g: 1, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Fresnel_ST: {r: 1, g: 1, b: 0, a: 0}
+    - _HorizonColor: {r: 0.038927343, g: 0.08719723, b: 0.2647059, a: 0}
+    - _MainTex_ST: {r: 1, g: 1, b: 0, a: 0}
+    - _ReflectionTex_ST: {r: 1, g: 1, b: 0, a: 0}
+    - _ReflectiveColorCube_ST: {r: 1, g: 1, b: 0, a: 0}
+    - _ReflectiveColor_ST: {r: 1, g: 1, b: 0, a: 0}
+    - _RefrColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RefractionTex_ST: {r: 1, g: 1, b: 0, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

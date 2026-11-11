@@ -41,7 +41,7 @@ namespace Mix.Games.Tray.SecretWord
 
 		public SecretWordLetterHolder letterHolder;
 
-		public NativeTextView nativeTextView;
+		public InputField nativeTextView;
 
 		public Camera panelCamera;
 
@@ -100,7 +100,7 @@ namespace Mix.Games.Tray.SecretWord
 				letters[i] = Object.Instantiate(letterHolder.gameObject);
 				letters[i].transform.SetParent(wordHolder.transform, false);
 			}
-			nativeTextView.DefaultText = BaseGameController.Instance.Session.GetLocalizedString("customtokens.secretword.enter_hint");
+			nativeTextView.text = BaseGameController.Instance.Session.GetLocalizedString("customtokens.secretword.enter_hint");
 			toastPanel = GetComponent<ToastPanelController>();
 			toastPanel.ToastPanelAnimationComplete += ActivateKeyboard;
 			toastPanel.ToastPanelHideComplete += HideObject;
@@ -124,7 +124,7 @@ namespace Mix.Games.Tray.SecretWord
 				GameObject gameObject = letters[i];
 				gameObject.SetActive(false);
 			}
-			nativeTextView.Value = game.Hint;
+			nativeTextView.text = game.Hint;
 			errorText.gameObject.SetActive(false);
 			doneButton.interactable = true;
 			backButton.interactable = true;
@@ -139,7 +139,7 @@ namespace Mix.Games.Tray.SecretWord
 
 		private void ActivateKeyboard()
 		{
-			nativeTextView.SelectInput();
+			nativeTextView.Select();
 		}
 
 		private void OnDonePressedKeyboard(NativeKeyboardReturnKey returnKey)
@@ -151,7 +151,7 @@ namespace Mix.Games.Tray.SecretWord
 		{
 			if (!IsValidating())
 			{
-				string value = nativeTextView.Value;
+				string value = nativeTextView.text;
 				EnableValidationSpinner(true);
 				if (!ValidateHint(value))
 				{
@@ -177,14 +177,14 @@ namespace Mix.Games.Tray.SecretWord
 			EnableValidationSpinner(false);
 			errorText.gameObject.SetActive(true);
 			errorText.text = BaseGameController.Instance.Session.GetLocalizedString("customtokens.secretword.invalid_hint");
-			nativeTextView.Value = string.Empty;
+			nativeTextView.text = string.Empty;
 		}
 
 		private void HintModerated(string aModeratedHint)
 		{
 			errorText.gameObject.SetActive(true);
 			errorText.text = BaseGameController.Instance.Session.GetLocalizedString("customtokens.secretword.invalid_hint");
-			nativeTextView.Value = aModeratedHint;
+			nativeTextView.text = aModeratedHint;
 		}
 
 		private void EnableValidationSpinner(bool doSpin)
