@@ -82,7 +82,8 @@ namespace Mix.Games.Tray.Drop
 
 		private void UpdateHopCount(int count)
 		{
-			TutorialAnimator.SetInteger("TutorialStep", count);
+			TutorialAnimator.SetTrigger("PlayerDead");
+			//TutorialAnimator.SetInteger("TutorialStep", count);
 			if (dropGame.Player.CurrentPlatform != null)
 			{
 				CurrentPlatformText.text = dropGame.Player.CurrentPlatform.name;
