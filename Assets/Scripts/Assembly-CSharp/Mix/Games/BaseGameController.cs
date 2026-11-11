@@ -280,7 +280,7 @@ namespace Mix.Games
 			// Start delay for shaders via GameManager since this GameObject might be inactive
 			if (MonoSingleton<GameManager>.Instance != null)
 			{
-				MonoSingleton<GameManager>.Instance.StartCoroutine(ApplyShaderAfterDelay(MixGameObject != null ? MixGameObject : gameObject, 0.2f));
+				//MonoSingleton<GameManager>.Instance.StartCoroutine(ApplyShaderAfterDelay(MixGameObject != null ? MixGameObject : gameObject, 0.2f));
 			}
 		}
 
@@ -298,7 +298,7 @@ namespace Mix.Games
 			// Start delay for shaders via GameManager since this GameObject might be inactive
 			if (MonoSingleton<GameManager>.Instance != null)
 			{
-				MonoSingleton<GameManager>.Instance.StartCoroutine(ApplyShaderAfterDelay(MixGameObject != null ? MixGameObject : gameObject, 0.2f));
+				//MonoSingleton<GameManager>.Instance.StartCoroutine(ApplyShaderAfterDelay(MixGameObject != null ? MixGameObject : gameObject, 0.2f));
 			}
 		}
 
@@ -315,7 +315,7 @@ namespace Mix.Games
 			// Start delay for shaders via GameManager since this GameObject might be inactive
 			if (MonoSingleton<GameManager>.Instance != null)
 			{
-				MonoSingleton<GameManager>.Instance.StartCoroutine(ApplyShaderAfterDelay(MixGameObject != null ? MixGameObject : gameObject, 0.2f));
+				//MonoSingleton<GameManager>.Instance.StartCoroutine(ApplyShaderAfterDelay(MixGameObject != null ? MixGameObject : gameObject, 0.2f));
 			}
 		}
 

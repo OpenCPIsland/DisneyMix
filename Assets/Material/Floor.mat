@@ -2,123 +2,79 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: Floor
-  m_Shader: {fileID: 4800000, guid: 2ec53e6ce743cf146ad46c9ce05dd5c1, type: 3}
-  m_ShaderKeywords:
+  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 5
-  m_CustomRenderQueue: 2000
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
   stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TexEnvs:
-    - first:
-        name: _MainTex
-      second:
+    - _MainTex:
         m_Texture: {fileID: 2800000, guid: 845870612030c9044b12e02e450bd225, type: 3}
         m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0.5, y: 0.5}
-    - first:
-        name: _MaskTex
-      second:
+    - _MaskTex:
         m_Texture: {fileID: 8400000, guid: 11edcfe689349fd46b8e6239948cce59, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _RippleMaskTex
-      second:
+    - _RippleMaskTex:
         m_Texture: {fileID: 2800000, guid: 3155632514ea5914dad8b27104d0ecfe, type: 3}
         m_Scale: {x: 8, y: 8}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _SnowTex
-      second:
+    - _SnowTex:
         m_Texture: {fileID: 2800000, guid: 4693b4beede3ba64987808101e38a21d, type: 3}
         m_Scale: {x: 8, y: 8}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
-    - first:
-        name: _Amplitude
-      second: 0.1
-    - first:
-        name: _BumpScale
-      second: 1
-    - first:
-        name: _Cutoff
-      second: 0.5
-    - first:
-        name: _DetailNormalMapScale
-      second: 1
-    - first:
-        name: _DstBlend
-      second: 0
-    - first:
-        name: _Frequency
-      second: 6
-    - first:
-        name: _Glossiness
-      second: 0.5
-    - first:
-        name: _Max
-      second: 0.95
-    - first:
-        name: _Metallic
-      second: 0
-    - first:
-        name: _Mid
-      second: 0.6
-    - first:
-        name: _Min
-      second: 0.05
-    - first:
-        name: _Mode
-      second: 0
-    - first:
-        name: _OcclusionStrength
-      second: 1
-    - first:
-        name: _Parallax
-      second: 0.02
-    - first:
-        name: _SnowCutoff
-      second: 0.5
-    - first:
-        name: _Speed
-      second: 4
-    - first:
-        name: _SrcBlend
-      second: 1
-    - first:
-        name: _UVSec
-      second: 0
-    - first:
-        name: _XFrequency
-      second: 2
-    - first:
-        name: _XOffset
-      second: 0
-    - first:
-        name: _YFrequency
-      second: 3
-    - first:
-        name: _YOffset
-      second: 0
-    - first:
-        name: _ZWrite
-      second: 1
+    - _Amplitude: 0.1
+    - _BumpScale: 1
+    - _ColorMask: 15
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _Frequency: 6
+    - _Glossiness: 0.5
+    - _Max: 0.95
+    - _Metallic: 0
+    - _Mid: 0.6
+    - _Min: 0.05
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _SnowCutoff: 0.5
+    - _Speed: 4
+    - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UVSec: 0
+    - _UseUIAlphaClip: 0
+    - _XFrequency: 2
+    - _XOffset: 0
+    - _YFrequency: 3
+    - _YOffset: 0
+    - _ZWrite: 1
     m_Colors:
-    - first:
-        name: _Amplitude
-      second: {r: 0.05, g: 0, b: 0.05, a: 0}
-    - first:
-        name: _Color
-      second: {r: 1, g: 1, b: 1, a: 1}
-    - first:
-        name: _EmissionColor
-      second: {r: 0, g: 0, b: 0, a: 1}
-    - first:
-        name: _SnowColor
-      second: {r: 0.62352943, g: 0.77647066, b: 1, a: 1}
+    - _Amplitude: {r: 0.05, g: 0, b: 0.05, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SnowColor: {r: 0.62352943, g: 0.77647066, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

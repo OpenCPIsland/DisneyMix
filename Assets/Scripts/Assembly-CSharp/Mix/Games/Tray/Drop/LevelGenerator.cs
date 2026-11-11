@@ -427,6 +427,9 @@ namespace Mix.Games.Tray.Drop
 		private Pattern CreatePatternFromTemplate(PatternTemplate template, Coordinate2D origin, float time, int generatedPatternNumber = -1)
 		{
 			Pattern pattern = SpawnPattern();
+			Debug.Log("template null=" + (template == null) + ", pattern null=" + (pattern == null)
+    + ", InitialPatternName='" + InitialPatternName + "'"
+    + ", templates=" + (patternTemplates == null ? -1 : patternTemplates.Count));
 			pattern.name = template.Name;
 			pattern.TemplateName = template.Name;
 			if (generatedPatternNumber == -1)
