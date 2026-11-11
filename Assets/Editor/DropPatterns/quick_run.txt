@@ -1,0 +1,11 @@
+# Middle platforms are QUICK (shorter lived).
+platform 1 0 -1 DEFAULT 0 4
+platform 2 0 -1 QUICK 1 2.5
+platform 3 0 -1 QUICK 2 2.5
+platform 4 0 -1 DEFAULT 3 4
+overlap 0
+reflect_x true
+reflect_y false
+rotate true
+include_after 6
+next_pattern 4

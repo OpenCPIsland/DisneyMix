@@ -1,0 +1,12 @@
+# Straight path with spike decoys beside it. A decoy line attaches to the platform above it.
+platform 1 0 -1 DEFAULT 0 4
+decoy 1 1 -1 SPIKES 0 4
+platform 2 0 -1 DEFAULT 1 4
+decoy 2 -1 -1 SPIKES 1 4
+platform 3 0 -1 DEFAULT 2 4
+overlap 0
+reflect_x true
+reflect_y true
+rotate true
+include_after 5
+next_pattern 3

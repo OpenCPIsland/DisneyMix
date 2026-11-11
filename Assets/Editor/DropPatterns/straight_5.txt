@@ -1,0 +1,12 @@
+# Longer straight run, appears once the game is a few patterns in.
+platform 1 0 -1 DEFAULT 0 4
+platform 2 0 -1 DEFAULT 1 4
+platform 3 0 -1 DEFAULT 2 4
+platform 4 0 -1 DEFAULT 3 4
+platform 5 0 -1 DEFAULT 4 4
+overlap 0
+reflect_x true
+reflect_y false
+rotate true
+include_after 2
+next_pattern 5

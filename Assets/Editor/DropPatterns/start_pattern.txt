@@ -1,0 +1,15 @@
+# Tutorial / initial pattern. Must match LevelGenerator.InitialPatternName.
+# Times are raw seconds here: the tutorial advances the game clock 0.1s per jump.
+# weight 0 so it is never picked as a random pattern; no reflect/rotate variants.
+# platform X Y ROTATION TYPE ENTER DURATION [FENCEBITS]
+platform 0 0 -1 DEFAULT 0 2
+platform 1 0 -1 DEFAULT 0.1 2
+platform 2 0 -1 DEFAULT 0.2 2
+platform 3 0 -1 DEFAULT 0.3 2
+decoy 0 1 -1 DEFAULT 0 2
+overlap 0
+reflect_x false
+reflect_y false
+rotate false
+weight 0
+next_pattern 0.4

@@ -1,0 +1,9 @@
+# Three platforms in a row. Times are in "jump" units (the game scales them).
+platform 1 0 -1 DEFAULT 0 4
+platform 2 0 -1 DEFAULT 1 4
+platform 3 0 -1 DEFAULT 2 4
+overlap 0
+reflect_x true
+reflect_y false
+rotate true
+next_pattern 3

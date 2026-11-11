@@ -1,0 +1,12 @@
+# Staircase.
+platform 1 0 -1 DEFAULT 0 4
+platform 1 1 -1 DEFAULT 1 4
+platform 2 1 -1 DEFAULT 2 4
+platform 2 2 -1 DEFAULT 3 4
+platform 3 2 -1 DEFAULT 4 4
+overlap 0
+reflect_x true
+reflect_y true
+rotate true
+include_after 3
+next_pattern 5
