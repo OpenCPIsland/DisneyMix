@@ -913,7 +913,7 @@
     "officialaccountspanel.disconnected.connectiontext": "No Internet Connection",
     "officialaccountspanel.reconnect.reconnectingtext": "Reconnecting to services...",
     "customtokens.chat.time_stamp_1day": "Yesterday at #time#",
-    "customtokens.chat.time_stamp_1week": "#numdays# Days ago at #time#",
+    "customtokens.chat.time_stamp_1week": "#numdays# days ago at #time#",
     "customtokens.chat.time_stamp_more_than_a_week": "#date# at #time#",
     "newfrienditem.deletefriendbtn.deletetext": "Delete",
     "newfrienditem.editnicknamebtn.nicknametext": "Nickname",
