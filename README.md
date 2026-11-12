@@ -9,7 +9,7 @@
 ---
 
 ### 🛠 Technical Specifications
-* **Unity Version:** `6000.3.27f1`
+* **Unity Version:** `6000.3.28f1`
 * **Roadmap:** Currently working on the server software and fixing client if necessary.
 * **Unity Roadmap:** Updates beyond **Unity 6.3** are not planned until the release of **Unity 6.7**.
 * **Backend:** Based on the **Disney Mix API** (used on Club Penguin Island & Disney Mix)
@@ -20,17 +20,15 @@
 - [x] **Mobile Support:** Stable.
 - [x] **Desktop Support:** Stable.
 - [x] **Chatting:** Stable.
-- [x] **Social Features:** Stable.
-- [>] **Input Systems:** Most custom input bars to the native Unity Input Field.
-- [>] **Content:** 3/7 games work. Plans for the others will be updated.
-- [x] ~~**Official Accounts:** Implemented in server but disabled from the client. Not planned for public release.~~
+- [x] **Minigames:** 6/6 games work. Some needs improvements, but they are overall working.
+- [x] **Stickers and gags**: Gags are fully working. Some stickers are broken but there should be a way to fix em.
+- [ ] **Input Systems:** Most custom input bars have been converted to the native Unity Input Field, although there are a few missing
 
 
 ---
 
 ### ⚠️ Known Issues & Missing Content
-* **Content Assets:** A significant portion of the original Disney Mix content is lost, although can most likely be recreated.
-* **Server Implementation:** Requires further work and completion before the initial stable release.
+* **Content Assets:** A significant portion of the original Disney Mix content is lost.
 
 ---
 
