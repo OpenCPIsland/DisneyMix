@@ -21,8 +21,8 @@
 - [x] **Desktop Support:** Stable.
 - [x] **Chatting:** Stable.
 - [x] **Minigames:** 6/6 games work. Some needs improvements, but they are overall working.
-- [x] **Stickers and gags**: Gags are fully working. Some stickers are broken but there should be a way to fix em.
-- [ ] **Input Systems:** Most custom input bars have been converted to the native Unity Input Field, although there are a few missing
+- [x] **Stickers and gags**: Gags and stickers are fully working.
+- [x] **Input Systems:** Most custom input bars have been converted to the native Unity Input Field.
 
 
 ---
