@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 public class AnimatorStaticScanner : EditorWindow
 {
-    [MenuItem("Tools/Debug/Deep Scan All Scripts")]
+    [MenuItem("Tools/Project/Deep Scan All Scripts")]
     public static void ScanAllScripts()
     {
         // 1. Get all C# scripts in the entire project

@@ -97,7 +97,7 @@ namespace Mix.Localization
 
 		public static string GetLocFileUrl()
 		{
-			return filePath + GetLocale() + "." + DEVON_VERSION.Replace(".", "_") + ".json";
+			return filePath + GetLocale() + ".json";
 		}
 
 		public void ReloadLocData(MonoBehaviour aMonoEngine, CachePolicy aCachePolicy)

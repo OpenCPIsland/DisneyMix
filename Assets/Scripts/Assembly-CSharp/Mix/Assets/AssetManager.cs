@@ -35,9 +35,9 @@ namespace Mix.Assets
 
 		private const float MIN_FREE_DISK_PERCENT = 0.05f;
 
-		public const string CONTENT_DATA_RELATIVE_PATH = "contentdata.zip";
+		//public const string CONTENT_DATA_RELATIVE_PATH = "contentdata.zip";
 
-		public const string CONTENT_DATA_JOE_RELATIVE_PATH = "contentdata.joe.zip";
+		//public const string CONTENT_DATA_JOE_RELATIVE_PATH = "contentdata.joe.zip";
 
 		public const string MANIFEST_RELATIVE_PATH = "manifest/spark";
 
@@ -449,7 +449,7 @@ namespace Mix.Assets
 
 		public static string GetCpipeFileNameInStreamingAssets()
 		{
-			return "1123402340.txt";
+			return "1123402340.json";
 		}
 
 		private IEnumerator WaitForPreloadData(ICpipeReady aCaller)
