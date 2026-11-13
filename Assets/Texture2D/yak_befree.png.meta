@@ -40,9 +40,9 @@ TextureImporter:
     filterMode: 1
     aniso: 16
     mipBias: 0
-    wrapU: 1
-    wrapV: 1
-    wrapW: 1
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -50,13 +50,13 @@ TextureImporter:
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 9
-  spritePivot: {x: 0.5, y: 0.4764398}
+  spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: -1
+  spriteTessellationDetail: 0
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -147,7 +147,7 @@ TextureImporter:
         width: 512
         height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -161,37 +161,18 @@ TextureImporter:
       edges: []
       weights: []
     outline:
-    - - {x: -177, y: -53.5}
-      - {x: -183, y: -49.5}
-      - {x: -183, y: -31.500002}
-      - {x: -182, y: -30.5}
-      - {x: -168, y: -29.5}
-      - {x: -179, y: 15.5}
-      - {x: -179, y: 74.5}
-      - {x: -178, y: 95.5}
-      - {x: -82, y: 95.5}
-      - {x: -39, y: 92.5}
-      - {x: 23, y: 91.5}
-      - {x: 27.000002, y: 95.5}
-      - {x: 68, y: 95.5}
-      - {x: 155, y: 84.5}
-      - {x: 166, y: 71.5}
-      - {x: 153, y: 28.5}
-      - {x: 157, y: -4.5}
-      - {x: 183, y: -7.5}
-      - {x: 183, y: -49.5}
-      - {x: 182, y: -58.500004}
-      - {x: 183, y: -79.5}
-      - {x: 175, y: -85.5}
-      - {x: 145, y: -94.5}
-      - {x: 142, y: -95.5}
-      - {x: -161, y: -95.5}
-      - {x: -166, y: -73.5}
+    - - {x: 114, y: 250}
+      - {x: 101, y: 256}
+      - {x: -253, y: 256}
+      - {x: -256, y: 231}
+      - {x: -256, y: 88}
+      - {x: -245, y: 61}
+      - {x: 114, y: 61}
     customData: 
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
