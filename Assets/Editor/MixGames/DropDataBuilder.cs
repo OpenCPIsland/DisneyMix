@@ -64,7 +64,7 @@ public static class DropDataBuilder
 	private const string InitialPatternName = "start_pattern";
 
 	private static string OutputPath { get { return Path.Combine(Application.streamingAssetsPath, "data/Drop_Data/Drop_Data.gz"); } }
-	private static string SourceDir { get { return Path.Combine(Application.dataPath, "Editor/DropPatterns"); } }
+	private static string SourceDir { get { return Path.Combine(Application.dataPath, "Editor/MixGames/DropPatterns"); } }
 
 	private const string ExampleName = "example_pattern";
 	private const string ExampleText =
