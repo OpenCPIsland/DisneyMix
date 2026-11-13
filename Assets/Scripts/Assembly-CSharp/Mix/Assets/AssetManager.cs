@@ -555,7 +555,7 @@ namespace Mix.Assets
 
 		public bool IsPathLocalForIsDemoMode(string path)
 		{
-			if (path.Contains("inventory.json") || path.Contains("localization") || path.Contains("donotcopy") || path.Contains("1184757944.txt") || path.Contains("manifest/spark") || path.Contains("contentdata.zip"))
+			if (path.Contains("inventory.json") || path.Contains("localization") || path.Contains("donotcopy") || path.Contains("1184757944.json") || path.Contains("manifest/spark") || path.Contains("contentdata.joe"))
 			{
 				return true;
 			}

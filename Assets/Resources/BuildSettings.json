@@ -1,14 +1,14 @@
 {
-    "mobilenetwork.sku": "spark",
+    "mobilenetwork.sku": "SPARK",
     "mobilenetwork.pluginManifestJson": "{\"Plugins\":[\"MNHockeyAppPlugin\", \"MNComScorePlugin\"]}",
-    "mobilenetwork.logger.logLevel": 15,
+    "mobilenetwork.logger.logLevel": 0,
     "mobilenetwork.hockeyApp.appID": "5b01f57a6f1a13c09661caaedd2b9870",
     "mobilenetwork.hockeyApp.checkForUpdates": 0,
     "mobilenetwork.hockeyApp.autoSendCrashReport": 1,
-    "mobilenetwork.comScore.appName"   : "di-spark-prod",
-    "mobilenetwork.comScore.customerC2" : "15354235",
-    "mobilenetwork.comScore.publisherSecret" : "b69c29773afc702237a834a7a86464ad",
-    "mobilenetwork.kochava.appID" : "kosparkios29735317a7e3d813d",
-    "mobilenetwork.dmoAnalytics.key" : "160E9AD7-1AF5-4CC8-94D9-BB4DCD6D28FE",
+    "mobilenetwork.comScore.appName": "DI-SPARK-PROD",
+    "mobilenetwork.comScore.customerC2": "15354235",
+    "mobilenetwork.comScore.publisherSecret": "b69c29773afc702237a834a7a86464ad",
+    "mobilenetwork.kochava.appID": "kosparkios29735317a7e3d813d",
+    "mobilenetwork.dmoAnalytics.key": "160E9AD7-1AF5-4CC8-94D9-BB4DCD6D28FE",
     "mobilenetwork.dmoAnalytics.secret": "FFE4535D-D959-49BB-B633-95A330685157"    
 }
