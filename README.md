@@ -6,7 +6,6 @@
 
 </div>
 
----
 
 ### 🛠 Technical Specifications
 * **Unity Version:** `6000.3.28f1`
@@ -29,7 +28,6 @@
 
 ### ⚠️ Known Issues & Missing Content
 * **Content Assets:** A significant portion of the original Disney Mix content is lost.
-
 ---
 
 ### 🚀 Getting Started
@@ -37,3 +35,12 @@
 2. Ensure you are using the correct **Unity Editor** version specified above.
 3. Add the project to **Unity Hub** and open it.
 4. To boot the app, open `StaticAssets/Scenes/scn_Main.unity`
+---
+
+### ©️ Credits
+Special thanks to the following people who have made this restoration possible:
+> [broimluna](https://github.com/broimluna)
+
+> [shinonasada9](https://github.com/shinonasada9)
+
+> [wednesday2024](https://github.com/wednesday2024)
