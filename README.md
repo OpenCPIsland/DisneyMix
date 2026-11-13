@@ -34,7 +34,8 @@
 1. Clone the repository.
 2. Ensure you are using the correct **Unity Editor** version specified above.
 3. Add the project to **Unity Hub** and open it.
-4. To boot the app, open `StaticAssets/Scenes/scn_Main.unity`
+4. Run `Tools/Mix/AssetBundles/Rebuild from JSON` from the toolbar.
+5. To boot the app, open `StaticAssets/Scenes/scn_Main.unity`.
 ---
 
 ### ©️ Credits
