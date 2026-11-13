@@ -48,7 +48,13 @@ namespace Mix.AvatarInternal
 				cleanup();
 			}));
 		}
-
+public static void AddReference(string key)
+{
+	if (mpCache.ContainsKey(key))
+	{
+		mpCache[key].references++;
+	}
+}
 		public static void RemoveTexture(string key)
 		{
 			if (mpCache.ContainsKey(key))

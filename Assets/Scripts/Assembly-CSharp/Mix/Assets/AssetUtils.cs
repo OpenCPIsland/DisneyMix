@@ -1,10 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;   // add at the top with the other usings
 
 namespace Mix.Assets
 {
 	public class AssetUtils
 	{
+		private const float QUIET_SECONDS = 2f;
+        private static float lastRequestTime;
+        private static bool routineRunning;
+
 		public static void DestroyGameObject(GameObject gameObj)
 		{
 			Component[] componentsInChildren = gameObj.GetComponentsInChildren<Component>(true);
@@ -163,6 +168,49 @@ namespace Mix.Assets
 				((IAssetReferencer)component).CleanupReferences();
 			}
 		}
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+private static void ResetStatics()
+{
+	// Needed when Domain Reload is disabled in the Editor.
+	routineRunning = false;
+	lastRequestTime = 0f;
+}
+
+public static void SoftUnload(Object obj)
+{
+	if (obj == null)
+	{
+		return;
+	}
+
+	lastRequestTime = Time.unscaledTime;   // every call pushes the unload back
+	if (routineRunning)
+	{
+		return;
+	}
+
+	AssetManager am = MonoSingleton<AssetManager>.Instance;
+	if (am == null)
+	{
+		return;
+	}
+
+	routineRunning = true;
+	am.StartCoroutine(SoftUnloadRoutine());
+}
+
+private static IEnumerator SoftUnloadRoutine()
+{
+	// Wait for a quiet moment (no recycling for QUIET_SECONDS).
+	while (Time.unscaledTime - lastRequestTime < QUIET_SECONDS)
+	{
+		yield return null;
+	}
+
+	// Async, and only frees assets nothing references.
+	yield return Resources.UnloadUnusedAssets();
+	routineRunning = false;
+}
 
 		public static void DestroySprite(Sprite sprite)
 		{
@@ -171,9 +219,9 @@ namespace Mix.Assets
 				Texture texture = sprite.texture;
 				if (texture != null)
 				{
-					Resources.UnloadAsset(texture);
+					SoftUnload(texture);
 				}
-				Resources.UnloadAsset(sprite);
+				SoftUnload(sprite);
 			}
 		}
 	}

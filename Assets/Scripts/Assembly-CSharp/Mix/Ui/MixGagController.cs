@@ -26,6 +26,8 @@ namespace Mix.Ui
 
 		private Object ActiveObject;
 
+		private Sprite createdSprite;
+
 		void IBundleObject.OnBundleAssetObject(Object aGameObject, object aUserData)
 		{
 			if (this.IsNullOrDisposed() || chatItem == null)
@@ -43,20 +45,22 @@ namespace Mix.Ui
 				{
 					return;
 				}
-				gameObject.SetActive(true);
-				ActiveObject = MonoSingleton<AssetManager>.Instance.GetBundleInstance(gag.GetThumb());
-				if (ActiveObject is Texture2D)
-				{
-					Texture2D texture2D = (Texture2D)ActiveObject;
-					Sprite sprite = Sprite.Create(texture2D, new Rect(0f, 0f, texture2D.width, texture2D.height), new Vector2(0f, 0f));
-					gameObject.GetComponent<Image>().sprite = sprite;
-					return;
-				}
-				GameObject gameObject2 = (GameObject)ActiveObject;
-				if (gameObject2 != null)
-				{
-					gameObject.GetComponent<Image>().sprite = gameObject2.GetComponent<Image>().sprite;
-				}
+gameObject.SetActive(true);
+if (ActiveObject != null) return;   // already have it (guards against two loads in flight)
+
+ActiveObject = MonoSingleton<AssetManager>.Instance.GetBundleInstance(gag.GetThumb());
+if (ActiveObject is Texture2D)
+{
+    Texture2D tex = (Texture2D)ActiveObject;
+    createdSprite = Sprite.Create(tex, new Rect(0f, 0f, tex.width, tex.height), new Vector2(0f, 0f));
+    gameObject.GetComponent<Image>().sprite = createdSprite;
+    return;
+}
+GameObject gameObject2 = (GameObject)ActiveObject;
+if (gameObject2 != null)
+{
+    gameObject.GetComponent<Image>().sprite = gameObject2.GetComponent<Image>().sprite;
+}
 			}
 			else
 			{
@@ -99,22 +103,22 @@ namespace Mix.Ui
 			{
 				return;
 			}
-			if (replaceImage)
-			{
-				if ((chatItem.message != null && chatItem.message.IsMine()) || chatItem.hasBeenSeen || gag.IsAutoPlay())
-				{
-					MonoSingleton<AssetManager>.Instance.LoadABundle(this, gag.GetThumb(), new Object(), string.Empty, false, false, true);
-				}
-				else
-				{
-					GameObject gameObject = Util.FindGameObjectByName(base.gameObject, "GagImage");
-					if (gameObject != null)
-					{
-						gameObject.SetActive(true);
-					}
-				}
-				replaceImage = false;
-			}
+if (replaceImage)
+{
+    if ((chatItem.message != null && chatItem.message.IsMine()) || chatItem.hasBeenSeen || gag.IsAutoPlay())
+    {
+        if (ActiveObject == null)   // don't reload if we already have it
+        {
+            MonoSingleton<AssetManager>.Instance.LoadABundle(this, gag.GetThumb(), "thumb", string.Empty, false, false, true);
+        }
+    }
+    else
+    {
+        GameObject go = Util.FindGameObjectByName(base.gameObject, "GagImage");
+        if (go != null) go.SetActive(true);
+    }
+    replaceImage = false;
+}
 			if (checkForCheck && chatItem.message != null && chatItem.message.IsMine() && chatItem.hasBeenSeen)
 			{
 				GameObject gameObject2 = Util.FindGameObjectByName(base.gameObject, "CheckIcon");
@@ -133,11 +137,11 @@ namespace Mix.Ui
 
 		private void OnDestroy()
 		{
-			if (gag != null && ActiveObject != null && MonoSingleton<AssetManager>.Instance != null)
-			{
-				MonoSingleton<AssetManager>.Instance.DestroyBundleInstance(gag.GetThumb(), ActiveObject);
-			}
-			ActiveObject = null;
+if (createdSprite != null) { 
+	Object.Destroy(createdSprite); 
+	createdSprite = null; 
+	}
+
 		}
 
 		public void OnPlayGag()

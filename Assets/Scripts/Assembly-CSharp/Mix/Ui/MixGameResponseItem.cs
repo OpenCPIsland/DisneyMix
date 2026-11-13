@@ -131,13 +131,19 @@ namespace Mix.Ui
 			}
 		}
 
-		public Dictionary<string, object> State
-		{
-			get
-			{
-				return (message as IGameEventMessage).GameStateMessage.State;
-			}
-		}
+public Dictionary<string, object> State
+{
+    get
+    {
+        IGameEventMessage gameEventMessage = message as IGameEventMessage;
+        if (gameEventMessage == null)
+        {
+            return null;
+        }
+        IGameStateMessage gameStateMessage = gameEventMessage.GameStateMessage;
+        return (gameStateMessage == null) ? null : gameStateMessage.State;
+    }
+}
 
 		public string StateMessageId
 		{

@@ -470,8 +470,7 @@ namespace Mix.AvatarInternal
                     return;
                 }
 
-                textureTracker.SetAndTrackTexture(leftEyebrowMat, "_MainTex", path, texture);
-                textureTracker.SetAndTrackTexture(rightEyebrowMat, "_MainTex", path, texture);
+                TrackOnBoth(leftEyebrowMat, rightEyebrowMat, path, texture);
                 callback?.Invoke();
                 return;
             }
@@ -515,8 +514,7 @@ namespace Mix.AvatarInternal
                             }
 
                             MultiplaneMemCache.AddTexture(path, mainTex, () => UnityEngine.Object.Destroy(mainTex));
-                            textureTracker.SetAndTrackTexture(leftEyebrowMat, "_MainTex", path, mainTex);
-                            textureTracker.SetAndTrackTexture(rightEyebrowMat, "_MainTex", path, mainTex);
+                            TrackOnBoth(leftEyebrowMat, rightEyebrowMat, path, texture);
                             assetManager.SaveCachedImage(mainTex, path, (bool imageSaved) => callback?.Invoke());
                         });
                     });
@@ -524,13 +522,17 @@ namespace Mix.AvatarInternal
                 else
                 {
                     MultiplaneMemCache.AddTexture(path, texture2D, () => UnityEngine.Object.Destroy(texture2D));
-                    textureTracker.SetAndTrackTexture(leftEyebrowMat, "_MainTex", path, texture2D);
-                    textureTracker.SetAndTrackTexture(rightEyebrowMat, "_MainTex", path, texture2D);
+                    TrackOnBoth(leftEyebrowMat, rightEyebrowMat, path, texture2D);
                     callback?.Invoke();
                 }
             });
         }
-
+	private void TrackOnBoth(Material a, Material b, string path, Texture2D tex)   // <-- add here
+	{
+		textureTracker.SetAndTrackTexture(a, "_MainTex", path, tex);
+		textureTracker.SetAndTrackTexture(b, "_MainTex", path, tex);
+		MultiplaneMemCache.AddReference(path);
+	}
         private void CompositeEyes(IAvatar dna, AvatarFlags flags, Action callback)
         {
             if (hasErrored || textureTracker.IsNullOrDisposed())
@@ -557,8 +559,7 @@ namespace Mix.AvatarInternal
                     return;
                 }
 
-                textureTracker.SetAndTrackTexture(leftEyeMat, "_MainTex", path, texture);
-                textureTracker.SetAndTrackTexture(rightEyeMat, "_MainTex", path, texture);
+                TrackOnBoth(leftEyeMat, rightEyeMat, path, texture);
                 callback?.Invoke();
                 return;
             }
@@ -600,10 +601,7 @@ namespace Mix.AvatarInternal
                                 callback?.Invoke();
                                 return;
                             }
-
-                            MultiplaneMemCache.AddTexture(path, mainTex, () => UnityEngine.Object.Destroy(mainTex));
-                            textureTracker.SetAndTrackTexture(leftEyeMat, "_MainTex", path, mainTex);
-                            textureTracker.SetAndTrackTexture(rightEyeMat, "_MainTex", path, mainTex);
+                            TrackOnBoth(leftEyeMat, rightEyeMat, path, mainTex);
                             assetManager.SaveCachedImage(mainTex, path, (bool savedImage) => callback?.Invoke());
                         });
                     });
@@ -611,8 +609,7 @@ namespace Mix.AvatarInternal
                 else
                 {
                     MultiplaneMemCache.AddTexture(path, texture2D, () => UnityEngine.Object.Destroy(texture2D));
-                    textureTracker.SetAndTrackTexture(leftEyeMat, "_MainTex", path, texture2D);
-                    textureTracker.SetAndTrackTexture(rightEyeMat, "_MainTex", path, texture2D);
+                    TrackOnBoth(leftEyeMat, rightEyeMat, path, texture2D);
                     callback?.Invoke();
                 }
             });
@@ -1029,5 +1026,6 @@ namespace Mix.AvatarInternal
             // Placeholder - implement if needed
             callback?.Invoke();
         }
+        
     }
 }
