@@ -344,7 +344,7 @@ namespace Mix.Ui
 			}
 			SetupHeight();
             // NOW THE OBJECT EXISTS IN THE HIERARCHY
-           GetBackgroundObject();
+           //GetBackgroundObject();
         }
 
 		private void SkinAvatar()
