@@ -41,6 +41,8 @@ namespace Mix.Ui
 
 		private bool disabled;
 
+		private bool switchingToKeyboard;
+
 		private Dictionary<Toggle, UnityAction<bool>> valueChangedCallbacks = new Dictionary<Toggle, UnityAction<bool>>();
 
 		public void Init(IMediaBar aListener, IChatThread aThread)
@@ -195,8 +197,14 @@ namespace Mix.Ui
 				switch (aToggle.name)
 				{
 				case "Keyboard":
-					listener.OnCategorySelected(ChatController.UIState.KeyboardTray, aToggle.name);
-					break;
+						if (!switchingToKeyboard)
+			{
+				switchingToKeyboard = true;
+				listener.OnCategorySelected(ChatController.UIState.Default, aToggle.name);
+				listener.OnCategorySelected(ChatController.UIState.KeyboardTray, aToggle.name);
+				switchingToKeyboard = false;
+			}
+			break;
 				case "Recent":
 					listener.OnCategorySelected(ChatController.UIState.MediaTray, aToggle.name);
 					Analytics.LogViewRecentTray(thread);

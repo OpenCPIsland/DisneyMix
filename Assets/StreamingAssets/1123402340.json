@@ -10881,140 +10881,20 @@
                 "crc": "B640A49E",
                 "v": 1487031360
             },
-            "localization/de_DE.1_2.json": {
-                "crc": "A304C9EE",
-                "v": 1487031360
-            },
-            "localization/de_DE.1_3.json": {
-                "crc": "CBDD2AE1",
-                "v": 1487031360
-            },
-            "localization/de_DE.2_0.json": {
-                "crc": "9E625556",
-                "v": 1487031360
-            },
-            "localization/de_DE.2_1.json": {
-                "crc": "6A576C7",
-                "v": 1487031360
-            },
-            "localization/de_DE.2_2.json": {
-                "crc": "26CC43ED",
-                "v": 1487031360
-            },
-            "localization/de_DE.2_3.json": {
-                "crc": "C2C38DA0",
-                "v": 1487031360
-            },
             "localization/de_DE.json": {
                 "crc": "57F1DE8D",
-                "v": 1487031360
-            },
-            "localization/en_US.1_2.json": {
-                "crc": "EF3D9C4F",
-                "v": 1487031360
-            },
-            "localization/en_US.1_3.json": {
-                "crc": "FBB37175",
-                "v": 1487031360
-            },
-            "localization/en_US.2_0.json": {
-                "crc": "B24C888B",
-                "v": 1487031360
-            },
-            "localization/en_US.2_1.json": {
-                "crc": "CB6FEFB6",
-                "v": 1487031360
-            },
-            "localization/en_US.2_2.json": {
-                "crc": "62C7E3A1",
-                "v": 1487031360
-            },
-            "localization/en_US.2_3.json": {
-                "crc": "803A6B15",
                 "v": 1487031360
             },
             "localization/en_US.json": {
                 "crc": "1080C47D",
                 "v": 1487031360
             },
-            "localization/es_LA.1_2.json": {
-                "crc": "A304C9EE",
-                "v": 1487031360
-            },
-            "localization/es_LA.1_3.json": {
-                "crc": "CBDD2AE1",
-                "v": 1487031360
-            },
-            "localization/es_LA.2_0.json": {
-                "crc": "9E625556",
-                "v": 1487031360
-            },
-            "localization/es_LA.2_1.json": {
-                "crc": "6A576C7",
-                "v": 1487031360
-            },
-            "localization/es_LA.2_2.json": {
-                "crc": "26CC43ED",
-                "v": 1487031360
-            },
-            "localization/es_LA.2_3.json": {
-                "crc": "C2C38DA0",
-                "v": 1487031360
-            },
             "localization/es_LA.json": {
                 "crc": "57F1DE8D",
                 "v": 1487031360
             },
-            "localization/fr_FR.1_2.json": {
-                "crc": "A304C9EE",
-                "v": 1487031360
-            },
-            "localization/fr_FR.1_3.json": {
-                "crc": "CBDD2AE1",
-                "v": 1487031360
-            },
-            "localization/fr_FR.2_0.json": {
-                "crc": "9E625556",
-                "v": 1487031360
-            },
-            "localization/fr_FR.2_1.json": {
-                "crc": "6A576C7",
-                "v": 1487031360
-            },
-            "localization/fr_FR.2_2.json": {
-                "crc": "26CC43ED",
-                "v": 1487031360
-            },
-            "localization/fr_FR.2_3.json": {
-                "crc": "C2C38DA0",
-                "v": 1487031360
-            },
             "localization/fr_FR.json": {
                 "crc": "57F1DE8D",
-                "v": 1487031360
-            },
-            "localization/pt_BR.1_2.json": {
-                "crc": "A304C9EE",
-                "v": 1487031360
-            },
-            "localization/pt_BR.1_3.json": {
-                "crc": "CBDD2AE1",
-                "v": 1487031360
-            },
-            "localization/pt_BR.2_0.json": {
-                "crc": "9E625556",
-                "v": 1487031360
-            },
-            "localization/pt_BR.2_1.json": {
-                "crc": "6A576C7",
-                "v": 1487031360
-            },
-            "localization/pt_BR.2_2.json": {
-                "crc": "26CC43ED",
-                "v": 1487031360
-            },
-            "localization/pt_BR.2_3.json": {
-                "crc": "C2C38DA0",
                 "v": 1487031360
             },
             "localization/pt_BR.json": {

@@ -1,1 +1,1124 @@
-{"avatars":[{"id":0,"name":"avtr_skin_0000_empty","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0000_empty_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0000_empty_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0000_empty_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0000_empty_sd.unity3d","thumb":""},{"id":1,"name":"avtr_skin_0001_mulana","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0001_mulana_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0001_mulana_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0001_mulana_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0001_mulana_sd.unity3d","thumb":""},{"id":2,"name":"avtr_skin_0002_ricosuave","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0002_ricosuave_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0002_ricosuave_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0002_ricosuave_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0002_ricosuave_sd.unity3d","thumb":""},{"id":3,"name":"avtr_skin_0003_annanicole","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0003_annanicole_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0003_annanicole_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0003_annanicole_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0003_annanicole_sd.unity3d","thumb":""},{"id":4,"name":"avtr_skin_0004_rory","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0004_rory_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0004_rory_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0004_rory_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0004_rory_sd.unity3d","thumb":""},{"id":5,"name":"avtr_skin_0005_qorianka","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0005_qorianka_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0005_qorianka_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0005_qorianka_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0005_qorianka_sd.unity3d","thumb":""},{"id":6,"name":"avtr_skin_0006_hiro","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0006_hiro_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0006_hiro_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0006_hiro_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0006_hiro_sd.unity3d","thumb":""},{"id":7,"name":"avtr_skin_0007_meri","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0007_meri_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0007_meri_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0007_meri_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0007_meri_sd.unity3d","thumb":""},{"id":8,"name":"avtr_skin_0008_eric","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0008_eric_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0008_eric_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0008_eric_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0008_eric_sd.unity3d","thumb":""},{"id":9,"name":"avtr_skin_0009_bingbing","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0009_bingbing_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0009_bingbing_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0009_bingbing_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0009_bingbing_sd.unity3d","thumb":""},{"id":10,"name":"avtr_skin_0010_kawena","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0010_kawena_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0010_kawena_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0010_kawena_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0010_kawena_sd.unity3d","thumb":""},{"id":11,"name":"avtr_skin_0011_tiana","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0011_tiana_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0011_tiana_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0011_tiana_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0011_tiana_sd.unity3d","thumb":""},{"id":12,"name":"avtr_skin_0012_henry","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0012_henry_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0012_henry_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0012_henry_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0012_henry_sd.unity3d","thumb":""},{"id":13,"name":"avtr_skin_0013_elsa","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0013_elsa_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0013_elsa_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0013_elsa_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0013_elsa_sd.unity3d","thumb":""},{"id":14,"name":"avtr_skin_0014_russel","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0014_russel_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0014_russel_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0014_russel_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0014_russel_sd.unity3d","thumb":""},{"id":15,"name":"avtr_skin_0015_jasmine","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0015_jasmine_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0015_jasmine_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0015_jasmine_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0015_jasmine_sd.unity3d","thumb":""},{"id":16,"name":"avtr_skin_0016_aladdin","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0016_aladdin_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0016_aladdin_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0016_aladdin_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0016_aladdin_sd.unity3d","thumb":""},{"id":17,"name":"avtr_skin_0017_aurora","category":"Skin","hd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0017_aurora_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0017_aurora_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0017_aurora_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0017_aurora_sd.unity3d","thumb":""},{"id":1000,"name":"avtr_mouth_0000_empty","category":"Mouth","hd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0000_empty_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0000_empty_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0000_empty_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0000_empty_sd.unity3d","thumb":""},{"id":1001,"name":"avtr_mouth_0001_mulana","category":"Mouth","hd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0001_mulana_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0001_mulana_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0001_mulana_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0001_mulana_sd.unity3d","thumb":""},{"id":1002,"name":"avtr_mouth_0002_ricosuave","category":"Mouth","hd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0002_ricosuave_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0002_ricosuave_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0002_ricosuave_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0002_ricosuave_sd.unity3d","thumb":""},{"id":1003,"name":"avtr_mouth_0003_annanicole","category":"Mouth","hd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0003_annanicole_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0003_annanicole_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0003_annanicole_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0003_annanicole_sd.unity3d","thumb":""},{"id":1004,"name":"avtr_mouth_0004_rory","category":"Mouth","hd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0004_rory_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0004_rory_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0004_rory_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0004_rory_sd.unity3d","thumb":""},{"id":1005,"name":"avtr_mouth_0005_qorianka","category":"Mouth","hd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0005_qorianka_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0005_qorianka_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0005_qorianka_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0005_qorianka_sd.unity3d","thumb":""},{"id":1006,"name":"avtr_mouth_0006_hiro","category":"Mouth","hd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0006_hiro_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0006_hiro_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0006_hiro_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0006_hiro_sd.unity3d","thumb":""},{"id":1007,"name":"avtr_mouth_0007_meri","category":"Mouth","hd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0007_meri_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0007_meri_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0007_meri_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0007_meri_sd.unity3d","thumb":""},{"id":1008,"name":"avtr_mouth_0008_eric","category":"Mouth","hd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0008_eric_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0008_eric_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0008_eric_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0008_eric_sd.unity3d","thumb":""},{"id":1009,"name":"avtr_mouth_0009_bingbing","category":"Mouth","hd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0009_bingbing_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0009_bingbing_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0009_bingbing_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0009_bingbing_sd.unity3d","thumb":""},{"id":1010,"name":"avtr_mouth_0010_kawena","category":"Mouth","hd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0010_kawena_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0010_kawena_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0010_kawena_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0010_kawena_sd.unity3d","thumb":""},{"id":1011,"name":"avtr_mouth_0011_tiana","category":"Mouth","hd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0011_tiana_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0011_tiana_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0011_tiana_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0011_tiana_sd.unity3d","thumb":""},{"id":1012,"name":"avtr_mouth_0012_henry","category":"Mouth","hd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0012_henry_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0012_henry_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0012_henry_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0012_henry_sd.unity3d","thumb":""},{"id":1013,"name":"avtr_mouth_0013_elsa","category":"Mouth","hd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0013_elsa_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0013_elsa_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0013_elsa_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0013_elsa_sd.unity3d","thumb":""},{"id":1014,"name":"avtr_mouth_0014_russel","category":"Mouth","hd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0014_russel_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0014_russel_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0014_russel_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0014_russel_sd.unity3d","thumb":""},{"id":1015,"name":"avtr_mouth_0015_jasmine","category":"Mouth","hd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0015_jasmine_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0015_jasmine_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0015_jasmine_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0015_jasmine_sd.unity3d","thumb":""},{"id":1016,"name":"avtr_mouth_0016_aladdin","category":"Mouth","hd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0016_aladdin_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0016_aladdin_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0016_aladdin_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0016_aladdin_sd.unity3d","thumb":""},{"id":2000,"name":"avtr_nose_0000_empty","category":"Nose","hd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0000_empty_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0000_empty_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0000_empty_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0000_empty_sd.unity3d","thumb":""},{"id":2001,"name":"avtr_nose_0001_mulana","category":"Nose","hd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0001_mulana_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0001_mulana_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0001_mulana_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0001_mulana_sd.unity3d","thumb":""},{"id":2002,"name":"avtr_nose_0002_ricosuave","category":"Nose","hd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0002_ricosuave_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0002_ricosuave_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0002_ricosuave_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0002_ricosuave_sd.unity3d","thumb":""},{"id":2003,"name":"avtr_nose_0003_annanicole","category":"Nose","hd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0003_annanicole_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0003_annanicole_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0003_annanicole_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0003_annanicole_sd.unity3d","thumb":""},{"id":2004,"name":"avtr_nose_0004_rory","category":"Nose","hd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0004_rory_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0004_rory_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0004_rory_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0004_rory_sd.unity3d","thumb":""},{"id":2005,"name":"avtr_nose_0005_qorianka","category":"Nose","hd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0005_qorianka_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0005_qorianka_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0005_qorianka_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0005_qorianka_sd.unity3d","thumb":""},{"id":2006,"name":"avtr_nose_0006_hiro","category":"Nose","hd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0006_hiro_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0006_hiro_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0006_hiro_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0006_hiro_sd.unity3d","thumb":""},{"id":2007,"name":"avtr_nose_0007_meri","category":"Nose","hd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0007_meri_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0007_meri_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0007_meri_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0007_meri_sd.unity3d","thumb":""},{"id":2008,"name":"avtr_nose_0008_eric","category":"Nose","hd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0008_eric_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0008_eric_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0008_eric_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0008_eric_sd.unity3d","thumb":""},{"id":2009,"name":"avtr_nose_0009_bingbing","category":"Nose","hd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0009_bingbing_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0009_bingbing_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0009_bingbing_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0009_bingbing_sd.unity3d","thumb":""},{"id":2010,"name":"avtr_nose_0010_kawena","category":"Nose","hd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0010_kawena_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0010_kawena_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0010_kawena_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0010_kawena_sd.unity3d","thumb":""},{"id":2011,"name":"avtr_nose_0011_tiana","category":"Nose","hd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0011_tiana_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0011_tiana_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0011_tiana_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0011_tiana_sd.unity3d","thumb":""},{"id":2012,"name":"avtr_nose_0012_henry","category":"Nose","hd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0012_henry_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0012_henry_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0012_henry_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0012_henry_sd.unity3d","thumb":""},{"id":2013,"name":"avtr_nose_0013_elsa","category":"Nose","hd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0013_elsa_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0013_elsa_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0013_elsa_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0013_elsa_sd.unity3d","thumb":""},{"id":2014,"name":"avtr_nose_0014_russel","category":"Nose","hd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0014_russel_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0014_russel_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0014_russel_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0014_russel_sd.unity3d","thumb":""},{"id":2015,"name":"avtr_nose_0015_jasmine","category":"Nose","hd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0015_jasmine_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0015_jasmine_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0015_jasmine_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0015_jasmine_sd.unity3d","thumb":""},{"id":2016,"name":"avtr_nose_0016_aladdin","category":"Nose","hd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0016_aladdin_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0016_aladdin_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0016_aladdin_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0016_aladdin_sd.unity3d","thumb":""},{"id":3000,"name":"avtr_eyes_0000_empty","category":"Eyes","hd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0000_empty_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0000_empty_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0000_empty_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0000_empty_sd.unity3d","thumb":""},{"id":3001,"name":"avtr_eyes_0001_mulana","category":"Eyes","hd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0001_mulana_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0001_mulana_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0001_mulana_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0001_mulana_sd.unity3d","thumb":""},{"id":3002,"name":"avtr_eyes_0002_ricosuave","category":"Eyes","hd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0002_ricosuave_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0002_ricosuave_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0002_ricosuave_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0002_ricosuave_sd.unity3d","thumb":""},{"id":3003,"name":"avtr_eyes_0003_annanicole","category":"Eyes","hd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0003_annanicole_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0003_annanicole_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0003_annanicole_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0003_annanicole_sd.unity3d","thumb":""},{"id":3004,"name":"avtr_eyes_0004_rory","category":"Eyes","hd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0004_rory_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0004_rory_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0004_rory_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0004_rory_sd.unity3d","thumb":""},{"id":3005,"name":"avtr_eyes_0005_qorianka","category":"Eyes","hd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0005_qorianka_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0005_qorianka_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0005_qorianka_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0005_qorianka_sd.unity3d","thumb":""},{"id":3006,"name":"avtr_eyes_0006_hiro","category":"Eyes","hd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0006_hiro_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0006_hiro_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0006_hiro_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0006_hiro_sd.unity3d","thumb":""},{"id":3007,"name":"avtr_eyes_0007_meri","category":"Eyes","hd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0007_meri_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0007_meri_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0007_meri_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0007_meri_sd.unity3d","thumb":""},{"id":3008,"name":"avtr_eyes_0008_eric","category":"Eyes","hd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0008_eric_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0008_eric_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0008_eric_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0008_eric_sd.unity3d","thumb":""},{"id":3009,"name":"avtr_eyes_0009_bingbing","category":"Eyes","hd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0009_bingbing_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0009_bingbing_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0009_bingbing_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0009_bingbing_sd.unity3d","thumb":""},{"id":3010,"name":"avtr_eyes_0010_kawena","category":"Eyes","hd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0010_kawena_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0010_kawena_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0010_kawena_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0010_kawena_sd.unity3d","thumb":""},{"id":3011,"name":"avtr_eyes_0011_tiana","category":"Eyes","hd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0011_tiana_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0011_tiana_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0011_tiana_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0011_tiana_sd.unity3d","thumb":""},{"id":3012,"name":"avtr_eyes_0012_henry","category":"Eyes","hd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0012_henry_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0012_henry_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0012_henry_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0012_henry_sd.unity3d","thumb":""},{"id":3013,"name":"avtr_eyes_0013_elsa","category":"Eyes","hd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0013_elsa_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0013_elsa_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0013_elsa_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0013_elsa_sd.unity3d","thumb":""},{"id":3014,"name":"avtr_eyes_0014_russel","category":"Eyes","hd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0014_russel_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0014_russel_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0014_russel_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0014_russel_sd.unity3d","thumb":""},{"id":3015,"name":"avtr_eyes_0015_jasmine","category":"Eyes","hd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0015_jasmine_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0015_jasmine_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0015_jasmine_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0015_jasmine_sd.unity3d","thumb":""},{"id":3016,"name":"avtr_eyes_0016_aladdin","category":"Eyes","hd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0016_aladdin_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0016_aladdin_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0016_aladdin_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0016_aladdin_sd.unity3d","thumb":""},{"id":4000,"name":"avtr_brow_0000_empty","category":"Brow","hd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0000_empty_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0000_empty_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0000_empty_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0000_empty_sd.unity3d","thumb":""},{"id":4001,"name":"avtr_brow_0001_mulana","category":"Brow","hd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0001_mulana_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0001_mulana_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0001_mulana_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0001_mulana_sd.unity3d","thumb":""},{"id":4002,"name":"avtr_brow_0002_ricosuave","category":"Brow","hd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0002_ricosuave_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0002_ricosuave_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0002_ricosuave_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0002_ricosuave_sd.unity3d","thumb":""},{"id":4003,"name":"avtr_brow_0003_annanicole","category":"Brow","hd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0003_annanicole_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0003_annanicole_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0003_annanicole_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0003_annanicole_sd.unity3d","thumb":""},{"id":4004,"name":"avtr_brow_0004_rory","category":"Brow","hd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0004_rory_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0004_rory_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0004_rory_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0004_rory_sd.unity3d","thumb":""},{"id":4005,"name":"avtr_brow_0005_qorianka","category":"Brow","hd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0005_qorianka_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0005_qorianka_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0005_qorianka_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0005_qorianka_sd.unity3d","thumb":""},{"id":4006,"name":"avtr_brow_0006_hiro","category":"Brow","hd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0006_hiro_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0006_hiro_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0006_hiro_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0006_hiro_sd.unity3d","thumb":""},{"id":4007,"name":"avtr_brow_0007_meri","category":"Brow","hd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0007_meri_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0007_meri_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0007_meri_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0007_meri_sd.unity3d","thumb":""},{"id":4008,"name":"avtr_brow_0008_eric","category":"Brow","hd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0008_eric_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0008_eric_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0008_eric_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0008_eric_sd.unity3d","thumb":""},{"id":4009,"name":"avtr_brow_0009_bingbing","category":"Brow","hd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0009_bingbing_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0009_bingbing_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0009_bingbing_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0009_bingbing_sd.unity3d","thumb":""},{"id":4010,"name":"avtr_brow_0010_kawena","category":"Brow","hd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0010_kawena_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0010_kawena_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0010_kawena_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0010_kawena_sd.unity3d","thumb":""},{"id":4011,"name":"avtr_brow_0011_tiana","category":"Brow","hd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0011_tiana_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0011_tiana_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0011_tiana_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0011_tiana_sd.unity3d","thumb":""},{"id":4012,"name":"avtr_brow_0012_henry","category":"Brow","hd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0012_henry_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0012_henry_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0012_henry_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0012_henry_sd.unity3d","thumb":""},{"id":4013,"name":"avtr_brow_0013_elsa","category":"Brow","hd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0013_elsa_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0013_elsa_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0013_elsa_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0013_elsa_sd.unity3d","thumb":""},{"id":4014,"name":"avtr_brow_0014_russel","category":"Brow","hd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0014_russel_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0014_russel_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0014_russel_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0014_russel_sd.unity3d","thumb":""},{"id":4015,"name":"avtr_brow_0015_jasmine","category":"Brow","hd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0015_jasmine_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0015_jasmine_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0015_jasmine_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0015_jasmine_sd.unity3d","thumb":""},{"id":4016,"name":"avtr_brow_0016_aladdin","category":"Brow","hd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0016_aladdin_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0016_aladdin_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0016_aladdin_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0016_aladdin_sd.unity3d","thumb":""},{"id":5000,"name":"avtr_tAcc_0000_empty","category":"Accessory","hd":"http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0000_empty_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0000_empty_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0000_empty_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0000_empty_sd.unity3d","thumb":""},{"id":5002,"name":"avtr_tAcc_0002_glassesWireRim","category":"Accessory","hd":"http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0002_glassesWireRim_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0002_glassesWireRim_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0002_glassesWireRim_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0002_glassesWireRim_sd.unity3d","thumb":""},{"id":5003,"name":"avtr_tAcc_0003_bindi","category":"Accessory","hd":"http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0003_bindi_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0003_bindi_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0003_bindi_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0003_bindi_sd.unity3d","thumb":""},{"id":5004,"name":"avtr_tAcc_0004_glassesEdna","category":"Accessory","hd":"http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0004_glassesEdna_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0004_glassesEdna_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0004_glassesEdna_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0004_glassesEdna_sd.unity3d","thumb":""},{"id":5005,"name":"avtr_tAcc_0005_glassesChunky","category":"Accessory","hd":"http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0005_glassesChunky_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0005_glassesChunky_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0005_glassesChunky_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0005_glassesChunky_sd.unity3d","thumb":""},{"id":5006,"name":"avtr_tAcc_0006_monocle","category":"Accessory","hd":"http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0006_monocle_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0006_monocle_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0006_monocle_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0006_monocle_sd.unity3d","thumb":""},{"id":5007,"name":"avtr_tAcc_0007_bandaid","category":"Accessory","hd":"http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0007_bandaid_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0007_bandaid_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0007_bandaid_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0007_bandaid_sd.unity3d","thumb":""},{"id":5015,"name":"avtr_tAcc_0015_glassesSun","category":"Accessory","hd":"http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0015_glassesSun_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0015_glassesSun_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0015_glassesSun_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0015_glassesSun_sd.unity3d","thumb":""},{"id":6000,"name":"avtr_hair_0000_empty","category":"Hair","hd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0000_empty_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0000_empty_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0000_empty_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0000_empty_sd.unity3d","thumb":""},{"id":6001,"name":"avtr_hair_0001_mulana","category":"Hair","hd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0001_mulana_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0001_mulana_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0001_mulana_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0001_mulana_sd.unity3d","thumb":""},{"id":6002,"name":"avtr_hair_0002_ricosuave","category":"Hair","hd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0002_ricosuave_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0002_ricosuave_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0002_ricosuave_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0002_ricosuave_sd.unity3d","thumb":""},{"id":6003,"name":"avtr_hair_0003_annanicole","category":"Hair","hd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0003_annanicole_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0003_annanicole_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0003_annanicole_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0003_annanicole_sd.unity3d","thumb":""},{"id":6004,"name":"avtr_hair_0004_rory","category":"Hair","hd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0004_rory_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0004_rory_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0004_rory_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0004_rory_sd.unity3d","thumb":""},{"id":6005,"name":"avtr_hair_0005_qorianka","category":"Hair","hd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0005_qorianka_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0005_qorianka_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0005_qorianka_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0005_qorianka_sd.unity3d","thumb":""},{"id":6006,"name":"avtr_hair_0006_hiro","category":"Hair","hd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0006_hiro_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0006_hiro_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0006_hiro_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0006_hiro_sd.unity3d","thumb":""},{"id":6007,"name":"avtr_hair_0007_meri","category":"Hair","hd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0007_meri_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0007_meri_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0007_meri_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0007_meri_sd.unity3d","thumb":""},{"id":6008,"name":"avtr_hair_0008_eric","category":"Hair","hd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0008_eric_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0008_eric_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0008_eric_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0008_eric_sd.unity3d","thumb":""},{"id":6009,"name":"avtr_hair_0009_bingbing","category":"Hair","hd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0009_bingbing_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0009_bingbing_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0009_bingbing_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0009_bingbing_sd.unity3d","thumb":""},{"id":6010,"name":"avtr_hair_0010_kawena","category":"Hair","hd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0010_kawena_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0010_kawena_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0010_kawena_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0010_kawena_sd.unity3d","thumb":""},{"id":6011,"name":"avtr_hair_0011_tiana","category":"Hair","hd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0011_tiana_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0011_tiana_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0011_tiana_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0011_tiana_sd.unity3d","thumb":""},{"id":6012,"name":"avtr_hair_0012_henry","category":"Hair","hd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0012_henry_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0012_henry_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0012_henry_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0012_henry_sd.unity3d","thumb":""},{"id":6013,"name":"avtr_hair_0013_elsa","category":"Hair","hd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0013_elsa_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0013_elsa_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0013_elsa_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0013_elsa_sd.unity3d","thumb":""},{"id":6014,"name":"avtr_hair_0014_russel","category":"Hair","hd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0014_russel_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0014_russel_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0014_russel_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0014_russel_sd.unity3d","thumb":""},{"id":6015,"name":"avtr_hair_0015_jasmine","category":"Hair","hd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0015_jasmine_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0015_jasmine_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0015_jasmine_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0015_jasmine_sd.unity3d","thumb":""},{"id":6016,"name":"avtr_hair_0016_aladdin","category":"Hair","hd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0016_aladdin_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0016_aladdin_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0016_aladdin_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0016_aladdin_sd.unity3d","thumb":""},{"id":7001,"name":"avtr_glow_0001_univ","category":"Glow","hd":"http://10.190.6.223/spark/[device]/prefabs/glow/en_US/avtr_glow_0001_univ_hd.unity3d","hdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/glow/en_US/avtr_glow_0001_univ_hd.unity3d","sd":"http://10.190.6.223/spark/[device]/prefabs/glow/en_US/avtr_glow_0001_univ_sd.unity3d","sdSmall":"http://10.190.6.223/spark/[device]/prefabs/small/glow/en_US/avtr_glow_0001_univ_sd.unity3d","thumb":""}]}
+{
+    "avatars": [
+        {
+            "id": 0,
+            "name": "avtr_skin_0000_empty",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0000_empty_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0000_empty_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0000_empty_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0000_empty_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1,
+            "name": "avtr_skin_0001_mulana",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0001_mulana_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0001_mulana_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0001_mulana_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0001_mulana_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2,
+            "name": "avtr_skin_0002_ricosuave",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0002_ricosuave_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0002_ricosuave_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0002_ricosuave_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0002_ricosuave_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3,
+            "name": "avtr_skin_0003_annanicole",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0003_annanicole_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0003_annanicole_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0003_annanicole_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0003_annanicole_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4,
+            "name": "avtr_skin_0004_rory",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0004_rory_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0004_rory_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0004_rory_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0004_rory_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 5,
+            "name": "avtr_skin_0005_qorianka",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0005_qorianka_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0005_qorianka_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0005_qorianka_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0005_qorianka_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6,
+            "name": "avtr_skin_0006_hiro",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0006_hiro_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0006_hiro_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0006_hiro_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0006_hiro_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 7,
+            "name": "avtr_skin_0007_meri",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0007_meri_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0007_meri_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0007_meri_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0007_meri_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 8,
+            "name": "avtr_skin_0008_eric",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0008_eric_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0008_eric_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0008_eric_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0008_eric_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 9,
+            "name": "avtr_skin_0009_bingbing",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0009_bingbing_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0009_bingbing_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0009_bingbing_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0009_bingbing_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 10,
+            "name": "avtr_skin_0010_kawena",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0010_kawena_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0010_kawena_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0010_kawena_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0010_kawena_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 11,
+            "name": "avtr_skin_0011_tiana",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0011_tiana_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0011_tiana_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0011_tiana_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0011_tiana_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 12,
+            "name": "avtr_skin_0012_henry",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0012_henry_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0012_henry_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0012_henry_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0012_henry_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 13,
+            "name": "avtr_skin_0013_elsa",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0013_elsa_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0013_elsa_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0013_elsa_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0013_elsa_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 14,
+            "name": "avtr_skin_0014_russel",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0014_russel_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0014_russel_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0014_russel_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0014_russel_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 15,
+            "name": "avtr_skin_0015_jasmine",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0015_jasmine_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0015_jasmine_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0015_jasmine_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0015_jasmine_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 16,
+            "name": "avtr_skin_0016_aladdin",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0016_aladdin_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0016_aladdin_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0016_aladdin_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0016_aladdin_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 17,
+            "name": "avtr_skin_0017_aurora",
+            "category": "Skin",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0017_aurora_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0017_aurora_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/skin/en_US/avtr_skin_0017_aurora_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/skin/en_US/avtr_skin_0017_aurora_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1000,
+            "name": "avtr_mouth_0000_empty",
+            "category": "Mouth",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0000_empty_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0000_empty_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0000_empty_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0000_empty_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1001,
+            "name": "avtr_mouth_0001_mulana",
+            "category": "Mouth",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0001_mulana_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0001_mulana_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0001_mulana_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0001_mulana_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1002,
+            "name": "avtr_mouth_0002_ricosuave",
+            "category": "Mouth",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0002_ricosuave_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0002_ricosuave_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0002_ricosuave_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0002_ricosuave_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1003,
+            "name": "avtr_mouth_0003_annanicole",
+            "category": "Mouth",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0003_annanicole_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0003_annanicole_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0003_annanicole_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0003_annanicole_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1004,
+            "name": "avtr_mouth_0004_rory",
+            "category": "Mouth",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0004_rory_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0004_rory_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0004_rory_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0004_rory_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1005,
+            "name": "avtr_mouth_0005_qorianka",
+            "category": "Mouth",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0005_qorianka_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0005_qorianka_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0005_qorianka_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0005_qorianka_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1006,
+            "name": "avtr_mouth_0006_hiro",
+            "category": "Mouth",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0006_hiro_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0006_hiro_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0006_hiro_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0006_hiro_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1007,
+            "name": "avtr_mouth_0007_meri",
+            "category": "Mouth",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0007_meri_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0007_meri_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0007_meri_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0007_meri_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1008,
+            "name": "avtr_mouth_0008_eric",
+            "category": "Mouth",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0008_eric_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0008_eric_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0008_eric_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0008_eric_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1009,
+            "name": "avtr_mouth_0009_bingbing",
+            "category": "Mouth",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0009_bingbing_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0009_bingbing_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0009_bingbing_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0009_bingbing_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1010,
+            "name": "avtr_mouth_0010_kawena",
+            "category": "Mouth",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0010_kawena_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0010_kawena_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0010_kawena_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0010_kawena_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1011,
+            "name": "avtr_mouth_0011_tiana",
+            "category": "Mouth",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0011_tiana_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0011_tiana_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0011_tiana_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0011_tiana_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1012,
+            "name": "avtr_mouth_0012_henry",
+            "category": "Mouth",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0012_henry_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0012_henry_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0012_henry_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0012_henry_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1013,
+            "name": "avtr_mouth_0013_elsa",
+            "category": "Mouth",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0013_elsa_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0013_elsa_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0013_elsa_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0013_elsa_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1014,
+            "name": "avtr_mouth_0014_russel",
+            "category": "Mouth",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0014_russel_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0014_russel_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0014_russel_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0014_russel_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1015,
+            "name": "avtr_mouth_0015_jasmine",
+            "category": "Mouth",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0015_jasmine_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0015_jasmine_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0015_jasmine_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0015_jasmine_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 1016,
+            "name": "avtr_mouth_0016_aladdin",
+            "category": "Mouth",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0016_aladdin_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0016_aladdin_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/mouth/en_US/avtr_mouth_0016_aladdin_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/mouth/en_US/avtr_mouth_0016_aladdin_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2000,
+            "name": "avtr_nose_0000_empty",
+            "category": "Nose",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0000_empty_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0000_empty_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0000_empty_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0000_empty_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2001,
+            "name": "avtr_nose_0001_mulana",
+            "category": "Nose",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0001_mulana_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0001_mulana_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0001_mulana_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0001_mulana_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2002,
+            "name": "avtr_nose_0002_ricosuave",
+            "category": "Nose",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0002_ricosuave_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0002_ricosuave_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0002_ricosuave_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0002_ricosuave_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2003,
+            "name": "avtr_nose_0003_annanicole",
+            "category": "Nose",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0003_annanicole_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0003_annanicole_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0003_annanicole_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0003_annanicole_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2004,
+            "name": "avtr_nose_0004_rory",
+            "category": "Nose",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0004_rory_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0004_rory_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0004_rory_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0004_rory_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2005,
+            "name": "avtr_nose_0005_qorianka",
+            "category": "Nose",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0005_qorianka_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0005_qorianka_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0005_qorianka_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0005_qorianka_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2006,
+            "name": "avtr_nose_0006_hiro",
+            "category": "Nose",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0006_hiro_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0006_hiro_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0006_hiro_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0006_hiro_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2007,
+            "name": "avtr_nose_0007_meri",
+            "category": "Nose",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0007_meri_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0007_meri_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0007_meri_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0007_meri_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2008,
+            "name": "avtr_nose_0008_eric",
+            "category": "Nose",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0008_eric_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0008_eric_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0008_eric_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0008_eric_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2009,
+            "name": "avtr_nose_0009_bingbing",
+            "category": "Nose",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0009_bingbing_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0009_bingbing_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0009_bingbing_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0009_bingbing_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2010,
+            "name": "avtr_nose_0010_kawena",
+            "category": "Nose",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0010_kawena_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0010_kawena_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0010_kawena_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0010_kawena_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2011,
+            "name": "avtr_nose_0011_tiana",
+            "category": "Nose",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0011_tiana_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0011_tiana_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0011_tiana_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0011_tiana_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2012,
+            "name": "avtr_nose_0012_henry",
+            "category": "Nose",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0012_henry_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0012_henry_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0012_henry_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0012_henry_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2013,
+            "name": "avtr_nose_0013_elsa",
+            "category": "Nose",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0013_elsa_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0013_elsa_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0013_elsa_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0013_elsa_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2014,
+            "name": "avtr_nose_0014_russel",
+            "category": "Nose",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0014_russel_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0014_russel_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0014_russel_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0014_russel_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2015,
+            "name": "avtr_nose_0015_jasmine",
+            "category": "Nose",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0015_jasmine_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0015_jasmine_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0015_jasmine_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0015_jasmine_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 2016,
+            "name": "avtr_nose_0016_aladdin",
+            "category": "Nose",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0016_aladdin_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0016_aladdin_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/nose/en_US/avtr_nose_0016_aladdin_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/nose/en_US/avtr_nose_0016_aladdin_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3000,
+            "name": "avtr_eyes_0000_empty",
+            "category": "Eyes",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0000_empty_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0000_empty_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0000_empty_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0000_empty_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3001,
+            "name": "avtr_eyes_0001_mulana",
+            "category": "Eyes",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0001_mulana_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0001_mulana_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0001_mulana_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0001_mulana_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3002,
+            "name": "avtr_eyes_0002_ricosuave",
+            "category": "Eyes",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0002_ricosuave_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0002_ricosuave_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0002_ricosuave_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0002_ricosuave_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3003,
+            "name": "avtr_eyes_0003_annanicole",
+            "category": "Eyes",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0003_annanicole_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0003_annanicole_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0003_annanicole_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0003_annanicole_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3004,
+            "name": "avtr_eyes_0004_rory",
+            "category": "Eyes",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0004_rory_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0004_rory_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0004_rory_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0004_rory_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3005,
+            "name": "avtr_eyes_0005_qorianka",
+            "category": "Eyes",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0005_qorianka_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0005_qorianka_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0005_qorianka_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0005_qorianka_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3006,
+            "name": "avtr_eyes_0006_hiro",
+            "category": "Eyes",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0006_hiro_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0006_hiro_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0006_hiro_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0006_hiro_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3007,
+            "name": "avtr_eyes_0007_meri",
+            "category": "Eyes",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0007_meri_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0007_meri_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0007_meri_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0007_meri_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3008,
+            "name": "avtr_eyes_0008_eric",
+            "category": "Eyes",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0008_eric_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0008_eric_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0008_eric_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0008_eric_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3009,
+            "name": "avtr_eyes_0009_bingbing",
+            "category": "Eyes",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0009_bingbing_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0009_bingbing_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0009_bingbing_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0009_bingbing_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3010,
+            "name": "avtr_eyes_0010_kawena",
+            "category": "Eyes",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0010_kawena_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0010_kawena_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0010_kawena_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0010_kawena_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3011,
+            "name": "avtr_eyes_0011_tiana",
+            "category": "Eyes",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0011_tiana_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0011_tiana_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0011_tiana_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0011_tiana_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3012,
+            "name": "avtr_eyes_0012_henry",
+            "category": "Eyes",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0012_henry_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0012_henry_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0012_henry_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0012_henry_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3013,
+            "name": "avtr_eyes_0013_elsa",
+            "category": "Eyes",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0013_elsa_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0013_elsa_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0013_elsa_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0013_elsa_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3014,
+            "name": "avtr_eyes_0014_russel",
+            "category": "Eyes",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0014_russel_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0014_russel_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0014_russel_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0014_russel_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3015,
+            "name": "avtr_eyes_0015_jasmine",
+            "category": "Eyes",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0015_jasmine_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0015_jasmine_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0015_jasmine_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0015_jasmine_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 3016,
+            "name": "avtr_eyes_0016_aladdin",
+            "category": "Eyes",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0016_aladdin_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0016_aladdin_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/eyes/en_US/avtr_eyes_0016_aladdin_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/eyes/en_US/avtr_eyes_0016_aladdin_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4000,
+            "name": "avtr_brow_0000_empty",
+            "category": "Brow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0000_empty_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0000_empty_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0000_empty_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0000_empty_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4001,
+            "name": "avtr_brow_0001_mulana",
+            "category": "Brow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0001_mulana_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0001_mulana_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0001_mulana_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0001_mulana_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4002,
+            "name": "avtr_brow_0002_ricosuave",
+            "category": "Brow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0002_ricosuave_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0002_ricosuave_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0002_ricosuave_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0002_ricosuave_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4003,
+            "name": "avtr_brow_0003_annanicole",
+            "category": "Brow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0003_annanicole_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0003_annanicole_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0003_annanicole_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0003_annanicole_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4004,
+            "name": "avtr_brow_0004_rory",
+            "category": "Brow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0004_rory_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0004_rory_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0004_rory_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0004_rory_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4005,
+            "name": "avtr_brow_0005_qorianka",
+            "category": "Brow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0005_qorianka_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0005_qorianka_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0005_qorianka_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0005_qorianka_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4006,
+            "name": "avtr_brow_0006_hiro",
+            "category": "Brow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0006_hiro_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0006_hiro_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0006_hiro_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0006_hiro_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4007,
+            "name": "avtr_brow_0007_meri",
+            "category": "Brow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0007_meri_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0007_meri_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0007_meri_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0007_meri_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4008,
+            "name": "avtr_brow_0008_eric",
+            "category": "Brow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0008_eric_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0008_eric_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0008_eric_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0008_eric_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4009,
+            "name": "avtr_brow_0009_bingbing",
+            "category": "Brow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0009_bingbing_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0009_bingbing_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0009_bingbing_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0009_bingbing_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4010,
+            "name": "avtr_brow_0010_kawena",
+            "category": "Brow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0010_kawena_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0010_kawena_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0010_kawena_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0010_kawena_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4011,
+            "name": "avtr_brow_0011_tiana",
+            "category": "Brow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0011_tiana_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0011_tiana_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0011_tiana_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0011_tiana_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4012,
+            "name": "avtr_brow_0012_henry",
+            "category": "Brow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0012_henry_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0012_henry_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0012_henry_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0012_henry_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4013,
+            "name": "avtr_brow_0013_elsa",
+            "category": "Brow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0013_elsa_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0013_elsa_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0013_elsa_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0013_elsa_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4014,
+            "name": "avtr_brow_0014_russel",
+            "category": "Brow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0014_russel_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0014_russel_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0014_russel_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0014_russel_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4015,
+            "name": "avtr_brow_0015_jasmine",
+            "category": "Brow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0015_jasmine_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0015_jasmine_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0015_jasmine_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0015_jasmine_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 4016,
+            "name": "avtr_brow_0016_aladdin",
+            "category": "Brow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0016_aladdin_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0016_aladdin_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/brow/en_US/avtr_brow_0016_aladdin_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/brow/en_US/avtr_brow_0016_aladdin_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 5000,
+            "name": "avtr_tAcc_0000_empty",
+            "category": "Accessory",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0000_empty_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0000_empty_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0000_empty_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0000_empty_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 5002,
+            "name": "avtr_tAcc_0002_glassesWireRim",
+            "category": "Accessory",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0002_glassesWireRim_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0002_glassesWireRim_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0002_glassesWireRim_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0002_glassesWireRim_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 5003,
+            "name": "avtr_tAcc_0003_bindi",
+            "category": "Accessory",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0003_bindi_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0003_bindi_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0003_bindi_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0003_bindi_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 5004,
+            "name": "avtr_tAcc_0004_glassesEdna",
+            "category": "Accessory",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0004_glassesEdna_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0004_glassesEdna_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0004_glassesEdna_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0004_glassesEdna_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 5005,
+            "name": "avtr_tAcc_0005_glassesChunky",
+            "category": "Accessory",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0005_glassesChunky_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0005_glassesChunky_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0005_glassesChunky_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0005_glassesChunky_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 5006,
+            "name": "avtr_tAcc_0006_monocle",
+            "category": "Accessory",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0006_monocle_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0006_monocle_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0006_monocle_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0006_monocle_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 5007,
+            "name": "avtr_tAcc_0007_bandaid",
+            "category": "Accessory",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0007_bandaid_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0007_bandaid_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0007_bandaid_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0007_bandaid_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 5015,
+            "name": "avtr_tAcc_0015_glassesSun",
+            "category": "Accessory",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0015_glassesSun_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0015_glassesSun_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/accessory/en_US/avtr_tAcc_0015_glassesSun_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/accessory/en_US/avtr_tAcc_0015_glassesSun_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6000,
+            "name": "avtr_hair_0000_empty",
+            "category": "Hair",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0000_empty_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0000_empty_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0000_empty_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0000_empty_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6001,
+            "name": "avtr_hair_0001_mulana",
+            "category": "Hair",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0001_mulana_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0001_mulana_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0001_mulana_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0001_mulana_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6002,
+            "name": "avtr_hair_0002_ricosuave",
+            "category": "Hair",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0002_ricosuave_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0002_ricosuave_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0002_ricosuave_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0002_ricosuave_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6003,
+            "name": "avtr_hair_0003_annanicole",
+            "category": "Hair",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0003_annanicole_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0003_annanicole_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0003_annanicole_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0003_annanicole_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6004,
+            "name": "avtr_hair_0004_rory",
+            "category": "Hair",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0004_rory_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0004_rory_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0004_rory_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0004_rory_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6005,
+            "name": "avtr_hair_0005_qorianka",
+            "category": "Hair",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0005_qorianka_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0005_qorianka_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0005_qorianka_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0005_qorianka_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6006,
+            "name": "avtr_hair_0006_hiro",
+            "category": "Hair",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0006_hiro_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0006_hiro_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0006_hiro_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0006_hiro_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6007,
+            "name": "avtr_hair_0007_meri",
+            "category": "Hair",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0007_meri_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0007_meri_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0007_meri_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0007_meri_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6008,
+            "name": "avtr_hair_0008_eric",
+            "category": "Hair",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0008_eric_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0008_eric_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0008_eric_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0008_eric_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6009,
+            "name": "avtr_hair_0009_bingbing",
+            "category": "Hair",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0009_bingbing_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0009_bingbing_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0009_bingbing_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0009_bingbing_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6010,
+            "name": "avtr_hair_0010_kawena",
+            "category": "Hair",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0010_kawena_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0010_kawena_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0010_kawena_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0010_kawena_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6011,
+            "name": "avtr_hair_0011_tiana",
+            "category": "Hair",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0011_tiana_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0011_tiana_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0011_tiana_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0011_tiana_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6012,
+            "name": "avtr_hair_0012_henry",
+            "category": "Hair",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0012_henry_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0012_henry_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0012_henry_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0012_henry_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6013,
+            "name": "avtr_hair_0013_elsa",
+            "category": "Hair",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0013_elsa_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0013_elsa_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0013_elsa_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0013_elsa_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6014,
+            "name": "avtr_hair_0014_russel",
+            "category": "Hair",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0014_russel_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0014_russel_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0014_russel_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0014_russel_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6015,
+            "name": "avtr_hair_0015_jasmine",
+            "category": "Hair",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0015_jasmine_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0015_jasmine_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0015_jasmine_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0015_jasmine_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 6016,
+            "name": "avtr_hair_0016_aladdin",
+            "category": "Hair",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0016_aladdin_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0016_aladdin_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/hair/en_US/avtr_hair_0016_aladdin_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/hair/en_US/avtr_hair_0016_aladdin_sd.unity3d",
+            "thumb": ""
+        },
+        {
+            "id": 7001,
+            "name": "avtr_glow_0001_univ",
+            "category": "Glow",
+            "hd": "http://10.190.6.223/spark/[device]/prefabs/glow/en_US/avtr_glow_0001_univ_hd.unity3d",
+            "hdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/glow/en_US/avtr_glow_0001_univ_hd.unity3d",
+            "sd": "http://10.190.6.223/spark/[device]/prefabs/glow/en_US/avtr_glow_0001_univ_sd.unity3d",
+            "sdSmall": "http://10.190.6.223/spark/[device]/prefabs/small/glow/en_US/avtr_glow_0001_univ_sd.unity3d",
+            "thumb": ""
+        }
+    ]
+}
