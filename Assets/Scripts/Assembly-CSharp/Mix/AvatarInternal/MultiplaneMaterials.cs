@@ -514,7 +514,7 @@ namespace Mix.AvatarInternal
                             }
 
                             MultiplaneMemCache.AddTexture(path, mainTex, () => UnityEngine.Object.Destroy(mainTex));
-                            TrackOnBoth(leftEyebrowMat, rightEyebrowMat, path, texture);
+                            TrackOnBoth(leftEyebrowMat, rightEyebrowMat, path, mainTex);
                             assetManager.SaveCachedImage(mainTex, path, (bool imageSaved) => callback?.Invoke());
                         });
                     });
