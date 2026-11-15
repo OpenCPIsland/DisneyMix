@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 172585ceeedffdd89bda5dc31a89d2ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AvatarAnimatorController: {fileID: 9100000, guid: d886c72ebb326934d8a8dd16dbacd722,
+  AvatarAnimatorController: {fileID: 9100000, guid: 6fb5a1771486d494a99429c49de120e6,
     type: 2}
   GagObjects:
   - GagMesh: {fileID: 1287369685954739}
