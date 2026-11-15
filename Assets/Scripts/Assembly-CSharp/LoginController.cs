@@ -18,8 +18,18 @@ using Mix.Video;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoginController : BaseController
+public class LoginController : BaseController, IKeyboardSubmitHandler
 {
+	public bool HandlesKeyboardSubmit(Selectable input)
+	{
+		return input == usernameField || input == passwordField;
+	}
+
+	public void SubmitFromKeyboard(Selectable input)
+	{
+		onLogin();
+	}
+
 	private const string registrationMusicLoop = "UI/Registration/MusicLoop";
 
 	private const string startRegistrationSoundEvent = "UI/Registration/StartRegistration";
@@ -199,6 +209,7 @@ public class LoginController : BaseController
 			Singleton<SoundManager>.Instance.StopSoundEvent("MainApp/UI/SFX_2_SendDisney");
 			return;
 		}
+
 		Singleton<SoundManager>.Instance.PlaySoundEvent("MainApp/UI/SFX_1_Error");
 		Text component = errorMessageGameObject.GetComponent<Text>();
 		component.text = Singleton<Localizer>.Instance.getString("customtokens.login.error_invalid_login");

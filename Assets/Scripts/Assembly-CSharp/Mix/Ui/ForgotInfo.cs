@@ -12,8 +12,18 @@ using UnityEngine.UI;
 
 namespace Mix.Ui
 {
-	public class ForgotInfo : MonoBehaviour
+	public class ForgotInfo : MonoBehaviour, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return input == EmailUsernameInputField;
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			OnRetrieve();
+		}
+
 		public Text HeaderText;
 
 		public Text EmailUsernameText;
@@ -132,6 +142,7 @@ namespace Mix.Ui
 				ServerValidateAdultAccountValues();
 				return;
 			}
+
 			Text component = ErrorMessageGameObject.GetComponent<Text>();
 			if (trueIfUsernameFalseIfPassword)
 			{

@@ -1,6 +1,7 @@
 using System;
 using DG.Tweening;
 using Mix.Games.Tray.Hints;
+using Mix.Ui;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -50,6 +51,18 @@ namespace Mix.Games.Tray.Runner
 
 		private HeartCounter mHeartCount;
 
+		private RectTransform mCoinCountHolderRectTransform;
+
+		private Vector2 mCoinCountHolderAnchorMin;
+
+		private Vector2 mCoinCountHolderAnchorMax;
+
+		private Vector2 mCoinCountHolderPivot;
+
+		private Vector2 mCoinCountHolderAnchoredPosition;
+
+		private bool mLastCoinCountLandscapeLayout;
+
 		private bool mIsWaitingForAJump;
 
 		public Vector3 gemIconLocation
@@ -69,6 +82,11 @@ namespace Mix.Games.Tray.Runner
 			{
 				mCoinCount = InstantiateTooltip(coinCountHolder);
 				mCoinCount.SetAnchor(AnchorUIElement.AnchorStyle.TOP_LEFT);
+				mCoinCountHolderRectTransform = coinCountHolder as RectTransform;
+				mCoinCountHolderAnchorMin = mCoinCountHolderRectTransform.anchorMin;
+				mCoinCountHolderAnchorMax = mCoinCountHolderRectTransform.anchorMax;
+				mCoinCountHolderPivot = mCoinCountHolderRectTransform.pivot;
+				mCoinCountHolderAnchoredPosition = mCoinCountHolderRectTransform.anchoredPosition;
 				mCoinCount.leftIcon.sprite = coinIcon;
 				mCoinCount.leftIcon.gameObject.SetActive(true);
 				mCoinCount.hintUpdateBounceAmount = coinCountBounceAmount;
@@ -90,12 +108,14 @@ namespace Mix.Games.Tray.Runner
 
 		private void Start()
 		{
+			ApplyCoinCountLandscapeLayout();
 			mHeartCount.Initialize(runnerGame.maxLives);
 			mHeartCount.Hide(true);
 		}
 
 		private void Update()
 		{
+			UpdateCoinCountLandscapeLayout();
 			if (mCoinCount != null && !runnerGame.gameHasEnded)
 			{
 				mCoinCount.SetTextWithBounce(string.Format(coinCountFormat, runnerGame.checkpointsPassed));
@@ -109,6 +129,55 @@ namespace Mix.Games.Tray.Runner
 			{
 				mHint.Hide();
 			}
+		}
+
+		private void UpdateCoinCountLandscapeLayout()
+		{
+			if (mCoinCountHolderRectTransform == null)
+			{
+				return;
+			}
+
+			bool isLandscape = IsLandscapeLayout();
+			if (isLandscape != mLastCoinCountLandscapeLayout)
+			{
+				ApplyCoinCountLandscapeLayout();
+			}
+		}
+
+		private void ApplyCoinCountLandscapeLayout()
+		{
+			bool isLandscape = IsLandscapeLayout();
+			Vector2 anchorMin = mCoinCountHolderAnchorMin;
+			Vector2 anchorMax = mCoinCountHolderAnchorMax;
+			Vector2 pivot = mCoinCountHolderPivot;
+			Vector2 anchoredPosition = mCoinCountHolderAnchoredPosition;
+			if (isLandscape)
+			{
+				RectTransform heartHolderRectTransform = heartCountHolder as RectTransform;
+				anchorMin.x = 1f;
+				anchorMax.x = 1f;
+				pivot.x = 1f;
+				anchoredPosition.x = -heartHolderRectTransform.rect.width - 10f;
+			}
+			else
+			{
+				anchorMin.x = 0f;
+				anchorMax.x = 0f;
+				pivot.x = 0f;
+				anchoredPosition.x = 0.002105713f;
+			}
+
+			mCoinCountHolderRectTransform.anchorMin = anchorMin;
+			mCoinCountHolderRectTransform.anchorMax = anchorMax;
+			mCoinCountHolderRectTransform.pivot = pivot;
+			mCoinCountHolderRectTransform.anchoredPosition = anchoredPosition;
+			mLastCoinCountLandscapeLayout = isLandscape;
+		}
+
+		private bool IsLandscapeLayout()
+		{
+			return Screen.width > Screen.height;
 		}
 
 		public void OnHiddenPlayButtonPressed()

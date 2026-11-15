@@ -15,8 +15,18 @@ using UnityEngine.UI;
 
 namespace Mix.Ui
 {
-	public class AdultAccount : MonoBehaviour
+	public class AdultAccount : MonoBehaviour, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return input == firstNameInput || input == lastNameInput || input == emailInput || input == passwordInput;
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			OnCreateAdult();
+		}
+
 		private const string defaultNextPageEvent = "UI/Registration/GeneralButton";
 
 		public Toggle ShowPassword;
@@ -464,6 +474,7 @@ namespace Mix.Ui
 				ServerValidateAdultAccountValues();
 				return;
 			}
+
 			Singleton<SoundManager>.Instance.PlaySoundEvent("MainApp/UI/SFX_1_Error");
 			toggleErrorFields();
 			setUiInteractable(true);

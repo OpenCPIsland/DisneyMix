@@ -8,8 +8,18 @@ using UnityEngine.UI;
 
 namespace Mix.Ui
 {
-	public class ParentLogInLinkedAdultPanel : BasePanel, ParentalControlGuardianItem.IParentalControlGuardianItemListener
+	public class ParentLogInLinkedAdultPanel : BasePanel, ParentalControlGuardianItem.IParentalControlGuardianItemListener, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return input == passwordField;
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			OnParentLoginClicked();
+		}
+
 		public interface IParentLogInLinkedAdultPanelListener
 		{
 			void LoginSecondAccount(string aUsername, string aPassword, string aCachePath, Action<ILoginResult> callback);
@@ -74,6 +84,7 @@ namespace Mix.Ui
 			{
 				MonoSingleton<NativeKeyboardManager>.Instance.Keyboard.Hide();
 			}
+
 			foreach (ParentalControlGuardianItem guardianItem in guardianItems)
 			{
 				if (guardianItem.isChecked)

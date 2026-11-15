@@ -13,8 +13,18 @@ using UnityEngine.UI;
 
 namespace Mix.Ui
 {
-	public class DisneyIdLogin : MonoBehaviour
+	public class DisneyIdLogin : MonoBehaviour, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return input == emailInput || input == passwordInput;
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			OnLogin();
+		}
+
 		public Button LoginButton;
 
 		public Button CancelButton;
@@ -130,6 +140,7 @@ namespace Mix.Ui
 				MonoSingleton<LoginManager>.Instance.Login(emailInput.Value, passwordInput.Value, handleLoginResponse);
 				return;
 			}
+
 			Singleton<SoundManager>.Instance.PlaySoundEvent("MainApp/UI/SFX_1_Error");
 			Text component2 = ErrorMessageGameObject.GetComponent<Text>();
 			component2.text = Singleton<Localizer>.Instance.getString("customtokens.login.error_invalid_login");

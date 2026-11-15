@@ -12,8 +12,18 @@ using UnityEngine.UI;
 
 namespace Mix.Ui
 {
-	public class DisplayNamePanel : BasePanel
+	public class DisplayNamePanel : BasePanel, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return input == DisplayNameInputField;
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			OnSubmitDisplayName();
+		}
+
 		public InputField DisplayNameInputField;
 
 		public Text TempDisplayName;
@@ -105,6 +115,7 @@ namespace Mix.Ui
 							{
 							});
 						}
+
 						else
 						{
 							Singleton<SoundManager>.Instance.PlaySoundEvent("MainApp/UI/SFX_1_Error");

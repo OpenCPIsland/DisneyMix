@@ -11301,6 +11301,7 @@ MonoBehaviour:
   - {fileID: 561441509246546872}
   - {fileID: 8113146231944807250}
   - {fileID: 4749405721682588815}
+  ColorTray: {fileID: 224310255326723950}
 --- !u!114 &114082695065718755
 MonoBehaviour:
   m_ObjectHideFlags: 0

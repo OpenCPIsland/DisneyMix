@@ -147,6 +147,7 @@ namespace Mix.Ui
 			}
 			mainHolder = Object.Instantiate(aResource);
 			mainHolder.SetActive(false);
+			ResponsiveCanvasScaler.Ensure(mainHolder);
 			mainHolder.name = aResource.name;
 			mainHolder.transform.SetParent(GameObject.Find("Screens").transform, false);
 			mainCanvases = mainHolder.GetComponentsInChildren<Canvas>(true);

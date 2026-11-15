@@ -7,8 +7,18 @@ using UnityEngine.UI;
 
 namespace Mix.Ui
 {
-	public class ChatBar : MonoBehaviour
+	public class ChatBar : MonoBehaviour, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return input == InputField;
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			SendChat();
+		}
+
 		public GameObject SendButton;
 
 		public InputField InputField;
@@ -151,6 +161,7 @@ namespace Mix.Ui
 				InputField.text = string.Empty;
 				OnKeyboardInputResize(null, new NativeKeyboardInputHeightChangedEventArgs((int)(inputStartHeight / Singleton<SettingsManager>.Instance.GetHeightScale())));
 			}
+
 		}
 
 		public void OnChatInputClicked()

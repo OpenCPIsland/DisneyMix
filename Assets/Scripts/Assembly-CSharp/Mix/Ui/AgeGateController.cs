@@ -6,8 +6,18 @@ using UnityEngine.UI;
 
 namespace Mix.Ui
 {
-	public class AgeGateController : MonoBehaviour
+	public class AgeGateController : MonoBehaviour, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return NumberInput != null && input == NumberInput.GetComponent<NativeTextView>();
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			OnNextButtonPressed();
+		}
+
 		public GameObject ErrorMessageObject;
 
 		public GameObject AgeGateString;
@@ -47,6 +57,7 @@ namespace Mix.Ui
 			{
 				ErrorMessageObject.SetActive(true);
 			}
+
 			else
 			{
 				caller.OnSuccess(destinationUrl, destinationTitle);

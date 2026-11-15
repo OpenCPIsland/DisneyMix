@@ -34113,7 +34113,7 @@ TextMesh:
   m_FontSize: 64
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: 73bcfa754d1532143bccd0635db30a62, type: 3}
+  m_Font: {fileID: 12800000, guid: c17791b1e194b5146936380e4bb84607, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4294967295

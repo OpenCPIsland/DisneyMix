@@ -20,6 +20,7 @@ namespace Mix.Ui
 		public BasePanel ShowPanel(GameObject aPanelGameObject)
 		{
 			CleanUpPanels();
+			ResponsiveCanvasScaler.Ensure(aPanelGameObject);
 			BasePanel component = aPanelGameObject.GetComponent<BasePanel>();
 			component.Setup();
 			component.PanelClosedEvent += PanelClosed;
@@ -47,6 +48,7 @@ namespace Mix.Ui
 			GameObject original = Resources.Load<GameObject>(aPanelType);
 			GameObject gameObject = UnityEngine.Object.Instantiate(original);
 			gameObject.SetActive(false);
+			ResponsiveCanvasScaler.Ensure(gameObject);
 			BasePanel component = gameObject.GetComponent<BasePanel>();
 			component.panelId = aPanelId;
 			component.Setup();

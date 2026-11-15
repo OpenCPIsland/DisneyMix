@@ -1,12 +1,23 @@
 using Mix.Games.Session;
 using Mix.Native;
+using Mix.Ui;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Mix.Games.Tray
 {
-	public class BaseToastPanel : MonoBehaviour, IGameModerationResult
+	public class BaseToastPanel : MonoBehaviour, IGameModerationResult, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return input == NativeTextView;
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			OnDonePressed();
+		}
+
 		public BaseGameController GameController;
 
 		public Camera PanelCamera;
@@ -86,6 +97,7 @@ namespace Mix.Games.Tray
 				GameController.Session.SessionSounds.PlaySoundEvent("SecretWord/SFX/ButtonUI");
 				GameController.ModerateText(value, this, null);
 			}
+
 		}
 
 		public void ShowPanel()

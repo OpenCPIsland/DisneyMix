@@ -13,8 +13,28 @@ using UnityEngine.UI;
 
 namespace Mix.Ui
 {
-	public class FriendSelectorPanel : BasePanel
+	public class FriendSelectorPanel : BasePanel, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return input == InputField;
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			if (thread != null)
+			{
+				if (AddToGroupButton != null && AddToGroupButton.IsInteractable())
+				{
+					OnAddToGroupButtonClicked();
+				}
+			}
+			else if (StartChatButton != null && StartChatButton.IsInteractable())
+			{
+				OnStartChatButtonClicked();
+			}
+		}
+
 		private const int MAX_GROUP_CHAT = 20;
 
 		public GameObject FriendListItem;
@@ -165,6 +185,7 @@ namespace Mix.Ui
 			{
 				return;
 			}
+
 			IsClosed = true;
 			if (selectedFriends.Count() != 0)
 			{

@@ -1,9 +1,17 @@
+using Mix.Ui;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Mix.Games.Tray.Hints
 {
 	public class AnchorUIElement : MonoBehaviour
 	{
+		private const float LANDSCAPE_INSET_WIDTH_RATIO = 2f;
+
+		private const float MIN_LANDSCAPE_INSET_PIXELS = 110f;
+
+		private const float MAX_LANDSCAPE_INSET_PIXELS = 210f;
+
 		public enum AnchorStyle
 		{
 			NONE = 0,
@@ -24,6 +32,15 @@ namespace Mix.Games.Tray.Hints
 		public GameObject rightSpacer;
 
 		private RectTransform mRectTransform;
+
+		public static float GetLandscapeInset(RectTransform rectTransform)
+		{
+			Canvas canvas = rectTransform.GetComponentInParent<Canvas>();
+			CanvasScaler canvasScaler = canvas != null ? canvas.GetComponent<CanvasScaler>() : null;
+			float scaleFactor = canvasScaler != null && canvasScaler.scaleFactor > 0f ? canvasScaler.scaleFactor : 1f;
+			float insetPixels = Mathf.Clamp(Screen.width * LANDSCAPE_INSET_WIDTH_RATIO, MIN_LANDSCAPE_INSET_PIXELS, MAX_LANDSCAPE_INSET_PIXELS);
+			return insetPixels / scaleFactor;
+		}
 
 		public void SetAnchor(AnchorStyle style)
 		{

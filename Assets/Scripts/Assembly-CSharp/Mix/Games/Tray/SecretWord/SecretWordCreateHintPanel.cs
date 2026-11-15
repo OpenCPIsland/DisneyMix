@@ -1,13 +1,24 @@
 using DG.Tweening;
 using Mix.Games.Session;
 using Mix.Native;
+using Mix.Ui;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Mix.Games.Tray.SecretWord
 {
-	public class SecretWordCreateHintPanel : MonoBehaviour, IGameModerationResult
+	public class SecretWordCreateHintPanel : MonoBehaviour, IGameModerationResult, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return input == nativeTextView;
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			OnDonePressed();
+		}
+
 		private sealed class OnModerationResult_003Ec__AnonStorey70
 		{
 			internal bool aIsModerated;
@@ -158,6 +169,7 @@ namespace Mix.Games.Tray.SecretWord
 					BaseGameController.Instance.Session.SessionSounds.PlaySoundEvent("MainApp/UI/InValidWord");
 					HintInvalid();
 				}
+
 				else
 				{
 					BaseGameController.Instance.Session.SessionSounds.PlaySoundEvent("SecretWord/SFX/ButtonUI");

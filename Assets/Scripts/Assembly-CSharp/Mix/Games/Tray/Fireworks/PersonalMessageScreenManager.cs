@@ -1,13 +1,24 @@
 using DG.Tweening;
 using Mix.Games.Session;
 using Mix.Native;
+using Mix.Ui;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Mix.Games.Tray.Fireworks
 {
-	public class PersonalMessageScreenManager : MonoBehaviour, IGameModerationResult
+	public class PersonalMessageScreenManager : MonoBehaviour, IGameModerationResult, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return input == nativeTextView;
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			OnDonePressed();
+		}
+
 		public FireworksGame game;
 
 		public InputField nativeTextView;
@@ -99,6 +110,7 @@ namespace Mix.Games.Tray.Fireworks
 					BaseGameController.Instance.Session.SessionSounds.PlaySoundEvent("MainApp/UI/InValidWord");
 					MessageInvalid();
 				}
+
 				else
 				{
 					BaseGameController.Instance.Session.SessionSounds.PlaySoundEvent("SecretWord/SFX/ButtonUI");

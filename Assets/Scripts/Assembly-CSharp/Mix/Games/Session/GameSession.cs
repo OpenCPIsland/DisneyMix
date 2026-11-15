@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Mix.Games.Data;
 using Mix.Games.Message;
+using Mix.Ui;
 using UnityEngine;
 
 namespace Mix.Games.Session
@@ -300,6 +301,11 @@ namespace Mix.Games.Session
 
 		public void Initialize(GameObject aGame)
 		{
+			if (aGame != null && mEntitlement != null && string.Equals(mEntitlement.GetName(), "Spikey", StringComparison.OrdinalIgnoreCase))
+			{
+				ResponsiveCanvasScaler.Ensure(aGame);
+			}
+
 			mGame = aGame;
 			mGame.transform.position += new Vector3(1000f, 0f, 0f);
 			mGame.SetActive(false);

@@ -7,8 +7,18 @@ using UnityEngine.UI;
 
 namespace Mix.Ui
 {
-	public class ParentLogInNoLinkedAdultPanel : BasePanel
+	public class ParentLogInNoLinkedAdultPanel : BasePanel, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return input == usernameField || input == passwordField;
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			OnParentLoginClicked();
+		}
+
 		public interface IParentLogInNoLinkedAdultPanelListener
 		{
 			void LoginSecondAccount(string aUsername, string aPassword, string aCachePath, Action<ILoginResult> callback);
@@ -57,6 +67,7 @@ namespace Mix.Ui
 			{
 				MonoSingleton<NativeKeyboardManager>.Instance.Keyboard.Hide();
 			}
+
 			try
 			{
 				Singleton<ThreadFramerateThrottler>.Instance.EnterThrottlingSection();

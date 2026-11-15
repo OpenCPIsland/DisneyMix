@@ -14,8 +14,18 @@ using UnityEngine.UI;
 
 namespace Mix.Ui
 {
-	public class MissingInfo : MonoBehaviour
+	public class MissingInfo : MonoBehaviour, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return input == firstNameInput || input == lastNameInput || input == emailInput || input == parentsEmailInput || input == usernameInput;
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			OnUpdateInfo();
+		}
+
 		public Toggle Marketing;
 
 		public NativeTextView firstNameInput;
@@ -434,6 +444,7 @@ namespace Mix.Ui
 				ServerValidateAccountValues();
 				return;
 			}
+
 			Singleton<SoundManager>.Instance.PlaySoundEvent("MainApp/UI/SFX_1_Error");
 			toggleErrorFields();
 			setUiInteractable(true);

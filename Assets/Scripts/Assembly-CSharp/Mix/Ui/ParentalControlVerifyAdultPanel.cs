@@ -2,11 +2,22 @@ using System;
 using Disney.Mix.SDK;
 using Mix.Native;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Mix.Ui
 {
-	public class ParentalControlVerifyAdultPanel : BasePanel
+	public class ParentalControlVerifyAdultPanel : BasePanel, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return input == address1Field || input == address2Field || input == cityField || input == stateField || input == zipField || input == ssnField;
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			OnVerifyClicked();
+		}
+
 		public interface IParentalControlVerifyAdultListener
 		{
 			void OnAdultVerified(ILocalUser aParent);
@@ -53,6 +64,7 @@ namespace Mix.Ui
 			{
 				MonoSingleton<NativeKeyboardManager>.Instance.Keyboard.Hide();
 			}
+
 			parent.GetVerifyAdultForm(delegate
 			{
 				IWritableVerifyAdultFormUnitedStates writableVerifyAdultFormUnitedStates = new IWritableVerifyAdultFormUnitedStates();

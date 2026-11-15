@@ -14,8 +14,18 @@ using UnityEngine.UI;
 
 namespace Mix.Ui
 {
-	public class ChildAccount : MonoBehaviour
+	public class ChildAccount : MonoBehaviour, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return input == firstNameInput || input == usernameInput || input == parentEmailInput || input == passwordInput;
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			OnCreateChild();
+		}
+
 		private const string defaultNextPageEvent = "UI/Registration/GeneralButton";
 
 		public Toggle ShowPassword;
@@ -356,6 +366,7 @@ namespace Mix.Ui
 				ServerValidateChildAccountValues();
 				return;
 			}
+
 			Singleton<SoundManager>.Instance.PlaySoundEvent("MainApp/UI/SFX_1_Error");
 			toggleErrorFields();
 			setUiInteractable(true);

@@ -12,8 +12,31 @@ using UnityEngine.UI;
 
 namespace Mix.Ui
 {
-	public class BottomNav : MonoBehaviour, IBundleObject, IBaseThumb
+	public class BottomNav : MonoBehaviour, IBundleObject, IBaseThumb, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return input == nativeText;
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			if (nativeText == null)
+			{
+				return;
+			}
+			if (string.IsNullOrEmpty(nativeText.Value))
+			{
+				previousStickers.Clear();
+				PopulateSearchIcons();
+				usingSearchIcons = true;
+			}
+			else
+			{
+				DoSearch(nativeText.Value);
+			}
+		}
+
 		private sealed class OnBundleAssetObject_003Ec__AnonStorey292
 		{
 			internal Sticker sticker;

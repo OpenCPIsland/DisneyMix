@@ -63,6 +63,8 @@ namespace Mix.Ui
 
 		public ColorToggleItem[] toggles;
 
+		public RectTransform ColorTray;
+
 		private AvatarSpinner avatarSpinner;
 
 		private bool updateBadgeCount;
@@ -110,6 +112,10 @@ namespace Mix.Ui
 		public void OnColorThemeClicked(ColorToggleItem aColorToggleItem)
 		{
 			if (databaseApi == null || aColorToggleItem == null)
+				return;
+
+			Toggle colorToggle = aColorToggleItem.GetComponent<Toggle>();
+			if (colorToggle == null || !colorToggle.isOn)
 				return;
 
 			string text = databaseApi.LoadUserValue("default_primary_color");
@@ -370,6 +376,7 @@ namespace Mix.Ui
 
 		private void Start()
 		{
+			ConfigureColorTrayLayout();
 			if (Singleton<MixDocumentCollections>.Instance == null || Singleton<MixDocumentCollections>.Instance.keyValDocumentCollectionApi == null || toggles == null)
 			{
 				return;
@@ -421,6 +428,78 @@ namespace Mix.Ui
 			if (MixSession.connection == MixSession.ConnectionState.ONLINE)
 			{
 				enableAvatarEditor();
+			}
+		}
+
+		private void ConfigureColorTrayLayout()
+		{
+			if (ColorTray == null || !ResponsiveCanvasScaler.IsLandscapeLayout())
+			{
+				return;
+			}
+
+			Vector2 anchorMin = ColorTray.anchorMin;
+			Vector2 anchorMax = ColorTray.anchorMax;
+			anchorMin.x = 0f;
+			anchorMax.x = 1f;
+			ColorTray.anchorMin = anchorMin;
+			ColorTray.anchorMax = anchorMax;
+
+			Vector2 anchoredPosition = ColorTray.anchoredPosition;
+			anchoredPosition.x = 0f;
+			ColorTray.anchoredPosition = anchoredPosition;
+
+			Vector2 sizeDelta = ColorTray.sizeDelta;
+			sizeDelta.x = 0f;
+			ColorTray.sizeDelta = sizeDelta;
+
+			ScrollRect colorScrollRect = ColorTray.GetComponent<ScrollRect>();
+			if (colorScrollRect == null || colorScrollRect.content == null)
+			{
+				Debug.LogError("ProfileScreen color tray is missing its scroll content.", ColorTray);
+				return;
+			}
+
+			RectTransform colorContent = colorScrollRect.content;
+			ContentSizeFitter contentSizeFitter = colorContent.GetComponent<ContentSizeFitter>();
+			HorizontalLayoutGroup colorLayout = colorContent.GetComponent<HorizontalLayoutGroup>();
+			if (contentSizeFitter == null || colorLayout == null)
+			{
+				Debug.LogError("ProfileScreen color content is missing its layout components.", colorContent);
+				return;
+			}
+
+			Vector2 contentAnchorMin = colorContent.anchorMin;
+			Vector2 contentAnchorMax = colorContent.anchorMax;
+			Vector2 contentPivot = colorContent.pivot;
+			Vector2 contentPosition = colorContent.anchoredPosition;
+			Vector2 contentSize = colorContent.sizeDelta;
+			contentAnchorMin.x = 0f;
+			contentAnchorMax.x = 1f;
+			contentPivot.x = 0.5f;
+			contentPosition.x = 0f;
+			contentSize.x = 0f;
+			colorContent.anchorMin = contentAnchorMin;
+			colorContent.anchorMax = contentAnchorMax;
+			colorContent.pivot = contentPivot;
+			colorContent.anchoredPosition = contentPosition;
+			colorContent.sizeDelta = contentSize;
+			contentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+			colorLayout.childAlignment = TextAnchor.MiddleCenter;
+			RectOffset layoutPadding = colorLayout.padding;
+			colorLayout.padding = new RectOffset(0, 0, layoutPadding.top, layoutPadding.bottom);
+
+			for (int i = 0; i < colorContent.childCount; i++)
+			{
+				Transform child = colorContent.GetChild(i);
+				if (child.name == "Spacer")
+				{
+					LayoutElement spacerLayout = child.GetComponent<LayoutElement>();
+					if (spacerLayout != null)
+					{
+						spacerLayout.flexibleWidth = 0f;
+					}
+				}
 			}
 		}
 

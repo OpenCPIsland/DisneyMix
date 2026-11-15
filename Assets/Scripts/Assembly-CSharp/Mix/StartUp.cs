@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Mix.Ui;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -46,6 +47,7 @@ namespace Mix
 
 			EventSystem eventSystem = EnsureEventSystem();
 			ConfigureEventSystem(eventSystem);
+			KeyboardTextInputNavigation.Ensure(eventSystem);
 
 			TouchScreenKeyboard.hideInput = true;
 			Invoke("SetCanvasSize", 1f);

@@ -215,6 +215,13 @@ namespace Mix.Ui
 
 		public void OnColorThemeClicked(ColorToggleItem aColorToggleItem)
 		{
+			if (databaseApi == null || aColorToggleItem == null)
+				return;
+
+			Toggle colorToggle = aColorToggleItem.GetComponent<Toggle>();
+			if (colorToggle == null || !colorToggle.isOn)
+				return;
+
 			string text = databaseApi.LoadUserValue("default_primary_color");
 			if (text == null || !text.Equals(aColorToggleItem.PrimaryColor))
 			{

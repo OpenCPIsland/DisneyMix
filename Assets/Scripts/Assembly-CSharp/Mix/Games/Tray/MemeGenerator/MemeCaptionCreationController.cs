@@ -1,13 +1,26 @@
 using System.Collections;
 using Mix.Games.Session;
 using Mix.Native;
+using Mix.Ui;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Mix.Games.Tray.MemeGenerator
 {
-	public class MemeCaptionCreationController : MonoBehaviour, IGameAsset, IGameModerationResult
+	public class MemeCaptionCreationController : MonoBehaviour, IGameAsset, IGameModerationResult, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return input == MemeNativeTextField ||
+				(topText != null && input == topText.mNativeTextView) ||
+				(bottomText != null && input == bottomText.mNativeTextView);
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			OnSubmitSelected();
+		}
+
 		private MemeCaptionText activeText;
 
 		private ToastPanelController toastPanel;
@@ -250,6 +263,7 @@ namespace Mix.Games.Tray.MemeGenerator
 			{
 				return;
 			}
+
 			SubmitSelected = true;
 			if (topText != null && topText.IsDirty)
 			{

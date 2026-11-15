@@ -5,8 +5,18 @@ using UnityEngine.UI;
 
 namespace Mix.Ui
 {
-	public class ParentLoginPanel : BasePanel
+	public class ParentLoginPanel : BasePanel, IKeyboardSubmitHandler
 	{
+		public bool HandlesKeyboardSubmit(Selectable input)
+		{
+			return input == passwordField;
+		}
+
+		public void SubmitFromKeyboard(Selectable input)
+		{
+			OnLoginClicked();
+		}
+
 		public interface IParentLoginPanelListener
 		{
 			void ParentRelogin(string aPassword);
@@ -55,6 +65,7 @@ namespace Mix.Ui
 			{
 				MonoSingleton<NativeKeyboardManager>.Instance.Keyboard.Hide();
 			}
+
 			currentListener.ParentRelogin(value);
 		}
 

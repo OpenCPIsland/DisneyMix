@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Mix.Ui;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -69,6 +70,14 @@ namespace Mix.Games.Tray.Hints
 
 		private Vector2 mNormalAnchoredPosition;
 
+		private Vector2 mTopRightAnchoredPosition;
+
+		private float mLastLandscapeInset = -1f;
+
+		private bool mTracksTopRightAnchor;
+
+		private bool mLastLandscapeLayout;
+
 		public bool IsShowing { get; private set; }
 
 		public bool IsTransitionComplete { get; private set; }
@@ -87,6 +96,42 @@ namespace Mix.Games.Tray.Hints
 			{
 				return IsShowing && IsTransitionComplete;
 			}
+		}
+
+		public new void SetAnchor(AnchorStyle style)
+		{
+			base.SetAnchor(style);
+			if (style == AnchorStyle.TOP_RIGHT)
+			{
+				mTopRightAnchoredPosition = rectTransform.anchoredPosition;
+				mTracksTopRightAnchor = true;
+				ApplyLandscapeInset();
+			}
+		}
+
+		private void Update()
+		{
+			if (!mTracksTopRightAnchor)
+			{
+				return;
+			}
+
+			bool isLandscape = ResponsiveCanvasScaler.IsLandscapeLayout();
+			float inset = isLandscape ? GetLandscapeInset(rectTransform) : 0f;
+			if (isLandscape != mLastLandscapeLayout || !Mathf.Approximately(inset, mLastLandscapeInset))
+			{
+				ApplyLandscapeInset();
+			}
+		}
+
+		private void ApplyLandscapeInset()
+		{
+			bool isLandscape = ResponsiveCanvasScaler.IsLandscapeLayout();
+			float inset = isLandscape ? GetLandscapeInset(rectTransform) : 0f;
+			rectTransform.anchoredPosition = mTopRightAnchoredPosition + new Vector2(-inset, 0f);
+			mNormalAnchoredPosition = rectTransform.anchoredPosition;
+			mLastLandscapeLayout = isLandscape;
+			mLastLandscapeInset = inset;
 		}
 
 		public void Initialize(int maxHearts)
