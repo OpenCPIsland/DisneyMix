@@ -22,7 +22,7 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 [assembly: ComVisible(false)]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("4.0.1.0")]
 [assembly: AssemblyTrademark("")]
 [assembly: Guid("9b155348-94cc-4296-ba3e-3e322dedfb15")]
 [assembly: CompilationRelaxations(8)]
@@ -32,8 +32,8 @@ using UnityEngine.SceneManagement;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("TazMan-Audio")]
 [assembly: AssemblyProduct("Fabric.Core.Editor")]
-[assembly: AssemblyCopyright("Copyright © TazMan-Audio 2011")]
-[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyCopyright("Copyright © TazMan-Audio 2026")]
+[assembly: AssemblyVersion("4.0.1.0")]
 namespace Fabric
 {
 	public static class StringExtensions
@@ -57,7 +57,7 @@ namespace Fabric
 		{
 			string text = "2.4";
 			string text2 = "";
-			text2 = " (>Unity 5.6+)";
+			text2 = " (>Unity 6.0+)";
 			GUILayout.BeginHorizontal();
 			GUILayout.FlexibleSpace();
 			GUILayout.Label(" Fabric " + text + text2);
@@ -1181,10 +1181,6 @@ namespace Fabric
 	[CustomEditor(typeof(ProxyComponent))]
 	public class ProxyComponentEditor : Editor
 	{
-		private static int maxHeight = 10;
-
-		private static int maxWidth = 200;
-
 		[MenuItem("Fabric/Components/ProxyComponent")]
 		private static void About()
 		{
@@ -3051,7 +3047,11 @@ namespace Fabric
 			}
 			if (!EditorApplication.isPlaying && !EditorApplication.isPlayingOrWillChangePlaymode)
 			{
-				Enable(FabricManager.Instance._enableEditorPreviewer);
+				FabricManager instance = FabricManager.Instance;
+				if (instance != null)
+				{
+					Enable(instance._enableEditorPreviewer);
+				}
 			}
 		}
 
@@ -3302,8 +3302,6 @@ namespace Fabric
 	public class CustomCurvesEditorWindow : EditorWindow
 	{
 		private Vector2 scrollPosition = default(Vector2);
-
-		private string text = "";
 
 		private string globalCustomCurvesName = "";
 
@@ -9726,8 +9724,6 @@ namespace Fabric
 
 			private float samplePixelAlpha = 1.333333f;
 
-			private int samplesPerPixel = 660;
-
 			private WaveformPoint[] cachedPoints = new WaveformPoint[0];
 
 			public ChannelWaveform(float[] data)
@@ -10331,8 +10327,9 @@ namespace Fabric
 
 		private int selectedItem = -1;
 
-		public event OnEventHandler EventNotification;
 		#pragma warning disable CS0067
+		public event OnEventHandler EventNotification;
+		#pragma warning restore CS0067
 
 		public void Setup(string[] list)
 		{
