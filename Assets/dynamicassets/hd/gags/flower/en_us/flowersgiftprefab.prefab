@@ -514,9 +514,11 @@ MonoBehaviour:
     type: 2}
   GagObjects:
   - GagMesh: {fileID: 1684381607906580}
-    OffsetGroup: []
+    OffsetGroup:
+    - OffsetObject: {fileID: 1883955429998665}
+      startPos: {x: 0, y: 0, z: 0}
   ParticleObjects: []
-  IsAvatarAnim: 0
+  IsAvatarAnim: 1
 --- !u!114 &114036963161961249
 MonoBehaviour:
   m_ObjectHideFlags: 0
