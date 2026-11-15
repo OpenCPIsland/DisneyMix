@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.IO.Compression;
+using Mix.Assets;
 using Mix.Games.Session;
 using UnityEngine;
 
@@ -62,7 +63,9 @@ namespace Mix.Games.Harness
 		{
 			string path = "CDNAssets/AssetBundles/android/hd/" + aPath;
 			AssetBundle assetBundle = AssetBundle.LoadFromFile(path);
-			return (GameObject)assetBundle.LoadAsset(assetBundle.GetAllAssetNames()[0]);
+			GameObject model = (GameObject)assetBundle.LoadAsset(assetBundle.GetAllAssetNames()[0]);
+			AssetUtils.ConfigureAnisotropicFiltering(model);
+			return model;
 		}
 
 		public void LoadAsset(IGameAsset aSessionAsset, string aPath, object aParam)

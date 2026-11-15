@@ -20,6 +20,38 @@ namespace Mix.Assets
 			}
 		}
 
+		public static void ConfigureAnisotropicFiltering(GameObject model)
+		{
+			if (model == null)
+			{
+				return;
+			}
+
+			QualitySettings.anisotropicFiltering = AnisotropicFiltering.ForceEnable;
+			Texture.SetGlobalAnisotropicFilteringLimits(16, 16);
+
+			Renderer[] renderers = model.GetComponentsInChildren<Renderer>(true);
+			foreach (Renderer renderer in renderers)
+			{
+				foreach (Material material in renderer.sharedMaterials)
+				{
+					if (material == null)
+					{
+						continue;
+					}
+
+					foreach (string propertyName in material.GetTexturePropertyNames())
+					{
+						Texture texture = material.GetTexture(propertyName);
+						if (texture != null)
+						{
+							texture.anisoLevel = 16;
+						}
+					}
+				}
+			}
+		}
+
 		public static void DestroyComponent(Component component)
 		{
 			if (component is Image)

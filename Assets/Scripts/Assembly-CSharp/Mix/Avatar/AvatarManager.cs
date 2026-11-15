@@ -358,6 +358,7 @@ namespace Mix.Avatar
             {
                 var scene = hasGeo ? snapshotSceneGeo : snapshotScene;
                 scene.SetActive(true);
+                AssetUtils.ConfigureAnisotropicFiltering(avatarTarget);
                 var cam = scene.GetComponent<Camera>();
 
                 // Create the RenderTexture with the correct antiAliasing value from the start

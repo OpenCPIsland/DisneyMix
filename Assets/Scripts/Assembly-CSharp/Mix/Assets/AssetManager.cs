@@ -1064,10 +1064,13 @@ namespace Mix.Assets
 				{
 					obj = UnityEngine.Object.Instantiate(obj);
 				}
+				AssetUtils.ConfigureAnisotropicFiltering(obj as GameObject);
 				IncrementBundleReferenceCount(text);
 				return obj;
 			}
-			return RefCounter.GetInstance(text);
+			obj = RefCounter.GetInstance(text);
+			AssetUtils.ConfigureAnisotropicFiltering(obj as GameObject);
+			return obj;
 		}
 
 		public void DestroyBundleInstance(string aUrl, UnityEngine.Object aObject = null)
