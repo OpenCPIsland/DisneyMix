@@ -26,6 +26,19 @@ namespace Mix.FakeFriend.Datatypes
 
 		private List<IChatMessage> messages;
 
+		private sealed class FakeUpdateGameStateMessageResult : IUpdateGameStateMessageResult
+		{
+			public bool Success { get; private set; }
+
+			public string Result { get; private set; }
+
+			public FakeUpdateGameStateMessageResult(bool success, string result)
+			{
+				Success = success;
+				Result = result;
+			}
+		}
+
 		public bool IsOfflineCharacter { get; private set; }
 
 		private string CharacterName
@@ -196,6 +209,10 @@ namespace Mix.FakeFriend.Datatypes
 		{
 			LocalStickerMessage fakeMsg = new LocalStickerMessage(contentId, User.Id);
 			fakeMsg.Read = true;
+			if (IsOfflineCharacter)
+			{
+				fakeMsg.Id = CreateOfflineCharacterMessageId();
+			}
 			messages.Add(fakeMsg);
 			HandleMessage(fakeMsg, delegate(bool r)
 			{
@@ -209,6 +226,10 @@ namespace Mix.FakeFriend.Datatypes
 		{
 			LocalGagMessage fakeMsg = new LocalGagMessage(contentId, target.Id, User.Id);
 			fakeMsg.Read = true;
+			if (IsOfflineCharacter)
+			{
+				fakeMsg.Id = CreateOfflineCharacterMessageId();
+			}
 			messages.Add(fakeMsg);
 			HandleMessage(fakeMsg, delegate(bool r)
 			{
@@ -222,6 +243,10 @@ namespace Mix.FakeFriend.Datatypes
 		{
 			LocalGagMessage fakeMsg = new LocalGagMessage(contentId, target.Id, User.Id);
 			fakeMsg.Read = true;
+			if (IsOfflineCharacter)
+			{
+				fakeMsg.Id = CreateOfflineCharacterMessageId();
+			}
 			messages.Add(fakeMsg);
 			HandleMessage(fakeMsg, delegate(bool r)
 			{
@@ -235,6 +260,10 @@ namespace Mix.FakeFriend.Datatypes
 		{
 			LocalGameStateMessage fakeMsg = new LocalGameStateMessage(aGameName, aPayload, User.Id);
 			fakeMsg.Read = true;
+			if (IsOfflineCharacter)
+			{
+				fakeMsg.Id = CreateOfflineCharacterMessageId();
+			}
 			messages.Add(fakeMsg);
 			HandleMessage(fakeMsg, delegate(bool r)
 			{
@@ -247,6 +276,23 @@ namespace Mix.FakeFriend.Datatypes
 
 		public void UpdateGameStateMessage(IGameStateMessage gameStateMessage, Dictionary<string, object> payload, Action<IUpdateGameStateMessageResult> callback)
 		{
+			if (IsOfflineCharacter)
+			{
+				LocalGameStateMessage localMessage = gameStateMessage as LocalGameStateMessage;
+				if (localMessage == null || localMessage.State == null || payload == null)
+				{
+					callback(new FakeUpdateGameStateMessageResult(false, null));
+					return;
+				}
+				foreach (KeyValuePair<string, object> stateEntry in payload)
+				{
+					localMessage.State[stateEntry.Key] = stateEntry.Value;
+				}
+				string gameData = JsonMapper.ToJson(localMessage.State);
+				Singleton<MixDocumentCollections>.Instance.fakeFirstFriendDocumentCollectionApi.AddGameState(false, localMessage.TimeSent.Ticks, localMessage.Sent, localMessage.Read, localMessage.Id, localMessage.GameName, gameData);
+				callback(new FakeUpdateGameStateMessageResult(true, gameData));
+				return;
+			}
 			FakeGameEventMessage item = new FakeGameEventMessage(User.Id);
 			messages.Add(item);
 		}

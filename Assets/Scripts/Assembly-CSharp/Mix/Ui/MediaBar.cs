@@ -73,7 +73,7 @@ namespace Mix.Ui
 			bool offlineCharacter = thread is FakeThread && ((FakeThread)thread).IsOfflineCharacter;
 			for (int i = 0; i < toggleArray.Length; i++)
 			{
-				if (!disabled && (!offlineCharacter || i == CHAT_TOGGLE))
+				if (!disabled)
 				{
 					int index = i;
 					valueChangedCallbacks[toggleArray[i]] = delegate(bool value)
@@ -83,7 +83,7 @@ namespace Mix.Ui
 					toggleArray[i].onValueChanged.AddListener(valueChangedCallbacks[toggleArray[i]]);
 					toggles.Add(toggleArray[i]);
 				}
-				else
+				if (disabled || (offlineCharacter && i == UGC_TOGGLE))
 				{
 					toggleArray[i].interactable = false;
 				}
@@ -99,7 +99,8 @@ namespace Mix.Ui
 
 		private void Update()
 		{
-			if (MonoSingleton<FakeFriendManager>.Instance.IsFake(thread) && toggles.Count > 5)
+			bool offlineCharacter = thread is FakeThread && ((FakeThread)thread).IsOfflineCharacter;
+			if (MonoSingleton<FakeFriendManager>.Instance.IsFake(thread) && toggles.Count > 5 && !offlineCharacter)
 			{
 				MonoSingleton<FakeFriendManager>.Instance.HighlightAnimator(FakeFriendManager.TYPE_MEDIA_STICKER, toggles[2].GetComponent<Animator>(), toggles[2].isOn);
 				MonoSingleton<FakeFriendManager>.Instance.HighlightAnimator(FakeFriendManager.TYPE_MEDIA_GAME, toggles[3].GetComponent<Animator>(), toggles[3].isOn);
@@ -178,7 +179,7 @@ namespace Mix.Ui
 				bool offlineCharacter = thread is FakeThread && ((FakeThread)thread).IsOfflineCharacter;
 				for (int i = 0; i < componentsInChildren.Length; i++)
 				{
-					componentsInChildren[i].interactable = aState && (!offlineCharacter || i == CHAT_TOGGLE);
+					componentsInChildren[i].interactable = aState && (!offlineCharacter || i != UGC_TOGGLE);
 				}
 				if (thread is IOfficialAccountChatThread)
 				{

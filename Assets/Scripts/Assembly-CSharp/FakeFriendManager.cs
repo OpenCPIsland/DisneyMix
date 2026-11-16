@@ -100,7 +100,7 @@ public class FakeFriendManager : MonoSingleton<FakeFriendManager>
 		{ "Joy", new[] { "I'm one of Riley's emotions.", "I help Riley notice and enjoy happy moments." } },
 		{ "Judy", new[] { "I'm a rabbit who became a police officer in Zootopia.", "I grew up in Bunnyburrow." } },
 		{ "Marlin", new[] { "I'm a clownfish and Nemo's dad.", "Clownfish can live among sea anemones." } },
-		{ "Mike", new[] { "I'm a one-eyed monster who works at Monsters, Inc.", "My best friend and coworker is Sulley." } },
+		{ "Mike", new[] { "I'm a one eyed monster who works at Monsters, Inc.", "My best friend and coworker is Sulley." } },
 		{ "Nemo", new[] { "I'm a clownfish.", "One of my fins is smaller than the other, so my dad calls it my lucky fin." } },
 		{ "Nick", new[] { "I'm a fox who became a police officer in Zootopia.", "I used to work as a hustler before joining the Zootopia Police Department." } },
 		{ "Olaf", new[] { "I'm a snowman who is curious about summer.", "Elsa brought me to life with her magic." } },
@@ -542,6 +542,7 @@ public class FakeFriendManager : MonoSingleton<FakeFriendManager>
 	{
 		if (IsFake(aThread))
 		{
+			bool offlineCharacter = aThread is FakeThread && ((FakeThread)aThread).IsOfflineCharacter;
 			if (aMessage is LocalTextMessage)
 			{
 				LocalTextMessage txtMsg = (LocalTextMessage)aMessage;
@@ -557,6 +558,26 @@ public class FakeFriendManager : MonoSingleton<FakeFriendManager>
 					StartCoroutine(RunCallback(result.Success, callback));
 				});
 			}
+			else if (offlineCharacter)
+			{
+				bool supportedOfflineMessage = aMessage is LocalStickerMessage || aMessage is LocalGagMessage || aMessage is LocalGameStateMessage;
+				LocalStickerMessage stickerMessage = aMessage as LocalStickerMessage;
+				if (stickerMessage != null)
+				{
+					stickerMessage.Sent = supportedOfflineMessage;
+				}
+				LocalGagMessage gagMessage = aMessage as LocalGagMessage;
+				if (gagMessage != null)
+				{
+					gagMessage.Sent = supportedOfflineMessage;
+				}
+				LocalGameStateMessage gameStateMessage = aMessage as LocalGameStateMessage;
+				if (gameStateMessage != null)
+				{
+					gameStateMessage.Sent = supportedOfflineMessage;
+				}
+				StartCoroutine(RunCallback(supportedOfflineMessage, callback));
+			}
 			else
 			{
 				if (MonoSingleton<ConnectionManager>.Instance.IsConnected)
@@ -565,7 +586,7 @@ public class FakeFriendManager : MonoSingleton<FakeFriendManager>
 				}
 				StartCoroutine(RunCallback(MonoSingleton<ConnectionManager>.Instance.IsConnected, callback));
 			}
-			if (officalAccountThread != null)
+			if (officalAccountThread != null && !offlineCharacter)
 			{
 				if (aMessage is ITextMessage)
 				{
