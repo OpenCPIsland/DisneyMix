@@ -90,6 +90,7 @@ namespace Mix.Ui
             Debug.Log($"[AvatarEditor] OnColorClicked called - Index: {index}");
             if (!(lockUi >= 0f))
             {
+                ColorPicker.RecordUserSelection(index);
                 tintIndex = index;
                 if (IgnoreColorAudio)
                 {

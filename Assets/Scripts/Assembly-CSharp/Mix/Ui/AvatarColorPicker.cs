@@ -93,6 +93,17 @@ namespace Mix.Ui
 			ApplySelection(index);
 		}
 
+		public void RecordUserSelection(int index)
+		{
+			if (colors == null || index < 0 || index >= colors.Count)
+			{
+				return;
+			}
+
+			currentSelection = index;
+			pendingSelectionIndex = -1;
+		}
+
 		private void ApplySelection(int index)
 		{
 			if (currentSelection == index)
