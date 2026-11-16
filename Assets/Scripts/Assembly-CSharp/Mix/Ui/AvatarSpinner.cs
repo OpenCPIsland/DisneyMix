@@ -3,6 +3,7 @@ using System.Collections;
 using Avatar;
 using DG.Tweening;
 using Disney.Mix.SDK;
+using Mix;
 using Mix.Avatar;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -48,6 +49,12 @@ namespace Mix.Ui
 
 		private bool avatarCompositing;
 
+		private bool faceForwardWhenSpinStops = true;
+
+		private bool mousePanning;
+
+		private Vector2 lastMousePosition;
+
 		private ISpinnerListener Listener;
 
 		private float upDownAngle;
@@ -91,6 +98,9 @@ namespace Mix.Ui
 			Avatar.transform.DOKill();
 			if (Avatar.gameObject.activeInHierarchy && spinState != SpinState.PANNING && spinState != SpinState.SPINNING_UP)
 			{
+				faceForwardWhenSpinStops = pd.pointerId != -1;
+				mousePanning = pd.pointerId == -1;
+				lastMousePosition = pd.position;
 				momentum = 0f;
 				spinState = SpinState.PANNING;
 			}
@@ -106,6 +116,7 @@ namespace Mix.Ui
 
 		public void OnPanSlideComplete(PointerEventData pd)
 		{
+			mousePanning = false;
 			if (Avatar.gameObject.activeInHierarchy && spinState == SpinState.PANNING)
 			{
 				spinState = SpinState.DETERMINE_MOMENTUM;
@@ -114,6 +125,16 @@ namespace Mix.Ui
 
 		private void Update()
 		{
+			if (mousePanning && Input.GetMouseButton(0))
+			{
+				Vector2 mousePosition = Input.mousePosition;
+				Vector2 mouseDelta = mousePosition - lastMousePosition;
+				lastMousePosition = mousePosition;
+				mouseDelta.x *= Singleton<SettingsManager>.Instance.GetWidthScale();
+				mouseDelta.y *= Singleton<SettingsManager>.Instance.GetHeightScale();
+				OnPanSlide(base.gameObject, mouseDelta);
+			}
+
 			int num = 1;
 			switch (spinState)
 			{
@@ -167,7 +188,10 @@ namespace Mix.Ui
 				if (Math.Abs(speed) <= float.Epsilon)
 				{
 					spinState = SpinState.SPINNING_DONE;
-					SetEaseOnObject(Avatar, easeCurve, TweenDelay, EaseDuration);
+					if (faceForwardWhenSpinStops)
+					{
+						SetEaseOnObject(Avatar, easeCurve, TweenDelay, EaseDuration);
+					}
 				}
 				break;
 			case SpinState.SPIN_MAX_SPEED:
