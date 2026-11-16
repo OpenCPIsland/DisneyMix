@@ -87,6 +87,33 @@ public class FakeFriendManager : MonoSingleton<FakeFriendManager>
 		"Why did the octopus bring a pencil? It had a lot of points to make."
 	};
 
+	private static readonly Dictionary<string, string[]> offlineCharacterFacts = new Dictionary<string, string[]>
+	{
+		{ "Baymax", new[] { "I'm a healthcare companion robot designed to help people.", "Tadashi Hamada created me to provide medical care." } },
+		{ "Cheshire", new[] { "I'm a cat from Wonderland who can disappear and reappear.", "My wide grin can remain visible even when the rest of me disappears." } },
+		{ "Chopper", new[] { "I'm an astromech droid who travels with the Ghost crew.", "My designation is C1-10P." } },
+		{ "Disgust", new[] { "I'm one of Riley's emotions.", "My job is to help Riley avoid things she finds unpleasant." } },
+		{ "Dory", new[] { "I'm a blue tang fish.", "Blue tangs have bright yellow tails." } },
+		{ "Fear", new[] { "I'm one of Riley's emotions.", "I try to help Riley stay safe when something seems risky." } },
+		{ "Flash", new[] { "I'm a sloth who works at the Zootopia DMV.", "Sloths are mammals known for moving slowly." } },
+		{ "Hank", new[] { "I'm an octopus with seven tentacles.", "Real octopuses can change their appearance to camouflage." } },
+		{ "Joy", new[] { "I'm one of Riley's emotions.", "I help Riley notice and enjoy happy moments." } },
+		{ "Judy", new[] { "I'm a rabbit who became a police officer in Zootopia.", "I grew up in Bunnyburrow." } },
+		{ "Marlin", new[] { "I'm a clownfish and Nemo's dad.", "Clownfish can live among sea anemones." } },
+		{ "Mike", new[] { "I'm a one-eyed monster who works at Monsters, Inc.", "My best friend and coworker is Sulley." } },
+		{ "Nemo", new[] { "I'm a clownfish.", "One of my fins is smaller than the other, so my dad calls it my lucky fin." } },
+		{ "Nick", new[] { "I'm a fox who became a police officer in Zootopia.", "I used to work as a hustler before joining the Zootopia Police Department." } },
+		{ "Olaf", new[] { "I'm a snowman who is curious about summer.", "Elsa brought me to life with her magic." } },
+		{ "Sabine", new[] { "I'm a Mandalorian and an artist.", "I use colorful designs to decorate my armor." } },
+		{ "Sadness", new[] { "I'm one of Riley's emotions.", "Sadness can help people understand one another and ask for support." } },
+		{ "Sally", new[] { "I'm a rag doll who sews patches onto myself.", "I live in Halloween Town." } },
+		{ "Skellington", new[] { "I'm the Pumpkin King of Halloween Town.", "I'm known for planning Halloween celebrations." } },
+		{ "Stitch", new[] { "I'm Experiment 626, an alien experiment.", "I learned to care about the people who became my family." } },
+		{ "Stormtrooper", new[] { "Stormtroopers wear white armor and serve the Galactic Empire.", "My armor is designed to protect me during missions." } },
+		{ "Sulley", new[] { "I'm a large blue monster who works at Monsters, Inc.", "My best friend and coworker is Mike Wazowski." } },
+		{ "Zeb", new[] { "I'm a Lasat and a member of the Ghost crew.", "I was once part of the Lasan Honor Guard." } }
+	};
+
 	private static readonly Dictionary<string, string[]> offlineCharacterVocabulary = new Dictionary<string, string[]>
 	{
 		{ "greeting", new[] { "hello", "hey", "hiya", "howdy", "greetings", "what's up", "good morning", "good afternoon", "good evening" } },
@@ -101,6 +128,7 @@ public class FakeFriendManager : MonoSingleton<FakeFriendManager>
 		{ "bored", new[] { "i'm bored", "im bored", "bored", "nothing to do", "what should we do", "let's play" } },
 		{ "unsure", new[] { "i don't know", "i dont know", "idk", "not sure" } },
 		{ "joke", new[] { "tell me a joke", "tell a joke", "joke", "make me laugh", "something funny", "pun", "riddle" } },
+		{ "fact", new[] { "fact", "fun fact", "tell me something about", "did you know", "trivia" } },
 		{ "knock_knock", new[] { "knock knock", "knock-knock" } },
 		{ "knock_knock_request", new[] { "tell me a knock knock joke", "tell a knock knock joke", "knock knock joke" } }
 	};
@@ -647,6 +675,16 @@ public class FakeFriendManager : MonoSingleton<FakeFriendManager>
 		{
 			string joke = offlineCharacterJokes[UnityEngine.Random.Range(0, offlineCharacterJokes.Length)];
 			return characterName == "Hank" ? "All right, here's one: " + joke : joke;
+		}
+		if (MatchesOfflineVocabulary(normalized, "fact"))
+		{
+			string[] facts;
+			if (!offlineCharacterFacts.TryGetValue(characterName, out facts) || facts.Length == 0)
+			{
+				return "I can't think of a fact right now. Try asking me again later.";
+			}
+			string fact = facts[UnityEngine.Random.Range(0, facts.Length)];
+			return characterName == "Hank" ? "Fine, here's a fact: " + fact : "Here's a fact: " + fact;
 		}
 		if (characterName == "Hank")
 		{
