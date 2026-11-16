@@ -4529,7 +4529,7 @@ MonoBehaviour:
   Guid: 
   _componentHolder: {fileID: 0}
   _onEventNotifyEventName: 
-  _audioClip: {fileID: 8300000, guid: dcbc544f3a27dfc42bf1d4edcff5f626, type: 3}
+  _audioClip: {fileID: 8300000, guid: 83b8fe449a039f2488a3c1c4bdecc94d, type: 3}
   _audioClipHandle:
     _audioClipPath: 
     _useAudioClipPath: 1
