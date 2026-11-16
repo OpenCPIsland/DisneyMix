@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1246e163f094a76b0faca50f4209e0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 5
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -184,10 +185,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 1
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -200,6 +204,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -207,6 +212,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -223,6 +242,7 @@ MonoBehaviour:
   _randomWeights: 
   _looped: 0
   _delayOnFirstPlay: 0
+  _triggerMode: 0
   _delay: 0
   _delayRandomization: 0
   _delayMaxRandomization: 0
@@ -306,6 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fec75dd33feb4dce58a8c39d38ad6a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -323,10 +344,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -339,6 +363,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -346,6 +371,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -361,6 +400,9 @@ MonoBehaviour:
   _showInMixerView: 1
   _targetGroupComponentPath: 
   _ignoreUnloadUnusedAssets: 1
+  _eventEditor:
+    _eventNames: []
+    _eventList: []
 --- !u!1 &1099924759453213
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,6 +447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed1a1cfa9638468770f8018792a6d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -422,10 +465,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 1
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -438,6 +484,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -445,6 +492,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -468,9 +529,18 @@ MonoBehaviour:
   _delay: 0
   _delayInBeats: 0
   _loop: 0
+  _ignoreNativeLoop: 0
+  _randomizeStart: 0
+  _randomizeStartPercentage: 100
   _numLoops: -1
   _loopMarkersLoaded: 0
   _useLoopMarkers: 1
+  _startLoopMarkerIndex: 0
+  _endLoopMarkerIndex: 1
+  _loopRegionIndex: 0
+  _randomizeStartLoopMarkerIndex: 0
+  _randomizeEndLoopMarkerIndex: 0
+  _randomizeRegionIndex: 0
   _dontPlay: 0
   _dontStopOnDestroy: 0
   _ignoreVirtualization: 0
@@ -479,6 +549,8 @@ MonoBehaviour:
   _randomizeMaxPosition: 10
   _syncWithMusicTime: 0
   _markers: []
+  _syncRegionsWithTempo: 0
+  _audioClipTempo: 120
   _regions: []
 --- !u!1 &1129524085063612
 GameObject:
@@ -626,6 +698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed1a1cfa9638468770f8018792a6d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -643,10 +716,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -659,6 +735,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -666,6 +743,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -689,9 +780,18 @@ MonoBehaviour:
   _delay: 0
   _delayInBeats: 0
   _loop: 0
+  _ignoreNativeLoop: 0
+  _randomizeStart: 0
+  _randomizeStartPercentage: 100
   _numLoops: -1
   _loopMarkersLoaded: 0
   _useLoopMarkers: 1
+  _startLoopMarkerIndex: 0
+  _endLoopMarkerIndex: 1
+  _loopRegionIndex: 0
+  _randomizeStartLoopMarkerIndex: 0
+  _randomizeEndLoopMarkerIndex: 0
+  _randomizeRegionIndex: 0
   _dontPlay: 0
   _dontStopOnDestroy: 0
   _ignoreVirtualization: 0
@@ -700,6 +800,8 @@ MonoBehaviour:
   _randomizeMaxPosition: 10
   _syncWithMusicTime: 0
   _markers: []
+  _syncRegionsWithTempo: 0
+  _audioClipTempo: 120
   _regions: []
 --- !u!1 &1160370359261184
 GameObject:
@@ -745,6 +847,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed1a1cfa9638468770f8018792a6d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -762,10 +865,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -778,6 +884,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -785,6 +892,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -808,9 +929,18 @@ MonoBehaviour:
   _delay: 0
   _delayInBeats: 0
   _loop: 0
+  _ignoreNativeLoop: 0
+  _randomizeStart: 0
+  _randomizeStartPercentage: 100
   _numLoops: -1
   _loopMarkersLoaded: 0
   _useLoopMarkers: 1
+  _startLoopMarkerIndex: 0
+  _endLoopMarkerIndex: 1
+  _loopRegionIndex: 0
+  _randomizeStartLoopMarkerIndex: 0
+  _randomizeEndLoopMarkerIndex: 0
+  _randomizeRegionIndex: 0
   _dontPlay: 0
   _dontStopOnDestroy: 0
   _ignoreVirtualization: 0
@@ -819,6 +949,8 @@ MonoBehaviour:
   _randomizeMaxPosition: 10
   _syncWithMusicTime: 0
   _markers: []
+  _syncRegionsWithTempo: 0
+  _audioClipTempo: 120
   _regions: []
 --- !u!1 &1178628243265101
 GameObject:
@@ -864,6 +996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed1a1cfa9638468770f8018792a6d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -881,10 +1014,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -897,6 +1033,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -904,6 +1041,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -927,9 +1078,18 @@ MonoBehaviour:
   _delay: 0
   _delayInBeats: 0
   _loop: 0
+  _ignoreNativeLoop: 0
+  _randomizeStart: 0
+  _randomizeStartPercentage: 100
   _numLoops: -1
   _loopMarkersLoaded: 0
   _useLoopMarkers: 1
+  _startLoopMarkerIndex: 0
+  _endLoopMarkerIndex: 1
+  _loopRegionIndex: 0
+  _randomizeStartLoopMarkerIndex: 0
+  _randomizeEndLoopMarkerIndex: 0
+  _randomizeRegionIndex: 0
   _dontPlay: 0
   _dontStopOnDestroy: 0
   _ignoreVirtualization: 0
@@ -938,6 +1098,8 @@ MonoBehaviour:
   _randomizeMaxPosition: 10
   _syncWithMusicTime: 0
   _markers: []
+  _syncRegionsWithTempo: 0
+  _audioClipTempo: 120
   _regions: []
 --- !u!1 &1206465316164746
 GameObject:
@@ -1006,7 +1168,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f6d0c8848f25381458af8dbf5376a2fa, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1086,6 +1248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed1a1cfa9638468770f8018792a6d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -1103,10 +1266,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -1119,6 +1285,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -1126,6 +1293,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -1149,9 +1330,18 @@ MonoBehaviour:
   _delay: 0
   _delayInBeats: 0
   _loop: 0
+  _ignoreNativeLoop: 0
+  _randomizeStart: 0
+  _randomizeStartPercentage: 100
   _numLoops: -1
   _loopMarkersLoaded: 0
   _useLoopMarkers: 1
+  _startLoopMarkerIndex: 0
+  _endLoopMarkerIndex: 1
+  _loopRegionIndex: 0
+  _randomizeStartLoopMarkerIndex: 0
+  _randomizeEndLoopMarkerIndex: 0
+  _randomizeRegionIndex: 0
   _dontPlay: 0
   _dontStopOnDestroy: 0
   _ignoreVirtualization: 0
@@ -1160,6 +1350,8 @@ MonoBehaviour:
   _randomizeMaxPosition: 10
   _syncWithMusicTime: 0
   _markers: []
+  _syncRegionsWithTempo: 0
+  _audioClipTempo: 120
   _regions: []
 --- !u!1 &1239251073604350
 GameObject:
@@ -1205,6 +1397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed1a1cfa9638468770f8018792a6d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -1222,10 +1415,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -1238,6 +1434,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -1245,6 +1442,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -1268,9 +1479,18 @@ MonoBehaviour:
   _delay: 0
   _delayInBeats: 0
   _loop: 0
+  _ignoreNativeLoop: 0
+  _randomizeStart: 0
+  _randomizeStartPercentage: 100
   _numLoops: -1
   _loopMarkersLoaded: 0
   _useLoopMarkers: 1
+  _startLoopMarkerIndex: 0
+  _endLoopMarkerIndex: 1
+  _loopRegionIndex: 0
+  _randomizeStartLoopMarkerIndex: 0
+  _randomizeEndLoopMarkerIndex: 0
+  _randomizeRegionIndex: 0
   _dontPlay: 0
   _dontStopOnDestroy: 0
   _ignoreVirtualization: 0
@@ -1279,6 +1499,8 @@ MonoBehaviour:
   _randomizeMaxPosition: 10
   _syncWithMusicTime: 0
   _markers: []
+  _syncRegionsWithTempo: 0
+  _audioClipTempo: 120
   _regions: []
 --- !u!1 &1281402185778497
 GameObject:
@@ -1325,6 +1547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fec75dd33feb4dce58a8c39d38ad6a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -1342,10 +1565,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -1358,6 +1584,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -1365,6 +1592,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -1380,6 +1621,9 @@ MonoBehaviour:
   _showInMixerView: 1
   _targetGroupComponentPath: 
   _ignoreUnloadUnusedAssets: 1
+  _eventEditor:
+    _eventNames: []
+    _eventList: []
 --- !u!1 &1309155251783760
 GameObject:
   m_ObjectHideFlags: 0
@@ -1431,6 +1675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fec75dd33feb4dce58a8c39d38ad6a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -1448,10 +1693,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 1
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -1464,6 +1712,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -1471,6 +1720,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -1486,6 +1749,9 @@ MonoBehaviour:
   _showInMixerView: 1
   _targetGroupComponentPath: 
   _ignoreUnloadUnusedAssets: 1
+  _eventEditor:
+    _eventNames: []
+    _eventList: []
 --- !u!1 &1363850493482893
 GameObject:
   m_ObjectHideFlags: 0
@@ -1530,6 +1796,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed1a1cfa9638468770f8018792a6d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -1547,10 +1814,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -1563,6 +1833,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -1570,6 +1841,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -1593,9 +1878,18 @@ MonoBehaviour:
   _delay: 0
   _delayInBeats: 0
   _loop: 0
+  _ignoreNativeLoop: 0
+  _randomizeStart: 0
+  _randomizeStartPercentage: 100
   _numLoops: -1
   _loopMarkersLoaded: 0
   _useLoopMarkers: 1
+  _startLoopMarkerIndex: 0
+  _endLoopMarkerIndex: 1
+  _loopRegionIndex: 0
+  _randomizeStartLoopMarkerIndex: 0
+  _randomizeEndLoopMarkerIndex: 0
+  _randomizeRegionIndex: 0
   _dontPlay: 0
   _dontStopOnDestroy: 0
   _ignoreVirtualization: 0
@@ -1604,6 +1898,8 @@ MonoBehaviour:
   _randomizeMaxPosition: 10
   _syncWithMusicTime: 0
   _markers: []
+  _syncRegionsWithTempo: 0
+  _audioClipTempo: 120
   _regions: []
 --- !u!1 &1378287482953595
 GameObject:
@@ -1649,6 +1945,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed1a1cfa9638468770f8018792a6d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -1666,10 +1963,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -1682,6 +1982,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -1689,6 +1990,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -1712,9 +2027,18 @@ MonoBehaviour:
   _delay: 0
   _delayInBeats: 0
   _loop: 0
+  _ignoreNativeLoop: 0
+  _randomizeStart: 0
+  _randomizeStartPercentage: 100
   _numLoops: -1
   _loopMarkersLoaded: 0
   _useLoopMarkers: 1
+  _startLoopMarkerIndex: 0
+  _endLoopMarkerIndex: 1
+  _loopRegionIndex: 0
+  _randomizeStartLoopMarkerIndex: 0
+  _randomizeEndLoopMarkerIndex: 0
+  _randomizeRegionIndex: 0
   _dontPlay: 0
   _dontStopOnDestroy: 0
   _ignoreVirtualization: 0
@@ -1723,6 +2047,8 @@ MonoBehaviour:
   _randomizeMaxPosition: 10
   _syncWithMusicTime: 0
   _markers: []
+  _syncRegionsWithTempo: 0
+  _audioClipTempo: 120
   _regions: []
 --- !u!1 &1380903849939997
 GameObject:
@@ -1769,6 +2095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed1a1cfa9638468770f8018792a6d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 5
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -1786,10 +2113,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -1802,6 +2132,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -1809,6 +2140,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -1832,9 +2177,18 @@ MonoBehaviour:
   _delay: 0
   _delayInBeats: 0
   _loop: 0
+  _ignoreNativeLoop: 0
+  _randomizeStart: 0
+  _randomizeStartPercentage: 100
   _numLoops: -1
   _loopMarkersLoaded: 0
   _useLoopMarkers: 1
+  _startLoopMarkerIndex: 0
+  _endLoopMarkerIndex: 1
+  _loopRegionIndex: 0
+  _randomizeStartLoopMarkerIndex: 0
+  _randomizeEndLoopMarkerIndex: 0
+  _randomizeRegionIndex: 0
   _dontPlay: 0
   _dontStopOnDestroy: 0
   _ignoreVirtualization: 0
@@ -1843,6 +2197,8 @@ MonoBehaviour:
   _randomizeMaxPosition: 10
   _syncWithMusicTime: 0
   _markers: []
+  _syncRegionsWithTempo: 0
+  _audioClipTempo: 120
   _regions: []
 --- !u!114 &114842576004877212
 MonoBehaviour:
@@ -1926,6 +2282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1246e163f094a76b0faca50f4209e0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 5
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -1943,10 +2300,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 1
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -1959,6 +2319,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -1966,6 +2327,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -1982,6 +2357,7 @@ MonoBehaviour:
   _randomWeights: 
   _looped: 0
   _delayOnFirstPlay: 0
+  _triggerMode: 0
   _delay: 0
   _delayRandomization: 0
   _delayMaxRandomization: 0
@@ -2067,6 +2443,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1246e163f094a76b0faca50f4209e0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 5
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -2084,10 +2461,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 1
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -2100,6 +2480,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -2107,6 +2488,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -2123,6 +2518,7 @@ MonoBehaviour:
   _randomWeights: 
   _looped: 0
   _delayOnFirstPlay: 0
+  _triggerMode: 0
   _delay: 0
   _delayRandomization: 0
   _delayMaxRandomization: 0
@@ -2206,6 +2602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fec75dd33feb4dce58a8c39d38ad6a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -2223,10 +2620,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 1
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -2239,6 +2639,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -2246,6 +2647,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -2261,6 +2676,9 @@ MonoBehaviour:
   _showInMixerView: 1
   _targetGroupComponentPath: 
   _ignoreUnloadUnusedAssets: 1
+  _eventEditor:
+    _eventNames: []
+    _eventList: []
 --- !u!1 &1471144478871085
 GameObject:
   m_ObjectHideFlags: 0
@@ -2305,6 +2723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed1a1cfa9638468770f8018792a6d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -2322,10 +2741,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -2338,6 +2760,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -2345,6 +2768,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -2368,9 +2805,18 @@ MonoBehaviour:
   _delay: 0
   _delayInBeats: 0
   _loop: 0
+  _ignoreNativeLoop: 0
+  _randomizeStart: 0
+  _randomizeStartPercentage: 100
   _numLoops: -1
   _loopMarkersLoaded: 0
   _useLoopMarkers: 1
+  _startLoopMarkerIndex: 0
+  _endLoopMarkerIndex: 1
+  _loopRegionIndex: 0
+  _randomizeStartLoopMarkerIndex: 0
+  _randomizeEndLoopMarkerIndex: 0
+  _randomizeRegionIndex: 0
   _dontPlay: 0
   _dontStopOnDestroy: 0
   _ignoreVirtualization: 0
@@ -2379,6 +2825,8 @@ MonoBehaviour:
   _randomizeMaxPosition: 10
   _syncWithMusicTime: 0
   _markers: []
+  _syncRegionsWithTempo: 0
+  _audioClipTempo: 120
   _regions: []
 --- !u!1 &1492505013856399
 GameObject:
@@ -2427,6 +2875,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1246e163f094a76b0faca50f4209e0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 5
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -2444,10 +2893,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 1
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -2460,6 +2912,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -2467,6 +2920,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -2483,6 +2950,7 @@ MonoBehaviour:
   _randomWeights: 
   _looped: 0
   _delayOnFirstPlay: 0
+  _triggerMode: 0
   _delay: 0
   _delayRandomization: 0
   _delayMaxRandomization: 0
@@ -2565,6 +3033,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed1a1cfa9638468770f8018792a6d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -2582,10 +3051,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -2598,6 +3070,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -2605,6 +3078,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -2628,9 +3115,18 @@ MonoBehaviour:
   _delay: 0
   _delayInBeats: 0
   _loop: 0
+  _ignoreNativeLoop: 0
+  _randomizeStart: 0
+  _randomizeStartPercentage: 100
   _numLoops: -1
   _loopMarkersLoaded: 0
   _useLoopMarkers: 1
+  _startLoopMarkerIndex: 0
+  _endLoopMarkerIndex: 1
+  _loopRegionIndex: 0
+  _randomizeStartLoopMarkerIndex: 0
+  _randomizeEndLoopMarkerIndex: 0
+  _randomizeRegionIndex: 0
   _dontPlay: 0
   _dontStopOnDestroy: 0
   _ignoreVirtualization: 0
@@ -2639,6 +3135,8 @@ MonoBehaviour:
   _randomizeMaxPosition: 10
   _syncWithMusicTime: 0
   _markers: []
+  _syncRegionsWithTempo: 0
+  _audioClipTempo: 120
   _regions: []
 --- !u!1 &1506894464281689
 GameObject:
@@ -2684,6 +3182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed1a1cfa9638468770f8018792a6d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -2701,10 +3200,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -2717,6 +3219,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -2724,6 +3227,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -2747,9 +3264,18 @@ MonoBehaviour:
   _delay: 0
   _delayInBeats: 0
   _loop: 0
+  _ignoreNativeLoop: 0
+  _randomizeStart: 0
+  _randomizeStartPercentage: 100
   _numLoops: -1
   _loopMarkersLoaded: 0
   _useLoopMarkers: 1
+  _startLoopMarkerIndex: 0
+  _endLoopMarkerIndex: 1
+  _loopRegionIndex: 0
+  _randomizeStartLoopMarkerIndex: 0
+  _randomizeEndLoopMarkerIndex: 0
+  _randomizeRegionIndex: 0
   _dontPlay: 0
   _dontStopOnDestroy: 0
   _ignoreVirtualization: 0
@@ -2758,6 +3284,8 @@ MonoBehaviour:
   _randomizeMaxPosition: 10
   _syncWithMusicTime: 0
   _markers: []
+  _syncRegionsWithTempo: 0
+  _audioClipTempo: 120
   _regions: []
 --- !u!1 &1570023601382579
 GameObject:
@@ -2807,6 +3335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1246e163f094a76b0faca50f4209e0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 5
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -2824,10 +3353,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 1
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -2840,6 +3372,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -2847,6 +3380,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -2863,6 +3410,7 @@ MonoBehaviour:
   _randomWeights: 
   _looped: 0
   _delayOnFirstPlay: 0
+  _triggerMode: 0
   _delay: 0
   _delayRandomization: 0
   _delayMaxRandomization: 0
@@ -2946,6 +3494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fec75dd33feb4dce58a8c39d38ad6a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -2963,10 +3512,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 1
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -2979,6 +3531,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -2986,6 +3539,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -3001,6 +3568,9 @@ MonoBehaviour:
   _showInMixerView: 1
   _targetGroupComponentPath: 
   _ignoreUnloadUnusedAssets: 1
+  _eventEditor:
+    _eventNames: []
+    _eventList: []
 --- !u!1 &1645501948816649
 GameObject:
   m_ObjectHideFlags: 0
@@ -3045,6 +3615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed1a1cfa9638468770f8018792a6d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -3062,10 +3633,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 1
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -3078,6 +3652,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -3085,6 +3660,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -3108,9 +3697,18 @@ MonoBehaviour:
   _delay: 0
   _delayInBeats: 0
   _loop: 1
+  _ignoreNativeLoop: 0
+  _randomizeStart: 0
+  _randomizeStartPercentage: 100
   _numLoops: -1
   _loopMarkersLoaded: 0
   _useLoopMarkers: 1
+  _startLoopMarkerIndex: 0
+  _endLoopMarkerIndex: 1
+  _loopRegionIndex: 0
+  _randomizeStartLoopMarkerIndex: 0
+  _randomizeEndLoopMarkerIndex: 0
+  _randomizeRegionIndex: 0
   _dontPlay: 0
   _dontStopOnDestroy: 0
   _ignoreVirtualization: 0
@@ -3119,6 +3717,8 @@ MonoBehaviour:
   _randomizeMaxPosition: 10
   _syncWithMusicTime: 0
   _markers: []
+  _syncRegionsWithTempo: 0
+  _audioClipTempo: 120
   _regions: []
 --- !u!1 &1655858458385520
 GameObject:
@@ -3164,6 +3764,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed1a1cfa9638468770f8018792a6d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -3181,10 +3782,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -3197,6 +3801,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -3204,6 +3809,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -3227,9 +3846,18 @@ MonoBehaviour:
   _delay: 0
   _delayInBeats: 0
   _loop: 0
+  _ignoreNativeLoop: 0
+  _randomizeStart: 0
+  _randomizeStartPercentage: 100
   _numLoops: -1
   _loopMarkersLoaded: 0
   _useLoopMarkers: 1
+  _startLoopMarkerIndex: 0
+  _endLoopMarkerIndex: 1
+  _loopRegionIndex: 0
+  _randomizeStartLoopMarkerIndex: 0
+  _randomizeEndLoopMarkerIndex: 0
+  _randomizeRegionIndex: 0
   _dontPlay: 0
   _dontStopOnDestroy: 0
   _ignoreVirtualization: 0
@@ -3238,6 +3866,8 @@ MonoBehaviour:
   _randomizeMaxPosition: 10
   _syncWithMusicTime: 0
   _markers: []
+  _syncRegionsWithTempo: 0
+  _audioClipTempo: 120
   _regions: []
 --- !u!1 &1688756005748034
 GameObject:
@@ -3284,6 +3914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed1a1cfa9638468770f8018792a6d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -3301,10 +3932,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 1
   _fadeInCurve: 0.5
@@ -3317,6 +3951,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -3324,6 +3959,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -3347,9 +3996,18 @@ MonoBehaviour:
   _delay: 0
   _delayInBeats: 0
   _loop: 1
+  _ignoreNativeLoop: 0
+  _randomizeStart: 0
+  _randomizeStartPercentage: 100
   _numLoops: -1
   _loopMarkersLoaded: 0
   _useLoopMarkers: 1
+  _startLoopMarkerIndex: 0
+  _endLoopMarkerIndex: 1
+  _loopRegionIndex: 0
+  _randomizeStartLoopMarkerIndex: 0
+  _randomizeEndLoopMarkerIndex: 0
+  _randomizeRegionIndex: 0
   _dontPlay: 0
   _dontStopOnDestroy: 0
   _ignoreVirtualization: 0
@@ -3358,6 +4016,8 @@ MonoBehaviour:
   _randomizeMaxPosition: 10
   _syncWithMusicTime: 0
   _markers: []
+  _syncRegionsWithTempo: 0
+  _audioClipTempo: 120
   _regions: []
 --- !u!114 &114135996234662445
 MonoBehaviour:
@@ -3527,6 +4187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed1a1cfa9638468770f8018792a6d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -3544,10 +4205,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -3560,6 +4224,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -3567,6 +4232,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -3590,9 +4269,18 @@ MonoBehaviour:
   _delay: 0
   _delayInBeats: 0
   _loop: 0
+  _ignoreNativeLoop: 0
+  _randomizeStart: 0
+  _randomizeStartPercentage: 100
   _numLoops: -1
   _loopMarkersLoaded: 0
   _useLoopMarkers: 1
+  _startLoopMarkerIndex: 0
+  _endLoopMarkerIndex: 1
+  _loopRegionIndex: 0
+  _randomizeStartLoopMarkerIndex: 0
+  _randomizeEndLoopMarkerIndex: 0
+  _randomizeRegionIndex: 0
   _dontPlay: 0
   _dontStopOnDestroy: 0
   _ignoreVirtualization: 0
@@ -3601,6 +4289,8 @@ MonoBehaviour:
   _randomizeMaxPosition: 10
   _syncWithMusicTime: 0
   _markers: []
+  _syncRegionsWithTempo: 0
+  _audioClipTempo: 120
   _regions: []
 --- !u!1 &1787642919468811
 GameObject:
@@ -3648,6 +4338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fec75dd33feb4dce58a8c39d38ad6a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -3665,10 +4356,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 0
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -3681,6 +4375,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -3688,6 +4383,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -3703,6 +4412,9 @@ MonoBehaviour:
   _showInMixerView: 1
   _targetGroupComponentPath: 
   _ignoreUnloadUnusedAssets: 1
+  _eventEditor:
+    _eventNames: []
+    _eventList: []
 --- !u!1 &1803835933281368
 GameObject:
   m_ObjectHideFlags: 0
@@ -3747,6 +4459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed1a1cfa9638468770f8018792a6d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -3764,10 +4477,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 0
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -3780,6 +4496,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -3787,6 +4504,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
@@ -3810,9 +4541,18 @@ MonoBehaviour:
   _delay: 0
   _delayInBeats: 0
   _loop: 0
+  _ignoreNativeLoop: 0
+  _randomizeStart: 0
+  _randomizeStartPercentage: 100
   _numLoops: -1
   _loopMarkersLoaded: 0
   _useLoopMarkers: 1
+  _startLoopMarkerIndex: 0
+  _endLoopMarkerIndex: 1
+  _loopRegionIndex: 0
+  _randomizeStartLoopMarkerIndex: 0
+  _randomizeEndLoopMarkerIndex: 0
+  _randomizeRegionIndex: 0
   _dontPlay: 0
   _dontStopOnDestroy: 0
   _ignoreVirtualization: 0
@@ -3821,6 +4561,8 @@ MonoBehaviour:
   _randomizeMaxPosition: 10
   _syncWithMusicTime: 0
   _markers: []
+  _syncRegionsWithTempo: 0
+  _audioClipTempo: 120
   _regions: []
 --- !u!1 &1906666410036607
 GameObject:
@@ -4016,6 +4758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e0f87c49340f9a0e38835b0ff5308c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numVirtualizationEvents: 100
   _maxInstances: 1
   _stealingBehaviour: 0
   _minimumPlaybackInterval: 0
@@ -4033,10 +4776,13 @@ MonoBehaviour:
   _priority: 128
   _panLevel: 1
   _spreadLevel: 0
+  _spatialize: 0
   _dopplerLevel: 1
   _maxDistance: 500
   _minDistance: 1
   _rolloffMode: 0
+  _customCurvesType: 0
+  _customCurvesName: 
   _overrideFadeProperties: 0
   _fadeInTime: 0
   _fadeInCurve: 0.5
@@ -4049,6 +4795,7 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _overrideAudioMixerGroup: 0
   _audioMixerGroup: {fileID: 0}
+  _notifyParentComponent: 0
   _audioBusName: 
   _overrideAudioBus: 0
   _overrideMusicTimeSettings: 0
@@ -4056,6 +4803,20 @@ MonoBehaviour:
   _musicTempo: -1
   _musicTimeSignatureLower: 0
   _musicTimeSignatureUpper: 0
+  _musicTimeResetOnPlay: 0
+  _midiProperties:
+    _overrideParentNoteTracking: 0
+    _noteTracking: 0
+    _keyRangeMin: 0
+    _keyRangeMax: 127
+    _velocityRangeMin: 0
+    _velocityRangeMax: 127
+    _channelRangeMin: 1
+    _channelRangeMax: 16
+    _rootNote: -36
+    _transpose: 0
+    _velocity: 0
+  _overrideSpatializeProperty: 0
   _probability: 100
   _multipleInstancesPerGameObject: 1
   _componentVirtualization: 0
