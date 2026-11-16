@@ -74,7 +74,7 @@ namespace Mix.Ui
 			IOrderedEnumerable<IFriend> orderedEnumerable = MixSession.User.Friends.OrderBy((IFriend f) => f.NickFirstOrDisplayName());
 			foreach (IFriend item in orderedEnumerable)
 			{
-				if (!(item is FakeFriendData))
+				if (IsSelectableFriend(item))
 				{
 					bool flag = thread != null && thread.IsThreadMember(item.Id);
 					if (flag)
@@ -231,7 +231,7 @@ namespace Mix.Ui
 			List<IFriend> list2 = new List<IFriend>();
 			foreach (IFriend friend in MixSession.User.Friends)
 			{
-				if (friend is FakeFriendData)
+				if (!IsSelectableFriend(friend))
 				{
 					continue;
 				}
@@ -274,6 +274,12 @@ namespace Mix.Ui
 					itemFriends.Add(item);
 				}
 			}
+		}
+
+		private bool IsSelectableFriend(IFriend friend)
+		{
+			FakeFriendData fakeFriend = friend as FakeFriendData;
+			return fakeFriend == null || (thread == null && fakeFriend.IsOfflineCharacter);
 		}
 
 		private void ToggleUnselected(bool aState)

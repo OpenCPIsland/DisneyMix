@@ -35,6 +35,13 @@ namespace Mix.Test
 				FailTest("text not correct " + new StackTrace(true).GetFrame(0).GetFileLineNumber());
 				return;
 			}
+			fakeFirstFriendDocumentCollectionApi.AddText(false, 1003L, true, true, "uniqueid", "updated text");
+			text = fakeFirstFriendDocumentCollectionApi.GetText("uniqueid");
+			if (text.isFromFriend || text.timeSent != 1003 || !text.isSent || text.ContentId_or_GameName_or_Text_or_MessageId != "updated text")
+			{
+				FailTest("text update not correct " + new StackTrace(true).GetFrame(0).GetFileLineNumber());
+				return;
+			}
 			fakeFirstFriendDocumentCollectionApi.AddText(true, 1001L, true, true, "uniqueid1", "text1");
 			fakeFirstFriendDocumentCollectionApi.AddText(true, 1001L, true, true, "uniqueid2", "text2");
 			fakeFirstFriendDocumentCollectionApi.AddText(true, 1001L, true, true, "uniqueid3", "text3");
@@ -73,6 +80,13 @@ namespace Mix.Test
 			if (fakeFirstFriendDocumentCollectionApi.collections.Count > 0)
 			{
 				FailTest("log out didnt remove all collections.");
+				return;
+			}
+			BaseFakeFirstFriendDocument reloadedText = fakeFirstFriendDocumentCollectionApi.GetText("uniqueid");
+			if (reloadedText == null || reloadedText.ContentId_or_GameName_or_Text_or_MessageId != "updated text")
+			{
+				FailTest("text was not preserved after reopening the collection.");
+				return;
 			}
 			else
 			{

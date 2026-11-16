@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Disney.Mix.SDK;
 using Mix.Entitlements;
+using Mix.FakeFriend.Datatypes;
 using Mix.Session.Extensions;
 using UnityEngine;
 using UnityEngine.Events;
@@ -69,9 +70,10 @@ namespace Mix.Ui
 		{
 			toggleGroup = GetComponent<ToggleGroup>();
 			Toggle[] toggleArray = base.transform.GetComponentsInChildren<Toggle>();
+			bool offlineCharacter = thread is FakeThread && ((FakeThread)thread).IsOfflineCharacter;
 			for (int i = 0; i < toggleArray.Length; i++)
 			{
-				if (!disabled)
+				if (!disabled && (!offlineCharacter || i == CHAT_TOGGLE))
 				{
 					int index = i;
 					valueChangedCallbacks[toggleArray[i]] = delegate(bool value)
@@ -173,9 +175,10 @@ namespace Mix.Ui
 			if (inited || force)
 			{
 				Toggle[] componentsInChildren = base.transform.GetComponentsInChildren<Toggle>();
+				bool offlineCharacter = thread is FakeThread && ((FakeThread)thread).IsOfflineCharacter;
 				for (int i = 0; i < componentsInChildren.Length; i++)
 				{
-					componentsInChildren[i].interactable = aState;
+					componentsInChildren[i].interactable = aState && (!offlineCharacter || i == CHAT_TOGGLE);
 				}
 				if (thread is IOfficialAccountChatThread)
 				{

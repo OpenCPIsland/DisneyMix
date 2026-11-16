@@ -16,6 +16,61 @@ namespace Mix.Session.Local
     {
         public static int fakeObjectIds;
 
+        private static readonly string[] OfflineCharacterNames =
+        {
+            "Baymax",
+            "Cheshire",
+            "Chopper",
+            "Disgust",
+            "Dory",
+            "Fear",
+            "Flash",
+            "Hank",
+            "Joy",
+            "Judy",
+            "Marlin",
+            "Mike",
+            "Nemo",
+            "Nick",
+            "Olaf",
+            "Sabine",
+            "Sadness",
+            "Sally",
+            "Skellington",
+            "Stitch",
+            "Stormtrooper",
+            "Sulley",
+            "Zeb"
+        };
+
+        // Avatar selection keys use catalog reference IDs, not filename numbers.
+        private static readonly Dictionary<string, string> OfflineCharacterCostumes = new Dictionary<string, string>
+        {
+            { "Baymax", "17" },
+            { "Olaf", "19" },
+            { "Stitch", "20" },
+            { "Sally", "21" },
+            { "Skellington", "22" },
+            { "Cheshire", "23" },
+            { "Judy", "24" },
+            { "Nick", "25" },
+            { "Flash", "26" },
+            { "Mike", "27" },
+            { "Sulley", "29" },
+            { "Joy", "32" },
+            { "Sadness", "34" },
+            { "Fear", "35" },
+            { "Disgust", "36" },
+            { "Dory", "215" },
+            { "Nemo", "216" },
+            { "Marlin", "217" },
+            { "Hank", "218" },
+            { "Sabine", "40" },
+            { "Zeb", "42" },
+            { "Chopper", "43" },
+            { "Stormtrooper", "44" }
+        };
+
         protected ILocalUser realUser;
 
         public IEnumerable<IFriend> fakeFriends;
@@ -223,11 +278,22 @@ namespace Mix.Session.Local
             realUser = aRealUser;
             SetupListeners();
             mixbot = new FakeFriendData();
-            fakeFriends = new List<IFriend>();
-            (fakeFriends as List<IFriend>).Add(mixbot);
-            fakeThreads = new List<IOneOnOneChatThread>();
             mixbotThread = new FakeThread(this, new List<IRemoteChatMember> { mixbot });
-            (fakeThreads as List<IOneOnOneChatThread>).Add(mixbotThread);
+            List<IFriend> localFriends = new List<IFriend> { mixbot };
+            List<IOneOnOneChatThread> localThreads = new List<IOneOnOneChatThread>
+            {
+                mixbotThread
+            };
+            foreach (string characterName in OfflineCharacterNames)
+            {
+                string costumeId;
+                OfflineCharacterCostumes.TryGetValue(characterName, out costumeId);
+                FakeFriendData character = new FakeFriendData(characterName, "OfflineCharacter-" + characterName.Replace(" ", string.Empty), true, costumeId);
+                localFriends.Add(character);
+                localThreads.Add(new FakeThread(this, new List<IRemoteChatMember> { character }, true));
+            }
+            fakeFriends = localFriends;
+            fakeThreads = localThreads;
             PendingFriendInvitations = new List<IIncomingFriendInvitation>();
         }
 
@@ -311,9 +377,24 @@ namespace Mix.Session.Local
             List<BaseFakeFirstFriendDocument> allDocuments = Singleton<MixDocumentCollections>.Instance.fakeFirstFriendDocumentCollectionApi.GetAllDocuments();
             foreach (BaseFakeFirstFriendDocument item in allDocuments)
             {
-                AddFakeMessage(mixbotThread, item);
+                FakeThread thread = mixbotThread;
+                if (FakeThread.IsOfflineCharacterMessageId(item.uniqueId))
+                {
+                    thread = fakeThreads
+                        .OfType<FakeThread>()
+                        .FirstOrDefault(candidate => candidate.OwnsOfflineCharacterMessageId(item.uniqueId));
+                    if (thread == null)
+                    {
+                        continue;
+                    }
+                }
+                AddFakeMessage(thread, item);
             }
             mixbotThread.SortMessagesByTime();
+            foreach (FakeThread thread in fakeThreads.OfType<FakeThread>().Where(candidate => candidate.IsOfflineCharacter))
+            {
+                thread.SortMessagesByTime();
+            }
         }
 
         private void AddFakeMessage(FakeThread thread, BaseFakeFirstFriendDocument message)
@@ -357,9 +438,10 @@ namespace Mix.Session.Local
                 localVideoMessage = (string.IsNullOrEmpty(message.ContentId_or_GameName_or_Text_or_MessageId) ? new LocalVideoMessage(message.GameData_or_FilePath_or_VideoPath, message.Encoding_or_Format, message.Width_or_Bitrate, message.Height_or_Duration, message.VideoWidth, message.VideoHeight, message.ThumbnailPath, message.ThumbnailEncoding, message.ThumbnailWidth, message.ThumbnailHeight, senderId5, new DateTime(message.timeSent, DateTimeKind.Utc), message.isSent, message.isRead, message.uniqueId) : new LocalVideoMessage(message.ContentId_or_GameName_or_Text_or_MessageId, senderId5, new DateTime(message.timeSent, DateTimeKind.Utc), message.isSent, message.isRead, message.uniqueId));
                 thread.AddExistingMessage(localVideoMessage);
             }
-            if (int.Parse(message.uniqueId) >= fakeObjectIds)
+            int messageId;
+            if (int.TryParse(message.uniqueId, out messageId) && messageId >= fakeObjectIds)
             {
-                fakeObjectIds = int.Parse(message.uniqueId) + 1;
+                fakeObjectIds = messageId + 1;
             }
         }
 

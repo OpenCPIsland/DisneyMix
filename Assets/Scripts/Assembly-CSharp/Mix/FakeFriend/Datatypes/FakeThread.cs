@@ -26,6 +26,17 @@ namespace Mix.FakeFriend.Datatypes
 
 		private List<IChatMessage> messages;
 
+		public bool IsOfflineCharacter { get; private set; }
+
+		private string CharacterName
+		{
+			get
+			{
+				FakeFriendData character = members.FirstOrDefault() as FakeFriendData;
+				return character != null ? character.FirstName : string.Empty;
+			}
+		}
+
 		private SdkActions actionGenerator = new SdkActions();
 
 		public IChatThreadTrustLevel TrustLevel
@@ -72,8 +83,18 @@ namespace Mix.FakeFriend.Datatypes
 		{
 			get
 			{
-				return "FakeThreadId";
+				return IsOfflineCharacter ? "OfflineCharacterThread:" + members.First().Id : "FakeThreadId";
 			}
+		}
+
+		public static bool IsOfflineCharacterMessageId(string messageId)
+		{
+			return !string.IsNullOrEmpty(messageId) && messageId.StartsWith("OfflineCharacterThread:", StringComparison.Ordinal);
+		}
+
+		public bool OwnsOfflineCharacterMessageId(string messageId)
+		{
+			return IsOfflineCharacter && !string.IsNullOrEmpty(messageId) && messageId.StartsWith(Id + "|", StringComparison.Ordinal);
 		}
 
 		public uint UnreadMessageCount { get; private set; }
@@ -142,10 +163,11 @@ namespace Mix.FakeFriend.Datatypes
 		{
 		};
 
-		public FakeThread(LocalUserWrapper user, IEnumerable<IRemoteChatMember> members)
+		public FakeThread(LocalUserWrapper user, IEnumerable<IRemoteChatMember> members, bool isOfflineCharacter = false)
 		{
 			User = user;
 			UnreadMessageCount = 0u;
+			IsOfflineCharacter = isOfflineCharacter;
 			trustLevel = new LocalTrustLevel();
 			trustLevel.AllMembersTrustEachOther = true;
 			nickname = new LocalThreadNickname();
@@ -246,7 +268,17 @@ namespace Mix.FakeFriend.Datatypes
 		{
 			LocalTextMessage fakeMsg = new LocalTextMessage(User.Id, text);
 			fakeMsg.Read = true;
+			if (IsOfflineCharacter)
+			{
+				fakeMsg.Id = CreateOfflineCharacterMessageId();
+			}
 			messages.Add(fakeMsg);
+			if (IsOfflineCharacter)
+			{
+				PersistOfflineCharacterTextMessage(fakeMsg, false);
+				MonoSingleton<FakeFriendManager>.Instance.ProcessOfflineCharacterMessage(this, fakeMsg, callback);
+				return fakeMsg;
+			}
 			HandleMessage(fakeMsg, delegate(bool r)
 			{
 				callback(new FakeSendTextMessageResult(r));
@@ -254,6 +286,39 @@ namespace Mix.FakeFriend.Datatypes
 				this.OnTextMessageAdded(this, new FakeAddTextMessageArgs(fakeMsg));
 			});
 			return fakeMsg;
+		}
+
+		public void NotifyOfflineTextMessageSent(LocalTextMessage message)
+		{
+			PersistOfflineCharacterTextMessage(message, false);
+			this.OnTextMessageAdded(this, new FakeAddTextMessageArgs(message));
+		}
+
+		public void AddOfflineCharacterReply(string text)
+		{
+			LocalTextMessage message = new LocalTextMessage(members.First().Id, text);
+			message.Id = CreateOfflineCharacterMessageId();
+			message.Read = true;
+			message.Sent = true;
+			messages.Add(message);
+			PersistOfflineCharacterTextMessage(message, true);
+			this.OnTextMessageAdded(this, new FakeAddTextMessageArgs(message));
+		}
+
+		private string CreateOfflineCharacterMessageId()
+		{
+			return Id + "|" + Guid.NewGuid().ToString("N");
+		}
+
+		private void PersistOfflineCharacterTextMessage(LocalTextMessage message, bool isFromCharacter)
+		{
+			Singleton<MixDocumentCollections>.Instance.fakeFirstFriendDocumentCollectionApi.AddText(
+				isFromCharacter,
+				message.TimeSent.Ticks,
+				message.Sent,
+				message.Read,
+				message.Id,
+				message.Text);
 		}
 
 		public IVideoMessage SendVideoMessage(string videoPath, VideoFormat format, int bitrate, int duration, int videoWidth, int videoHeight, string thumbnailPath, PhotoEncoding thumbnailEncoding, int thumbnailWidth, int thumbnailHeight, Action<ISendVideoMessageResult> callback)

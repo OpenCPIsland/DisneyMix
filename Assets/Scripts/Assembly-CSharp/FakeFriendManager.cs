@@ -9,6 +9,7 @@ using Mix;
 using Mix.Connectivity;
 using Mix.DeviceDb;
 using Mix.FakeFriend.Datatypes;
+using Mix.FakeFriend.Results;
 using Mix.Localization;
 using Mix.Session;
 using Mix.Session.Extensions;
@@ -75,6 +76,34 @@ public class FakeFriendManager : MonoSingleton<FakeFriendManager>
 	private Dictionary<string, bool> messagesSent = new Dictionary<string, bool>();
 
 	private List<int> messagesPending = new List<int>();
+
+	private readonly Dictionary<string, int> offlineKnockKnockStages = new Dictionary<string, int>();
+
+	private static readonly string[] offlineCharacterJokes =
+	{
+		"Why did the fish bring a backpack? For its school of fish!",
+		"Why did the star pack a map? It wanted to explore the universe!",
+		"What do you call a snowman on a warm day? A puddle with a plan.",
+		"Why did the octopus bring a pencil? It had a lot of points to make."
+	};
+
+	private static readonly Dictionary<string, string[]> offlineCharacterVocabulary = new Dictionary<string, string[]>
+	{
+		{ "greeting", new[] { "hello", "hey", "hiya", "howdy", "greetings", "what's up", "good morning", "good afternoon", "good evening" } },
+		{ "farewell", new[] { "bye", "goodbye", "good bye", "see you later", "see ya", "catch you later", "talk to you later", "gotta go", "need to go", "have to go", "good night", "goodnight" } },
+		{ "thanks", new[] { "thanks", "thanks a lot", "thank you", "thank you so much", "many thanks", "thx", "appreciate it", "appreciate you", "much appreciated", "that helped" } },
+		{ "welcome", new[] { "you're welcome", "you are welcome", "no problem", "no worries", "anytime" } },
+		{ "identity", new[] { "what is your name", "what's your name", "who are you" } },
+		{ "how_are_you", new[] { "how are you", "how are you doing", "how's it going", "how are things" } },
+		{ "favorites", new[] { "what do you like", "what do you enjoy", "what's your favorite", "what is your favorite", "favourite", "hobby", "hobbies", "what do you do for fun" } },
+		{ "apology", new[] { "sorry", "my bad", "oops" } },
+		{ "compliment", new[] { "you're nice", "you are nice", "you're cool", "you are cool", "i like you", "i like chatting with you" } },
+		{ "bored", new[] { "i'm bored", "im bored", "bored", "nothing to do", "what should we do", "let's play" } },
+		{ "unsure", new[] { "i don't know", "i dont know", "idk", "not sure" } },
+		{ "joke", new[] { "tell me a joke", "tell a joke", "joke", "make me laugh", "something funny", "pun", "riddle" } },
+		{ "knock_knock", new[] { "knock knock", "knock-knock" } },
+		{ "knock_knock_request", new[] { "tell me a knock knock joke", "tell a knock knock joke", "knock knock joke" } }
+	};
 
 	private Dictionary<string, string> messages = new Dictionary<string, string>
 	{
@@ -531,6 +560,279 @@ public class FakeFriendManager : MonoSingleton<FakeFriendManager>
 				}
 			}
 			return true;
+		}
+		return false;
+	}
+
+	public void ProcessOfflineCharacterMessage(FakeThread thread, LocalTextMessage message, Action<ISendTextMessageResult> callback)
+	{
+		StartCoroutine(CompleteOfflineCharacterMessage(thread, message, callback));
+	}
+
+	private IEnumerator CompleteOfflineCharacterMessage(FakeThread thread, LocalTextMessage message, Action<ISendTextMessageResult> callback)
+	{
+		yield return new WaitForSeconds(0.25f);
+		if (thread == null || message == null)
+		{
+			callback(new FakeSendTextMessageResult(false));
+			yield break;
+		}
+		message.Sent = true;
+		callback(new FakeSendTextMessageResult(true));
+		thread.NotifyOfflineTextMessageSent(message);
+		yield return new WaitForSeconds(0.25f);
+		thread.AddOfflineCharacterReply(GetOfflineCharacterReply(thread, thread.RemoteMembers.First().FirstName, message.Text));
+	}
+
+	private string GetOfflineCharacterReply(FakeThread thread, string characterName, string message)
+	{
+		string normalized = message.ToLowerInvariant();
+		if (MatchesOfflineVocabulary(normalized, "farewell"))
+		{
+			offlineKnockKnockStages.Remove(thread.Id);
+			if (characterName == "Hank")
+			{
+				return "All right, talk later. Try not to make a big deal out of it.";
+			}
+			return "Talk to you later! I'll be here whenever you want to chat.";
+		}
+		int knockKnockStage;
+		if (offlineKnockKnockStages.TryGetValue(thread.Id, out knockKnockStage))
+		{
+			if (knockKnockStage == 1)
+			{
+				offlineKnockKnockStages[thread.Id] = 2;
+				string setup = message.Trim().TrimEnd('?', '!', '.');
+				if (characterName == "Hank")
+				{
+					return string.IsNullOrWhiteSpace(setup) ? "Yeah, yeah. Who?" : setup + " who? Hmph.";
+				}
+				return string.IsNullOrWhiteSpace(setup) ? "Who?" : setup + " who?";
+			}
+			if (knockKnockStage == 3)
+			{
+				offlineKnockKnockStages[thread.Id] = 4;
+				if (characterName == "Hank")
+				{
+					return "A little fish. That's the joke, apparently.";
+				}
+				return "A little fish.";
+			}
+			offlineKnockKnockStages.Remove(thread.Id);
+			if (characterName == "Hank")
+			{
+				return knockKnockStage == 2 ? "Fine, that's a good one, I guess. Want another?" : "A little fish you a wonderful day. There, happy?";
+			}
+			return knockKnockStage == 2 ? "That's a good one! Want to hear another?" : "A little fish you a wonderful day!";
+		}
+		if (MatchesOfflineVocabulary(normalized, "knock_knock_request"))
+		{
+			offlineKnockKnockStages[thread.Id] = 3;
+			if (characterName == "Hank")
+			{
+				return "Knock knock. Don't keep me waiting.";
+			}
+			return "Knock knock!";
+		}
+		if (MatchesOfflineVocabulary(normalized, "knock_knock"))
+		{
+			offlineKnockKnockStages[thread.Id] = 1;
+			if (characterName == "Hank")
+			{
+				return "Yeah, yeah. Who's there?";
+			}
+			return "Who's there?";
+		}
+		if (MatchesOfflineVocabulary(normalized, "joke"))
+		{
+			string joke = offlineCharacterJokes[UnityEngine.Random.Range(0, offlineCharacterJokes.Length)];
+			return characterName == "Hank" ? "All right, here's one: " + joke : joke;
+		}
+		if (characterName == "Hank")
+		{
+			return GetGrumpyHankReply(normalized);
+		}
+		if (MatchesOfflineVocabulary(normalized, "thanks"))
+		{
+			return "You're welcome! I'm glad we got to chat.";
+		}
+		if (MatchesOfflineVocabulary(normalized, "welcome"))
+		{
+			return "Thanks! Let me know if you'd like to talk about anything else.";
+		}
+		if (MatchesOfflineVocabulary(normalized, "identity"))
+		{
+			return "I'm " + characterName + ". It's nice to meet you!";
+		}
+		if (MatchesOfflineVocabulary(normalized, "how_are_you"))
+		{
+			return "I'm doing well, thanks for asking! How are you?";
+		}
+		if (MatchesOfflineVocabulary(normalized, "favorites"))
+		{
+			return "I like hearing about the things my friends enjoy. What's your favorite thing to do?";
+		}
+		if (MatchesOfflineVocabulary(normalized, "apology"))
+		{
+			return "No worries! Everyone has moments like that.";
+		}
+		if (MatchesOfflineVocabulary(normalized, "compliment"))
+		{
+			return "Aw, thanks! I like chatting with you too.";
+		}
+		if (MatchesOfflineVocabulary(normalized, "bored"))
+		{
+			return "We could play a word game or talk about something you enjoy. What sounds fun?";
+		}
+		if (MatchesOfflineVocabulary(normalized, "unsure"))
+		{
+			return "That's okay! We can talk about an adventure, a favorite place, or a joke.";
+		}
+		if (normalized == "hi" || normalized.StartsWith("hi ") || normalized.StartsWith("hi!") || normalized.StartsWith("hi,") || normalized.StartsWith("hi.")
+			|| MatchesOfflineVocabulary(normalized, "greeting"))
+		{
+			if (characterName == "Dory")
+			{
+				return "Hi there, friend! I'm really happy to chat with you. What should we talk about?";
+			}
+			if (characterName == "Nemo")
+			{
+				return "Hi! I'm glad you stopped by. Want to explore the reef or talk about your day?";
+			}
+			return "Hi! I'm glad we can chat. What would you like to talk about?";
+		}
+		if (characterName == "Dory" && ContainsAny(normalized, "quote", "movie", "swim", "swimming", "keep going", "carry on"))
+		{
+			return "Just keep swimming!";
+		}
+		if (characterName == "Dory")
+		{
+			if (ContainsAny(normalized, "sad", "lonely", "upset", "unhappy", "down", "blue", "discouraged", "frustrated", "bad day"))
+			{
+				return "I'm sorry you're feeling that way. Want to tell me what's on your mind?";
+			}
+			if (ContainsAny(normalized, "remember", "remembering", "memory", "recall", "forget", "forgot", "forgetting"))
+			{
+				return "Sometimes it helps to take things one little step at a time. What's one thing you remember?";
+			}
+			if (ContainsAny(normalized, "ocean", "sea", "underwater", "marine", "aquatic", "fish", "reef", "coral", "aquarium", "turtle", "shark"))
+			{
+				return "The ocean is huge, but it's nicer when you have a friend to explore with.";
+			}
+			return "That is a very interesting thought! What else can you tell me?";
+		}
+		if (characterName == "Nemo" && ContainsAny(normalized, "family", "parent", "parents", "sibling", "siblings", "brother", "sister", "dad", "father", "mom", "mother"))
+		{
+			return "My family means a lot to me. Good friends can make any adventure feel less scary.";
+		}
+		if (ContainsAny(normalized, "ocean", "sea", "underwater", "marine", "aquatic", "fish", "reef", "coral", "aquarium", "turtle", "shark")
+			&& ContainsAny(characterName.ToLowerInvariant(), "nemo", "marlin", "hank"))
+		{
+			return "The reef is full of little places to explore. What would you like to discover?";
+		}
+		if (ContainsAny(normalized, "adventure", "explore", "exploration", "journey", "mission", "challenge", "scared", "afraid", "fearful", "brave", "courage", "courageous")
+			&& ContainsAny(characterName.ToLowerInvariant(), "nemo", "judy", "sabine"))
+		{
+			return "That sounds like a big adventure! Let's take it one step at a time.";
+		}
+		if (characterName == "Baymax" && ContainsAny(normalized, "sad", "hurt", "injured", "pain", "sick", "ill", "unwell", "doctor", "health", "tired", "exhausted", "worried", "anxious", "stressed"))
+		{
+			return "Thank you for sharing that with me. What would help you feel a little better?";
+		}
+		if (characterName == "Olaf" && ContainsAny(normalized, "snow", "snowman", "winter", "ice", "cold", "summer", "warm", "hot", "sunny", "beach", "vacation"))
+		{
+			return "That sounds delightful! What is your favorite thing to do with a friend?";
+		}
+		if (characterName == "Stitch" && ContainsAny(normalized, "friend", "friends", "friendship", "family", "together", "support", "help", "team", "teamwork"))
+		{
+			return "Friends make every day more fun. What do you like doing together?";
+		}
+		if (ContainsAny(characterName.ToLowerInvariant(), "joy", "sadness", "fear", "disgust")
+			&& ContainsAny(normalized, "feel", "feeling", "emotion", "emotions", "happy", "excited", "calm", "sad", "angry", "mad", "scared", "nervous", "worried", "proud", "frustrated", "disappointed"))
+		{
+			return "Feelings can tell us something important. What do you think yours are telling you?";
+		}
+		if (ContainsAny(characterName.ToLowerInvariant(), "mike", "sulley")
+			&& ContainsAny(normalized, "fun", "funny", "laugh", "laughing", "giggle", "humor", "comedy", "amusing", "joke", "game", "play"))
+		{
+			return "Having fun with friends is the best. What always makes you laugh?";
+		}
+		if (ContainsAny(characterName.ToLowerInvariant(), "chopper", "stormtrooper", "sabine", "zeb")
+			&& ContainsAny(normalized, "space", "galaxy", "universe", "star", "starship", "spaceship", "spacecraft", "rocket", "astronaut", "droid", "planet", "travel"))
+		{
+			return "There are so many places to explore. Where would you want to go first?";
+		}
+		return "That sounds interesting. Tell me a little more. What happened next?";
+	}
+
+	private string GetGrumpyHankReply(string normalized)
+	{
+		if (MatchesOfflineVocabulary(normalized, "thanks"))
+		{
+			return "Yeah, yeah. You're welcome.";
+		}
+		if (MatchesOfflineVocabulary(normalized, "welcome"))
+		{
+			return "It's nothing. Don't mention it.";
+		}
+		if (MatchesOfflineVocabulary(normalized, "identity"))
+		{
+			return "Hank. What, did you forget already?";
+		}
+		if (MatchesOfflineVocabulary(normalized, "how_are_you"))
+		{
+			return "I've had better days. But I'm all right, I guess. You?";
+		}
+		if (MatchesOfflineVocabulary(normalized, "favorites"))
+		{
+			return "Quiet corners. And not being bothered. What's your favorite?";
+		}
+		if (MatchesOfflineVocabulary(normalized, "apology"))
+		{
+			return "It's fine. Just watch it next time.";
+		}
+		if (MatchesOfflineVocabulary(normalized, "compliment"))
+		{
+			return "Yeah, sure. Don't get used to me saying thanks.";
+		}
+		if (MatchesOfflineVocabulary(normalized, "bored"))
+		{
+			return "Well, don't just sit there. Pick a game or tell me what's bothering you.";
+		}
+		if (MatchesOfflineVocabulary(normalized, "unsure"))
+		{
+			return "Take your time. No need to make a whole production out of it.";
+		}
+		if (normalized == "hi" || normalized.StartsWith("hi ") || normalized.StartsWith("hi!") || normalized.StartsWith("hi,") || normalized.StartsWith("hi.")
+			|| MatchesOfflineVocabulary(normalized, "greeting"))
+		{
+			return "Oh, it's you. Hmph. What do you want? I was enjoying the quiet.";
+		}
+		if (ContainsAny(normalized, "sad", "lonely", "upset", "unhappy", "down", "blue", "discouraged", "frustrated", "bad day"))
+		{
+			return "Well, that stinks. Want to talk about it? I can listen, I guess.";
+		}
+		if (ContainsAny(normalized, "ocean", "sea", "underwater", "marine", "aquatic", "fish", "reef", "coral", "aquarium", "turtle", "shark"))
+		{
+			return "The reef's all right, I guess. Just don't expect a guided tour.";
+		}
+		return "Hmph. That's interesting, I suppose. Go on then.";
+	}
+
+	private bool MatchesOfflineVocabulary(string text, string category)
+	{
+		string[] terms;
+		return offlineCharacterVocabulary.TryGetValue(category, out terms) && ContainsAny(text, terms);
+	}
+
+	private bool ContainsAny(string text, params string[] terms)
+	{
+		foreach (string term in terms)
+		{
+			if (text.Contains(term))
+			{
+				return true;
+			}
 		}
 		return false;
 	}

@@ -16,6 +16,12 @@ namespace Mix.FakeFriend.Datatypes
 
 		private FakeDisplayName displayName;
 
+		private string characterName;
+
+		private string id;
+
+		public bool IsOfflineCharacter { get; private set; }
+
 		public bool IsTrusted
 		{
 			get
@@ -60,7 +66,7 @@ namespace Mix.FakeFriend.Datatypes
 		{
 			get
 			{
-				return "Fake Friend";
+				return id;
 			}
 		}
 
@@ -68,7 +74,7 @@ namespace Mix.FakeFriend.Datatypes
 		{
 			get
 			{
-				return "Fake Friend";
+				return id;
 			}
 		}
 
@@ -76,7 +82,7 @@ namespace Mix.FakeFriend.Datatypes
 		{
 			get
 			{
-				return "Mixbot";
+				return characterName;
 			}
 		}
 
@@ -97,9 +103,17 @@ namespace Mix.FakeFriend.Datatypes
 		};
 
 		public FakeFriendData()
+			: this("Mixbot", "Fake Friend", false)
 		{
+		}
+
+		public FakeFriendData(string characterName, string id, bool isOfflineCharacter, string costumeId = null)
+		{
+			this.characterName = characterName;
+			this.id = id;
+			IsOfflineCharacter = isOfflineCharacter;
 			displayName = new FakeDisplayName();
-			displayName.Text = "Mixbot";
+			displayName.Text = characterName;
 			avatar = new ClientAvatar();
 			avatar.Accessory = new ClientAvatarProperty("3", 13, 0.0, 0.0);
 			avatar.Costume = new ClientAvatarProperty("15", 0, 0.0, 0.0);
@@ -110,8 +124,15 @@ namespace Mix.FakeFriend.Datatypes
 			avatar.Mouth = new ClientAvatarProperty("84", 0, 0.0, 0.0110180018469691);
 			avatar.Skin = new ClientAvatarProperty("123", 3, 0.0, 0.0);
 			avatar.Hat = new ClientAvatarProperty("257", 0, 0.0, 0.0);
-			loadMixbotDna();
-			MonoSingleton<AssetManager>.Instance.cpipeManager.OnCpipeLoaded += OnCpipeReady;
+			if (isOfflineCharacter)
+			{
+				avatar.Costume = new ClientAvatarProperty(string.IsNullOrEmpty(costumeId) ? "0" : costumeId, 0, 0.0, 0.0);
+			}
+			if (!isOfflineCharacter)
+			{
+				loadMixbotDna();
+				MonoSingleton<AssetManager>.Instance.cpipeManager.OnCpipeLoaded += OnCpipeReady;
+			}
 		}
 
 		public void Report(IChatThread thread, ReportUserReason reason, Action<IReportUserResult> callback)
