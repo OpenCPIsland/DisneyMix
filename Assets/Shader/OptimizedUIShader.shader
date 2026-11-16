@@ -27,7 +27,7 @@ SubShader {
   }
   Blend SrcAlpha OneMinusSrcAlpha
   ColorMask [_ColorMask]
-  GpuProgramID 45395
+
 CGPROGRAM
 //#pragma target 4.0
 

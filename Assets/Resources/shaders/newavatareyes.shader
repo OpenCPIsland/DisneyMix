@@ -14,7 +14,7 @@ Properties {
 }
 SubShader { 
  Pass {
-  GpuProgramID 40352
+
 CGPROGRAM
 //#pragma target 4.0
 

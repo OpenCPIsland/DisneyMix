@@ -2,24 +2,27 @@ Shader "Custom/gradientlightalphaZWrite" {
 Properties {
  _MainTex ("Base (RGB)", 2D) = "white" { }
 }
-	//DummyShaderTextExporter
-	
-	SubShader{
-		Tags { "RenderType" = "Opaque" }
-		LOD 200
-		CGPROGRAM
-#pragma surface surf Lambert
-#pragma target 3.0
-		sampler2D _MainTex;
-		struct Input
-		{
-			float2 uv_MainTex;
-		};
-		void surf(Input IN, inout SurfaceOutput o)
-		{
-			float4 c = tex2D(_MainTex, IN.uv_MainTex);
-			o.Albedo = c.rgb;
-		}
-		ENDCG
-	}
+SubShader {
+ Tags { "RenderType"="Transparent" "Queue"="Transparent" }
+ Pass {
+  Tags { "QUEUE"="Transparent" "RenderType"="Transparent" }
+  Blend SrcAlpha OneMinusSrcAlpha, One One
+ CGPROGRAM
+ #pragma vertex vert
+ #pragma fragment frag
+ #include "UnityCG.cginc"
+ sampler2D _MainTex;
+ float4 _MainTex_ST;
+ struct appdata { float4 vertex : POSITION; float2 texcoord : TEXCOORD0; fixed4 color : COLOR; };
+ struct v2f { float4 vertex : SV_POSITION; float2 uv : TEXCOORD0;
+ fixed4 color : COLOR; };
+ v2f vert(appdata v) { v2f o; o.vertex = UnityObjectToClipPos(v.vertex);
+ o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
+ o.color = v.color; return o; }
+ fixed4 frag(v2f i) : SV_Target {
+fixed4 c = tex2D(_MainTex, i.uv);
+ return c; }
+ ENDCG
+ }
+}
 }

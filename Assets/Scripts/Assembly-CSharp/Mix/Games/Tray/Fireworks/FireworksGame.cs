@@ -610,14 +610,20 @@ namespace Mix.Games.Tray.Fireworks
 				{
 					Toolbox.Instance.mFireworkManager.mGestureFirework.GetComponent<Light>().intensity -= ModifyLightDecayVal * Time.fixedDeltaTime * 3f;
 				}
-				mCastleMaterial.color = Color.Lerp(mCastleMaterial.color, Color.white, ModifyLightDecayVal * Time.fixedDeltaTime / 2f);
+				if (mCastleMaterial != null)
+				{
+					mCastleMaterial.color = Color.Lerp(mCastleMaterial.color, Color.white, ModifyLightDecayVal * Time.fixedDeltaTime / 2f);
+				}
 			}
 		}
 
 		public void LightUpScene(int colorIndex)
 		{
 			PointLight.intensity = 7f;
-			mCastleMaterial.color = mChosenScene.ForegroundTints[colorIndex];
+			if (mCastleMaterial != null && mChosenScene != null && mChosenScene.ForegroundTints != null && colorIndex >= 0 && colorIndex < mChosenScene.ForegroundTints.Length)
+			{
+				mCastleMaterial.color = mChosenScene.ForegroundTints[colorIndex];
+			}
 		}
 
 		public void LightUpSceneG()

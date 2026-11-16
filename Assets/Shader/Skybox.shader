@@ -1,4 +1,4 @@
-Shader "Skybox/SixSidedTwo" {
+Shader "Skybox/6 Sided" {
 Properties {
     _Tint ("Tint Color", Color) = (.5, .5, .5, .5)
     [Gamma] _Exposure ("Exposure", Range(0, 8)) = 1.0
