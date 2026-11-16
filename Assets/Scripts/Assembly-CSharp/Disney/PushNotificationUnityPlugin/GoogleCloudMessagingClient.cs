@@ -94,7 +94,6 @@ namespace Disney.PushNotificationUnityPlugin
 
 		public bool IsNotificationEnabled()
 		{
-			bool flag = true;
 			return UnityApiJavaClass.CallStatic<bool>("isNotificationEnabled", new object[0]);
 		}
 	}

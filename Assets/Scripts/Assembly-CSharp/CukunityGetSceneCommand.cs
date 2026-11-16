@@ -13,7 +13,7 @@ public class CukunityGetSceneCommand : CukunityCommand
 	public override void Process(Hashtable req, Hashtable res)
 	{
 		List<GameObject> list = new List<GameObject>();
-		foreach (Selectable allSelectable in Selectable.allSelectables)
+		foreach (Selectable allSelectable in Selectable.allSelectablesArray)
 		{
 			list.Add(allSelectable.gameObject);
 		}

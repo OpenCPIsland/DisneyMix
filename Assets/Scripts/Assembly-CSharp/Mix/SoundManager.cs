@@ -14,7 +14,7 @@ namespace Mix
 
 		public void StopAllAudioSourcesFromRoot(Transform mRoot, GameObject mExemption = null)
 		{
-			AudioSource[] array = ((!(mRoot != null)) ? Object.FindObjectsOfType<AudioSource>() : mRoot.GetComponentsInChildren<AudioSource>(false));
+			AudioSource[] array = ((!(mRoot != null)) ? Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.InstanceID) : mRoot.GetComponentsInChildren<AudioSource>(false));
 			AudioSource[] array2 = array;
 			foreach (AudioSource audioSource in array2)
 			{

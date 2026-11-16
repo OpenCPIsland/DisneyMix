@@ -27,11 +27,13 @@ namespace Mix.Games.Tray.Fireworks
 			Color startColor2 = Color.Lerp(Colors[whichColor], Colors[num], t);
 			for (int i = 0; i < AffectedSystems.Length; i++)
 			{
-				AffectedSystems[i].startColor = startColor;
+				ParticleSystem.MainModule mainModule1 = AffectedSystems[i].main;
+				mainModule1.startColor = startColor;
 			}
 			for (int i = 0; i < AffectedTrails.Length; i++)
 			{
-				AffectedSystems[i].startColor = startColor2;
+				ParticleSystem.MainModule mainModule2 = AffectedSystems[i].main;
+				mainModule2.startColor = startColor2;
 			}
 		}
 	}

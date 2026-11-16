@@ -100,7 +100,7 @@ namespace Disney.Mix.SDK.Internal
 			}
 			downloadHandler = new DownloadHandlerBuffer();
 			www.downloadHandler = downloadHandler;
-			www.Send();
+			www.SendWebRequest();
 		}
 
 		public void Dispose()

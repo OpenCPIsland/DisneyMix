@@ -10,7 +10,8 @@ public class ParticleSpeedAdjuster : MonoBehaviour
 		ParticleSystem[] array = componentsInChildren;
 		foreach (ParticleSystem particleSystem in array)
 		{
-			particleSystem.playbackSpeed = PlaybackSpeed;
+			ParticleSystem.MainModule mainModule1 = particleSystem.main;
+			mainModule1.simulationSpeed = PlaybackSpeed;
 		}
 	}
 }

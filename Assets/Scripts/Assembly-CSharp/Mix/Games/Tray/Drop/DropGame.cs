@@ -260,7 +260,7 @@ namespace Mix.Games.Tray.Drop
 			{
 				if (instance == null)
 				{
-					instance = UnityEngine.Object.FindObjectOfType<DropGame>();
+					instance = UnityEngine.Object.FindFirstObjectByType<DropGame>();
 				}
 				return instance;
 			}

@@ -12,8 +12,10 @@ namespace Mix.Games.Tray.Friendzy.FriendzyQuiz
 
 		public void SetParticleEffectColor(Color aColor)
 		{
-			mSelectedParticle.startColor = aColor;
-			mExplosionParticle.startColor = aColor;
+			ParticleSystem.MainModule mainModule1 = mSelectedParticle.main;
+			mainModule1.startColor = aColor;
+			ParticleSystem.MainModule mainModule2 = mExplosionParticle.main;
+			mainModule2.startColor = aColor;
 		}
 
 		public void EnableSelectionParticle(bool aEnable)

@@ -40,7 +40,11 @@ namespace Mix.Session.Local.Messages
 			}
 		}
 
-		public event EventHandler<AbstractChatThreadGameStateMessageUpdatedEventArgs> OnStateUpdated;
+		public event EventHandler<AbstractChatThreadGameStateMessageUpdatedEventArgs> OnStateUpdated
+		{
+			add { }
+			remove { }
+		}
 
 		public LocalGameStateMessage(string aGameName, Dictionary<string, object> aPayload, string senderId)
 		{

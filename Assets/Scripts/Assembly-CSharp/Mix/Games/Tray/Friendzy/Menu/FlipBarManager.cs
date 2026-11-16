@@ -73,7 +73,6 @@ namespace Mix.Games.Tray.Friendzy.Menu
 
 		public FlipPanel GetAvailableFlipBar(int aIndex)
 		{
-			FlipPanel flipPanel = null;
 			if (aIndex < mFlipBars.Count)
 			{
 				return mFlipBars[aIndex];

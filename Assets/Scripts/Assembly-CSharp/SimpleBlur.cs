@@ -29,11 +29,7 @@ public class SimpleBlur : MonoBehaviour
 
 	private void Start()
 	{
-		if (!SystemInfo.supportsImageEffects)
-		{
-			base.enabled = false;
-		}
-		else if (!shader || !shader.isSupported)
+		if (!shader || !shader.isSupported)
 		{
 			base.enabled = false;
 		}

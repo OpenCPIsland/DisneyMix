@@ -62,14 +62,14 @@ namespace Tests
 
 		private void verifyCleanSingleton()
 		{
-			Object obj = Object.FindObjectOfType(typeof(ThreadPoolManager));
+			Object obj = Object.FindFirstObjectByType(typeof(ThreadPoolManager));
 			if (obj == null)
 			{
 				IntegrationTest.Pass(base.gameObject);
 				return;
 			}
 			ThreadPoolManager instance = ThreadPoolManager.Instance;
-			Object obj2 = Object.FindObjectOfType(typeof(ThreadPoolManager));
+			Object obj2 = Object.FindFirstObjectByType(typeof(ThreadPoolManager));
 			IntegrationTest.Assert(base.gameObject, obj != obj2, "Previous instance of Thread manager was not cleaned in between tests");
 			if (!(instance != null))
 			{

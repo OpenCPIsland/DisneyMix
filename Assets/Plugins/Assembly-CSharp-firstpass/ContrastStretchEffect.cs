@@ -84,11 +84,7 @@ public class ContrastStretchEffect : MonoBehaviour
 
 	private void Start()
 	{
-		if (!SystemInfo.supportsImageEffects)
-		{
-			base.enabled = false;
-		}
-		else if (!shaderAdapt.isSupported || !shaderApply.isSupported || !shaderLum.isSupported || !shaderReduce.isSupported)
+		if (!shaderAdapt.isSupported || !shaderApply.isSupported || !shaderLum.isSupported || !shaderReduce.isSupported)
 		{
 			base.enabled = false;
 		}

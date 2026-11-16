@@ -194,8 +194,9 @@ namespace Mix.Games.Tray.Fireworks
 		{
 			GameObject gameObject = new GameObject("BezierCurver");
 			LineRenderer lineRenderer = gameObject.AddComponent<LineRenderer>();
-			lineRenderer.SetWidth(0.1f, 0.1f);
-			lineRenderer.SetVertexCount(numVertexes);
+			lineRenderer.startWidth = 0.1f;
+			lineRenderer.endWidth = 0.1f;
+			lineRenderer.positionCount = numVertexes;
 			for (int i = 0; i < numVertexes; i++)
 			{
 				lineRenderer.SetPosition(i, GetPointAtTime((float)i / (float)(numVertexes - 1)) + offset);
@@ -207,8 +208,9 @@ namespace Mix.Games.Tray.Fireworks
 		{
 			GameObject gameObject = new GameObject("BezierCurverTangent");
 			LineRenderer lineRenderer = gameObject.AddComponent<LineRenderer>();
-			lineRenderer.SetWidth(0.05f, 0.05f);
-			lineRenderer.SetVertexCount(3);
+			lineRenderer.startWidth = 0.05f;
+			lineRenderer.endWidth = 0.05f;
+			lineRenderer.positionCount = 3;
 			Vector3 pointAtTime = GetPointAtTime(t);
 			lineRenderer.SetPosition(0, pointAtTime - GetTangetAtTime(t) * 3f);
 			lineRenderer.SetPosition(1, pointAtTime);
@@ -219,8 +221,9 @@ namespace Mix.Games.Tray.Fireworks
 		{
 			GameObject gameObject = new GameObject("BezierCurverTangent");
 			LineRenderer lineRenderer = gameObject.AddComponent<LineRenderer>();
-			lineRenderer.SetWidth(0.05f, 0.05f);
-			lineRenderer.SetVertexCount(2);
+			lineRenderer.startWidth = 0.05f;
+			lineRenderer.endWidth = 0.05f;
+			lineRenderer.positionCount = 2;
 			Vector3 vector = GetPointAtTime(t) + offset;
 			lineRenderer.SetPosition(0, vector);
 			lineRenderer.SetPosition(1, vector - GetNormalAtTime(t));

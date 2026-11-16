@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using JsonFx.Json;
 using UnityEngine;
+using UnityEngine.Networking;
 
 [ExecuteInEditMode]
 public class Kochava : MonoBehaviour
@@ -118,7 +119,6 @@ public class Kochava : MonoBehaviour
 
 	private string whitelist;
 
-	private static bool adidBlacklisted = false;
 
 	private static AttributionCallback attributionCallback;
 
@@ -590,8 +590,11 @@ public class Kochava : MonoBehaviour
 		};
 		Log(postData, KochLogLevel.debug);
 		float wwwLoadTime = Time.time;
-		WWW www = new WWW("https://control.kochava.com/track/kvinit", Encoding.UTF8.GetBytes(postData), headers);
-		yield return www;
+		UnityWebRequest www = new UnityWebRequest("https://control.kochava.com/track/kvinit", UnityWebRequest.kHttpVerbPOST);
+		www.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(postData));
+		www.downloadHandler = new DownloadHandlerBuffer();
+		foreach (KeyValuePair<string, string> header in headers) www.SetRequestHeader(header.Key, header.Value);
+		yield return www.SendWebRequest();
 		if (!string.IsNullOrEmpty(www.error))
 		{
 			Log("Kvinit handshake failed: " + www.error + ", seconds: " + (Time.time - wwwLoadTime) + ")", KochLogLevel.warning);
@@ -600,11 +603,11 @@ public class Kochava : MonoBehaviour
 			yield break;
 		}
 		Dictionary<string, object> serverResponse = new Dictionary<string, object>();
-		if (www.text != string.Empty)
+		if (www.downloadHandler.text != string.Empty)
 		{
 			try
 			{
-				serverResponse = JsonReader.Deserialize<Dictionary<string, object>>(www.text);
+				serverResponse = JsonReader.Deserialize<Dictionary<string, object>>(www.downloadHandler.text);
 			}
 			catch (Exception ex)
 			{
@@ -612,10 +615,10 @@ public class Kochava : MonoBehaviour
 				Log("Failed Deserialize JSON response to kvinit: " + e, KochLogLevel.warning);
 			}
 		}
-		Log(www.text, KochLogLevel.debug);
+		Log(www.downloadHandler.text, KochLogLevel.debug);
 		if (!serverResponse.ContainsKey("success"))
 		{
-			Log("Kvinit handshake parsing failed: " + www.text, KochLogLevel.warning);
+			Log("Kvinit handshake parsing failed: " + www.downloadHandler.text, KochLogLevel.warning);
 			yield return new WaitForSeconds(30f);
 			StartCoroutine(Init_KV(postData));
 			yield break;
@@ -842,7 +845,6 @@ public class Kochava : MonoBehaviour
 						devIdBlacklist.Add(devIdBlacklistArr[i]);
 						if (devIdBlacklistArr[i].ToLower().Equals("adid"))
 						{
-							adidBlacklisted = true;
 						}
 					}
 				}
@@ -1565,15 +1567,18 @@ public class Kochava : MonoBehaviour
 				{ "User-Agent", userAgent }
 			};
 			Log(postData, KochLogLevel.debug);
-			WWW www = new WWW("https://control.kochava.com/track/kvTracker?v4", Encoding.UTF8.GetBytes(postData), headers);
-			yield return www;
+			UnityWebRequest www = new UnityWebRequest("https://control.kochava.com/track/kvTracker?v4", UnityWebRequest.kHttpVerbPOST);
+			www.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(postData));
+			www.downloadHandler = new DownloadHandlerBuffer();
+			foreach (KeyValuePair<string, string> header in headers) www.SetRequestHeader(header.Key, header.Value);
+			yield return www.SendWebRequest();
 			try
 			{
 				Dictionary<string, object> serverResponse = new Dictionary<string, object>();
-				if (www.error == null && www.text != string.Empty)
+				if (www.error == null && www.downloadHandler.text != string.Empty)
 				{
-					Log("Server Response Received: " + WWW.UnEscapeURL(www.text), KochLogLevel.debug);
-					serverResponse = JsonReader.Deserialize<Dictionary<string, object>>(www.text);
+					Log("Server Response Received: " + UnityEngine.Networking.UnityWebRequest.UnEscapeURL(www.downloadHandler.text), KochLogLevel.debug);
+					serverResponse = JsonReader.Deserialize<Dictionary<string, object>>(www.downloadHandler.text);
 				}
 				bool retry = true;
 				bool success = serverResponse.ContainsKey("success");
@@ -1586,8 +1591,8 @@ public class Kochava : MonoBehaviour
 					}
 					else
 					{
-						Log("Event Posting Did Not Succeed: " + ((!(www.text == string.Empty)) ? www.text : "(Blank response from server)"), KochLogLevel.error);
-						if (serverResponse.ContainsKey("error") || www.text == string.Empty)
+						Log("Event Posting Did Not Succeed: " + ((!(www.downloadHandler.text == string.Empty)) ? www.downloadHandler.text : "(Blank response from server)"), KochLogLevel.error);
+						if (serverResponse.ContainsKey("error") || www.downloadHandler.text == string.Empty)
 						{
 							retry = false;
 						}
@@ -1898,8 +1903,11 @@ public class Kochava : MonoBehaviour
 		};
 		Log(queryString, KochLogLevel.debug);
 		float wwwLoadTime = Time.time;
-		WWW www = new WWW("https://control.kochava.com/track/kvquery", Encoding.UTF8.GetBytes(queryString), headers);
-		yield return www;
+		UnityWebRequest www = new UnityWebRequest("https://control.kochava.com/track/kvquery", UnityWebRequest.kHttpVerbPOST);
+		www.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(queryString));
+		www.downloadHandler = new DownloadHandlerBuffer();
+		foreach (KeyValuePair<string, string> header in headers) www.SetRequestHeader(header.Key, header.Value);
+		yield return www.SendWebRequest();
 		if (!string.IsNullOrEmpty(www.error))
 		{
 			Log("kvquery (attribution) handshake failed: " + www.error + ", seconds: " + (Time.time - wwwLoadTime) + ")", KochLogLevel.warning);
@@ -1907,12 +1915,12 @@ public class Kochava : MonoBehaviour
 			yield break;
 		}
 		Dictionary<string, object> serverResponse = new Dictionary<string, object>();
-		Log("server response: " + www.text);
-		if (www.text != string.Empty)
+		Log("server response: " + www.downloadHandler.text);
+		if (www.downloadHandler.text != string.Empty)
 		{
 			try
 			{
-				serverResponse = JsonReader.Deserialize<Dictionary<string, object>>(www.text);
+				serverResponse = JsonReader.Deserialize<Dictionary<string, object>>(www.downloadHandler.text);
 			}
 			catch (Exception ex)
 			{
@@ -1920,15 +1928,15 @@ public class Kochava : MonoBehaviour
 				Log("Failed Deserialize JSON response to kvquery (attribution): " + e, KochLogLevel.warning);
 			}
 		}
-		Log(www.text, KochLogLevel.debug);
+		Log(www.downloadHandler.text, KochLogLevel.debug);
 		if (!serverResponse.ContainsKey("success"))
 		{
-			Log("kvquery (attribution) handshake parsing failed: " + www.text, KochLogLevel.warning);
+			Log("kvquery (attribution) handshake parsing failed: " + www.downloadHandler.text, KochLogLevel.warning);
 			StartCoroutine("KochavaAttributionTimerFired", 60);
 		}
 		else if (int.Parse(serverResponse["success"].ToString()) == 0)
 		{
-			Log("kvquery (attribution) did not return success = true " + www.text, KochLogLevel.warning);
+			Log("kvquery (attribution) did not return success = true " + www.downloadHandler.text, KochLogLevel.warning);
 			StartCoroutine("KochavaAttributionTimerFired", 60);
 		}
 		else

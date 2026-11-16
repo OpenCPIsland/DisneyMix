@@ -182,7 +182,7 @@ namespace Mix.Games.Tray.Runner
 		{
 			if (rBody != null)
 			{
-				rBody.isKinematic = true;
+				rBody.bodyType = RigidbodyType2D.Kinematic;
 			}
 			if (animatorController != null)
 			{
@@ -193,7 +193,7 @@ namespace Mix.Games.Tray.Runner
 
 		public virtual void UnPausePlayer()
 		{
-			rBody.isKinematic = false;
+			rBody.bodyType = RigidbodyType2D.Dynamic;
 			animatorController.speed = 1f;
 			rBody.linearVelocity = velocity;
 		}

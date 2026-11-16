@@ -229,13 +229,13 @@ namespace Mix.Ui
 			}
 			databaseApi.SaveUserValue("default_primary_color", aColorToggleItem.PrimaryColor);
 			databaseApi.SaveUserValue("default_secondary_color", aColorToggleItem.SecondaryColor);
-			TintImage[] array = (TintImage[])UnityEngine.Object.FindObjectsOfType(typeof(TintImage));
+			TintImage[] array = (TintImage[])UnityEngine.Object.FindObjectsByType(typeof(TintImage), FindObjectsSortMode.InstanceID);
 			TintImage[] array2 = array;
 			foreach (TintImage tintImage in array2)
 			{
 				tintImage.OnColorThemeChanged();
 			}
-			TintText[] array3 = (TintText[])UnityEngine.Object.FindObjectsOfType(typeof(TintText));
+			TintText[] array3 = (TintText[])UnityEngine.Object.FindObjectsByType(typeof(TintText), FindObjectsSortMode.InstanceID);
 			TintText[] array4 = array3;
 			foreach (TintText tintText in array4)
 			{

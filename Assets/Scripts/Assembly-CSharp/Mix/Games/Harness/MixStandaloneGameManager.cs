@@ -175,13 +175,29 @@ namespace Mix.Games.Harness
 			}
 		}
 
-		public event EventHandler<EventArgs> OnUnfriended;
+		public event EventHandler<EventArgs> OnUnfriended
+		{
+			add { }
+			remove { }
+		}
 
-		public event EventHandler<GameStartedEventArgs> OnGameStarted;
+		public event EventHandler<GameStartedEventArgs> OnGameStarted
+		{
+			add { }
+			remove { }
+		}
 
-		public event EventHandler<GameClosedEventArgs> OnGameClosed;
+		public event EventHandler<GameClosedEventArgs> OnGameClosed
+		{
+			add { }
+			remove { }
+		}
 
-		public event EventHandler<GameStateUpdatedEventArgs> OnGameStateUpdated;
+		public event EventHandler<GameStateUpdatedEventArgs> OnGameStateUpdated
+		{
+			add { }
+			remove { }
+		}
 
 		void IGameSession.HandleSessionState(GameSession aSession, GameSessionState aSessionState)
 		{

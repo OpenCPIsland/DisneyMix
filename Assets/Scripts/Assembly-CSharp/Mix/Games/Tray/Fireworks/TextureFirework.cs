@@ -119,7 +119,8 @@ namespace Mix.Games.Tray.Fireworks
 			array2 = null;
 			IsBuilt = true;
 			Debug.Log(base.transform.name + "'s color and position arrays are now built");
-			mParticleSystem.maxParticles = TotalNumberOfParticles;
+			ParticleSystem.MainModule mainModule1 = mParticleSystem.main;
+			mainModule1.maxParticles = TotalNumberOfParticles;
 		}
 
 		public void Explode()
@@ -133,7 +134,7 @@ namespace Mix.Games.Tray.Fireworks
 				for (int i = 0; i < particles; i++)
 				{
 					mParticles[i].position = base.transform.localPosition;
-					mParticles[i].startColor = new Color(mParticleSystem.startColor.r, mParticleSystem.startColor.g, mParticleSystem.startColor.b, Colors[num].a);
+					mParticles[i].startColor = new Color(mParticleSystem.main.startColor.color.r, mParticleSystem.main.startColor.color.g, mParticleSystem.main.startColor.color.b, Colors[num].a);
 					mParticles[i].velocity = Positions[num] * Size;
 					num++;
 					if (num == TotalNumberOfParticles)

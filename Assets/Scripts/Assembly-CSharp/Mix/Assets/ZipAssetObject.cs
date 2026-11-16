@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using Disney.Native;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Mix.Assets
 {
@@ -89,14 +90,19 @@ namespace Mix.Assets
 			{
 				if (MonoSingleton<AssetManager>.Instance.IsPathAndroidStreamingAssets(aPath))
 				{
-					using (WWW wWW = new WWW(aPath))
+					using (UnityWebRequest wWW = UnityWebRequest.Get(aPath))
 					{
+						wWW.SendWebRequest();
 						while (!wWW.isDone)
 						{
 						}
 						if (string.IsNullOrEmpty(wWW.error))
 						{
-							File.WriteAllBytes(AssetManager.GetDiskCacheFilePath() + entryName, wWW.bytes);
+							byte[] data = wWW.downloadHandler?.data;
+							if (data != null && data.Length > 0)
+							{
+								File.WriteAllBytes(AssetManager.GetDiskCacheFilePath() + entryName, data);
+							}
 						}
 						return;
 					}

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Mix.Threading;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Mix.AssetBundles
 {
@@ -34,14 +35,14 @@ namespace Mix.AssetBundles
 				loadPath = bundleData.StreamingAssetsPath;
 			}
 			Singleton<ThreadFramerateThrottler>.Instance.EnterThrottlingSection();
-			using (WWW www = ((!bundleData.ForceStreamingAssetsLoad) ? WWW.LoadFromCacheOrDownload(loadPath, version) : new WWW(loadPath)))
+			using (UnityWebRequest www = UnityWebRequestAssetBundle.GetAssetBundle(loadPath, Hash128.Compute(version.ToString())))
 			{
-				www.threadPriority = bundleData.LoadPriority;
+				www.SendWebRequest();
 				while (!www.isDone)
 				{
 					if (bundleData.DownloadPercentCallback != null)
 					{
-						bundleData.DownloadPercentCallback(www.progress);
+						bundleData.DownloadPercentCallback(www.downloadProgress);
 					}
 					yield return null;
 				}
@@ -51,13 +52,13 @@ namespace Mix.AssetBundles
 					callback(false, bundleData);
 					yield break;
 				}
-				if (www.assetBundle == null)
+				if (DownloadHandlerAssetBundle.GetContent(www) == null)
 				{
 					Singleton<ThreadFramerateThrottler>.Instance.ExitThrottlingSection();
 					callback(false, bundleData);
 					yield break;
 				}
-				bundleData.Bundle = www.assetBundle;
+				bundleData.Bundle = DownloadHandlerAssetBundle.GetContent(www);
 			}
 			AssetBundleRequest request = bundleData.Bundle.LoadAssetAsync(bundleData.Bundle.GetAllAssetNames()[0]);
 			yield return request;

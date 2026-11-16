@@ -31,13 +31,17 @@ namespace Mix.Games.Tray.Fireworks
 			}
 			int num = (whichColor + 1) % Colors.Length;
 			Color startColor = Color.Lerp(Colors[whichColor], Colors[num], t);
-			AffectedSystems[ConeA].startColor = startColor;
-			AffectedSystems[ConeB].startColor = startColor;
+			ParticleSystem.MainModule mainModule1 = AffectedSystems[ConeA].main;
+			mainModule1.startColor = startColor;
+			ParticleSystem.MainModule mainModule2 = AffectedSystems[ConeB].main;
+			mainModule2.startColor = startColor;
 			whichColor = (whichColor + 2) % Colors.Length;
 			num = (whichColor + 1) % Colors.Length;
 			startColor = Color.Lerp(Colors[whichColor], Colors[num], t);
-			AffectedSystems[Ring].startColor = startColor;
-			AffectedSystems[Flash].startColor = startColor;
+			ParticleSystem.MainModule mainModule3 = AffectedSystems[Ring].main;
+			mainModule3.startColor = startColor;
+			ParticleSystem.MainModule mainModule4 = AffectedSystems[Flash].main;
+			mainModule4.startColor = startColor;
 		}
 	}
 }

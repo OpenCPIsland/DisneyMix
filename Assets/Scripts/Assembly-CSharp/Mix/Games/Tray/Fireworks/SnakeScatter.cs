@@ -53,11 +53,11 @@ namespace Mix.Games.Tray.Fireworks
 		private void Start()
 		{
 			mParticleSystem = GetComponent<ParticleSystem>();
-			mParticles = new ParticleSystem.Particle[mParticleSystem.maxParticles];
-			mStartColor = mParticleSystem.startColor;
+			mParticles = new ParticleSystem.Particle[mParticleSystem.main.maxParticles];
+			mStartColor = mParticleSystem.main.startColor.color;
 			mRandomRange = new List<int>();
-			mNumbers = new int[mParticleSystem.maxParticles];
-			for (int i = 0; i < mParticleSystem.maxParticles; i++)
+			mNumbers = new int[mParticleSystem.main.maxParticles];
+			for (int i = 0; i < mParticleSystem.main.maxParticles; i++)
 			{
 				mNumbers[i] = i;
 			}
@@ -71,7 +71,7 @@ namespace Mix.Games.Tray.Fireworks
 			mTempMulti = mVelocityDecay;
 			delay = 0;
 			ParticleSystem.EmissionModule emission = base.transform.GetChild(0).GetComponent<ParticleSystem>().emission;
-			emission.rate = new ParticleSystem.MinMaxCurve
+			emission.rateOverTime = new ParticleSystem.MinMaxCurve
 			{
 				constantMax = 48f
 			};
@@ -116,7 +116,7 @@ namespace Mix.Games.Tray.Fireworks
 			if (mTime - mDelayTime > mEndTime && !mIsNotEmitting)
 			{
 				ParticleSystem.EmissionModule emission = base.transform.GetChild(0).GetComponent<ParticleSystem>().emission;
-				emission.rate = new ParticleSystem.MinMaxCurve
+				emission.rateOverTime = new ParticleSystem.MinMaxCurve
 				{
 					constantMax = 0f
 				};

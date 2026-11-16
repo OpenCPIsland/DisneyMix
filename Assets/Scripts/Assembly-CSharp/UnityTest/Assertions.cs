@@ -6,7 +6,7 @@ namespace UnityTest
 	{
 		public static void CheckAssertions()
 		{
-			AssertionComponent[] assertions = Object.FindObjectsOfType(typeof(AssertionComponent)) as AssertionComponent[];
+			AssertionComponent[] assertions = Object.FindObjectsByType(typeof(AssertionComponent), FindObjectsSortMode.InstanceID) as AssertionComponent[];
 			CheckAssertions(assertions);
 		}
 

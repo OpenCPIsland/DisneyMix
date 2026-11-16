@@ -23,11 +23,7 @@ public class ImageEffectBase : MonoBehaviour
 
 	protected virtual void Start()
 	{
-		if (!SystemInfo.supportsImageEffects)
-		{
-			base.enabled = false;
-		}
-		else if (!shader || !shader.isSupported)
+		if (!shader || !shader.isSupported)
 		{
 			base.enabled = false;
 		}

@@ -24,7 +24,6 @@ namespace Mix.Assets
 
 		public bool IsFirstRun = true;
 
-		private float AuthSecondsPast;
 
 		private long AuthTimeoutStartSeconds;
 
@@ -42,7 +41,6 @@ namespace Mix.Assets
 
 		private string OldManifestVersion;
 
-		private int CpipeRefreshTime = 60;
 
 		private float TimeSinceLastCpipeRefresh;
 
@@ -109,7 +107,6 @@ namespace Mix.Assets
 			IsRefreshingToken = false;
 			if (aAuthResponse != null)
 			{
-				AuthSecondsPast = 0f;
 				AuthTimeoutStartSeconds = 0L;
 				authToken = aAuthResponse.access_token;
 				PlayerPrefs.SetString("google_oauth_token", authToken);

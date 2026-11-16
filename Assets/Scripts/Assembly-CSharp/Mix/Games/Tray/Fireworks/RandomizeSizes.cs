@@ -34,7 +34,8 @@ namespace Mix.Games.Tray.Fireworks
 			ParticleSystem[] affectedSystems = AffectedSystems;
 			foreach (ParticleSystem particleSystem in affectedSystems)
 			{
-				particleSystem.startSpeed = startSpeed;
+				ParticleSystem.MainModule mainModule1 = particleSystem.main;
+				mainModule1.startSpeed = startSpeed;
 			}
 		}
 	}

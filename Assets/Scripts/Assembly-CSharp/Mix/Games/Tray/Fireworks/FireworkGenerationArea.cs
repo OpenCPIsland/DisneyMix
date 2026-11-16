@@ -25,7 +25,6 @@ namespace Mix.Games.Tray.Fireworks
 			{
 				return Vector3.zero;
 			}
-			bool flag = false;
 			Vector2 point = Vector2.zero;
 			float x = mPolygonCollider.bounds.min.x;
 			float y = mPolygonCollider.bounds.min.y;
@@ -36,7 +35,6 @@ namespace Mix.Games.Tray.Fireworks
 				point = new Vector2(Random.Range(x, x2), Random.Range(y, y2));
 				if (mPolygonCollider.OverlapPoint(point))
 				{
-					flag = true;
 					break;
 				}
 			}

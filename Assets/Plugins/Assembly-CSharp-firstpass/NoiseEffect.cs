@@ -61,11 +61,7 @@ public class NoiseEffect : MonoBehaviour
 
 	protected void Start()
 	{
-		if (!SystemInfo.supportsImageEffects)
-		{
-			base.enabled = false;
-		}
-		else if (shaderRGB == null || shaderYUV == null)
+		if (shaderRGB == null || shaderYUV == null)
 		{
 			Debug.Log("Noise shaders are not set up! Disabling noise effect.");
 			base.enabled = false;

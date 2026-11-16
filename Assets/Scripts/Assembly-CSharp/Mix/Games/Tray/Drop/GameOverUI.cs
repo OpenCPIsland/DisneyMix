@@ -53,7 +53,7 @@ namespace Mix.Games.Tray.Drop
 			DropGame instance = DropGame.Instance;
 			mScore = instance.Score;
 			mShowHighScoreBadge = !instance.IsFirstRound && instance.Score > instance.BestScore;
-			offscreenScoreBanners = Object.FindObjectOfType<OffscreenScoreBanners>();
+			offscreenScoreBanners = Object.FindFirstObjectByType<OffscreenScoreBanners>();
 			offscreenScoreBanners.ScoreCounter.JumpToValue(0);
 			HiScoreMarker.gameObject.SetActive(false);
 			ButtonParent.gameObject.SetActive(false);

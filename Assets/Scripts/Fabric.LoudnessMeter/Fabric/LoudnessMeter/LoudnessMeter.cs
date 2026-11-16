@@ -67,7 +67,6 @@ namespace Fabric.LoudnessMeter
 
 		private static int ABS_THRES = -70;
 
-		private static int REL_THRES = -20;
 
 		private static int PRC_LOW = 10;
 

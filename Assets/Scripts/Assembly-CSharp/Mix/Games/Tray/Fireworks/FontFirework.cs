@@ -193,13 +193,15 @@ namespace Mix.Games.Tray.Fireworks
 				mUvEnd = info.uvTopRight;
 				Add(j);
 			}
-			mParticleSystem.maxParticles = mTotalNum;
+			ParticleSystem.MainModule mainModule1 = mParticleSystem.main;
+			mainModule1.maxParticles = mTotalNum;
 			ParticleSystem.EmissionModule emission = mParticleSystem.emission;
-			emission.rate = new ParticleSystem.MinMaxCurve
+			emission.rateOverTime = new ParticleSystem.MinMaxCurve
 			{
 				constantMax = mTotalNum
 			};
-			base.transform.GetChild(0).GetComponent<ParticleSystem>().maxParticles = mTotalNum * 48;
+			ParticleSystem.MainModule mainModule2 = base.transform.GetChild(0).GetComponent<ParticleSystem>().main;
+			mainModule2.maxParticles = mTotalNum * 48;
 			mParticles = new ParticleSystem.Particle[mTotalNum];
 			mCenterIndex = mTotalNum / 2;
 			built = true;
@@ -297,11 +299,12 @@ namespace Mix.Games.Tray.Fireworks
 			mTimer = 0f;
 			mBezTimer = 0f;
 			ParticleSystem.EmissionModule emission = mParticleSystem.emission;
-			emission.rate = new ParticleSystem.MinMaxCurve
+			emission.rateOverTime = new ParticleSystem.MinMaxCurve
 			{
 				constantMax = 300f
 			};
-			mParticleSystem.gravityModifier = 0f;
+			ParticleSystem.MainModule mainModule3 = mParticleSystem.main;
+			mainModule3.gravityModifier = 0f;
 			mCurUpdatefunc = (mDelUpdate)Delegate.Combine(mCurUpdatefunc, new mDelUpdate(FlyToPosition));
 		}
 
@@ -311,18 +314,20 @@ namespace Mix.Games.Tray.Fireworks
 			mTimer = 0f;
 			mBezTimer = 0f;
 			ParticleSystem.EmissionModule emission = mParticleSystem.emission;
-			emission.rate = new ParticleSystem.MinMaxCurve
+			emission.rateOverTime = new ParticleSystem.MinMaxCurve
 			{
 				constantMax = 300f
 			};
-			mParticleSystem.gravityModifier = 0f;
+			ParticleSystem.MainModule mainModule4 = mParticleSystem.main;
+			mainModule4.gravityModifier = 0f;
 			mCurUpdatefunc = (mDelUpdate)Delegate.Combine(mCurUpdatefunc, new mDelUpdate(FlyToPositionFromCenter));
 		}
 
 		public void ExplodeD()
 		{
 			mTimer = 0f;
-			mParticleSystem.gravityModifier = 0f;
+			ParticleSystem.MainModule mainModule5 = mParticleSystem.main;
+			mainModule5.gravityModifier = 0f;
 			mParticleSystem.Emit(mTotalNum);
 			int particles = mParticleSystem.GetParticles(mParticles);
 			int num = 0;
@@ -412,7 +417,7 @@ namespace Mix.Games.Tray.Fireworks
 					mCurUpdatefunc = (mDelUpdate)Delegate.Combine(mCurUpdatefunc, new mDelUpdate(FinaleUpdate));
 					mTimer = 0f;
 					ParticleSystem.EmissionModule emission = mParticleSystem.emission;
-					emission.rate = new ParticleSystem.MinMaxCurve
+					emission.rateOverTime = new ParticleSystem.MinMaxCurve
 					{
 						constantMax = 0f
 					};
@@ -467,7 +472,7 @@ namespace Mix.Games.Tray.Fireworks
 						mParticles[j].remainingLifetime = -1f;
 					}
 					ParticleSystem.EmissionModule emission = mParticleSystem.emission;
-					emission.rate = new ParticleSystem.MinMaxCurve
+					emission.rateOverTime = new ParticleSystem.MinMaxCurve
 					{
 						constantMax = 0f
 					};
@@ -491,7 +496,8 @@ namespace Mix.Games.Tray.Fireworks
 			if (mTimer > mExplosionDelay && mTimer < mExplosionDelay + 1f)
 			{
 				int particles2 = mParticleSystem.GetParticles(mParticles);
-				mParticleSystem.gravityModifier = 0.3f;
+				ParticleSystem.MainModule mainModule6 = mParticleSystem.main;
+				mainModule6.gravityModifier = 0.3f;
 				for (int j = 0; j < particles2; j++)
 				{
 					Vector3 velocity = new Vector3(0f, 3f, 0f) + UnityEngine.Random.insideUnitSphere * 3f;

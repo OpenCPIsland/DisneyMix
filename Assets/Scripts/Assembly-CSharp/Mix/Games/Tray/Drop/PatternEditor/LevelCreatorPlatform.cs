@@ -46,7 +46,7 @@ namespace Mix.Games.Tray.Drop.PatternEditor
 			platform.Configuration.EnterTime = PlatformConfiguration.EnterTime;
 			platform.Configuration.ExitTime = PlatformConfiguration.ExitTime;
 			float currentTime = 0f;
-			LevelCreator levelCreator = Object.FindObjectOfType<LevelCreator>();
+			LevelCreator levelCreator = Object.FindFirstObjectByType<LevelCreator>();
 			if (levelCreator != null && levelCreator.CurrentPatternTemplate != null)
 			{
 				currentTime = levelCreator.CurrentPatternTemplate.Overlap;

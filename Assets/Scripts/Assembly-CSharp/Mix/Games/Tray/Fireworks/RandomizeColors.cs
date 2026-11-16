@@ -61,7 +61,8 @@ namespace Mix.Games.Tray.Fireworks
 			ParticleSystem[] affectedSystems = AffectedSystems;
 			foreach (ParticleSystem particleSystem in affectedSystems)
 			{
-				particleSystem.startColor = startColor;
+				ParticleSystem.MainModule mainModule1 = particleSystem.main;
+				mainModule1.startColor = startColor;
 			}
 			mFirework.ColorIndex = whichColor;
 		}
@@ -72,7 +73,8 @@ namespace Mix.Games.Tray.Fireworks
 			ParticleSystem[] affectedSystems = AffectedSystems;
 			foreach (ParticleSystem particleSystem in affectedSystems)
 			{
-				particleSystem.startColor = startColor;
+				ParticleSystem.MainModule mainModule2 = particleSystem.main;
+				mainModule2.startColor = startColor;
 			}
 		}
 	}

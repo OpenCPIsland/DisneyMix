@@ -13,7 +13,7 @@ namespace Mix.Games.Tray.Fireworks
 		private void Start()
 		{
 			// Log all GameObjects with this script attached
-			var allControllers = FindObjectsOfType<FireworkDebugController>();
+			var allControllers = FindObjectsByType<FireworkDebugController>(FindObjectsSortMode.InstanceID);
 			foreach (var controller in allControllers)
 			{
 				Debug.Log("FireworkDebugController is attached to GameObject: " + controller.gameObject.name);

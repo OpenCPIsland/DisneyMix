@@ -62,7 +62,7 @@ public class SSAOEffect : MonoBehaviour
 
 	private void Start()
 	{
-		if (!SystemInfo.supportsImageEffects || !SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.Depth))
+		if (!SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.Depth))
 		{
 			m_Supported = false;
 			base.enabled = false;

@@ -14,6 +14,7 @@ using Mix.Entitlements;
 using Mix.Localization;
 using Mix.Ui;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityTest;
 
@@ -197,7 +198,9 @@ namespace Mix.Assets
 		protected void Awake()
 		{
 			diskManager = new DiskManager();
-			Caching.maximumAvailableDiskSpace = 1000000000L;
+			Cache currentCache = Caching.currentCacheForWriting;
+			currentCache.maximumAvailableStorageSpace = 1000000000L;
+			Caching.currentCacheForWriting = currentCache;
 			AssetDatabaseApi = null;
 			VerifyCacheFolder();
 		}
@@ -304,15 +307,17 @@ namespace Mix.Assets
 			}
 
 			float num = (float)((double)freeBytes / (double)totalBytes);
-			long num2 = Caching.spaceOccupied + freeBytes - 300000000;
+			long num2 = Caching.currentCacheForWriting.spaceOccupied + freeBytes - 300000000;
 			if (num2 < 0)
 			{
 				num2 = 0L;
 			}
 
-			if (freeBytes < 300000000 || num < 0.05f || num2 < Caching.maximumAvailableDiskSpace)
+			if (freeBytes < 300000000 || num < 0.05f || num2 < Caching.currentCacheForWriting.maximumAvailableStorageSpace)
 			{
-				Caching.maximumAvailableDiskSpace = num2;
+				Cache currentCache = Caching.currentCacheForWriting;
+				currentCache.maximumAvailableStorageSpace = num2;
+				Caching.currentCacheForWriting = currentCache;
 				if (diskManager != null && diskManager.diskMonitor != null)
 				{
 					diskManager.diskMonitor.MaxCacheSize = num2;
@@ -463,7 +468,7 @@ namespace Mix.Assets
 			{
 				FlagRefreshContent();
 			}
-			UnityTest.TestRunner testRunner = (UnityTest.TestRunner)UnityEngine.Object.FindObjectOfType(typeof(UnityTest.TestRunner));
+			UnityTest.TestRunner testRunner = (UnityTest.TestRunner)UnityEngine.Object.FindFirstObjectByType(typeof(UnityTest.TestRunner));
 			if (testRunner != null)
 			{
 				IsTestRunner = true;
@@ -581,7 +586,7 @@ namespace Mix.Assets
 			string streamingFilePath = GetStreamingFilePath(relativeCpipePath);
 
 			// Prevent ArgumentException: Input AssetBundle url cannot be null or empty.
-			if (!string.IsNullOrEmpty(fileUrl) && Caching.IsVersionCached(fileUrl, fileVersion))
+			if (!string.IsNullOrEmpty(fileUrl) && Caching.IsVersionCached(fileUrl, Hash128.Compute(fileVersion.ToString())))
 			{
 				return true;
 			}
@@ -670,9 +675,10 @@ namespace Mix.Assets
 			if (IsPathAndroidStreamingAssets(text))
 			{
 				bool result = false;
-				using (WWW wWW = new WWW(text))
+				using (UnityWebRequest wWW = UnityWebRequest.Get(text))
 				{
-					while (!wWW.isDone && string.IsNullOrEmpty(wWW.error) && !(wWW.progress > 0f))
+					wWW.SendWebRequest();
+					while (!wWW.isDone && string.IsNullOrEmpty(wWW.error) && !(wWW.downloadProgress > 0f))
 					{
 					}
 					if (string.IsNullOrEmpty(wWW.error))
@@ -717,8 +723,9 @@ namespace Mix.Assets
 			{
 				if (IsPathAndroidStreamingAssetsStatic(text))
 				{
-					using (WWW wWW = new WWW(text))
+					using (UnityWebRequest wWW = UnityWebRequest.Get(text))
 					{
+						wWW.SendWebRequest();
 						while (!wWW.isDone)
 						{
 						}
@@ -728,7 +735,7 @@ namespace Mix.Assets
 						if (IS_DEBUG)
 						{
 						}
-						string text2 = wWW.text;
+						string text2 = wWW.downloadHandler?.text ?? string.Empty;
 						wWW.Dispose();
 						return text2;
 					}
@@ -753,8 +760,9 @@ namespace Mix.Assets
 			{
 				if (IsPathAndroidStreamingAssets(filepath))
 				{
-					using (WWW wWW = new WWW(filepath))
+					using (UnityWebRequest wWW = UnityWebRequest.Get(filepath))
 					{
+						wWW.SendWebRequest();
 						while (!wWW.isDone)
 						{
 						}
@@ -764,7 +772,7 @@ namespace Mix.Assets
 						if (IS_DEBUG)
 						{
 						}
-						byte[] bytes = wWW.bytes;
+						byte[] bytes = wWW.downloadHandler?.data ?? Array.Empty<byte>();
 						wWW.Dispose();
 						return bytes;
 					}
@@ -909,8 +917,9 @@ namespace Mix.Assets
 				byte[] array = null;
 				if (IsPathAndroidStreamingAssets(text))
 				{
-					using (WWW wWW = new WWW(text))
+					using (UnityWebRequest wWW = UnityWebRequest.Get(text))
 					{
+						wWW.SendWebRequest();
 						while (!wWW.isDone)
 						{
 						}
@@ -922,7 +931,8 @@ namespace Mix.Assets
 						if (IS_DEBUG)
 						{
 						}
-						bool result = image.LoadImage(wWW.bytes);
+						byte[] imageData = wWW.downloadHandler?.data ?? Array.Empty<byte>();
+						bool result = imageData.Length > 0 && image.LoadImage(imageData);
 						wWW.Dispose();
 						return result;
 					}

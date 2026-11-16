@@ -212,14 +212,7 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    outline:
-    - - {x: 114, y: 250}
-      - {x: 101, y: 256}
-      - {x: -253, y: 256}
-      - {x: -256, y: 231}
-      - {x: -256, y: 88}
-      - {x: -245, y: 61}
-      - {x: 114, y: 61}
+    outline: []
     customData: 
     physicsShape: []
     bones: []

@@ -16,7 +16,6 @@ namespace Mix
 
 		public object GetData()
 		{
-			object obj = null;
 			lock (MyObject)
 			{
 				return MyObject;

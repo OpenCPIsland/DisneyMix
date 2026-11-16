@@ -22,8 +22,8 @@ namespace Mix
 					}
 					if (_instance == null)
 					{
-						_instance = (T)Object.FindObjectOfType(typeof(T));
-						if (Object.FindObjectsOfType(typeof(T)).Length > 1)
+						_instance = (T)Object.FindFirstObjectByType(typeof(T));
+						if (Object.FindObjectsByType(typeof(T), FindObjectsSortMode.InstanceID).Length > 1)
 						{
 							return _instance;
 						}
@@ -31,7 +31,7 @@ namespace Mix
 						{
 							GameObject gameObject = new GameObject();
 							_instance = gameObject.AddComponent<T>();
-							gameObject.name = "(singleton) " + typeof(T).ToString() + Object.FindObjectsOfType(typeof(T)).Length;
+							gameObject.name = "(singleton) " + typeof(T).ToString() + Object.FindObjectsByType(typeof(T), FindObjectsSortMode.InstanceID).Length;
 							Object.DontDestroyOnLoad(gameObject);
 							Singleton<SingletonCleaner>.Instance.AddSingleton(gameObject);
 						}

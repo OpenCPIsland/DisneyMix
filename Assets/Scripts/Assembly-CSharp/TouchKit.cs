@@ -66,7 +66,7 @@ public class TouchKit : MonoBehaviour
 			}
 			if (!_instance)
 			{
-				_instance = Object.FindObjectOfType(typeof(TouchKit)) as TouchKit;
+				_instance = Object.FindFirstObjectByType(typeof(TouchKit)) as TouchKit;
 				if (!_instance)
 				{
 					GameObject gameObject = new GameObject("TouchKit");

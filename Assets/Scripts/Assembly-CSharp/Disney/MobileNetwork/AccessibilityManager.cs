@@ -17,7 +17,11 @@ namespace Disney.MobileNetwork
 			}
 		}
 
-		public static event Action<string> FontSizeChangedEvent;
+		public static event Action<string> FontSizeChangedEvent
+		{
+			add { }
+			remove { }
+		}
 
 		public void SetLogger(LoggerHelper.LoggerDelegate loggerMessageHandler)
 		{

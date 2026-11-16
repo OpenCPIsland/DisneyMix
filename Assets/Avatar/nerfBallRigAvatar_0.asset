@@ -6,7 +6,7 @@ Avatar:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: nerfBallRigAvatar
+  m_Name: nerfBallRigAvatar_0
   m_AvatarSize: 3736
   m_Avatar:
     serializedVersion: 3

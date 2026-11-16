@@ -63,7 +63,6 @@ public class AntialiasingAsPostEffect : PostEffectsBase
 
 	public virtual Material CurrentAAMaterial()
 	{
-		Material material = null;
 		switch (mode)
 		{
 		case AAMode.FXAA3Console:

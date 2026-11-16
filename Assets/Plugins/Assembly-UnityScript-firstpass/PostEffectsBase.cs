@@ -103,12 +103,7 @@ public class PostEffectsBase : MonoBehaviour
 		}
 		supportDX11 = num;
 		int result;
-		if (!SystemInfo.supportsImageEffects || !SystemInfo.supportsRenderTextures)
-		{
-			NotSupported();
-			result = 0;
-		}
-		else if (needDepth && !SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.Depth))
+		if (needDepth && !SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.Depth))
 		{
 			NotSupported();
 			result = 0;

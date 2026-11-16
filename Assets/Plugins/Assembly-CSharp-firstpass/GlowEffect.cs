@@ -82,11 +82,6 @@ public class GlowEffect : MonoBehaviour
 
 	protected void Start()
 	{
-		if (!SystemInfo.supportsImageEffects)
-		{
-			base.enabled = false;
-			return;
-		}
 		if (downsampleShader == null)
 		{
 			Debug.Log("No downsample shader assigned! Disabling glow.");

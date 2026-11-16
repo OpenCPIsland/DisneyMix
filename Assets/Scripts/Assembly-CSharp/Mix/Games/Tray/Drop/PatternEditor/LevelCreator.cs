@@ -69,7 +69,7 @@ namespace Mix.Games.Tray.Drop.PatternEditor
 		{
 			if (dropGame == null)
 			{
-				dropGame = Object.FindObjectOfType<DropGame>();
+				dropGame = Object.FindFirstObjectByType<DropGame>();
 			}
 			Gizmos.matrix = base.transform.localToWorldMatrix;
 			Gizmos.color = new Color(0f, 0f, 0f, 0.5f);

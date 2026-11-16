@@ -90,7 +90,7 @@ namespace Mix.AssetBundles
 
 		private bool QueueAssetIfInBundles(AssetBundleData aAssetBundleData)
 		{
-			bool flag = Caching.IsVersionCached(aAssetBundleData.URL, aAssetBundleData.Version);
+			bool flag = Caching.IsVersionCached(aAssetBundleData.URL, Hash128.Compute(aAssetBundleData.Version.ToString()));
 			if (aAssetBundleData.HashNew && !flag)
 			{
 				return false;
@@ -130,7 +130,7 @@ namespace Mix.AssetBundles
 
 private void SetStreamingAssetsLoad(AssetBundleData aAssetBundleData)
 {
-    bool flag = Caching.IsVersionCached(aAssetBundleData.URL, aAssetBundleData.Version);
+    bool flag = Caching.IsVersionCached(aAssetBundleData.URL, Hash128.Compute(aAssetBundleData.Version.ToString()));
     bool isConnected = MonoSingleton<ConnectionManager>.Instance.IsConnected;
 
     bool urlIsRemote = aAssetBundleData.URL != null &&

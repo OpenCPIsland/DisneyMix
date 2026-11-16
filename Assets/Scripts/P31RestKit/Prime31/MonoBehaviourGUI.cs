@@ -24,7 +24,6 @@ namespace Prime31
 
 		private float _previousClickTime;
 
-		private float _lastTwoFingerTouchTime = -1f;
 
 		private bool _isWindowsPhone;
 
@@ -144,14 +143,14 @@ namespace Prime31
 
 		private void OnDestroy()
 		{
-			Application.RegisterLogCallback(null);
+			Application.logMessageReceived -= handleLog;
 		}
 
 		private void Update()
 		{
 			if (!_logRegistered)
 			{
-				Application.RegisterLogCallback(handleLog);
+				Application.logMessageReceived += handleLog;
 				_logRegistered = true;
 				_isWindowsPhone = Application.platform.ToString().ToLower().Contains("wp8");
 			}

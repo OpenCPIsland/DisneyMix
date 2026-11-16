@@ -28,14 +28,16 @@ namespace Mix.Games.Tray.Fireworks
 			ParticleSystem[] affectedSystems = AffectedSystems;
 			foreach (ParticleSystem particleSystem in affectedSystems)
 			{
-				particleSystem.startColor = startColor;
+				ParticleSystem.MainModule mainModule1 = particleSystem.main;
+				mainModule1.startColor = startColor;
 			}
 			Snowflake[] mSnowflakes = FireworkSnowflake.mSnowflakes;
 			foreach (Snowflake snowflake in mSnowflakes)
 			{
-				snowflake.transform.GetChild(0).GetComponent<ParticleSystem>().startColor = startColor2;
-				snowflake.transform.GetChild(0).GetChild(0).GetComponent<ParticleSystem>()
-					.startColor = new Color(startColor.r, startColor.g, startColor.b, 0.5f);
+				ParticleSystem.MainModule mainModule2 = snowflake.transform.GetChild(0).GetComponent<ParticleSystem>().main;
+				mainModule2.startColor = startColor2;
+				ParticleSystem.MainModule mainModule3 = snowflake.transform.GetChild(0).GetChild(0).GetComponent<ParticleSystem>().main;
+				mainModule3.startColor = new Color(startColor.r, startColor.g, startColor.b, 0.5f);
 			}
 		}
 	}

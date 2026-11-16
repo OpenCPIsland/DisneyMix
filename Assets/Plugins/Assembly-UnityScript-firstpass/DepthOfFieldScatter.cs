@@ -175,7 +175,7 @@ public class DepthOfFieldScatter : PostEffectsBase
 			Graphics.Blit(temporary2, temporary, dofHdrMaterial, 2);
 			RenderTexture.ReleaseTemporary(temporary2);
 			dofHdrMaterial.SetTexture("_FgOverlap", temporary);
-			fromTo.MarkRestoreExpected();
+
 			Graphics.Blit(fromTo, fromTo, dofHdrMaterial, 13);
 			RenderTexture.ReleaseTemporary(temporary);
 		}

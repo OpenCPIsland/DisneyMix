@@ -18,7 +18,7 @@ namespace Mix.Games.Tray.Runner
 
 		private void OnEnable()
 		{
-			if (mIsPlaying && (mCurrentPlayback < mParticle.duration || mParticle.loop))
+			if (mIsPlaying && (mCurrentPlayback < mParticle.main.duration || mParticle.main.loop))
 			{
 				mParticle.Simulate(mCurrentPlayback, false);
 				mParticle.Play(false);
@@ -28,7 +28,8 @@ namespace Mix.Games.Tray.Runner
 		private void OnDisable()
 		{
 			mIsPlaying = mParticle.emission.enabled;
-			mParticle.playOnAwake = false;
+			ParticleSystem.MainModule mainModule1 = mParticle.main;
+			mainModule1.playOnAwake = false;
 			mCurrentPlayback = mParticle.time;
 		}
 	}

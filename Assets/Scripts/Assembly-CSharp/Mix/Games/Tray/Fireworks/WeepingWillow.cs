@@ -13,7 +13,7 @@ namespace Mix.Games.Tray.Fireworks
 		private void Start()
 		{
 			ps = GetComponent<ParticleSystem>();
-			particles = new ParticleSystem.Particle[ps.maxParticles];
+			particles = new ParticleSystem.Particle[ps.main.maxParticles];
 		}
 
 		private void FixedUpdate()

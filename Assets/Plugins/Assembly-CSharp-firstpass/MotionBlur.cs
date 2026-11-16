@@ -13,14 +13,7 @@ public class MotionBlur : ImageEffectBase
 
 	protected override void Start()
 	{
-		if (!SystemInfo.supportsRenderTextures)
-		{
-			base.enabled = false;
-		}
-		else
-		{
-			base.Start();
-		}
+		base.Start();
 	}
 
 	protected override void OnDisable()
@@ -41,7 +34,7 @@ public class MotionBlur : ImageEffectBase
 		if (extraBlur)
 		{
 			RenderTexture temporary = RenderTexture.GetTemporary(source.width / 4, source.height / 4, 0);
-			accumTexture.MarkRestoreExpected();
+
 			Graphics.Blit(accumTexture, temporary);
 			Graphics.Blit(temporary, accumTexture);
 			RenderTexture.ReleaseTemporary(temporary);
@@ -49,7 +42,7 @@ public class MotionBlur : ImageEffectBase
 		blurAmount = Mathf.Clamp(blurAmount, 0f, 0.92f);
 		base.material.SetTexture("_MainTex", accumTexture);
 		base.material.SetFloat("_AccumOrig", 1f - blurAmount);
-		accumTexture.MarkRestoreExpected();
+
 		Graphics.Blit(source, accumTexture, base.material);
 		Graphics.Blit(accumTexture, destination);
 	}

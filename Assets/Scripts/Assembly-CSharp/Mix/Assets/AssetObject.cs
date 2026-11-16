@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using Mix.Assets.Worker;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Mix.Assets
 {
@@ -219,10 +220,11 @@ namespace Mix.Assets
 
 		private IEnumerator LoadTextCoroutine(string aUrl, Dictionary<string, string> aHeaders)
 		{
-			WWW www = new WWW(aUrl, null, aHeaders);
-			yield return www;
-			string text = www.text;
-			Dictionary<string, string> headers = www.responseHeaders;
+			UnityWebRequest www = UnityWebRequest.Get(aUrl);
+			foreach (KeyValuePair<string, string> header in aHeaders) www.SetRequestHeader(header.Key, header.Value);
+			yield return www.SendWebRequest();
+			string text = www.downloadHandler.text;
+			Dictionary<string, string> headers = www.GetResponseHeaders() ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 			string error = www.error;
 			bool success = string.IsNullOrEmpty(error);
 			if (success && string.IsNullOrEmpty(text))
@@ -265,16 +267,13 @@ namespace Mix.Assets
 
 		private IEnumerator LoadBinaryCoroutine(string aUrl, Dictionary<string, string> aHeaders)
 		{
-			WWW www = new WWW(aUrl, null, aHeaders);
-			yield return www;
-			byte[] bytes = null;
-			Dictionary<string, string> headers = www.responseHeaders;
+			UnityWebRequest www = UnityWebRequest.Get(aUrl);
+			foreach (KeyValuePair<string, string> header in aHeaders) www.SetRequestHeader(header.Key, header.Value);
+			yield return www.SendWebRequest();
+			byte[] responseBytes = www.downloadHandler != null ? www.downloadHandler.data : null;
+			byte[] bytes = responseBytes != null ? (byte[])responseBytes.Clone() : Array.Empty<byte>();
+			Dictionary<string, string> headers = www.GetResponseHeaders() ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 			string error = www.error;
-			if (www.bytes != null)
-			{
-				bytes = new byte[www.bytes.Length];
-				www.bytes.CopyTo(bytes, 0);
-			}
 			bool success = string.IsNullOrEmpty(error);
 			if (bytes.Length == 0)
 			{

@@ -9,7 +9,7 @@ namespace Mix
 
 		public IUnityTestRunnerObject GetTestObj()
 		{
-			UnityTest.TestRunner testRunner = (UnityTest.TestRunner)Object.FindObjectOfType(typeof(UnityTest.TestRunner));
+			UnityTest.TestRunner testRunner = (UnityTest.TestRunner)Object.FindFirstObjectByType(typeof(UnityTest.TestRunner));
 			if (testRunner != null)
 			{
 				return new TestRunnerGameObject(testRunner);

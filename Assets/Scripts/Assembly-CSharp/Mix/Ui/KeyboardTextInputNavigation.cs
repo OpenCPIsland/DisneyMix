@@ -69,7 +69,7 @@ namespace Mix.Ui
 
 		private static Selectable GetSelectedNativeTextInput()
 		{
-			NativeTextView[] nativeTextViews = FindObjectsOfType<NativeTextView>();
+			NativeTextView[] nativeTextViews = FindObjectsByType<NativeTextView>(FindObjectsSortMode.InstanceID);
 			foreach (NativeTextView nativeTextView in nativeTextViews)
 			{
 				if (nativeTextView.Selected && IsUsable(nativeTextView))

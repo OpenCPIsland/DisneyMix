@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Disney.DMOAnalytics.Framework
 {
@@ -148,18 +149,21 @@ namespace Disney.DMOAnalytics.Framework
 			string dataStr = getDataBodyStr(postData);
 			string hostURL = getHostURL();
 			DMOAnalyticsHelper.Log("Connecting to Server: " + hostURL);
-			WWW www = new WWW(hostURL, Encoding.UTF8.GetBytes(dataStr), dictHeaders);
-			yield return www;
-			bool isPosted = www.isDone && www.error == null && www.text != null;
+			UnityWebRequest www = new UnityWebRequest(hostURL, UnityWebRequest.kHttpVerbPOST);
+			www.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(dataStr));
+			www.downloadHandler = new DownloadHandlerBuffer();
+			foreach (KeyValuePair<string, string> header in dictHeaders) www.SetRequestHeader(header.Key, header.Value);
+			yield return www.SendWebRequest();
+			bool isPosted = www.isDone && www.error == null && www.downloadHandler.text != null;
 			if (!isPosted)
 			{
-				DMOAnalyticsHelper.Log("Errr in WWW request:" + www.error);
+				DMOAnalyticsHelper.Log("Errr in UnityWebRequest request:" + www.error);
 			}
 			if (isPosted)
 			{
 				try
 				{
-					string contentLen = www.responseHeaders["CONTENT-LENGTH"];
+					string contentLen = www.GetResponseHeader("Content-Length");
 					int textLen = Convert.ToInt32(contentLen);
 					if (textLen < 1)
 					{
@@ -170,10 +174,10 @@ namespace Disney.DMOAnalytics.Framework
 				{
 					Exception ex2 = ex;
 					isPosted = false;
-					DMOAnalyticsHelper.Log("Errr in WWW response: " + ex2.ToString());
+					DMOAnalyticsHelper.Log("Errr in UnityWebRequest response: " + ex2.ToString());
 				}
 			}
-			DMOAnalyticsHelper.Log("WWW request is posted");
+			DMOAnalyticsHelper.Log("UnityWebRequest request is posted");
 		}
 
 		private string getDataBodyStr(Dictionary<string, object> postData)

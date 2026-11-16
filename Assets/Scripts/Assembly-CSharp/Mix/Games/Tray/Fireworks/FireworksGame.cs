@@ -951,7 +951,7 @@ namespace Mix.Games.Tray.Fireworks
 			Debug.Log("FireworksGame is attached to GameObject: " + gameObject.name);
 
 			// Find "Snow" GameObject and apply legacy shader after 1 second
-			var allGameObjects = FindObjectsOfType<GameObject>();
+			var allGameObjects = FindObjectsByType<GameObject>(FindObjectsSortMode.InstanceID);
 			foreach (var go in allGameObjects)
 			{
 				if (go.name == "Snow")

@@ -32,11 +32,11 @@ namespace Mix
 				StringBuilder stringBuilder = new StringBuilder();
 				stringBuilder.Append(string.Format("restrict={0}", "true"));
 				stringBuilder.Append("&");
-				stringBuilder.Append(string.Format("cv={0}", WWW.EscapeURL(aClientVersionNumber)));
+				stringBuilder.Append(string.Format("cv={0}", UnityEngine.Networking.UnityWebRequest.EscapeURL(aClientVersionNumber)));
 				if (!string.IsNullOrEmpty(aManifestVersionNumber))
 				{
 					stringBuilder.Append("&");
-					stringBuilder.Append(string.Format("v={0}", WWW.EscapeURL(aManifestVersionNumber)));
+					stringBuilder.Append(string.Format("v={0}", UnityEngine.Networking.UnityWebRequest.EscapeURL(aManifestVersionNumber)));
 				}
 				string aUrl = ExternalizedConstants.CpipeUrl + "?" + stringBuilder.ToString();
 				File.WriteAllText(Application.PersistentDataPath + "/ver.txt", aClientVersionNumber);

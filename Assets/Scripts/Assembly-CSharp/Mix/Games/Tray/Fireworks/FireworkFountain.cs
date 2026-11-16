@@ -50,7 +50,7 @@ namespace Mix.Games.Tray.Fireworks
 			mOriginalStartSpeeds = new Dictionary<ParticleSystem, float>();
 			for (int i = 0; i < Explosions.Count; i++)
 			{
-				mOriginalStartSpeeds.Add(Explosions[i], Explosions[i].startSpeed);
+				mOriginalStartSpeeds.Add(Explosions[i], Explosions[i].main.startSpeed.constant);
 			}
 		}
 
@@ -65,7 +65,8 @@ namespace Mix.Games.Tray.Fireworks
 			float num = Random.Range(minHeightVariance, maxHeightVariance);
 			for (int i = 0; i < Explosions.Count; i++)
 			{
-				Explosions[i].startSpeed = mOriginalStartSpeeds[Explosions[i]] + num;
+				ParticleSystem.MainModule mainModule1 = Explosions[i].main;
+				mainModule1.startSpeed = mOriginalStartSpeeds[Explosions[i]] + num;
 			}
 			base.Explode();
 		}

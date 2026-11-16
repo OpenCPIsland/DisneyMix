@@ -41,7 +41,7 @@ namespace Prime31
 		{
 			if (!(_threadingCallbackHelper != null))
 			{
-				_threadingCallbackHelper = UnityEngine.Object.FindObjectOfType(typeof(ThreadingCallbackHelper)) as ThreadingCallbackHelper;
+				_threadingCallbackHelper = UnityEngine.Object.FindFirstObjectByType(typeof(ThreadingCallbackHelper)) as ThreadingCallbackHelper;
 				if (!(_threadingCallbackHelper != null))
 				{
 					GameObject prime31ManagerGameObject = getPrime31ManagerGameObject();
@@ -69,7 +69,7 @@ namespace Prime31
 		{
 			try
 			{
-				MonoBehaviour monoBehaviour = UnityEngine.Object.FindObjectOfType(type) as MonoBehaviour;
+				MonoBehaviour monoBehaviour = UnityEngine.Object.FindFirstObjectByType(type) as MonoBehaviour;
 				if (!(monoBehaviour != null))
 				{
 					GameObject prime31ManagerGameObject = getPrime31ManagerGameObject();
