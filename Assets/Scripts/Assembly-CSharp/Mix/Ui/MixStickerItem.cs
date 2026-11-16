@@ -90,18 +90,25 @@ namespace Mix.Ui
 			}
 			LoaderObject.SetActive(false);
 			GameObject gameObject = base.instance.transform.Find("Content/StickerHolder").gameObject;
+			gameObject.SetActive(false);
 			if (stickerObject != null)
 			{
 				MonoSingleton<AssetManager>.Instance.DestroyBundleInstance(bundleURL, stickerObject);
 				stickerObject = null;
 			}
-			stickerObject = (GameObject)MonoSingleton<AssetManager>.Instance.GetBundleInstance(bundleURL);
+			Object stickerAsset = MonoSingleton<AssetManager>.Instance.GetBundleInstance(bundleURL);
+			stickerObject = stickerAsset as GameObject;
 			if (stickerObject == null)
 			{
+				if (stickerAsset != null)
+				{
+					MonoSingleton<AssetManager>.Instance.DestroyBundleInstance(bundleURL, stickerAsset);
+				}
 				ErrorObject.SetActive(true);
 				return;
 			}
 			isInstanced = true;
+			gameObject.SetActive(true);
 			stickerObject.transform.SetParent(gameObject.transform, false);
 			float num = 0f;
 			if (message.IsMine())

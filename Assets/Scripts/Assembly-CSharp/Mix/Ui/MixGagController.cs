@@ -36,31 +36,57 @@ namespace Mix.Ui
 			}
 			if (aGameObject == null)
 			{
+				if (aUserData != null)
+				{
+					GameObject gagImage = Util.FindGameObjectByName(base.gameObject, "GagImage");
+					if (gagImage != null)
+					{
+						gagImage.SetActive(false);
+					}
+				}
 				chatItem.ErrorObject.SetActive(true);
+				return;
 			}
-			else if (aUserData != null)
+			if (aUserData != null)
 			{
-				GameObject gameObject = Util.FindGameObjectByName(base.gameObject, "GagImage");
-				if (!(gameObject != null))
+				GameObject gagImage = Util.FindGameObjectByName(base.gameObject, "GagImage");
+				if (gagImage == null || ActiveObject != null)
 				{
 					return;
 				}
-gameObject.SetActive(true);
-if (ActiveObject != null) return;   // already have it (guards against two loads in flight)
-
-ActiveObject = MonoSingleton<AssetManager>.Instance.GetBundleInstance(gag.GetThumb());
-if (ActiveObject is Texture2D)
-{
-    Texture2D tex = (Texture2D)ActiveObject;
-    createdSprite = Sprite.Create(tex, new Rect(0f, 0f, tex.width, tex.height), new Vector2(0f, 0f));
-    gameObject.GetComponent<Image>().sprite = createdSprite;
-    return;
-}
-GameObject gameObject2 = (GameObject)ActiveObject;
-if (gameObject2 != null)
-{
-    gameObject.GetComponent<Image>().sprite = gameObject2.GetComponent<Image>().sprite;
-}
+				ActiveObject = MonoSingleton<AssetManager>.Instance.GetBundleInstance(gag.GetThumb());
+				Image image = gagImage.GetComponent<Image>();
+				Sprite loadedSprite = null;
+				if (ActiveObject is Texture2D texture && image != null && texture.width > 0 && texture.height > 0)
+				{
+					createdSprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), new Vector2(0f, 0f));
+					loadedSprite = createdSprite;
+				}
+				else if (ActiveObject is Sprite sprite)
+				{
+					loadedSprite = sprite;
+				}
+				else if (ActiveObject is GameObject thumbnail)
+				{
+					Image thumbnailImage = thumbnail.GetComponent<Image>();
+					if (thumbnailImage != null)
+					{
+						loadedSprite = thumbnailImage.sprite;
+					}
+				}
+				if (image == null || loadedSprite == null)
+				{
+					if (ActiveObject != null)
+					{
+						MonoSingleton<AssetManager>.Instance.DestroyBundleInstance(gag.GetThumb(), ActiveObject);
+						ActiveObject = null;
+					}
+					gagImage.SetActive(false);
+					chatItem.ErrorObject.SetActive(true);
+					return;
+				}
+				image.sprite = loadedSprite;
+				gagImage.SetActive(true);
 			}
 			else
 			{
