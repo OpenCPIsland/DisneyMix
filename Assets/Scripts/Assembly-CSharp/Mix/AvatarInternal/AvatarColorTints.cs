@@ -107,7 +107,7 @@ namespace Mix.AvatarInternal
 			SLATE_LIGHT = 23
 		}
 
-		public static Color[] HairColors = new Color[20]
+		public static Color[] HairColors = new Color[22]
 		{
 			new Color(0.99607843f, 0.9843137f, 0.8784314f),
 			new Color(0.9254902f, 64f / 85f, 0.4862745f),
@@ -128,7 +128,9 @@ namespace Mix.AvatarInternal
 			new Color(21f / 85f, 0.22745098f, 0.20784314f),
 			new Color(42f / 85f, 64f / 85f, 0.09019608f),
 			new Color(0.80784315f, 0.39607844f, 0.8980392f),
-			new Color(0.14509805f, 0.7019608f, 0.6313726f)
+			new Color(0.14509805f, 0.7019608f, 0.6313726f),
+			new Color32(0x8A, 0x8C, 0xFF, 0xFF),
+			new Color32(0xFF, 0x66, 0x66, 0xFF)
 		};
 
 		public static Color[] EyeColors = new Color[16]
