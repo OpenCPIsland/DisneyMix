@@ -21,18 +21,21 @@ namespace Mix.SequenceOperations
 			//InitSecurityUtilsPlugin();
 			//InitAccessibilityPlugin();
 			InitSystemTextPlugin();
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX || UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX_ARM || UNITY_EDITOR_OSX_ARM || UNITY_ANDROID || UNITY_EDITOR_ANDROID
-			InitMemoryMonitorPlugin();
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX || UNITY_STANDALONE_OSX_ARM
+            InitMemoryMonitorPlugin();
 #endif
-			//MonoSingleton<NativeVideoPlaybackManager>.Instance.Init();
-			//MonoSingleton<NativeKeyboardManager>.Instance.Init();
-			//MonoSingleton<NativeUtilitiesManager>.Instance.Init();
-			//MonoSingleton<NativeCameraManager>.Instance.Init();
-			//if (Service.Get<SecurityUtilsManager>().IsDebuggerAttached() && (string.IsNullOrEmpty(ConfigurationManager.EnvironmentString) || ConfigurationManager.EnvironmentString == "prod"))
-			//{
-				//UnityEngine.Application.Quit();
-			//}
-			finish(OperationStatus.STATUS_SUCCESSFUL);
+#if UNITY_ANDROID
+            //InitMemoryMonitorPlugin();
+#endif
+            //MonoSingleton<NativeVideoPlaybackManager>.Instance.Init();
+            //MonoSingleton<NativeKeyboardManager>.Instance.Init();
+            //MonoSingleton<NativeUtilitiesManager>.Instance.Init();
+            //MonoSingleton<NativeCameraManager>.Instance.Init();
+            //if (Service.Get<SecurityUtilsManager>().IsDebuggerAttached() && (string.IsNullOrEmpty(ConfigurationManager.EnvironmentString) || ConfigurationManager.EnvironmentString == "prod"))
+            //{
+            //UnityEngine.Application.Quit();
+            //}
+            finish(OperationStatus.STATUS_SUCCESSFUL);
 		}
 
 		private void InitSecurityUtilsPlugin()
