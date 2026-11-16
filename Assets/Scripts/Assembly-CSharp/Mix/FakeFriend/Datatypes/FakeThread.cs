@@ -351,6 +351,22 @@ namespace Mix.FakeFriend.Datatypes
 			this.OnTextMessageAdded(this, new FakeAddTextMessageArgs(message));
 		}
 
+		public void AddOfflineCharacterStickerReply(string contentId)
+		{
+			LocalStickerMessage message = new LocalStickerMessage(contentId, members.First().Id);
+			message.Id = CreateOfflineCharacterMessageId();
+			message.Read = true;
+			FakeMessageIncoming(message);
+		}
+
+		public void AddOfflineCharacterGagReply(string contentId)
+		{
+			LocalGagMessage message = new LocalGagMessage(contentId, null, members.First().Id);
+			message.Id = CreateOfflineCharacterMessageId();
+			message.Read = true;
+			FakeMessageIncoming(message);
+		}
+
 		private string CreateOfflineCharacterMessageId()
 		{
 			return Id + "|" + Guid.NewGuid().ToString("N");

@@ -6,8 +6,11 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Disney.Mix.SDK;
 using Mix;
+using Mix.Assets;
 using Mix.Connectivity;
+using Mix.Data;
 using Mix.DeviceDb;
+using Mix.Entitlements;
 using Mix.FakeFriend.Datatypes;
 using Mix.FakeFriend.Results;
 using Mix.Localization;
@@ -576,6 +579,10 @@ public class FakeFriendManager : MonoSingleton<FakeFriendManager>
 				{
 					gameStateMessage.Sent = supportedOfflineMessage;
 				}
+				if ((stickerMessage != null || gagMessage != null) && supportedOfflineMessage)
+				{
+					StartCoroutine(CompleteOfflineCharacterMediaReply((FakeThread)aThread, aMessage));
+				}
 				StartCoroutine(RunCallback(supportedOfflineMessage, callback));
 			}
 			else
@@ -631,6 +638,91 @@ public class FakeFriendManager : MonoSingleton<FakeFriendManager>
 		thread.NotifyOfflineTextMessageSent(message);
 		yield return new WaitForSeconds(0.25f);
 		thread.AddOfflineCharacterReply(GetOfflineCharacterReply(thread, thread.RemoteMembers.First().FirstName, message.Text));
+	}
+
+	private IEnumerator CompleteOfflineCharacterMediaReply(FakeThread thread, IChatMessage message)
+	{
+		yield return new WaitForSeconds(message is LocalGagMessage ? 5f : 0.7f);
+		if (thread == null || !IsSentOfflineCharacterMediaMessage(message))
+		{
+			yield break;
+		}
+		LocalStickerMessage incomingSticker = message as LocalStickerMessage;
+		LocalGagMessage incomingGag = message as LocalGagMessage;
+		IRemoteChatMember character = thread.RemoteMembers.FirstOrDefault();
+		if (character == null)
+		{
+			yield break;
+		}
+		EntitlementsManager entitlementsManager = Singleton<EntitlementsManager>.Instance;
+		AssetManager assetManager = MonoSingleton<AssetManager>.Instance;
+		List<Sticker> stickers = new List<Sticker>();
+		HashSet<string> stickerIds = new HashSet<string>();
+		if (entitlementsManager != null)
+		{
+			List<Sticker_Pack> stickerPacks = entitlementsManager.GetMyStickerPacks();
+			if (stickerPacks != null)
+			{
+				foreach (Sticker_Pack stickerPack in stickerPacks)
+				{
+					foreach (Sticker sticker in entitlementsManager.GetOrderedStickersFromPack(stickerPack))
+					{
+						if (IsCachedCharacterReplyAvailable(sticker, assetManager) && stickerIds.Add(sticker.GetUid()))
+						{
+							stickers.Add(sticker);
+						}
+					}
+				}
+			}
+		}
+		List<Gag> gags = entitlementsManager != null ? entitlementsManager.GetMyGags() : null;
+		if (gags != null)
+		{
+			gags = gags.FindAll((Gag gag) => IsCachedCharacterReplyAvailable(gag, assetManager));
+		}
+		else
+		{
+			gags = new List<Gag>();
+		}
+		if (incomingGag != null)
+		{
+			Gag gagReply = gags.Count > 0 ? gags[UnityEngine.Random.Range(0, gags.Count)] : null;
+			string gagId = gagReply != null ? gagReply.GetUid() : incomingGag.ContentId;
+			if (!string.IsNullOrEmpty(gagId))
+			{
+				thread.AddOfflineCharacterGagReply(gagId);
+				yield break;
+			}
+		}
+		if (incomingSticker != null)
+		{
+			Sticker stickerReply = stickers.Count > 0 ? stickers[UnityEngine.Random.Range(0, stickers.Count)] : null;
+			string stickerId = stickerReply != null ? stickerReply.GetUid() : incomingSticker.ContentId;
+			if (!string.IsNullOrEmpty(stickerId))
+			{
+				thread.AddOfflineCharacterStickerReply(stickerId);
+				yield break;
+			}
+		}
+		thread.AddOfflineCharacterReply(character.FirstName == "Hank" ? "That was fun!" : "I liked that! It made me smile.");
+	}
+
+	private bool IsSentOfflineCharacterMediaMessage(IChatMessage message)
+	{
+		LocalStickerMessage stickerMessage = message as LocalStickerMessage;
+		if (stickerMessage != null)
+		{
+			return stickerMessage.Sent;
+		}
+		LocalGagMessage gagMessage = message as LocalGagMessage;
+		return gagMessage != null && gagMessage.Sent;
+	}
+
+	private bool IsCachedCharacterReplyAvailable(BaseContentData entitlement, AssetManager assetManager)
+	{
+		return entitlement != null && !string.IsNullOrEmpty(entitlement.GetUid()) && !string.IsNullOrEmpty(entitlement.GetHd()) &&
+			assetManager != null &&
+			(assetManager.IsBundleCached(entitlement.GetHd()) || assetManager.IsBundleAssetCached(entitlement.GetHd()));
 	}
 
 	private string GetOfflineCharacterReply(FakeThread thread, string characterName, string message)

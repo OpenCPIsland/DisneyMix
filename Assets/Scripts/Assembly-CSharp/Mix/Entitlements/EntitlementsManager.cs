@@ -270,6 +270,10 @@ namespace Mix.Entitlements
 
 		public bool DoesUserOwnItem(BaseContentData item)
 		{
+			if ((item is Sticker_Pack || item is Sticker || item is Gag) && !item.GetHidden())
+			{
+				return true;
+			}
 			if (!item.GetHidden() && (!item.GetUnlockable() || IsUnlocked(item.GetUid())))
 			{
 				return true;
