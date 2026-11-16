@@ -58540,8 +58540,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   container: {fileID: 224859737480617881}
   itemPadding: 5
-  offsetBuffer: 400
-  visibleOffsetBuffer: 200
+  offsetBuffer: 1200
+  visibleOffsetBuffer: 600
   bottomOffset: 200
   bottomAlign: 1
   NeedsReposition: 0
@@ -58564,7 +58564,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 60
   m_Viewport: {fileID: 0}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Mix.Ui
 {
-	public class ScrollView : MonoBehaviour, IPointerDownHandler, IEventSystemHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
+	public class ScrollView : MonoBehaviour, IPointerDownHandler, IEventSystemHandler, IDragHandler, IBeginDragHandler, IEndDragHandler, IScrollHandler
 	{
 		public delegate void OnPointerDownDelegate(PointerEventData eventData);
 
@@ -177,6 +177,20 @@ namespace Mix.Ui
 				autoScrollInProgress = false;
 				base.gameObject.GetComponent<ScrollRect>().vertical = true;
 			}
+		}
+
+		public void OnScroll(PointerEventData eventData)
+		{
+			if (eventData.scrollDelta == Vector2.zero)
+			{
+				return;
+			}
+
+			autoScrollInProgress = false;
+			ScrollRect scrollRect = base.gameObject.GetComponent<ScrollRect>();
+			scrollRect.vertical = true;
+			scrollRect.OnScroll(eventData);
+			eventData.scrollDelta = Vector2.zero;
 		}
 
 		public void SetStaticHeight(IScrollItem aGenerator)
