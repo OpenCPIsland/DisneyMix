@@ -131,7 +131,7 @@ namespace Mix.AvatarInternal
 			new Color(0.14509805f, 0.7019608f, 0.6313726f)
 		};
 
-		public static Color[] EyeColors = new Color[15]
+		public static Color[] EyeColors = new Color[16]
 		{
 			new Color(0f, 0.8392157f, 1f),
 			new Color(1f, 49f / 51f, 0f),
@@ -147,10 +147,11 @@ namespace Mix.AvatarInternal
 			new Color(0.41960785f, 0.16862746f, 0f),
 			new Color(0.70980394f, 0.9843137f, 0.050980393f),
 			new Color(1f, 0.6039216f, 0.77254903f),
-			new Color(0.6039216f, 0.003921569f, 0.44313726f)
+			new Color(0.6039216f, 0.003921569f, 0.44313726f),
+			new Color32(0xFF, 0x66, 0x66, 0xFF)
 		};
 
-		public static Color[] SkinColors = new Color[26]
+		public static Color[] SkinColors = new Color[27]
 		{
 			new Color(0.99607843f, 0.8901961f, 0.77254903f),
 			new Color(1f, 0.85490197f, 38f / 51f),
@@ -173,11 +174,12 @@ namespace Mix.AvatarInternal
 			new Color(48f / 85f, 0.7647059f, 24f / 85f),
 			new Color(50f / 51f, 0.96862745f, 0.94509804f),
 			new Color(0.2784314f, 0.6784314f, 0.8862745f),
-			new Color(84f / 85f, 82f / 85f, 0.9137255f),
+			new Color32(0x8A, 0x8C, 0xFF, 0xFF),
 			new Color(1f, 0.8156863f, 0.9372549f),
 			new Color(1f, 0.6431373f, 0.18431373f),
 			new Color(0.8392157f, 0.7607843f, 11f / 15f),
-			new Color(56f / 85f, 24f / 85f, 62f / 85f)
+			new Color(56f / 85f, 24f / 85f, 62f / 85f),
+			new Color32(0xFF, 0x66, 0x66, 0xFF)
 		};
 
 		public static Color[] AccessoryColors = new Color[24]
