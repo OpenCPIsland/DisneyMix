@@ -106,7 +106,16 @@ namespace Mix.Ui
 			inviteManager.OnInviteAccepted += OnInviteAccepted;
 			usersManager.OnTrustInviteSent += OnTrustInviteSent;
 			usersManager.OnHeaderUpdated += OnFriendsCountUpdated;
-			if (Input.touchPressureSupported && MixSession.User.Friends.Count() > 1)
+			bool touchPressureSupported = false;
+			foreach (UnityEngine.InputSystem.EnhancedTouch.Touch touch in UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches)
+			{
+				if (touch.pressure > 0f)
+				{
+					touchPressureSupported = true;
+					break;
+				}
+			}
+			if (touchPressureSupported && MixSession.User.Friends.Count() > 1)
 			{
 				IKeyValDatabaseApi keyValDocumentCollectionApi = Singleton<MixDocumentCollections>.Instance.keyValDocumentCollectionApi;
 				if (!keyValDocumentCollectionApi.LoadUserValueAsBool("3dtouch.tooltip.seen.convo"))

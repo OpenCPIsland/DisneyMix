@@ -1,12 +1,13 @@
+using TestRunnerType = UnityTest.TestRunner;
 using UnityTest;
 
 namespace Mix
 {
 	public class TestRunnerGameObject : IUnityTestRunnerObject
 	{
-		public TestRunner testRunnerObj;
+		public TestRunnerType testRunnerObj;
 
-		public TestRunnerGameObject(TestRunner _gameObj)
+		public TestRunnerGameObject(TestRunnerType _gameObj)
 		{
 			testRunnerObj = _gameObj;
 		}

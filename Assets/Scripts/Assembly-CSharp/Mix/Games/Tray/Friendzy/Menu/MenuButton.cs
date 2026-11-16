@@ -8,19 +8,15 @@ namespace Mix.Games.Tray.Friendzy.Menu
 	[RequireComponent(typeof(FlipPanel))]
 	public class MenuButton : MonoBehaviour
 	{
-		private const float DRAG_TOLERANCE = 15f;
-
 		private const float DEPRESSED_AMOUNT = 60f;
 
 		private bool ClickedDown;
 
-		private Vector2 currentPos;
-
-		private Vector2 prevPos;
-
 		public UnityEvent onClick;
 
 		private FlipPanel mFlipPanel;
+
+		private Collider2D mCollider;
 
 		public Color DEPRESSED_COLOR;
 
@@ -29,6 +25,7 @@ namespace Mix.Games.Tray.Friendzy.Menu
 		private void Awake()
 		{
 			mFlipPanel = GetComponent<FlipPanel>();
+			mCollider = GetComponent<Collider2D>();
 			InitButtonBehavior();
 		}
 
@@ -41,14 +38,36 @@ namespace Mix.Games.Tray.Friendzy.Menu
 			ClickedDown = false;
 		}
 
-		private void OnMouseDown()
+		private void Update()
 		{
-			if (MenuAnimator.InputEnabled)
+			bool pointerOverButton = IsPointerOverButton();
+			if (UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame && pointerOverButton && MenuAnimator.InputEnabled)
 			{
 				ClickedDown = true;
-				currentPos = (prevPos = Input.mousePosition);
-				DepressFlipBar(60f);
+				DepressFlipBar(DEPRESSED_AMOUNT);
 			}
+			if (!ClickedDown)
+			{
+				return;
+			}
+			if (!pointerOverButton)
+			{
+				ClickedDown = false;
+				DepressFlipBar(0f);
+				return;
+			}
+			if (UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasReleasedThisFrame)
+			{
+				ClickedDown = false;
+				DepressFlipBar(0f);
+				onClick.Invoke();
+			}
+		}
+
+		private bool IsPointerOverButton()
+		{
+			UnityEngine.Camera mainCamera = UnityEngine.Camera.main;
+			return mainCamera != null && mCollider.OverlapPoint(mainCamera.ScreenToWorldPoint(UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero));
 		}
 
 		private void DepressFlipBar(float aAmount)
@@ -66,33 +85,6 @@ namespace Mix.Games.Tray.Friendzy.Menu
 			}
 			AlterFrontPanelColor(aColor);
 			mFlipPanel.transformToFollow.DOLocalMoveZ(aAmount, 0.15f);
-		}
-
-		private void OnMouseDrag()
-		{
-			if (ClickedDown)
-			{
-				currentPos = Input.mousePosition;
-				if (!((currentPos - prevPos).sqrMagnitude > 15f))
-				{
-				}
-			}
-		}
-
-		private void OnMouseUpAsButton()
-		{
-			if (ClickedDown)
-			{
-				ClickedDown = false;
-				DepressFlipBar(0f);
-				onClick.Invoke();
-			}
-		}
-
-		private void OnMouseExit()
-		{
-			ClickedDown = false;
-			DepressFlipBar(0f);
 		}
 
 		public void AlterFrontPanelColor(Color aColor)

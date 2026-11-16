@@ -5,6 +5,7 @@ using Mix.GagManagement;
 using Mix.Native;
 using Mix.Tracking;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Mix.Ui
 {
@@ -195,7 +196,7 @@ namespace Mix.Ui
 		{
 			if (UnityEngine.Application.platform == RuntimePlatform.Android || UnityEngine.Application.platform != RuntimePlatform.IPhonePlayer)
 			{
-				if (Input.GetKey(KeyCode.Escape) && !backButtonDown)
+				if (UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current[UnityEngine.InputSystem.Key.Escape].isPressed && !backButtonDown)
 				{
 					backButtonDown = true;
 					if (GetLastProcessedRequest() != null)
@@ -210,7 +211,7 @@ namespace Mix.Ui
 						}
 					}
 				}
-				else if (!Input.GetKey(KeyCode.Escape))
+				else if (UnityEngine.InputSystem.Keyboard.current == null || !UnityEngine.InputSystem.Keyboard.current[UnityEngine.InputSystem.Key.Escape].isPressed)
 				{
 					backButtonDown = false;
 				}

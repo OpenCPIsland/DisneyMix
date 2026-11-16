@@ -1,4 +1,8 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 public class TKTouch
 {
@@ -29,9 +33,9 @@ public class TKTouch
 
 	public TKTouch populateWithTouch(Touch touch)
 	{
-		position = touch.position;
-		deltaPosition = touch.deltaPosition;
-		deltaTime = touch.deltaTime;
+		position = touch.screenPosition;
+		deltaPosition = touch.delta;
+		deltaTime = Time.unscaledDeltaTime;
 		tapCount = touch.tapCount;
 		if (touch.phase == TouchPhase.Canceled)
 		{

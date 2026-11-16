@@ -21,7 +21,7 @@ namespace Mix.Test
 				GameObject[] rootGameObjects = SceneManager.GetSceneAt(i).GetRootGameObjects();
 				foreach (GameObject gameObject in rootGameObjects)
 				{
-					if (gameObject != null && gameObject.GetComponent<TestComponent>() == null && gameObject.GetComponent<TestRunner>() == null)
+					if (gameObject != null && gameObject.GetComponent<TestComponent>() == null && gameObject.GetComponent<UnityTest.TestRunner>() == null)
 					{
 						Object.DestroyImmediate(gameObject);
 					}

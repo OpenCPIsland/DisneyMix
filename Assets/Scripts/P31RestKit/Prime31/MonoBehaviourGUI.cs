@@ -156,7 +156,7 @@ namespace Prime31
 				_isWindowsPhone = Application.platform.ToString().ToLower().Contains("wp8");
 			}
 			bool flag = false;
-			if (Input.GetMouseButtonDown(0))
+			if (UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
 			{
 				float num = Time.time - _previousClickTime;
 				if (num < _doubleClickDelay)

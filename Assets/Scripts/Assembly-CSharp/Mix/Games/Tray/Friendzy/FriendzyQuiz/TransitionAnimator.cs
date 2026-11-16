@@ -300,7 +300,8 @@ namespace Mix.Games.Tray.Friendzy.FriendzyQuiz
 			Highlight.gameObject.SetActive(true);
 			Highlight.DOFade(1f, 0.1f);
 			mParticleSystem.Emit(1);
-			mParticleSystem.transform.position = mEventCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1.5f));
+			Vector2 mousePosition = UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero;
+			mParticleSystem.transform.position = mEventCamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 1.5f));
 		}
 
 		public Sequence RemoveButtons()

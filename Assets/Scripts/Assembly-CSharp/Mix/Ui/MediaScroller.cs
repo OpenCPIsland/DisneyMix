@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.UI;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 namespace Mix.Ui
 {
@@ -59,6 +62,34 @@ namespace Mix.Ui
 		public bool IsAnimating { get; set; }
 
 		public DragState CurrentDragState { get; set; }
+
+		private static bool TryGetTouch(int touchId, out Touch touch)
+		{
+			foreach (Touch activeTouch in UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches)
+			{
+				if (activeTouch.touchId == touchId)
+				{
+					touch = activeTouch;
+					return true;
+				}
+			}
+			touch = default(Touch);
+			return false;
+		}
+
+		private static bool TryGetTouchBegan(out Touch touch)
+		{
+			foreach (Touch activeTouch in UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches)
+			{
+				if (activeTouch.phase == UnityEngine.InputSystem.TouchPhase.Began)
+				{
+					touch = activeTouch;
+					return true;
+				}
+			}
+			touch = default(Touch);
+			return false;
+		}
 
 		public void ResetPositions()
 		{
@@ -136,10 +167,9 @@ namespace Mix.Ui
 			{
 				if (touchIndex >= 0)
 				{
-					Touch touch = Input.touches.FirstOrDefault((Touch t) => t.fingerId == touchIndex);
-					if (touch.fingerId == touchIndex && touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled)
+					if (TryGetTouch(touchIndex, out Touch touch) && touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled)
 					{
-						vector = touch.position;
+						vector = touch.screenPosition;
 					}
 					else
 					{
@@ -147,9 +177,9 @@ namespace Mix.Ui
 						flag = true;
 					}
 				}
-				else if (Input.GetMouseButton(0))
+				else if (UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.isPressed)
 				{
-					vector = Input.mousePosition;
+					vector = UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero;
 				}
 				else
 				{
@@ -158,19 +188,13 @@ namespace Mix.Ui
 			}
 			if (!dragging)
 			{
-				if (Input.GetMouseButtonDown(0) && Util.GetRectInScreenSpace(GetComponent<RectTransform>()).Contains(Input.mousePosition))
+				bool touchBegan = TryGetTouchBegan(out Touch touch);
+				Vector2 pointerPosition = touchBegan ? touch.screenPosition : UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero;
+				if ((touchBegan || UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame) && Util.GetRectInScreenSpace(GetComponent<RectTransform>()).Contains(pointerPosition))
 				{
 					CurrentDragState = DragState.Idle;
-					if (Input.touchCount > 0)
-					{
-						vector = Input.touches[0].position;
-						touchIndex = Input.touches[0].fingerId;
-					}
-					else
-					{
-						vector = Input.mousePosition;
-						touchIndex = -1;
-					}
+					vector = pointerPosition;
+					touchIndex = touchBegan ? touch.touchId : -1;
 					scrollRectMiddle = scrollerMiddle.GetComponent<ScrollRect>();
 					startPosition = GetCanvasPointFromScreenPoint(vector);
 					offsetMiddleX = scrollerMiddle.anchoredPosition.x;

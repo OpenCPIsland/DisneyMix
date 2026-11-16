@@ -19,7 +19,8 @@ namespace Mix.Games.Tray.Fireworks
 
 		public Vector3 AddNewPoint(float timestamp, Camera viewCamera)
 		{
-			Vector3 point = viewCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 60f));
+			Vector3 mousePosition = UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero;
+			Vector3 point = viewCamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 60f));
 			return AddNewPoint(timestamp, point);
 		}
 

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Mix.Native;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 #if TMP_PRESENT
@@ -36,8 +37,8 @@ namespace Mix.Ui
 				return;
 			}
 
-			bool tabPressed = Input.GetKeyDown(KeyCode.Tab);
-			bool enterPressed = Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter);
+			bool tabPressed = UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current[UnityEngine.InputSystem.Key.Tab].wasPressedThisFrame;
+			bool enterPressed = UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current[UnityEngine.InputSystem.Key.Enter].wasPressedThisFrame || UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current[UnityEngine.InputSystem.Key.NumpadEnter].wasPressedThisFrame;
 			if (!tabPressed && !enterPressed)
 			{
 				return;
@@ -56,7 +57,7 @@ namespace Mix.Ui
 
 			if (tabPressed)
 			{
-				MoveFocus(eventSystem, selectedInput, Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
+				MoveFocus(eventSystem, selectedInput, UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current[UnityEngine.InputSystem.Key.LeftShift].isPressed || UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current[UnityEngine.InputSystem.Key.RightShift].isPressed);
 				return;
 			}
 

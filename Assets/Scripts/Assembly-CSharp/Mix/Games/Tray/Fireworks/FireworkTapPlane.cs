@@ -24,7 +24,7 @@ namespace Mix.Games.Tray.Fireworks
 
 		public Vector3 GetTouchOnTapPlane(Camera camera)
 		{
-			mTouchRay = Toolbox.Instance.mFireworkGame.GameController.MixGameCamera.ScreenPointToRay(Input.mousePosition);
+			mTouchRay = Toolbox.Instance.mFireworkGame.GameController.MixGameCamera.ScreenPointToRay(UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero);
 			if (mTapPlane.Raycast(mTouchRay, out mTouchDist))
 			{
 				return mTouchRay.GetPoint(mTouchDist);

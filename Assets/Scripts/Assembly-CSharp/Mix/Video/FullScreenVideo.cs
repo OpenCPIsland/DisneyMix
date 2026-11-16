@@ -137,8 +137,7 @@ namespace Mix.Video
 
             while (!finished)
             {
-                // FIX: Replaced New Input System (Keyboard/Mouse) with Legacy Input for compatibility
-                if (Input.anyKeyDown || Input.GetMouseButtonDown(0))
+                if (UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.anyKey.wasPressedThisFrame || UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
                 {
                     break;
                 }

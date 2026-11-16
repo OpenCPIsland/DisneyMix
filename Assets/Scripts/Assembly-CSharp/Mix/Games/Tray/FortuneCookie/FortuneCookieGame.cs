@@ -140,7 +140,8 @@ namespace Mix.Games.Tray.FortuneCookie
 
 		private void TiltInput()
 		{
-			Vector3 vector = new Vector3(Input.acceleration.y, 0f - Input.acceleration.x, 0f) * TiltFactor;
+			Vector3 acceleration = UnityEngine.InputSystem.Accelerometer.current != null ? UnityEngine.InputSystem.Accelerometer.current.acceleration.ReadValue() : Vector3.zero;
+			Vector3 vector = new Vector3(acceleration.y, 0f - acceleration.x, 0f) * TiltFactor;
 			float num = base.transform.rotation.eulerAngles.x + vector.x;
 			if (num >= 360f - MaxVerticalTilt)
 			{
@@ -166,11 +167,11 @@ namespace Mix.Games.Tray.FortuneCookie
 
 		private void TouchInput()
 		{
-			if (!Input.GetMouseButtonDown(0))
+			if (UnityEngine.InputSystem.Mouse.current == null || !UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
 			{
 				return;
 			}
-			Ray ray = GameCamera.ScreenPointToRay(Input.mousePosition);
+			Ray ray = GameCamera.ScreenPointToRay(UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero);
 			Debug.DrawLine(ray.origin, ray.origin + ray.direction * 100f, Color.red);
 			RaycastHit hitInfo;
 			if (!Physics.Raycast(ray, out hitInfo, 100f))

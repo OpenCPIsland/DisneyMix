@@ -3,6 +3,7 @@ using System.IO;
 using Mix.Ui;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 
 namespace Mix
 {
@@ -60,15 +61,24 @@ namespace Mix
 			{
 				GameObject eventSystemObject = new GameObject("EventSystem");
 				eventSystem = eventSystemObject.AddComponent<EventSystem>();
-				eventSystemObject.AddComponent<StandaloneInputModule>();
-				Debug.Log("[StartUp] EventSystem missing. Created fallback EventSystem with StandaloneInputModule.");
-				return eventSystem;
+				Debug.Log("[StartUp] EventSystem missing. Created a fallback EventSystem.");
 			}
 
-			if (eventSystem.GetComponent<BaseInputModule>() == null)
+			StandaloneInputModule legacyInputModule = eventSystem.GetComponent<StandaloneInputModule>();
+			if (legacyInputModule != null)
 			{
-				eventSystem.gameObject.AddComponent<StandaloneInputModule>();
-				Debug.Log("[StartUp] EventSystem had no input module. Added StandaloneInputModule.");
+				UnityEngine.Object.Destroy(legacyInputModule);
+			}
+
+			InputSystemUIInputModule inputModule = eventSystem.GetComponent<InputSystemUIInputModule>();
+			if (inputModule == null)
+			{
+				inputModule = eventSystem.gameObject.AddComponent<InputSystemUIInputModule>();
+				Debug.Log("[StartUp] EventSystem had no Input System UI module. Added one.");
+			}
+			if (inputModule.actionsAsset == null)
+			{
+				inputModule.AssignDefaultActions();
 			}
 
 			return eventSystem;

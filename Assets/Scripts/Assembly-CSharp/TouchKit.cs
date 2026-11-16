@@ -1,9 +1,22 @@
 using System.Collections.Generic;
 using Mix;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 public class TouchKit : MonoBehaviour
 {
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	private static void EnableEnhancedTouch()
+	{
+		if (!EnhancedTouchSupport.enabled)
+		{
+			EnhancedTouchSupport.Enable();
+		}
+	}
+
 	[HideInInspector]
 	public bool simulateTouches = true;
 
@@ -97,16 +110,18 @@ public class TouchKit : MonoBehaviour
 
 	private void internalUpdateTouches()
 	{
-		if (Input.touchCount > 0)
+		var touches = Touch.activeTouches;
+		if (touches.Count > 0)
 		{
 			_shouldCheckForLostTouches = true;
-			int num = Mathf.Min(Input.touches.Length, maxTouchesToProcess);
+			int num = Mathf.Min(touches.Count, maxTouchesToProcess);
 			for (int i = 0; i < num; i++)
 			{
-				Touch touch = Input.touches[i];
-				if (touch.fingerId < maxTouchesToProcess)
+				Touch touch = touches[i];
+				int fingerIndex = touch.finger.index;
+				if (fingerIndex >= 0 && fingerIndex < maxTouchesToProcess)
 				{
-					_liveTouches.Add(_touchCache[touch.fingerId].populateWithTouch(touch));
+					_liveTouches.Add(_touchCache[fingerIndex].populateWithTouch(touch));
 				}
 			}
 		}

@@ -38,7 +38,7 @@ public class SaveMediaController : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetMouseButtonDown(0))
+		if (UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
 		{
 			isMouseDown = true;
 			mouseDownDeltaTime = 0f;
@@ -48,7 +48,7 @@ public class SaveMediaController : MonoBehaviour
 			if (mouseDownDeltaTime > 1f)
 			{
 				RectTransform component = GetComponent<RectTransform>();
-				if (Util.GetRectInScreenSpace(component).Contains(Input.mousePosition) && AllowShowingOfMenu)
+				if (Util.GetRectInScreenSpace(component).Contains(UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero) && AllowShowingOfMenu)
 				{
 					ContextMenu.SetActive(true);
 				}
@@ -56,7 +56,7 @@ public class SaveMediaController : MonoBehaviour
 			}
 			mouseDownDeltaTime += Time.deltaTime;
 		}
-		if (Input.GetMouseButtonUp(0))
+		if (UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasReleasedThisFrame)
 		{
 			isMouseDown = false;
 		}

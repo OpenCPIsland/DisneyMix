@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using System.Collections;
 
 namespace Mix.Games.Tray.Fireworks
@@ -45,7 +46,7 @@ namespace Mix.Games.Tray.Fireworks
 
 		private void Update()
 		{
-			if (Input.GetKeyDown(KeyCode.Space) && launcher != null)
+			if (UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current[UnityEngine.InputSystem.Key.Space].wasPressedThisFrame && launcher != null)
 			{
 				if (launcher.transform.GetChild(0).GetChild(1).GetComponent<FontFirework>() != null && !launcher.transform.GetChild(0).GetChild(1).GetComponent<FontFirework>()
 					.built)

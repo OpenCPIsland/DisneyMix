@@ -666,7 +666,7 @@ namespace Mix.Games.Tray.Fireworks
 						float t = Mathf.PingPong(Time.time, 1f);
 						component.color = Color.Lerp(mCountdownBarInitColor, Color.white, t);
 					}
-					if ((mIsInputinGestureRange && Input.GetMouseButton(0)) || mIsTrackingGesture)
+					if ((mIsInputinGestureRange && UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.isPressed) || mIsTrackingGesture)
 					{
 						LightUpSceneG();
 						FireworkGesture mGestureFirework = Toolbox.Instance.mFireworkManager.mGestureFirework;
@@ -680,7 +680,7 @@ namespace Mix.Games.Tray.Fireworks
 							mGestureStartPosition = mCurrentGesture.AddNewPoint(CurrentTimestamp, base.transform.InverseTransformPoint(Toolbox.Instance.mFireworkManager.GetTouchOnTapPlane()));
 							mGestureFirework.transform.localPosition = mGestureStartPosition;
 						}
-						else if (mIsTrackingGesture && Input.GetMouseButton(0) && mIsInputinGestureRange)
+						else if (mIsTrackingGesture && UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.isPressed && mIsInputinGestureRange)
 						{
 							if (mTapTimerMax != 0f)
 							{
@@ -708,7 +708,7 @@ namespace Mix.Games.Tray.Fireworks
 								mTapTimerMax = 0f;
 							}
 						}
-						else if ((mIsTrackingGesture && Input.GetMouseButtonUp(0) && mCurrentGesture != null) || (mIsTrackingGesture && !mIsInputinGestureRange && mCurrentGesture != null))
+						else if ((mIsTrackingGesture && UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasReleasedThisFrame && mCurrentGesture != null) || (mIsTrackingGesture && !mIsInputinGestureRange && mCurrentGesture != null))
 						{
 							mIsTrackingGesture = false;
 							mIsGestureInitialized = false;

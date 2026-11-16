@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 public class TKRotationRecognizer : TKAbstractGestureRecognizer
 {

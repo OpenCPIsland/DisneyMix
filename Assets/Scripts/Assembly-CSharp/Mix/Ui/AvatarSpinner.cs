@@ -98,8 +98,9 @@ namespace Mix.Ui
 			Avatar.transform.DOKill();
 			if (Avatar.gameObject.activeInHierarchy && spinState != SpinState.PANNING && spinState != SpinState.SPINNING_UP)
 			{
-				faceForwardWhenSpinStops = pd.pointerId != -1;
-				mousePanning = pd.pointerId == -1;
+				UnityEngine.InputSystem.UI.ExtendedPointerEventData pointerData = pd as UnityEngine.InputSystem.UI.ExtendedPointerEventData;
+				mousePanning = pointerData != null && pointerData.pointerType == UnityEngine.InputSystem.UI.UIPointerType.MouseOrPen;
+				faceForwardWhenSpinStops = !mousePanning;
 				lastMousePosition = pd.position;
 				momentum = 0f;
 				spinState = SpinState.PANNING;
@@ -125,9 +126,9 @@ namespace Mix.Ui
 
 		private void Update()
 		{
-			if (mousePanning && Input.GetMouseButton(0))
+			if (mousePanning && UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.isPressed)
 			{
-				Vector2 mousePosition = Input.mousePosition;
+				Vector2 mousePosition = UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero;
 				Vector2 mouseDelta = mousePosition - lastMousePosition;
 				lastMousePosition = mousePosition;
 				mouseDelta.x *= Singleton<SettingsManager>.Instance.GetWidthScale();

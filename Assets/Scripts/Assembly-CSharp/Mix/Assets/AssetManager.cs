@@ -463,7 +463,7 @@ namespace Mix.Assets
 			{
 				FlagRefreshContent();
 			}
-			TestRunner testRunner = (TestRunner)UnityEngine.Object.FindObjectOfType(typeof(TestRunner));
+			UnityTest.TestRunner testRunner = (UnityTest.TestRunner)UnityEngine.Object.FindObjectOfType(typeof(UnityTest.TestRunner));
 			if (testRunner != null)
 			{
 				IsTestRunner = true;

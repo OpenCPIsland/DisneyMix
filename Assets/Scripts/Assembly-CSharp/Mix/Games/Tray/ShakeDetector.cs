@@ -27,7 +27,7 @@ namespace Mix.Games.Tray
 
 		private void Start()
 		{
-			mAcceleration = Input.acceleration;
+			mAcceleration = UnityEngine.InputSystem.Accelerometer.current != null ? UnityEngine.InputSystem.Accelerometer.current.acceleration.ReadValue() : Vector3.zero;
 			mNextCheckTime = -1f;
 		}
 
@@ -36,7 +36,7 @@ namespace Mix.Games.Tray
 			if (Time.time >= mNextCheckTime)
 			{
 				bool flag = false;
-				mAcceleration = Input.acceleration;
+				mAcceleration = UnityEngine.InputSystem.Accelerometer.current != null ? UnityEngine.InputSystem.Accelerometer.current.acceleration.ReadValue() : Vector3.zero;
 				mLowPassVal = Vector3.Lerp(mLowPassVal, mAcceleration, 1f / 30f);
 				mDeltaAcceleration = mAcceleration - mLowPassVal;
 				if (mDeltaAcceleration.sqrMagnitude >= 4f)

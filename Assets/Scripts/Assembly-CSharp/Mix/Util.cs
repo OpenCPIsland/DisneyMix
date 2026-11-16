@@ -3,7 +3,10 @@ using System.Globalization;
 using Mix.Data;
 using Mix.Ui;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.UI;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 namespace Mix
 {

@@ -1,16 +1,27 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace Fabric
 {
 	[AddComponentMenu("Fabric/Events/Trigger")]
-	public class EventTrigger : MonoBehaviour
+	public class EventTrigger : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 	{
 		private Event _event = new Event();
 
 		private ParameterData parameter = new ParameterData();
 
 		private DSPParameterData dspParameter = new DSPParameterData();
+
+		private bool mouseIsOver;
+
+		private bool mouseWasPressed;
+
+		private readonly HashSet<int> uiPointersOver = new HashSet<int>();
+
+		private readonly HashSet<int> uiPointersPressed = new HashSet<int>();
 
 		[HideInInspector]
 		public SwitchPresetData switchPresetData;
@@ -407,56 +418,132 @@ namespace Fabric
 			}
 		}
 
-		private void OnMouseUp()
+		private bool IsMouseOverCollider()
 		{
-			if (_eventTriggerType == EventTriggerType.MouseUp)
+			Camera mainCamera = Camera.main;
+			if (mainCamera == null)
+			{
+				return false;
+			}
+			Mouse mouse = Mouse.current;
+			if (mouse == null)
+			{
+				return false;
+			}
+			Vector2 mousePosition = mouse.position.ReadValue();
+			Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+			Collider collider = GetComponent<Collider>();
+			if (collider != null)
+			{
+				RaycastHit hit;
+				if (collider.Raycast(ray, out hit, float.MaxValue))
+				{
+					return true;
+				}
+			}
+			Collider2D collider2D = GetComponent<Collider2D>();
+			return collider2D != null && collider2D.OverlapPoint(mainCamera.ScreenToWorldPoint(mousePosition));
+		}
+
+		private bool IsUiPointerTarget()
+		{
+			return GetComponent<RectTransform>() != null && GetComponentInParent<Canvas>() != null;
+		}
+
+		public void OnPointerEnter(PointerEventData eventData)
+		{
+			bool wasOver = uiPointersOver.Count > 0;
+			uiPointersOver.Add(eventData.pointerId);
+			if (!wasOver && _eventTriggerType == EventTriggerType.MouseEnter)
 			{
 				PostEvent();
 			}
 		}
 
-		private void OnMouseDown()
+		public void OnPointerExit(PointerEventData eventData)
 		{
+			bool wasOver = uiPointersOver.Count > 0;
+			uiPointersOver.Remove(eventData.pointerId);
+			if (wasOver && uiPointersOver.Count == 0 && _eventTriggerType == EventTriggerType.MouseExit)
+			{
+				PostEvent();
+			}
+		}
+
+		public void OnPointerDown(PointerEventData eventData)
+		{
+			uiPointersPressed.Add(eventData.pointerId);
 			if (_eventTriggerType == EventTriggerType.MouseDown)
 			{
 				PostEvent();
 			}
 		}
 
-		private void OnMouseOver()
+		public void OnPointerUp(PointerEventData eventData)
 		{
-			if (_eventTriggerType == EventTriggerType.MouseOver)
+			bool isOverTarget = eventData.pointerCurrentRaycast.gameObject == gameObject ||
+				(eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.transform.IsChildOf(transform));
+			if (isOverTarget && _eventTriggerType == EventTriggerType.MouseUp)
+			{
+				PostEvent();
+			}
+			bool wasPressed = uiPointersPressed.Remove(eventData.pointerId);
+			if (wasPressed && isOverTarget && _eventTriggerType == EventTriggerType.OnMouseUpAsButton)
 			{
 				PostEvent();
 			}
 		}
 
-		private void OnMouseEnter()
+		private void UpdateMouseTrigger()
 		{
-			if (_eventTriggerType == EventTriggerType.MouseEnter)
+			if (IsUiPointerTarget())
+			{
+				if (uiPointersOver.Count > 0 && _eventTriggerType == EventTriggerType.MouseOver)
+				{
+					PostEvent();
+				}
+				return;
+			}
+			Mouse mouse = Mouse.current;
+			bool pointerOver = mouse != null && IsMouseOverCollider();
+			if (pointerOver && !mouseIsOver && _eventTriggerType == EventTriggerType.MouseEnter)
 			{
 				PostEvent();
 			}
-		}
-
-		private void OnMouseExit()
-		{
-			if (_eventTriggerType == EventTriggerType.MouseExit)
+			if (pointerOver && _eventTriggerType == EventTriggerType.MouseOver)
 			{
 				PostEvent();
 			}
-		}
-
-		private void OnMouseUpAsButton()
-		{
-			if (_eventTriggerType == EventTriggerType.OnMouseUpAsButton)
+			if (mouseIsOver && !pointerOver && _eventTriggerType == EventTriggerType.MouseExit)
 			{
 				PostEvent();
 			}
+			if (mouse != null && mouse.leftButton.wasPressedThisFrame)
+			{
+				mouseWasPressed = pointerOver;
+				if (pointerOver && _eventTriggerType == EventTriggerType.MouseDown)
+				{
+					PostEvent();
+				}
+			}
+			if (mouse != null && mouse.leftButton.wasReleasedThisFrame)
+			{
+				if (pointerOver && _eventTriggerType == EventTriggerType.MouseUp)
+				{
+					PostEvent();
+				}
+				if (pointerOver && mouseWasPressed && _eventTriggerType == EventTriggerType.OnMouseUpAsButton)
+				{
+					PostEvent();
+				}
+				mouseWasPressed = false;
+			}
+			mouseIsOver = pointerOver;
 		}
 
 		private void Update()
 		{
+			UpdateMouseTrigger();
 			if (_eventTriggerType == EventTriggerType.Update)
 			{
 				PostEvent();

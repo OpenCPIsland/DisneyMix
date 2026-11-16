@@ -8,7 +8,10 @@ using Mix.Entitlements;
 using Mix.Localization;
 using Mix.Native;
 using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.UI;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 namespace Mix.Ui
 {
@@ -110,6 +113,34 @@ namespace Mix.Ui
 		private bool dragging;
 
 		private bool isPreviewMode;
+
+		private static bool TryGetTouch(int touchId, out Touch touch)
+		{
+			foreach (Touch activeTouch in UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches)
+			{
+				if (activeTouch.touchId == touchId)
+				{
+					touch = activeTouch;
+					return true;
+				}
+			}
+			touch = default(Touch);
+			return false;
+		}
+
+		private static bool TryGetTouchBegan(out Touch touch)
+		{
+			foreach (Touch activeTouch in UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches)
+			{
+				if (activeTouch.phase == UnityEngine.InputSystem.TouchPhase.Began)
+				{
+					touch = activeTouch;
+					return true;
+				}
+			}
+			touch = default(Touch);
+			return false;
+		}
 
 		void IBundleObject.OnBundleAssetObject(Object aGameObject, object aUserData)
 		{
@@ -310,10 +341,13 @@ namespace Mix.Ui
 			bool flag = false;
 			if (dragging)
 			{
-				Touch touch = Input.touches.FirstOrDefault((Touch t) => t.fingerId == touchIndex);
-				if (touch.phase != TouchPhase.Ended && touch.fingerId == touchIndex)
+				if (touchIndex >= 0 && TryGetTouch(touchIndex, out Touch touch) && touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled)
 				{
-					vector = touch.position;
+					vector = touch.screenPosition;
+				}
+				else if (touchIndex < 0 && UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.isPressed)
+				{
+					vector = UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero;
 				}
 				else
 				{
@@ -331,10 +365,12 @@ namespace Mix.Ui
 			}
 			if (!dragging)
 			{
-				if (Input.GetMouseButtonDown(0) && Util.GetRectInScreenSpace(scroller.content.GetComponent<RectTransform>()).Contains(Input.mousePosition))
+				bool touchBegan = TryGetTouchBegan(out Touch touch);
+				Vector2 pointerPosition = touchBegan ? touch.screenPosition : UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero;
+				if ((touchBegan || UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame) && Util.GetRectInScreenSpace(scroller.content.GetComponent<RectTransform>()).Contains(pointerPosition))
 				{
-					vector = Input.touches[0].position;
-					touchIndex = Input.touches[0].fingerId;
+					vector = pointerPosition;
+					touchIndex = touchBegan ? touch.touchId : -1;
 					delay = 0f;
 					startPosition = GetCanvasPointFromScreenPoint(vector);
 					previewCheck = false;

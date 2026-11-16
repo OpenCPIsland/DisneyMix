@@ -415,10 +415,10 @@ namespace Mix.Games.Tray.Runner
 
 		private void UpdateInput()
 		{
-			if (Input.GetMouseButton(0) && game.IsInputInViewport() && !mIsBuilderInterpolatingHorizontal && !mIsBuilderInterpolatingVertical && !mIsSwiping)
+			if (UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.isPressed && game.IsInputInViewport() && !mIsBuilderInterpolatingHorizontal && !mIsBuilderInterpolatingVertical && !mIsSwiping)
 			{
 				mIsSwiping = true;
-				mSwipeStartPosition = Input.mousePosition;
+				mSwipeStartPosition = UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero;
 				if (mCurrentBuildDragAxis == BuildDragAxis.BOTH)
 				{
 					if (HasThePlayerSwappedAtLeastOneChunk)
@@ -433,7 +433,8 @@ namespace Mix.Games.Tray.Runner
 			}
 			if (mIsSwiping && !mIsBuilderInterpolatingHorizontal && !mIsBuilderInterpolatingVertical)
 			{
-				Vector2 vector = new Vector2(mSwipeStartPosition.x - Input.mousePosition.x, mSwipeStartPosition.y - Input.mousePosition.y);
+				Vector2 mousePosition = UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero;
+				Vector2 vector = new Vector2(mSwipeStartPosition.x - mousePosition.x, mSwipeStartPosition.y - mousePosition.y);
 				if (mCurrentBuildDragAxis == BuildDragAxis.BOTH)
 				{
 					if (vector.sqrMagnitude > mSwipeAxisDetermineThresholdInPixels)
@@ -496,7 +497,7 @@ namespace Mix.Games.Tray.Runner
 					return;
 				}
 			}
-			if (Input.GetMouseButtonUp(0) && mIsSwiping)
+			if (UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasReleasedThisFrame && mIsSwiping)
 			{
 				if (mCurrentBuildDragAxis == BuildDragAxis.HORIZONTAL)
 				{

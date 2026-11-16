@@ -27,7 +27,7 @@ namespace Mix.Games.Tray.Friendzy.ResultAnimator
 				{
 					mResultsAnim.EnterState(mResultsAnim.CameraMovement);
 				}
-				else if (mResultsAnim.LightAnim.SequenceSkippable && Input.GetMouseButtonDown(0))
+				else if (mResultsAnim.LightAnim.SequenceSkippable && UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
 				{
 					DOTween.KillAll();
 					FriendzyGame.PlaySound("ResultPositive", FriendzyGame.SOUND_PREFIX);
