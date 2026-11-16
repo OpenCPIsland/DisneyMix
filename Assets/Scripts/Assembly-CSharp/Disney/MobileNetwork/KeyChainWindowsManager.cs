@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.IO;
-using System.Security.Cryptography; // Added for Android Encryption
+using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
 
@@ -19,18 +19,40 @@ namespace Disney.MobileNetwork
 
         private Dictionary<string, string> appData = new Dictionary<string, string>();
 
-        #region Windows Native DLL Imports
+        #region Native DLL Imports
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         private const string DLL_NAME = "KeyChainWindows";
+#elif UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX
+        private const string DLL_NAME = "libKeyChainLinux";
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX_ARM || UNITY_EDITOR_OSX_ARM
+        private const string DLL_NAME = "libKeyChainOSX";
+#endif
 
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX || UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX_ARM || UNITY_EDITOR_OSX_ARM
         [DllImport(DLL_NAME, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         private static extern int _cryptProtectData(string dataIn, ref int dataOutSize, out IntPtr dataOut);
 
         [DllImport(DLL_NAME, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         private static extern int _cryptUnprotectData(byte[] dataIn, int dataInLength, out IntPtr dataOut);
 
+#if UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX || UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX_ARM || UNITY_EDITOR_OSX_ARM
         [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
         private static extern void _keyChainFree(IntPtr ptr);
+#endif
+
+        private static void FreeNativePtr(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return;
+            }
+
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+            Marshal.FreeCoTaskMem(ptr);
+#else
+            _keyChainFree(ptr);
+#endif
+        }
 #endif
         #endregion
 
@@ -75,16 +97,39 @@ namespace Disney.MobileNetwork
                 byte[] encryptedBytes = Convert.FromBase64String(encryptedBase64);
 
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-                // 1. Windows Decryption
                 IntPtr outPtr = IntPtr.Zero;
                 int success = _cryptUnprotectData(encryptedBytes, encryptedBytes.Length, out outPtr);
                 if (success != 0 && outPtr != IntPtr.Zero)
                 {
-                    json = Marshal.PtrToStringAnsi(outPtr);
-                    _keyChainFree(outPtr);
+                    try
+                    {
+                        json = Marshal.PtrToStringAnsi(outPtr);
+                    }
+                    finally
+                    {
+                        FreeNativePtr(outPtr);
+                    }
+                }
+#elif UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX || UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX_ARM || UNITY_EDITOR_OSX_ARM
+                IntPtr outPtr = IntPtr.Zero;
+                int success = _cryptUnprotectData(encryptedBytes, encryptedBytes.Length, out outPtr);
+                if (success != 0 && outPtr != IntPtr.Zero)
+                {
+                    try
+                    {
+                        json = Marshal.PtrToStringAnsi(outPtr);
+                    }
+                    finally
+                    {
+                        FreeNativePtr(outPtr);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(json))
+                {
+                    json = InternalDecrypt(encryptedBase64, FALLBACK_CRYPTO_KEY);
                 }
 #else
-                // 2. Android / Fallback Decryption
                 json = InternalDecrypt(encryptedBase64, FALLBACK_CRYPTO_KEY);
 #endif
 
@@ -107,19 +152,44 @@ namespace Disney.MobileNetwork
                 string encryptedBase64 = null;
 
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-                // 1. Windows Encryption
                 IntPtr outPtr = IntPtr.Zero;
                 int size = 0;
                 int success = _cryptProtectData(json, ref size, out outPtr);
                 if (success != 0 && outPtr != IntPtr.Zero)
                 {
-                    byte[] managedArray = new byte[size];
-                    Marshal.Copy(outPtr, managedArray, 0, size);
-                    _keyChainFree(outPtr);
-                    encryptedBase64 = Convert.ToBase64String(managedArray);
+                    try
+                    {
+                        byte[] managedArray = new byte[size];
+                        Marshal.Copy(outPtr, managedArray, 0, size);
+                        encryptedBase64 = Convert.ToBase64String(managedArray);
+                    }
+                    finally
+                    {
+                        FreeNativePtr(outPtr);
+                    }
+                }
+#elif UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX || UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX_ARM || UNITY_EDITOR_OSX_ARM
+                IntPtr outPtr = IntPtr.Zero;
+                int size = 0;
+                int success = _cryptProtectData(json, ref size, out outPtr);
+                if (success != 0 && outPtr != IntPtr.Zero && size > 0)
+                {
+                    try
+                    {
+                        byte[] managedArray = new byte[size];
+                        Marshal.Copy(outPtr, managedArray, 0, size);
+                        encryptedBase64 = Convert.ToBase64String(managedArray);
+                    }
+                    finally
+                    {
+                        FreeNativePtr(outPtr);
+                    }
+                }
+                else
+                {
+                    encryptedBase64 = InternalEncrypt(json, FALLBACK_CRYPTO_KEY);
                 }
 #else
-                // 2. Android / Fallback Encryption
                 encryptedBase64 = InternalEncrypt(json, FALLBACK_CRYPTO_KEY);
 #endif
 
@@ -137,8 +207,8 @@ namespace Disney.MobileNetwork
         }
         #endregion
 
-        #region Android Cryptography Fallback
-        // This reproduces the Encrypt/Decrypt logic used in the Mix SDK for non-Windows platforms
+        #region Encryption Fallback
+        // Used on mobile platforms and when a Linux/macOS native keychain call fails.
         private string InternalEncrypt(string text, string key)
         {
             Rfc2898DeriveBytes rfc = new Rfc2898DeriveBytes(key, 32);

@@ -34,5 +34,10 @@ namespace Disney.MobileNetwork
 		{
 			return 1f;
 		}
+
+		public virtual ulong GetProcessUsedBytes()
+		{
+			return 0uL;
+		}
 	}
 }

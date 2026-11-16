@@ -21,7 +21,11 @@ namespace Mix.SequenceOperations
 		{
 			GameObject gameObject = new GameObject();
 			gameObject.name = typeof(KeyChainManager).Name;
+#if UNITY_ANDROID || UNITY_EDITOR_ANDROID
+			gameObject.AddComponent<KeyChainAndroidManager>();
+#else
 			gameObject.AddComponent<KeyChainWindowsManager>();
+#endif
 		}
 	}
 }

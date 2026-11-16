@@ -21,7 +21,9 @@ namespace Mix.SequenceOperations
 			//InitSecurityUtilsPlugin();
 			//InitAccessibilityPlugin();
 			InitSystemTextPlugin();
-			//InitMemoryMonitorPlugin();
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX || UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX_ARM || UNITY_EDITOR_OSX_ARM || UNITY_ANDROID || UNITY_EDITOR_ANDROID
+			InitMemoryMonitorPlugin();
+#endif
 			//MonoSingleton<NativeVideoPlaybackManager>.Instance.Init();
 			//MonoSingleton<NativeKeyboardManager>.Instance.Init();
 			//MonoSingleton<NativeUtilitiesManager>.Instance.Init();
@@ -60,7 +62,11 @@ namespace Mix.SequenceOperations
 		{
 			GameObject gameObject = new GameObject();
 			gameObject.name = typeof(MemoryMonitorManager).Name;
+#if UNITY_ANDROID || UNITY_EDITOR_ANDROID
 			gameObject.AddComponent<MemoryMonitorAndroidManager>();
+#else
+			gameObject.AddComponent<MemoryMonitorWindowsManager>();
+#endif
 		}
 
 		private void InitNativeLoggerPlugin()
