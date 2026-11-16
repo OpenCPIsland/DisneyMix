@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CommonGameParticlesAlphaBlended
-  m_Shader: {fileID: 4800000, guid: b331a5640300e78468feb7b2093cddcc, type: 3}
+  m_Shader: {fileID: 4800000, guid: da3d7b79dd405fa4e88e8e283903bf45, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
