@@ -20,33 +20,13 @@ namespace Mix.Ui
 {
 	public class MixGameResponseItem : BaseChatItem, IGameEventMessageData, IGameMessageData, IBundleObject, IScrollItem, IScrollItemHelper
 	{
-		private sealed class GenerateGameObject_003Ec__AnonStorey2B1
-		{
-			internal Dictionary<string, object> state;
-
-			internal MixGameResponseItem _003C_003Ef__this;
-
-			internal void _003C_003Em__5B5(IGetGameStateMessageResult result)
-			{
-				if (result.Success)
-				{
-					_003C_003Ef__this.mChatThreadGameSession.MessageData = _003C_003Ef__this;
-					state = (_003C_003Ef__this.mChatThreadGameSession.MessageData as IGameEventMessageData).State;
-					string json = (string)state["GameData"];
-					_003C_003Ef__this.mGameData = JsonMapper.ToObject<MixGameData>(json);
-				}
-				else
-				{
-					List<Game> allGames = Singleton<EntitlementsManager>.Instance.GetAllGames();
-					_003C_003Ef__this.mEntitlement = allGames[0];
-				}
-				_003C_003Ef__this.LoadGameObject(false, result);
-			}
-		}
+		private const string LOG_TAG = "[MixGameResponseItem] ";
 
 		private const string RESULT_OBJECT = "Result";
 
 		private const string GAME_READ_ERROR_OBJECT = "Content/Holder/GroupReadError";
+
+		private const string GAME_DATA_KEY = "GameData";
 
 		public GameObject GroupReadErrorObject;
 
@@ -66,52 +46,40 @@ namespace Mix.Ui
 
 		private Action cancelSnapshot;
 
+		// Bumped on every Generate and Destroy so late SDK callbacks from an
+		// earlier generation are ignored instead of touching a dead instance.
+		private int mGeneration;
+
+		#region IGameMessageData / IGameEventMessageData
+
 		public string SenderId
 		{
-			get
-			{
-				return message.SenderId;
-			}
+			get { return message.SenderId; }
 		}
 
 		public bool Sent
 		{
-			get
-			{
-				return message.Sent;
-			}
+			get { return message.Sent; }
 		}
 
 		public DateTime TimeSent
 		{
-			get
-			{
-				return message.TimeSent;
-			}
+			get { return message.TimeSent; }
 		}
 
 		public string Id
 		{
-			get
-			{
-				return message.Id;
-			}
+			get { return message.Id; }
 		}
 
 		public bool IsMine
 		{
-			get
-			{
-				return message.IsMine();
-			}
+			get { return message.IsMine(); }
 		}
 
 		public object MixMessageType
 		{
-			get
-			{
-				return message;
-			}
+			get { return message; }
 		}
 
 		public string GameName
@@ -119,7 +87,7 @@ namespace Mix.Ui
 			get
 			{
 				IGameEventMessage gameEventMessage = message as IGameEventMessage;
-				return gameEventMessage.GameName;
+				return (gameEventMessage == null) ? null : gameEventMessage.GameName;
 			}
 		}
 
@@ -127,30 +95,26 @@ namespace Mix.Ui
 		{
 			get
 			{
-				return (message as IGameEventMessage).EventState;
+				IGameEventMessage gameEventMessage = message as IGameEventMessage;
+				return (gameEventMessage == null) ? null : gameEventMessage.EventState;
 			}
 		}
 
-public Dictionary<string, object> State
-{
-    get
-    {
-        IGameEventMessage gameEventMessage = message as IGameEventMessage;
-        if (gameEventMessage == null)
-        {
-            return null;
-        }
-        IGameStateMessage gameStateMessage = gameEventMessage.GameStateMessage;
-        return (gameStateMessage == null) ? null : gameStateMessage.State;
-    }
-}
+		public Dictionary<string, object> State
+		{
+			get
+			{
+				IGameStateMessage gameStateMessage = GetGameStateMessage();
+				return (gameStateMessage == null) ? null : gameStateMessage.State;
+			}
+		}
 
 		public string StateMessageId
 		{
 			get
 			{
-				IGameStateMessage gameStateMessage = (message as IGameEventMessage).GameStateMessage;
-				return gameStateMessage.Id;
+				IGameStateMessage gameStateMessage = GetGameStateMessage();
+				return (gameStateMessage == null) ? null : gameStateMessage.Id;
 			}
 		}
 
@@ -158,10 +122,17 @@ public Dictionary<string, object> State
 		{
 			get
 			{
-				IGameStateMessage gameStateMessage = (message as IGameEventMessage).GameStateMessage;
-				return gameStateMessage.SenderId;
+				IGameStateMessage gameStateMessage = GetGameStateMessage();
+				return (gameStateMessage == null) ? null : gameStateMessage.SenderId;
 			}
 		}
+
+		public string GetJson()
+		{
+			return ReadGameDataJson(EventState);
+		}
+
+		#endregion
 
 		public MixGameResponseItem(IChatThread aThread, IChatMessage aChatMessage, ScrollView aScrollView, IGameTray aGameListener)
 			: base(aThread, aChatMessage, aScrollView)
@@ -178,44 +149,47 @@ public Dictionary<string, object> State
 			mChatThreadGameSession = new ChatThreadGameSession(MonoSingleton<GameManager>.Instance, aGameListener, aThreadParameters, this);
 		}
 
+		#region IScrollItem / IScrollItemHelper
+
 		float IScrollItemHelper.GetGameObjectHeight()
 		{
-			float num = Singleton<EntitlementsManager>.Instance.GetAllGames()[0].GetResultsHeight();
-			float num2 = ((mEntitlement == null) ? num : ((float)mEntitlement.GetResultsHeight()));
-			float num3 = ((thread is IOneOnOneChatThread) ? 0f : BaseChatItem.AVATAR_NAME_HEIGHT);
-			return (!(num2 > 0f)) ? (-1f) : (num2 + num3);
+			// Before the real entitlement is known, fall back to the first game's height.
+			IEntitlementGameData entitlement = mEntitlement ?? GetFallbackEntitlement();
+			if (entitlement == null)
+			{
+				return -1f;
+			}
+			float resultsHeight = (float)entitlement.GetResultsHeight();
+			float avatarHeight = (thread is IOneOnOneChatThread) ? 0f : BaseChatItem.AVATAR_NAME_HEIGHT;
+			return (resultsHeight > 0f) ? (resultsHeight + avatarHeight) : (-1f);
 		}
 
 		GameObject IScrollItem.GenerateGameObject(bool aGenerateForHeightOnly)
 		{
-			GenerateGameObject_003Ec__AnonStorey2B1 CS_0024_003C_003E8__locals12 = new GenerateGameObject_003Ec__AnonStorey2B1();
-			CS_0024_003C_003E8__locals12._003C_003Ef__this = this;
-			base.instance = UnityEngine.Object.Instantiate((!message.IsMine()) ? prefabObjectLeft : prefabObjectRight);
+			int generation = ++mGeneration;
+
+			base.instance = UnityEngine.Object.Instantiate(message.IsMine() ? prefabObjectRight : prefabObjectLeft);
 			SetupOffline("Content/Holder/ResendBtn", "Content/Holder/ContextualLoader", "Content/Holder/Error", "Content/Holder/ForceUpdate");
-			CS_0024_003C_003E8__locals12.state = (mChatThreadGameSession.MessageData as IGameEventMessageData).State;
-			if (CS_0024_003C_003E8__locals12.state == null)
+
+			Dictionary<string, object> state = GetSessionState();
+			if (state == null)
 			{
-				thread.GetGameStateMessage(message as IGameEventMessage, actionGenerator.CreateAction(delegate(IGetGameStateMessageResult result)
-				{
-					if (result.Success)
-					{
-						CS_0024_003C_003E8__locals12._003C_003Ef__this.mChatThreadGameSession.MessageData = CS_0024_003C_003E8__locals12._003C_003Ef__this;
-						CS_0024_003C_003E8__locals12.state = (CS_0024_003C_003E8__locals12._003C_003Ef__this.mChatThreadGameSession.MessageData as IGameEventMessageData).State;
-						string json = (string)CS_0024_003C_003E8__locals12.state["GameData"];
-						CS_0024_003C_003E8__locals12._003C_003Ef__this.mGameData = JsonMapper.ToObject<MixGameData>(json);
-					}
-					else
-					{
-						List<Game> allGames = Singleton<EntitlementsManager>.Instance.GetAllGames();
-						CS_0024_003C_003E8__locals12._003C_003Ef__this.mEntitlement = allGames[0];
-					}
-					CS_0024_003C_003E8__locals12._003C_003Ef__this.LoadGameObject(false, result);
-				}));
+				// State isn't cached locally yet; fetch it, then finish loading in the callback.
+				thread.GetGameStateMessage(
+					message as IGameEventMessage,
+					actionGenerator.CreateAction((IGetGameStateMessageResult result) => OnGameStateMessageResult(result, generation)));
 			}
 			else
 			{
-				mGameData = JsonMapper.ToObject<MixGameData>((string)CS_0024_003C_003E8__locals12.state["GameData"]);
-				LoadGameObject(aGenerateForHeightOnly);
+				mGameData = ParseGameData(state);
+				if (mGameData == null && !aGenerateForHeightOnly)
+				{
+					ShowAssetError();
+				}
+				else
+				{
+					LoadGameObject(aGenerateForHeightOnly);
+				}
 			}
 			SetupHeight();
 			return base.instance;
@@ -223,10 +197,17 @@ public Dictionary<string, object> State
 
 		void IScrollItem.Destroy()
 		{
+			mGeneration++;
 			OnDestroy();
-			if (MonoSingleton<AssetManager>.Instance != null && mGameChatItemChild != null)
+
+			AssetManager assetManager = MonoSingleton<AssetManager>.Instance;
+			if (assetManager != null && mGameChatItemChild != null && mEntitlement != null)
 			{
-				MonoSingleton<AssetManager>.Instance.DestroyBundleInstance(mEntitlement.GetResult(), mGameChatItemChild);
+				string bundle = mEntitlement.GetResult();
+				if (!string.IsNullOrEmpty(bundle))
+				{
+					assetManager.DestroyBundleInstance(bundle, mGameChatItemChild);
+				}
 			}
 			if (cancelSnapshot != null)
 			{
@@ -235,6 +216,10 @@ public Dictionary<string, object> State
 			mGameChatItemChild = null;
 		}
 
+		#endregion
+
+		#region IBundleObject
+
 		void IBundleObject.OnBundleAssetObject(UnityEngine.Object aGameObject, object aUserData)
 		{
 			if (LoaderObject.IsNullOrDisposed() || !mGameChatItemChild.IsNullOrDisposed() || base.instance.IsNullOrDisposed())
@@ -242,11 +227,12 @@ public Dictionary<string, object> State
 				return;
 			}
 			LoaderObject.SetActive(false);
-			if (aUserData != null && aUserData.ToString() == "Result")
+			if (aUserData != null && aUserData.ToString() == RESULT_OBJECT)
 			{
-				if (mEntitlement != null)
+				string bundle = (mEntitlement == null) ? null : mEntitlement.GetResult();
+				if (!string.IsNullOrEmpty(bundle))
 				{
-					SetupGameChatItem(mEntitlement.GetResult());
+					SetupGameChatItem(bundle);
 				}
 				else
 				{
@@ -256,16 +242,57 @@ public Dictionary<string, object> State
 			SetupHeight();
 		}
 
+		#endregion
+
+		#region Loading
+
+		private void OnGameStateMessageResult(IGetGameStateMessageResult result, int generation)
+		{
+			// The item was destroyed or regenerated while the request was in flight.
+			if (generation != mGeneration)
+			{
+				return;
+			}
+			if (result != null && result.Success)
+			{
+				mChatThreadGameSession.MessageData = this;
+				mGameData = ParseGameData(State);
+			}
+			else
+			{
+				mEntitlement = GetFallbackEntitlement();
+			}
+			LoadGameObject(false, result);
+		}
+
 		protected void LoadGameChatItem(bool aGenerateForHeightOnly)
 		{
-			if (!aGenerateForHeightOnly && mGameData != null && mEntitlement != null && !string.IsNullOrEmpty(mEntitlement.GetResult().Trim()))
+			if (aGenerateForHeightOnly || mGameData == null || mEntitlement == null)
 			{
-				if (!MonoSingleton<AssetManager>.Instance.WillBundleLoadFromWeb(mEntitlement.GetResult()))
-				{
-					LoaderObject.SetActive(false);
-				}
-				MonoSingleton<AssetManager>.Instance.LoadABundle(this, mEntitlement.GetResult(), "Result", string.Empty, false, false, true);
+				return;
 			}
+
+			string bundle = mEntitlement.GetResult();
+			if (string.IsNullOrEmpty(bundle) || string.IsNullOrEmpty(bundle.Trim()))
+			{
+				Debug.LogWarning(LOG_TAG + "No result bundle for entitlement '" + mGameData.Entitlement + "'");
+				ShowAssetError();
+				return;
+			}
+
+			AssetManager assetManager = MonoSingleton<AssetManager>.Instance;
+			if (assetManager == null)
+			{
+				Debug.LogWarning(LOG_TAG + "AssetManager is not available");
+				ShowAssetError();
+				return;
+			}
+
+			if (!assetManager.WillBundleLoadFromWeb(bundle))
+			{
+				SetActive(LoaderObject, false);
+			}
+			assetManager.LoadABundle(this, bundle, RESULT_OBJECT, string.Empty, false, false, true);
 		}
 
 		private void LoadGameObject(bool aGenerateForHeightOnly, IGetGameStateMessageResult aResult = null)
@@ -274,24 +301,27 @@ public Dictionary<string, object> State
 			{
 				return;
 			}
+
 			if (mGameData == null)
 			{
 				if (aResult != null)
 				{
-					LoaderObject.SetActive(false);
+					SetActive(LoaderObject, false);
 					if (aResult is IGetGameStateMessageForbiddenResult)
 					{
-						ErrorObject.SetActive(false);
-						GroupReadErrorObject.SetActive(true);
+						SetActive(ErrorObject, false);
+						SetActive(GroupReadErrorObject, true);
 					}
 					else
 					{
-						ErrorObject.SetActive(true);
+						SetActive(ErrorObject, true);
 					}
 				}
 				return;
 			}
-			mEntitlement = Singleton<EntitlementsManager>.Instance.GetGameData(mGameData.Entitlement);
+
+			EntitlementsManager entitlementsManager = Singleton<EntitlementsManager>.Instance;
+			mEntitlement = (entitlementsManager == null) ? null : entitlementsManager.GetGameData(mGameData.Entitlement);
 			if (mEntitlement == null)
 			{
 				if (!aGenerateForHeightOnly)
@@ -300,6 +330,7 @@ public Dictionary<string, object> State
 				}
 				return;
 			}
+
 			if (!aGenerateForHeightOnly)
 			{
 				SetupOffline("Content/Holder/ResendBtn", "Content/Holder/ContextualLoader", "Content/Holder/Error", "Content/Holder/ForceUpdate");
@@ -312,6 +343,21 @@ public Dictionary<string, object> State
 			SetupHeight();
 		}
 
+		protected override void LoadObject()
+		{
+			if (mGameData == null)
+			{
+				return;
+			}
+			EntitlementsManager entitlementsManager = Singleton<EntitlementsManager>.Instance;
+			mEntitlement = (entitlementsManager == null) ? null : entitlementsManager.GetGameData(mGameData.Entitlement);
+			LoadGameObject(false);
+		}
+
+		#endregion
+
+		#region UI
+
 		private void SkinAvatar()
 		{
 			GameChatItem component = base.instance.GetComponent<GameChatItem>();
@@ -323,39 +369,37 @@ public Dictionary<string, object> State
 			}
 		}
 
-		protected override void LoadObject()
-		{
-			if (mGameData != null)
-			{
-				mEntitlement = Singleton<EntitlementsManager>.Instance.GetGameData(mGameData.Entitlement);
-				LoadGameObject(false);
-			}
-		}
-
 		protected void SetupHeight()
 		{
-			float num = ((mEntitlement == null) ? (-1f) : ((float)mEntitlement.GetResultsHeight()));
-			if (num > 0f)
+			if (base.instance == null || mEntitlement == null)
+			{
+				return;
+			}
+			float height = (float)mEntitlement.GetResultsHeight();
+			if (height > 0f)
 			{
 				RectTransform component = base.instance.GetComponent<RectTransform>();
-				component.sizeDelta = new Vector2(component.sizeDelta.x, num + avatarNameHeight);
+				if (component != null)
+				{
+					component.sizeDelta = new Vector2(component.sizeDelta.x, height + avatarNameHeight);
+				}
 			}
 		}
 
 		protected override void SetupOffline(string aResend = "", string aLoader = "", string aError = "", string aForceUpdate = "")
 		{
 			base.SetupOffline(aResend, aLoader, aError, aForceUpdate);
-			Transform transform = base.instance.transform.Find("Content/Holder/GroupReadError");
-			if (transform != null)
+			Transform groupReadError = base.instance.transform.Find(GAME_READ_ERROR_OBJECT);
+			if (groupReadError != null)
 			{
-				GroupReadErrorObject = transform.gameObject;
+				GroupReadErrorObject = groupReadError.gameObject;
 			}
 		}
 
 		private void ShowAssetError()
 		{
-			LoaderObject.SetActive(false);
-			ErrorObject.SetActive(true);
+			SetActive(LoaderObject, false);
+			SetActive(ErrorObject, true);
 		}
 
 		private void SetupGameChatItem(string itemType)
@@ -371,18 +415,26 @@ public Dictionary<string, object> State
 				ShowAssetError();
 				return;
 			}
+
 			if (mGameChatItemChild == null)
 			{
-				mGameChatItemChild = (GameObject)MonoSingleton<AssetManager>.Instance.GetBundleInstance(itemType);
+				AssetManager assetManager = MonoSingleton<AssetManager>.Instance;
+				if (assetManager == null)
+				{
+					ShowAssetError();
+					return;
+				}
+				mGameChatItemChild = assetManager.GetBundleInstance(itemType) as GameObject;
 			}
+
 			if (mGameChatItemChild != null)
 			{
 				mGameChatItemChild.transform.SetParent(component.ItemTarget, false);
 				mGameChatItemChild.SetActive(true);
-				BaseGameChatController component2 = mGameChatItemChild.GetComponent<BaseGameChatController>();
-				if (component2 != null)
+				BaseGameChatController controller = mGameChatItemChild.GetComponent<BaseGameChatController>();
+				if (controller != null)
 				{
-					component2.Initialize(mChatThreadGameSession, mEntitlement, component);
+					controller.Initialize(mChatThreadGameSession, mEntitlement, component);
 				}
 			}
 		}
@@ -392,21 +444,84 @@ public Dictionary<string, object> State
 			message = aMessage;
 			if (!base.instance.IsNullOrDisposed() && message.IsMine())
 			{
-				ResendObject.SetActive(FailedToSend);
+				SetActive(ResendObject, FailedToSend);
 			}
 		}
 
 		protected override void OnResendClicked()
 		{
-			ResendObject.SetActive(false);
+			SetActive(ResendObject, false);
 			ResendFailedMessage(message);
 		}
 
-		public string GetJson()
+		private static void SetActive(GameObject target, bool active)
+		{
+			if (target != null)
+			{
+				target.SetActive(active);
+			}
+		}
+
+		#endregion
+
+		#region Helpers
+
+		private IGameStateMessage GetGameStateMessage()
 		{
 			IGameEventMessage gameEventMessage = message as IGameEventMessage;
-			Dictionary<string, object> eventState = gameEventMessage.EventState;
-			return (string)eventState["GameData"];
+			return (gameEventMessage == null) ? null : gameEventMessage.GameStateMessage;
 		}
+
+		private Dictionary<string, object> GetSessionState()
+		{
+			if (mChatThreadGameSession == null)
+			{
+				return null;
+			}
+			IGameEventMessageData data = mChatThreadGameSession.MessageData as IGameEventMessageData;
+			return (data == null) ? null : data.State;
+		}
+
+		private static string ReadGameDataJson(Dictionary<string, object> state)
+		{
+			object value;
+			if (state == null || !state.TryGetValue(GAME_DATA_KEY, out value))
+			{
+				return null;
+			}
+			return value as string;
+		}
+
+		private static MixGameData ParseGameData(Dictionary<string, object> state)
+		{
+			string json = ReadGameDataJson(state);
+			if (string.IsNullOrEmpty(json))
+			{
+				Debug.LogWarning(LOG_TAG + "Game state has no '" + GAME_DATA_KEY + "' entry");
+				return null;
+			}
+			try
+			{
+				return JsonMapper.ToObject<MixGameData>(json);
+			}
+			catch (Exception ex)
+			{
+				Debug.LogWarning(LOG_TAG + "Failed to parse GameData: " + ex.Message);
+				return null;
+			}
+		}
+
+		private static IEntitlementGameData GetFallbackEntitlement()
+		{
+			EntitlementsManager entitlementsManager = Singleton<EntitlementsManager>.Instance;
+			if (entitlementsManager == null)
+			{
+				return null;
+			}
+			List<Game> allGames = entitlementsManager.GetAllGames();
+			return (allGames != null && allGames.Count > 0) ? allGames[0] : null;
+		}
+
+		#endregion
 	}
 }
