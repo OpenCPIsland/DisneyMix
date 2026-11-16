@@ -3,37 +3,38 @@
 --- !u!200 &20000000
 ShaderVariantCollection:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: MultiplaneAvatarShaders
   m_Shaders:
   - first: {fileID: 4800000, guid: 6f737851e6ae2814fbfa31016ad5ab41, type: 3}
     second:
       variants:
-      - keywords:
+      - keywords: 
         passType: 0
   - first: {fileID: 4800000, guid: 78983956ec60fa54bb3b5af165f1f3e6, type: 3}
     second:
       variants:
-      - keywords:
+      - keywords: 
         passType: 0
   - first: {fileID: 4800000, guid: 2f217de94634a5840b4ed49dbb0a9205, type: 3}
     second:
       variants:
-      - keywords:
+      - keywords: 
         passType: 0
   - first: {fileID: 4800000, guid: aef113f955e6d9a4689f17bd9e4af883, type: 3}
     second:
       variants:
-      - keywords:
+      - keywords: 
         passType: 0
   - first: {fileID: 4800000, guid: 3112c11e3f2be17418cdef01239dc352, type: 3}
     second:
       variants:
-      - keywords:
+      - keywords: 
         passType: 0
   - first: {fileID: 4800000, guid: bd1cc6643ad0ab3468549bb16064b034, type: 3}
     second:
       variants:
-      - keywords:
+      - keywords: 
         passType: 0
