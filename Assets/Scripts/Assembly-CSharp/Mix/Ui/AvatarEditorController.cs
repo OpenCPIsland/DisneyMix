@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Avatar;
 using Avatar.DataTypes;
@@ -31,6 +30,7 @@ namespace Mix.Ui
         private string lastCategory = string.Empty;
         private bool avatarCompositing;
         private bool selectionPending;
+        private bool isSettingSliderValues;
         private bool IgnoreColorAudio;
         private EDITOR_MODES mode = EDITOR_MODES.CREATOR;
         private string previousScreen = string.Empty;
@@ -58,7 +58,6 @@ namespace Mix.Ui
 
         private bool startingUp = true;
         private float lockUi = -1f;
-        public float SliderUpdateDelay = 0.2f;
         public Slider horizontalSlider;
         public Slider verticalSlider;
 
@@ -440,24 +439,48 @@ namespace Mix.Ui
         public void OnHorizontalSliderChange()
         {
             Debug.Log("[AvatarEditor] OnHorizontalSliderChange called");
-            if (!(lockUi >= 0f)) StartCoroutine(DelaySliderInput(horizontalSlider));
+            OnPositionSliderChanged();
         }
 
         public void OnVerticalSliderChange()
         {
             Debug.Log("[AvatarEditor] OnVerticalSliderChange called");
-            if (!(lockUi >= 0f)) StartCoroutine(DelaySliderInput(verticalSlider));
+            OnPositionSliderChanged();
         }
 
-        public IEnumerator DelaySliderInput(Slider sliderToCheck)
+        private void OnPositionSliderChanged()
         {
-            Debug.Log("[AvatarEditor] DelaySliderInput called");
-            float oldValue = sliderToCheck.value;
-            yield return new WaitForSeconds(SliderUpdateDelay);
-            if (Mathf.Abs(sliderToCheck.value - oldValue) <= float.Epsilon)
+            if (isSettingSliderValues || lockUi >= 0f || avatarDna == null || horizontalSlider == null || verticalSlider == null ||
+                mediaTray == null || mediaTray.categorySelector == null || mediaTray.categorySelector.CurrentContent == null)
             {
-                Debug.Log("[AvatarEditor] DelaySliderInput - Value stable, recompositing avatar");
-                recompositeAvatar();
+                return;
+            }
+
+            string categoryName = mediaTray.categorySelector.CurrentContent.categoryName;
+            IAvatarProperty property = GetPropertyFromString(categoryName, avatarDna);
+            if (property != null)
+            {
+                ClientAvatarProperty updatedProperty = new ClientAvatarProperty(
+                    property.SelectionKey,
+                    property.TintIndex,
+                    horizontalSlider.value * 100f - 50f,
+                    verticalSlider.value * 100f - 50f);
+                SetPropertyFromString(categoryName, avatarDna, updatedProperty);
+            }
+            recompositeAvatar();
+        }
+
+        private void SetSliderValues(float horizontalValue, float verticalValue)
+        {
+            isSettingSliderValues = true;
+            try
+            {
+                horizontalSlider.value = horizontalValue;
+                verticalSlider.value = verticalValue;
+            }
+            finally
+            {
+                isSettingSliderValues = false;
             }
         }
 
@@ -512,15 +535,13 @@ namespace Mix.Ui
                 {
                     item = GetSelectionKeyFromReferenceId(prop.SelectionKey);
                     tintIndex = prop.TintIndex;
-                    verticalSlider.value = (float)((prop.YOffset + 50.0) / 100.0);
-                    horizontalSlider.value = (float)((prop.XOffset + 50.0) / 100.0);
+                    SetSliderValues((float)((prop.XOffset + 50.0) / 100.0), (float)((prop.YOffset + 50.0) / 100.0));
                 }
                 else
                 {
                     item = content.GetDefaultUid();
                     tintIndex = 0;
-                    verticalSlider.value = 0.5f;
-                    horizontalSlider.value = 0.5f;
+                    SetSliderValues(0.5f, 0.5f);
                 }
 
                 Debug.Log($"[AvatarEditor] setDefaultsUp - Setting selected item: {item}, tintIndex: {tintIndex}");
@@ -605,8 +626,9 @@ namespace Mix.Ui
                 {
                     item = GetSelectionKeyFromReferenceId(propertyFromString.SelectionKey);
                     tintIndex = propertyFromString.TintIndex;
-                    verticalSlider.value = (float)((propertyFromString.YOffset + 50.0) / 100.0);
-                    horizontalSlider.value = (float)((propertyFromString.XOffset + 50.0) / 100.0);
+                    SetSliderValues(
+                        (float)((propertyFromString.XOffset + 50.0) / 100.0),
+                        (float)((propertyFromString.YOffset + 50.0) / 100.0));
                     Debug.Log($"[AvatarEditor] ResetAvatarToDefault - Setting selected item: {item}");
                     mediaTray.SetSelected(item);
                 }
