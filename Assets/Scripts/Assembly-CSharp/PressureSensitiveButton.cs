@@ -34,7 +34,6 @@ public class PressureSensitiveButton : Button, IPointerDownHandler, IEventSystem
 			{
 				HardPress = true;
 				press = false;
-				base.onClick.Invoke();
 			}
 		}
 	}
@@ -47,17 +46,22 @@ public class PressureSensitiveButton : Button, IPointerDownHandler, IEventSystem
 		Touch touch;
 		if (pointerData != null && pointerData.pointerType == UIPointerType.Touch && TryGetTouch(pointerData.touchId, out touch))
 		{
-			press = true;
+			press = touch.pressure < pressureThreshholdPercent;
 			pressId = touch.touchId;
-			Pressure = 0f;
+			Pressure = touch.pressure;
 		}
 	}
 
 	public override void OnPointerUp(PointerEventData data)
 	{
 		press = false;
-		HardPress = false;
 		base.OnPointerUp(data);
+	}
+
+	public override void OnPointerClick(PointerEventData data)
+	{
+		base.OnPointerClick(data);
+		HardPress = false;
 	}
 
 	private static bool TryGetTouch(int touchId, out Touch touch)
