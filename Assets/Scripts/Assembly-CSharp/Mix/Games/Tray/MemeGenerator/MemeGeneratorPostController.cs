@@ -9,6 +9,12 @@ namespace Mix.Games.Tray.MemeGenerator
 {
 	public class MemeGeneratorPostController : BaseGameChatController, IGameAsset
 	{
+		private const string MaskedAlphaShaderName = "Surface/Masked Alpha";
+
+		private Material memeImageMaterial;
+
+		private Material originalMemeImageMaterial;
+
 		public Text BottomCaption;
 
 		public Text TopCaption;
@@ -29,15 +35,51 @@ namespace Mix.Games.Tray.MemeGenerator
 				if (bundleInstance is Texture2D)
 				{
 					Texture2D texture = (Texture2D)bundleInstance;
-					MemeImage.texture = texture;
+					SetMemeImageTexture(texture);
 				}
 				else if (bundleInstance is GameObject)
 				{
 					GameObject gameObject = (GameObject)bundleInstance;
 					Sprite sprite = gameObject.GetComponent<Image>().sprite;
-					MemeImage.texture = sprite.texture;
+					SetMemeImageTexture(sprite.texture);
 				}
 			}
+		}
+
+		private void SetMemeImageTexture(Texture texture)
+		{
+			MemeImage.texture = texture;
+			if (memeImageMaterial == null)
+			{
+				Shader shader = Shader.Find(MaskedAlphaShaderName);
+				if (shader == null)
+				{
+					Debug.LogError($"[MemeGeneratorPostController] Shader not found: {MaskedAlphaShaderName}");
+					return;
+				}
+
+				originalMemeImageMaterial = MemeImage.material;
+				memeImageMaterial = new Material(originalMemeImageMaterial)
+				{
+					shader = shader
+				};
+				MemeImage.material = memeImageMaterial;
+			}
+
+			memeImageMaterial.SetTexture("_MainTex", texture);
+		}
+
+		protected override void OnDestroy()
+		{
+			if (MemeImage != null && MemeImage.material == memeImageMaterial)
+			{
+				MemeImage.material = originalMemeImageMaterial;
+			}
+			if (memeImageMaterial != null)
+			{
+				UnityEngine.Object.Destroy(memeImageMaterial);
+			}
+			base.OnDestroy();
 		}
 
 		public override void SetupGameData(string aGameDataJson)

@@ -192,7 +192,7 @@ namespace Mix.Games.Chat
 			}
 		}
 
-		private void OnDestroy()
+		protected virtual void OnDestroy()
 		{
 			if (mSession != null)
 			{
