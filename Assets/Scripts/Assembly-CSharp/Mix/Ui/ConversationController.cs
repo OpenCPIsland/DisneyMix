@@ -564,6 +564,9 @@ namespace Mix.Ui
 				long key = ScrollView.Add(list[num], false);
 				scrollListItems.Add(key, list[num]);
 			}
+			ScrollView.UpdateListNow();
+			Canvas.ForceUpdateCanvases();
+			ScrollView.Reposition();
 		}
 
 		private void LoadCurrentMessages()
