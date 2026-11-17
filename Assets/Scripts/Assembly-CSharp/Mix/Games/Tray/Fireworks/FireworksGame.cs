@@ -672,7 +672,7 @@ namespace Mix.Games.Tray.Fireworks
 						float t = Mathf.PingPong(Time.time, 1f);
 						component.color = Color.Lerp(mCountdownBarInitColor, Color.white, t);
 					}
-					if ((mIsInputinGestureRange && UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.isPressed) || mIsTrackingGesture)
+					if ((mIsInputinGestureRange && UnityEngine.InputSystem.Pointer.current != null && UnityEngine.InputSystem.Pointer.current.press.isPressed) || mIsTrackingGesture)
 					{
 						LightUpSceneG();
 						FireworkGesture mGestureFirework = Toolbox.Instance.mFireworkManager.mGestureFirework;
@@ -686,7 +686,7 @@ namespace Mix.Games.Tray.Fireworks
 							mGestureStartPosition = mCurrentGesture.AddNewPoint(CurrentTimestamp, base.transform.InverseTransformPoint(Toolbox.Instance.mFireworkManager.GetTouchOnTapPlane()));
 							mGestureFirework.transform.localPosition = mGestureStartPosition;
 						}
-						else if (mIsTrackingGesture && UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.isPressed && mIsInputinGestureRange)
+						else if (mIsTrackingGesture && UnityEngine.InputSystem.Pointer.current != null && UnityEngine.InputSystem.Pointer.current.press.isPressed && mIsInputinGestureRange)
 						{
 							if (mTapTimerMax != 0f)
 							{
@@ -714,7 +714,7 @@ namespace Mix.Games.Tray.Fireworks
 								mTapTimerMax = 0f;
 							}
 						}
-						else if ((mIsTrackingGesture && UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasReleasedThisFrame && mCurrentGesture != null) || (mIsTrackingGesture && !mIsInputinGestureRange && mCurrentGesture != null))
+						else if ((mIsTrackingGesture && UnityEngine.InputSystem.Pointer.current != null && UnityEngine.InputSystem.Pointer.current.press.wasReleasedThisFrame && mCurrentGesture != null) || (mIsTrackingGesture && !mIsInputinGestureRange && mCurrentGesture != null))
 						{
 							mIsTrackingGesture = false;
 							mIsGestureInitialized = false;

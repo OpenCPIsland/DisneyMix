@@ -126,9 +126,9 @@ namespace Mix.Ui
 
 		private void Update()
 		{
-			if (mousePanning && UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.isPressed)
+			if (mousePanning && UnityEngine.InputSystem.Pointer.current != null && UnityEngine.InputSystem.Pointer.current.press.isPressed)
 			{
-				Vector2 mousePosition = UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero;
+				Vector2 mousePosition = UnityEngine.InputSystem.Pointer.current != null ? UnityEngine.InputSystem.Pointer.current.position.ReadValue() : Vector2.zero;
 				Vector2 mouseDelta = mousePosition - lastMousePosition;
 				lastMousePosition = mousePosition;
 				mouseDelta.x *= Singleton<SettingsManager>.Instance.GetWidthScale();

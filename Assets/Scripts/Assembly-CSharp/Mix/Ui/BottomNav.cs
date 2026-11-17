@@ -345,9 +345,9 @@ namespace Mix.Ui
 				{
 					vector = touch.screenPosition;
 				}
-				else if (touchIndex < 0 && UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.isPressed)
+				else if (touchIndex < 0 && UnityEngine.InputSystem.Pointer.current != null && UnityEngine.InputSystem.Pointer.current.press.isPressed)
 				{
-					vector = UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero;
+					vector = UnityEngine.InputSystem.Pointer.current != null ? UnityEngine.InputSystem.Pointer.current.position.ReadValue() : Vector2.zero;
 				}
 				else
 				{
@@ -366,8 +366,8 @@ namespace Mix.Ui
 			if (!dragging)
 			{
 				bool touchBegan = TryGetTouchBegan(out Touch touch);
-				Vector2 pointerPosition = touchBegan ? touch.screenPosition : UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero;
-				if ((touchBegan || UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame) && Util.GetRectInScreenSpace(scroller.content.GetComponent<RectTransform>()).Contains(pointerPosition))
+				Vector2 pointerPosition = touchBegan ? touch.screenPosition : UnityEngine.InputSystem.Pointer.current != null ? UnityEngine.InputSystem.Pointer.current.position.ReadValue() : Vector2.zero;
+				if ((touchBegan || UnityEngine.InputSystem.Pointer.current != null && UnityEngine.InputSystem.Pointer.current.press.wasPressedThisFrame) && Util.GetRectInScreenSpace(scroller.content.GetComponent<RectTransform>()).Contains(pointerPosition))
 				{
 					vector = pointerPosition;
 					touchIndex = touchBegan ? touch.touchId : -1;

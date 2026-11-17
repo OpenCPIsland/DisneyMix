@@ -167,11 +167,11 @@ namespace Mix.Games.Tray.FortuneCookie
 
 		private void TouchInput()
 		{
-			if (UnityEngine.InputSystem.Mouse.current == null || !UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
+			if (UnityEngine.InputSystem.Pointer.current == null || !UnityEngine.InputSystem.Pointer.current.press.wasPressedThisFrame)
 			{
 				return;
 			}
-			Ray ray = GameCamera.ScreenPointToRay(UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero);
+			Ray ray = GameCamera.ScreenPointToRay(UnityEngine.InputSystem.Pointer.current != null ? UnityEngine.InputSystem.Pointer.current.position.ReadValue() : Vector2.zero);
 			Debug.DrawLine(ray.origin, ray.origin + ray.direction * 100f, Color.red);
 			RaycastHit hitInfo;
 			if (!Physics.Raycast(ray, out hitInfo, 100f))
