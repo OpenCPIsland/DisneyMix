@@ -145,6 +145,7 @@ namespace Mix.Ui
 				{
 					user.LoadFakeFriendData();
 				}
+				MonoSingleton<FakeFriendManager>.Instance.Init();
 			}
 		}
 

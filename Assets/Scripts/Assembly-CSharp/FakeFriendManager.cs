@@ -70,6 +70,8 @@ public class FakeFriendManager : MonoSingleton<FakeFriendManager>
 
 	private IKeyValDatabaseApi databaseApi;
 
+	private ISession initializedSession;
+
 	private int pendingMessages;
 
 	private int lastMessage;
@@ -346,6 +348,10 @@ public class FakeFriendManager : MonoSingleton<FakeFriendManager>
 		{
 			return;
 		}
+		if (ReferenceEquals(initializedSession, MixSession.Session))
+		{
+			return;
+		}
 		fakeFriend = (FakeFriendData)MixSession.User.Friends.FirstOrDefault((IFriend fr) => fr is FakeFriendData);
 		fakeFriendAsChatMember = new LocalChatMember(fakeFriend);
 		fakeThread = (FakeThread)MixSession.User.ChatThreadsFromUsers().FirstOrDefault((IChatThread thr) => thr is FakeThread);
@@ -370,6 +376,7 @@ public class FakeFriendManager : MonoSingleton<FakeFriendManager>
 		MixSession.User.OnAddedToOfficialAccountChatThread += eventGenerator.AddEventHandler<AbstractAddedToOfficialAccountThreadEventArgs>(null, OnAddedToOAThread);
 		MixSession.OnGotNewMessages += HandleOnGotNewMessages;
 		GetOfficialAccount();
+		initializedSession = MixSession.Session;
 	}
 
 	private void HandleOnGotNewMessages(bool success, bool areNewMessages)
