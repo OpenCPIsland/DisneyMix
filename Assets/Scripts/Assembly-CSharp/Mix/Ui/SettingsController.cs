@@ -7,6 +7,7 @@ using Mix.Connectivity;
 using Mix.DeviceDb;
 using Mix.Localization;
 using Mix.Session;
+using Mix.Session.Local;
 using Mix.User;
 using UnityEngine;
 using UnityEngine.Events;
@@ -31,6 +32,8 @@ namespace Mix.Ui
 		public Toggle voiceOverToggle;
 
 		public Toggle batteryLifeToggle;
+
+		public Toggle fakeFriendsToggle;
 
 		public Slider voiceOverSlider;
 
@@ -89,6 +92,8 @@ namespace Mix.Ui
 			voiceOverToggle.isOn = Singleton<SettingsManager>.Instance.GetChatVoiceOverSetting();
 			voiceOverSlider.value = Singleton<SettingsManager>.Instance.GetChatVoiceOverRateSetting();
 			batteryLifeToggle.isOn = Singleton<SettingsManager>.Instance.GetBatteryLifeSetting();
+			fakeFriendsToggle.SetIsOnWithoutNotify(Singleton<SettingsManager>.Instance.GetFakeFriendsEnabled());
+			fakeFriendsToggle.onValueChanged.AddListener(OnFakeFriendsSettingChanged);
 			needHelpButton.interactable = MixSession.connection == MixSession.ConnectionState.ONLINE;
 			logoutButton.interactable = MixSession.connection == MixSession.ConnectionState.ONLINE;
 			privacyPolicyButton.interactable = MixSession.connection == MixSession.ConnectionState.ONLINE;
@@ -127,6 +132,19 @@ namespace Mix.Ui
 				pushToggle.onValueChanged.RemoveListener(pushListener);
 				pushToggle.isOn = ShouldPushBeEnabled();
 				pushToggle.onValueChanged.AddListener(pushListener);
+			}
+		}
+
+		private void OnFakeFriendsSettingChanged(bool enabled)
+		{
+			Singleton<SettingsManager>.Instance.SetFakeFriendsEnabled(enabled);
+			if (enabled)
+			{
+				LocalUserWrapper user = MixSession.User as LocalUserWrapper;
+				if (user != null)
+				{
+					user.LoadFakeFriendData();
+				}
 			}
 		}
 
@@ -207,6 +225,10 @@ namespace Mix.Ui
 		private void OnDestroy()
 		{
 			MixSession.OnConnectionChanged -= OnConnectionChanged;
+			if (fakeFriendsToggle != null)
+			{
+				fakeFriendsToggle.onValueChanged.RemoveListener(OnFakeFriendsSettingChanged);
+			}
 			if (Singleton<SettingsManager>.Instance != null)
 			{
 				Singleton<SettingsManager>.Instance.OnPushSettingUpdate -= HandleOnPushSettingUpdate;

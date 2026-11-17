@@ -336,6 +336,11 @@ public class FakeFriendManager : MonoSingleton<FakeFriendManager>
 		{
 			return;
 		}
+		if (!Singleton<SettingsManager>.Instance.GetFakeFriendsEnabled())
+		{
+			return;
+		}
+
 		databaseApi = Singleton<MixDocumentCollections>.Instance.keyValDocumentCollectionApi;
 		if (databaseApi == null || MixSession.Session == null)
 		{
@@ -1312,6 +1317,12 @@ public class FakeFriendManager : MonoSingleton<FakeFriendManager>
 		messagesPending.Add(aMessageId);
 		string messageKey = "fakefriend_message_" + aMessageId;
 		yield return new WaitForSeconds(aDelay);
+		if (!Singleton<SettingsManager>.Instance.GetFakeFriendsEnabled())
+		{
+			pendingMessages--;
+			messagesPending.Remove(aMessageId);
+			yield break;
+		}
 		if (!aAllowMultiple && messagesSent[messageKey])
 		{
 			pendingMessages--;

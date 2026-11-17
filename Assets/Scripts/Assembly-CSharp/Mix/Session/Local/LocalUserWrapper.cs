@@ -77,6 +77,8 @@ namespace Mix.Session.Local
 
         public IEnumerable<IOneOnOneChatThread> fakeThreads;
 
+        private bool fakeFriendDataLoaded;
+
         private FakeFriendData mixbot;
 
         private FakeThread mixbotThread;
@@ -93,7 +95,9 @@ namespace Mix.Session.Local
         {
             get
             {
-                return fakeFriends.Concat(realUser.Friends);
+                return Singleton<SettingsManager>.Instance.GetFakeFriendsEnabled()
+                    ? fakeFriends.Concat(realUser.Friends)
+                    : realUser.Friends;
             }
         }
 
@@ -135,7 +139,9 @@ namespace Mix.Session.Local
         {
             get
             {
-                return fakeThreads.Concat(realUser.OneOnOneChatThreads);
+                return Singleton<SettingsManager>.Instance.GetFakeFriendsEnabled()
+                    ? fakeThreads.Concat(realUser.OneOnOneChatThreads)
+                    : realUser.OneOnOneChatThreads;
             }
         }
 
@@ -374,6 +380,11 @@ namespace Mix.Session.Local
 
         public void LoadFakeFriendData()
         {
+            if (fakeFriendDataLoaded || !Singleton<SettingsManager>.Instance.GetFakeFriendsEnabled())
+            {
+                return;
+            }
+
             List<BaseFakeFirstFriendDocument> allDocuments = Singleton<MixDocumentCollections>.Instance.fakeFirstFriendDocumentCollectionApi.GetAllDocuments();
             foreach (BaseFakeFirstFriendDocument item in allDocuments)
             {
@@ -395,6 +406,7 @@ namespace Mix.Session.Local
             {
                 thread.SortMessagesByTime();
             }
+            fakeFriendDataLoaded = true;
         }
 
         private void AddFakeMessage(FakeThread thread, BaseFakeFirstFriendDocument message)

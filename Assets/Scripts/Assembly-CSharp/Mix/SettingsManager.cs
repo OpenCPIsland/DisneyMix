@@ -147,6 +147,16 @@ public string GetDeviceString()
 			return databaseApi.LoadUserValueAsBool("settings_battery_life");
 		}
 
+		public void SetFakeFriendsEnabled(bool setting)
+		{
+			databaseApi.SaveUserValueFromBool("settings_fake_friends_enabled", setting);
+		}
+
+		public bool GetFakeFriendsEnabled()
+		{
+			return databaseApi.LoadUserValueAsBool("settings_fake_friends_enabled", true);
+		}
+
 		public void SetPushNotificationsSetting(bool setting)
 		{
 			databaseApi.SaveUserValueFromBool("settings_notifications_enabled", setting);
