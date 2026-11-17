@@ -415,10 +415,10 @@ namespace Mix.Games.Tray.Runner
 
 		private void UpdateInput()
 		{
-			if (UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.isPressed && game.IsInputInViewport() && !mIsBuilderInterpolatingHorizontal && !mIsBuilderInterpolatingVertical && !mIsSwiping)
+			if (UnityEngine.InputSystem.Pointer.current != null && UnityEngine.InputSystem.Pointer.current.press.isPressed && game.IsInputInViewport() && !mIsBuilderInterpolatingHorizontal && !mIsBuilderInterpolatingVertical && !mIsSwiping)
 			{
 				mIsSwiping = true;
-				mSwipeStartPosition = UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero;
+				mSwipeStartPosition = UnityEngine.InputSystem.Pointer.current != null ? UnityEngine.InputSystem.Pointer.current.position.ReadValue() : Vector2.zero;
 				if (mCurrentBuildDragAxis == BuildDragAxis.BOTH)
 				{
 					if (HasThePlayerSwappedAtLeastOneChunk)
@@ -433,7 +433,7 @@ namespace Mix.Games.Tray.Runner
 			}
 			if (mIsSwiping && !mIsBuilderInterpolatingHorizontal && !mIsBuilderInterpolatingVertical)
 			{
-				Vector2 mousePosition = UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero;
+				Vector2 mousePosition = UnityEngine.InputSystem.Pointer.current != null ? UnityEngine.InputSystem.Pointer.current.position.ReadValue() : Vector2.zero;
 				Vector2 vector = new Vector2(mSwipeStartPosition.x - mousePosition.x, mSwipeStartPosition.y - mousePosition.y);
 				if (mCurrentBuildDragAxis == BuildDragAxis.BOTH)
 				{
@@ -497,7 +497,7 @@ namespace Mix.Games.Tray.Runner
 					return;
 				}
 			}
-			if (UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasReleasedThisFrame && mIsSwiping)
+			if (UnityEngine.InputSystem.Pointer.current != null && UnityEngine.InputSystem.Pointer.current.press.wasReleasedThisFrame && mIsSwiping)
 			{
 				if (mCurrentBuildDragAxis == BuildDragAxis.HORIZONTAL)
 				{

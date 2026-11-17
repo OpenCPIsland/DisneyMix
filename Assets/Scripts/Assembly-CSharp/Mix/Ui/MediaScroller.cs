@@ -177,9 +177,9 @@ namespace Mix.Ui
 						flag = true;
 					}
 				}
-				else if (UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.isPressed)
+				else if (UnityEngine.InputSystem.Pointer.current != null && UnityEngine.InputSystem.Pointer.current.press.isPressed)
 				{
-					vector = UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero;
+					vector = UnityEngine.InputSystem.Pointer.current != null ? UnityEngine.InputSystem.Pointer.current.position.ReadValue() : Vector2.zero;
 				}
 				else
 				{
@@ -189,8 +189,8 @@ namespace Mix.Ui
 			if (!dragging)
 			{
 				bool touchBegan = TryGetTouchBegan(out Touch touch);
-				Vector2 pointerPosition = touchBegan ? touch.screenPosition : UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero;
-				if ((touchBegan || UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame) && Util.GetRectInScreenSpace(GetComponent<RectTransform>()).Contains(pointerPosition))
+				Vector2 pointerPosition = touchBegan ? touch.screenPosition : UnityEngine.InputSystem.Pointer.current != null ? UnityEngine.InputSystem.Pointer.current.position.ReadValue() : Vector2.zero;
+				if ((touchBegan || UnityEngine.InputSystem.Pointer.current != null && UnityEngine.InputSystem.Pointer.current.press.wasPressedThisFrame) && Util.GetRectInScreenSpace(GetComponent<RectTransform>()).Contains(pointerPosition))
 				{
 					CurrentDragState = DragState.Idle;
 					vector = pointerPosition;

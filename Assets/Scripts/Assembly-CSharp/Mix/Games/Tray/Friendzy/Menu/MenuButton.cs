@@ -41,7 +41,7 @@ namespace Mix.Games.Tray.Friendzy.Menu
 		private void Update()
 		{
 			bool pointerOverButton = IsPointerOverButton();
-			if (UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame && pointerOverButton && MenuAnimator.InputEnabled)
+			if (UnityEngine.InputSystem.Pointer.current != null && UnityEngine.InputSystem.Pointer.current.press.wasPressedThisFrame && pointerOverButton && MenuAnimator.InputEnabled)
 			{
 				ClickedDown = true;
 				DepressFlipBar(DEPRESSED_AMOUNT);
@@ -56,7 +56,7 @@ namespace Mix.Games.Tray.Friendzy.Menu
 				DepressFlipBar(0f);
 				return;
 			}
-			if (UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasReleasedThisFrame)
+			if (UnityEngine.InputSystem.Pointer.current != null && UnityEngine.InputSystem.Pointer.current.press.wasReleasedThisFrame)
 			{
 				ClickedDown = false;
 				DepressFlipBar(0f);
@@ -67,7 +67,7 @@ namespace Mix.Games.Tray.Friendzy.Menu
 		private bool IsPointerOverButton()
 		{
 			UnityEngine.Camera mainCamera = UnityEngine.Camera.main;
-			return mainCamera != null && mCollider.OverlapPoint(mainCamera.ScreenToWorldPoint(UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero));
+			return mainCamera != null && mCollider.OverlapPoint(mainCamera.ScreenToWorldPoint(UnityEngine.InputSystem.Pointer.current != null ? UnityEngine.InputSystem.Pointer.current.position.ReadValue() : Vector2.zero));
 		}
 
 		private void DepressFlipBar(float aAmount)

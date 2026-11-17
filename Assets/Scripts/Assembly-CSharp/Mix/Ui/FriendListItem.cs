@@ -310,7 +310,7 @@ namespace Mix.Ui
 			slideRecognizer.onSlide = (SlideRecognizer.OnSlide)Delegate.Combine(slideRecognizer.onSlide, (SlideRecognizer.OnSlide)delegate(GameObject aGameObject, Vector2 aMoved)
 			{
 				Rect rectInScreenSpace = Util.GetRectInScreenSpace(friendInfoRect);
-				if (friendInfoRect.anchoredPosition.x < 0f && !touched && rectInScreenSpace.Contains(UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero))
+				if (friendInfoRect.anchoredPosition.x < 0f && !touched && rectInScreenSpace.Contains(UnityEngine.InputSystem.Pointer.current != null ? UnityEngine.InputSystem.Pointer.current.position.ReadValue() : Vector2.zero))
 				{
 					animationType = AnimationType.Hide;
 				}

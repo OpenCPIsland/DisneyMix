@@ -509,7 +509,7 @@ namespace Mix.Ui
 						if (chatItem != null)
 						{
 							Rect rectInScreenSpace = Util.GetRectInScreenSpace(chatItem);
-							if (chatItem.anchoredPosition.x < 0f && !touched && rectInScreenSpace.Contains(UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero))
+							if (chatItem.anchoredPosition.x < 0f && !touched && rectInScreenSpace.Contains(UnityEngine.InputSystem.Pointer.current != null ? UnityEngine.InputSystem.Pointer.current.position.ReadValue() : Vector2.zero))
 							{
 								animationType = AnimationType.Hide;
 							}

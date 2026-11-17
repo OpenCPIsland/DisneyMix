@@ -80,7 +80,7 @@ namespace Mix.Ui
 			internal void _003C_003Em__5A0(GameObject aGameObject, Vector2 aMoved)
 			{
 				Rect rectInScreenSpace = Util.GetRectInScreenSpace(_003C_003Ef__this.friendInfoRect);
-				if (_003C_003Ef__this.friendInfoRect.anchoredPosition.x < 0f && !_003C_003Ef__this.touched && rectInScreenSpace.Contains(UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero))
+				if (_003C_003Ef__this.friendInfoRect.anchoredPosition.x < 0f && !_003C_003Ef__this.touched && rectInScreenSpace.Contains(UnityEngine.InputSystem.Pointer.current != null ? UnityEngine.InputSystem.Pointer.current.position.ReadValue() : Vector2.zero))
 				{
 					_003C_003Ef__this.animationType = AnimationType.Hide;
 					return;
@@ -231,7 +231,7 @@ namespace Mix.Ui
 				slideRecognizer.onSlide = (SlideRecognizer.OnSlide)Delegate.Combine(slideRecognizer.onSlide, (SlideRecognizer.OnSlide)delegate(GameObject aGameObject, Vector2 aMoved)
 				{
 					Rect rectInScreenSpace = Util.GetRectInScreenSpace(CS_0024_003C_003E8__locals62._003C_003Ef__this.friendInfoRect);
-					if (CS_0024_003C_003E8__locals62._003C_003Ef__this.friendInfoRect.anchoredPosition.x < 0f && !CS_0024_003C_003E8__locals62._003C_003Ef__this.touched && rectInScreenSpace.Contains(UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero))
+					if (CS_0024_003C_003E8__locals62._003C_003Ef__this.friendInfoRect.anchoredPosition.x < 0f && !CS_0024_003C_003E8__locals62._003C_003Ef__this.touched && rectInScreenSpace.Contains(UnityEngine.InputSystem.Pointer.current != null ? UnityEngine.InputSystem.Pointer.current.position.ReadValue() : Vector2.zero))
 					{
 						CS_0024_003C_003E8__locals62._003C_003Ef__this.animationType = AnimationType.Hide;
 					}

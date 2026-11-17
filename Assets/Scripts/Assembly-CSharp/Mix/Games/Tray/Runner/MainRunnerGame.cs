@@ -920,7 +920,7 @@ namespace Mix.Games.Tray.Runner
 
 		public bool IsInputInViewport()
 		{
-			Vector3 mousePosition = UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero;
+			Vector3 mousePosition = UnityEngine.InputSystem.Pointer.current != null ? UnityEngine.InputSystem.Pointer.current.position.ReadValue() : Vector2.zero;
 			return mousePosition.x >= mMinScreenPoint.x && mousePosition.x <= mMaxScreenPoint.x && mousePosition.y >= mMinScreenPoint.y && mousePosition.y <= mMaxScreenPoint.y;
 		}
 	}

@@ -155,7 +155,7 @@ public class MixChatItem : BaseChatItem, IScrollItem, IScrollItemHelper
 		}
 		textGameObject.GetComponent<Button>().onClick.AddListener(delegate
 		{
-			OnBubbleClicked(textGameObject, UnityEngine.InputSystem.Mouse.current != null ? UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector2.zero);
+			OnBubbleClicked(textGameObject, UnityEngine.InputSystem.Pointer.current != null ? UnityEngine.InputSystem.Pointer.current.position.ReadValue() : Vector2.zero);
 		});
 		GameObject gameObject = chatContent.transform.Find(message.IsMine() ? "ChatBubbleRight" : "ChatBubbleLeft").gameObject;
 		Image component2 = gameObject.GetComponent<Image>();

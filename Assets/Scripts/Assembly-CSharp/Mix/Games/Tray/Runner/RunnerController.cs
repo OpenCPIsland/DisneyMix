@@ -52,7 +52,7 @@ namespace Mix.Games.Tray.Runner
 				{
 					DecrementSpawnPauseTimer();
 				}
-				isTapping = UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.isPressed && mainController.IsInputInViewport();
+				isTapping = UnityEngine.InputSystem.Pointer.current != null && UnityEngine.InputSystem.Pointer.current.press.isPressed && mainController.IsInputInViewport();
 				elapsedTicks++;
 				elapsedPlayTime += Time.fixedDeltaTime;
 			}
