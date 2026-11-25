@@ -31,6 +31,11 @@ namespace Disney.Mix.SDK.Internal
 			public bool RefreshedApiKey;
 
 			public bool RefreshedAccessToken;
+
+			// Set when the path contains {refresh-token}. The token is filled in
+			// right before the call is sent (not when it is queued), so a call
+			// queued behind another refresh uses the newest refresh token.
+			public string UnresolvedPath;
 		}
 
 		private const long LatencyWwwCallTimeout = 60000L;
@@ -62,6 +67,15 @@ namespace Disney.Mix.SDK.Internal
 		private readonly List<IWwwCall> wwwCalls;
 
 		private bool isExecuting;
+
+		// The one refresh call that is queued or running, and everyone waiting
+		// on it. Servers that rotate refresh tokens reject a second refresh made
+		// with the same (now deleted) token, which the SDK reports as revoked
+		// authentication and the app turns into a logout. So concurrent refresh
+		// requests share a single call instead of each sending their own.
+		private QueueItem pendingRefreshItem;
+
+		private readonly List<Action<GuestControllerResult<RefreshResponse>>> pendingRefreshCallbacks = new List<Action<GuestControllerResult<RefreshResponse>>>();
 
 		public event EventHandler<AbstractGuestControllerAccessTokenChangedEventArgs> OnAccessTokenChanged = delegate
 		{
@@ -97,16 +111,52 @@ namespace Disney.Mix.SDK.Internal
 
 		public void Refresh(Action<GuestControllerResult<RefreshResponse>> callback)
 		{
-			QueueItem item = CreateRefreshQueueItem(callback);
-			queue.Add(item);
-			ExecuteNextCall();
+			EnqueueRefresh(callback, false);
 		}
 
 		private void RefreshImmediately(Action<GuestControllerResult<RefreshResponse>> callback)
 		{
-			QueueItem item = CreateRefreshQueueItem(callback);
-			queue.Insert(0, item);
+			EnqueueRefresh(callback, true);
+		}
+
+		private void EnqueueRefresh(Action<GuestControllerResult<RefreshResponse>> callback, bool immediately)
+		{
+			pendingRefreshCallbacks.Add(callback);
+			if (pendingRefreshItem != null && queue.Contains(pendingRefreshItem))
+			{
+				// A refresh is already queued or running: wait for it. If it is
+				// still waiting in the queue and this caller is urgent, move it
+				// to the front.
+				if (immediately && !isExecuting && queue.IndexOf(pendingRefreshItem) > 0)
+				{
+					queue.Remove(pendingRefreshItem);
+					queue.Insert(0, pendingRefreshItem);
+				}
+				ExecuteNextCall();
+				return;
+			}
+			pendingRefreshItem = CreateRefreshQueueItem(DispatchRefreshResult);
+			if (immediately)
+			{
+				queue.Insert(0, pendingRefreshItem);
+			}
+			else
+			{
+				queue.Add(pendingRefreshItem);
+			}
 			ExecuteNextCall();
+		}
+
+		private void DispatchRefreshResult(GuestControllerResult<RefreshResponse> result)
+		{
+			// Clear the shared state first: a callback may start a new refresh.
+			Action<GuestControllerResult<RefreshResponse>>[] callbacks = pendingRefreshCallbacks.ToArray();
+			pendingRefreshCallbacks.Clear();
+			pendingRefreshItem = null;
+			foreach (Action<GuestControllerResult<RefreshResponse>> callback in callbacks)
+			{
+				callback(result);
+			}
 		}
 
 		private QueueItem CreateRefreshQueueItem(Action<GuestControllerResult<RefreshResponse>> callback)
@@ -359,6 +409,8 @@ namespace Disney.Mix.SDK.Internal
 		public void Dispose()
 		{
 			queue.Clear();
+			pendingRefreshItem = null;
+			pendingRefreshCallbacks.Clear();
 			foreach (IWwwCall wwwCall in wwwCalls)
 			{
 				wwwCall.Dispose();
@@ -404,15 +456,16 @@ namespace Disney.Mix.SDK.Internal
 			{
 				path = path.Replace("{swid}", swid);
 			}
+			QueueItem queueItem = new QueueItem();
 			if (path.Contains("{refresh-token}"))
 			{
-				SessionDocument sessionDocument = database.GetSessionDocument(swid);
-				string guestControllerRefreshToken = sessionDocument.GuestControllerRefreshToken;
-				path = path.Replace("{refresh-token}", guestControllerRefreshToken);
+				// Resolved in ExecuteNextCall, from the token stored at send time.
+				queueItem.UnresolvedPath = path;
 			}
-			Uri uri = new Uri(host + "/jgc/v5" + path);
-			QueueItem queueItem = new QueueItem();
-			queueItem.Uri = uri;
+			else
+			{
+				queueItem.Uri = new Uri(host + "/jgc/v5" + path);
+			}
 			queueItem.HttpMethod = httpMethod;
 			queueItem.RequestBodyJson = text;
 			queueItem.RequestBody = requestBody;
@@ -432,6 +485,20 @@ namespace Disney.Mix.SDK.Internal
 				return;
 			}
 			QueueItem item = queue[0];
+			if (item.UnresolvedPath != null)
+			{
+				SessionDocument refreshSessionDocument = database.GetSessionDocument(swid);
+				string refreshToken = (refreshSessionDocument != null) ? refreshSessionDocument.GuestControllerRefreshToken : null;
+				if (string.IsNullOrEmpty(refreshToken))
+				{
+					logger.Critical("Guest Controller refresh requires a refresh token, but none is stored");
+					queue.Remove(item);
+					CallCallbackWithFailureResult(item, null, null);
+					ExecuteNextCall();
+					return;
+				}
+				item.Uri = new Uri(host + "/jgc/v5" + item.UnresolvedPath.Replace("{refresh-token}", refreshToken));
+			}
 			Dictionary<string, string> dictionary = new Dictionary<string, string>();
 			dictionary.Add("Content-Type", "application/json");
 			dictionary.Add("Accept", "application/json");
