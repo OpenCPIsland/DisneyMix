@@ -28,7 +28,7 @@ uniform float BrowCrop;
 uniform float BrowXOffset;
 uniform float BrowYOffset;
 uniform float4 BrowColor;
-uniform int BrowBlendMode00;
+uniform float BrowBlendMode00;
 uniform sampler2D BrowTex00;
 struct appdata_t
 {
