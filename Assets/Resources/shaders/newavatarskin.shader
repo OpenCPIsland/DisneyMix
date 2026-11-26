@@ -29,8 +29,8 @@ uniform float4 SkinColor;
 uniform float SkinCrop;
 uniform float SkinXOffset;
 uniform float SkinYOffset;
-uniform int SkinBlendMode00;
-uniform int CostumeBlendMode00;
+uniform float SkinBlendMode00;
+uniform float CostumeBlendMode00;
 uniform sampler2D SkinTex00;
 uniform sampler2D CostumeTex00;
 struct appdata_t
