@@ -28,8 +28,8 @@ CGPROGRAM
 #define CODE_BLOCK_VERTEX
 //uniform float4x4 UNITY_MATRIX_MVP;
 uniform float4 AccessoryColor;
-uniform int AccessoryBlendMode00;
-uniform int AccessoryBlendMode01;
+uniform float AccessoryBlendMode00;
+uniform float AccessoryBlendMode01;
 uniform sampler2D AccessoryTex00;
 uniform sampler2D AccessoryTex01;
 uniform sampler2D AccessoryMask;
