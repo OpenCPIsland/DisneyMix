@@ -182,16 +182,16 @@ namespace Mix.AvatarInternal
 			{
 				if (i >= avatarComponent.Layers.Length)
 				{
-					workerMaterial.SetInt(categoryInfo.name + "BlendMode" + i.ToString("D2"), 5);
+					workerMaterial.SetFloat(categoryInfo.name + "BlendMode" + i.ToString("D2"), 5);
 					continue;
 				}
 				AvatarComponentLayer avatarComponentLayer = avatarComponent.Layers[i];
 				if (avatarComponentLayer.Texture == null)
 				{
-					workerMaterial.SetInt(categoryInfo.name + "BlendMode" + i.ToString("D2"), 5);
+					workerMaterial.SetFloat(categoryInfo.name + "BlendMode" + i.ToString("D2"), 5);
 					continue;
 				}
-				workerMaterial.SetInt(categoryInfo.name + "BlendMode" + i.ToString("D2"), (int)avatarComponentLayer.BlendMode);
+				workerMaterial.SetFloat(categoryInfo.name + "BlendMode" + i.ToString("D2"), (int)avatarComponentLayer.BlendMode);
 				avatarComponentLayer.Texture.wrapMode = TextureWrapMode.Clamp;
 				if (avatarComponentLayer.BlendMode != AvatarComponentLayer.LayerType.MASK && avatarComponentLayer.BlendMode != AvatarComponentLayer.LayerType.COLOR)
 				{
