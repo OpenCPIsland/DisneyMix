@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 30
-  companyName: OpenCPI
+  companyName: OpenCPI Interactive
   productName: Disney Mix
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
