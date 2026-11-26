@@ -66,8 +66,10 @@ namespace Mix
 				service = PushNotificationService.ApplePushNotificationService;
 				break;
 			case RuntimePlatform.Android:
-				//pushNotificationClient = new GoogleCloudMessagingClient(ExternalizedConstants.GcmSenderId);
-				//service = PushNotificationService.GoogleCloudMessaging;
+				// GCM is gone (Google shut it down in 2019): the Glacier server
+				// pushes to the app itself. See GlacierPushClient.
+				pushNotificationClient = new GlacierPushClient(ExternalizedConstants.MixPlatformServicesUrl);
+				service = PushNotificationService.Glacier;
 				break;
 			}
 			if (pushNotificationClient != null)
@@ -104,6 +106,11 @@ namespace Mix
 				else if (!string.IsNullOrEmpty(token) && !pushNotificationClient.IsNotificationEnabled())
 				{
 					ToggleRegister(false, false);
+				}
+				else if (!string.IsNullOrEmpty(token) && Singleton<SettingsManager>.Instance.GetPushNotificationsSetting())
+				{
+					// e.g. the player just allowed notifications in the system dialog.
+					SetListening(true);
 				}
 			}
 			if (!pushNotificationClient.IsNotificationEnabled())
@@ -333,6 +340,7 @@ namespace Mix
 					else
 					{
 						pushNotificationSettingRetries = 0;
+						SetListening(true);
 					}
 				}));
 				return;
@@ -355,6 +363,7 @@ namespace Mix
 				else
 				{
 					pushNotificationSettingRetries = 0;
+					SetListening(false);
 				}
 			}));
 		}
@@ -385,6 +394,7 @@ namespace Mix
 					else
 					{
 						pushNotificationSettingRetries = 0;
+						SetListening(true);
 					}
 				}));
 				return;
@@ -407,6 +417,7 @@ namespace Mix
 				else
 				{
 					pushNotificationSettingRetries = 0;
+					SetListening(false);
 				}
 			}));
 		}
@@ -434,8 +445,43 @@ namespace Mix
 				else
 				{
 					pushNotificationSettingRetries = 0;
+					SetListening(false);
 				}
 			}));
+		}
+
+		// The Glacier client's background connection runs only while the
+		// server has this device registered for visible pushes.
+		private void SetListening(bool aListen)
+		{
+			GlacierPushClient glacierClient = pushNotificationClient as GlacierPushClient;
+			if (glacierClient == null)
+			{
+				return;
+			}
+			if (aListen)
+			{
+				glacierClient.StartListening();
+			}
+			else
+			{
+				glacierClient.StopListening();
+			}
+		}
+
+		// Before the session goes away: this device stops getting the
+		// account's pushes. The Glacier client also drops its token, so
+		// the next account to log in registers a new one.
+		public void OnLogout()
+		{
+			if (pushNotificationClient is GlacierPushClient)
+			{
+				pushNotificationClient.Unregister();
+				token = string.Empty;
+				tokenCheckCount = 0;
+			}
+			ClearNavRequest();
+			pendingPushNotifications.Clear();
 		}
 
 		public void RetryNavRequest(bool fallbackToConvo = false)
