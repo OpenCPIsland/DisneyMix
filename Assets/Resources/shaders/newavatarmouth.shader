@@ -28,8 +28,8 @@ uniform float4 MouthColor;
 uniform float MouthCrop;
 uniform float MouthXOffset;
 uniform float MouthYOffset;
-uniform int MouthBlendMode00;
-uniform int MouthBlendMode01;
+uniform float MouthBlendMode00;
+uniform float MouthBlendMode01;
 uniform sampler2D MouthTex00;
 uniform sampler2D MouthTex01;
 struct appdata_t
