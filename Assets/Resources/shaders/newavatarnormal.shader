@@ -34,8 +34,8 @@ uniform float AccessoryYOffset;
 uniform float HairXOffset;
 uniform float HairYOffset;
 uniform float AccessoryCrop;
-uniform int AccessoryBlendMode00;
-uniform int HairBlendMode00;
+uniform float AccessoryBlendMode00;
+uniform float HairBlendMode00;
 uniform sampler2D AccessoryTex00;
 uniform sampler2D HairTex00;
 struct appdata_t
