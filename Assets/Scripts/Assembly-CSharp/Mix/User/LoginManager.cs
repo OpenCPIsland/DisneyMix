@@ -350,6 +350,7 @@ namespace Mix.User
             }
             ISession session = this.session;
             string userSwid = session.LocalUser.Id;
+            MonoSingleton<PushNotifications>.Instance.OnLogout();
             Disconnect(true);
             session.LogOut(actionGenerator.CreateAction(delegate (ISessionLogOutResult result)
             {

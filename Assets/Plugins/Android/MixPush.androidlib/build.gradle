@@ -1,0 +1,25 @@
+// Mix push: a background connection to the Glacier server that shows
+// chat and friend notifications. No Firebase or other dependencies.
+apply plugin: 'com.android.library'
+
+android {
+    namespace "com.opencpi.mixpush"
+    compileSdk 36
+
+    defaultConfig {
+        minSdk 26
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['java']
+            res.srcDirs = ['res']
+        }
+    }
+}

@@ -143,6 +143,8 @@ namespace Disney.Mix.SDK.Internal
 				return "APNS";
 			case PushNotificationService.GoogleCloudMessaging:
 				return "GCM";
+			case PushNotificationService.Glacier:
+				return "GLACIER";
 			default:
 				throw new ArgumentException("Unsupported push notification service: " + service);
 			}
