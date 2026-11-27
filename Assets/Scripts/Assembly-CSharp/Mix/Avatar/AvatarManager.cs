@@ -374,7 +374,16 @@ namespace Mix.Avatar
                 var tex = new Texture2D(size, size, TextureFormat.ARGB32, false);
                 RenderTexture.active = cam.targetTexture;
                 GL.Clear(true, true, new Color(0.9f, 0f, 0f, 0f));
+#if UNITY_EDITOR
+                // In the editor, shaders not yet compiled render with the cyan async-compile
+                // placeholder; a one-shot snapshot would bake that in (e.g. solid cyan glasses).
+                bool allowAsync = UnityEditor.ShaderUtil.allowAsyncCompilation;
+                UnityEditor.ShaderUtil.allowAsyncCompilation = false;
                 cam.Render();
+                UnityEditor.ShaderUtil.allowAsyncCompilation = allowAsync;
+#else
+                cam.Render();
+#endif
                 tex.ReadPixels(new Rect(0, 0, size, size), 0, 0);
                 tex.Apply();
                 var sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
