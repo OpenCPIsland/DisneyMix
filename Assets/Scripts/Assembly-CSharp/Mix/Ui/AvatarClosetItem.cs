@@ -108,6 +108,11 @@ namespace Mix.Ui
 			{
 				string key = "slot" + index.ToString("D2") + ".json";
 				Singleton<MixDocumentCollections>.Instance.keyValDocumentCollectionApi.SaveUserValue(key, text);
+				Debug.Log("[AvatarCloset] Saved slot " + index + " (" + text.Length + " chars)");
+			}
+			else
+			{
+				Debug.LogWarning("[AvatarCloset] Slot " + index + " not saved: local store unavailable");
 			}
 			Analytics.LogAvatarOutfitSaveAction();
 			SetAvatarIcon(aDna);
@@ -121,13 +126,22 @@ namespace Mix.Ui
 			if (!string.IsNullOrEmpty(text))
 			{
 				IAvatar avatar = slotDna;
-				slotDna = AvatarApi.DeserializeAvatar(text);
+				try
+				{
+					slotDna = AvatarApi.DeserializeAvatar(text);
+				}
+				catch (Exception ex)
+				{
+					Debug.LogWarning("[AvatarCloset] Slot " + index + " has unreadable data: " + ex.Message);
+					slotDna = null;
+				}
 				if (AvatarApi.ValidateAvatar(slotDna) && MonoSingleton<AvatarManager>.Instance.api.IsAvatarMultiplane(slotDna))
 				{
 					IsOpenSlot = false;
 					SetAvatarIcon(slotDna);
 					return;
 				}
+				Debug.LogWarning("[AvatarCloset] Slot " + index + " was saved but failed validation (valid=" + AvatarApi.ValidateAvatar(slotDna) + "): " + text);
 				slotDna = avatar;
 			}
 			AvatarImageTarget.gameObject.SetActive(false);
@@ -145,15 +159,24 @@ namespace Mix.Ui
 			SnapshotCallback snapshotCallback = delegate(bool success, Sprite sprite)
 			{
 				cancelAvatar = null;
-				if (success)
+				// The outfit is already saved; the icon is only its picture.
+				// A snapshot can render but fail to be cached (success false
+				// with a sprite), so show any sprite we got, and never mark a
+				// saved slot as open because its picture failed: that made the
+				// slot look empty and the next tap overwrote it.
+				if (sprite != null)
 				{
+					if (!success)
+					{
+						Debug.LogWarning("[AvatarCloset] Slot " + slot + " snapshot rendered but wasn't cached");
+					}
 					AvatarImageTarget.sprite = sprite;
 					AvatarImageTarget.gameObject.SetActive(true);
 					getOtherImageTarget().SetActive(false);
 				}
 				else
 				{
-					IsOpenSlot = true;
+					Debug.LogWarning("[AvatarCloset] Slot " + slot + " snapshot failed (success=" + success + "); the outfit is still saved");
 					AvatarImageTarget.gameObject.SetActive(false);
 					getOtherImageTarget().SetActive(false);
 				}

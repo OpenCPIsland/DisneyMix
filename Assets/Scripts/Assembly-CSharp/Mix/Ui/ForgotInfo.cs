@@ -42,7 +42,7 @@ namespace Mix.Ui
 
 		public GameObject ErrorMessageGameObject;
 
-		public NativeTextView EmailUsernameInputField;
+		public InputField EmailUsernameInputField;
 
 		private IForgotInfo caller;
 
@@ -78,7 +78,7 @@ namespace Mix.Ui
 		{
 			if (!submitted)
 			{
-				RetrieveButton.interactable = !DataChecker.IsNullEmptyOrJustWhiteSpace(EmailUsernameInputField.Value);
+				RetrieveButton.interactable = !DataChecker.IsNullEmptyOrJustWhiteSpace(EmailUsernameInputField.text);
 			}
 		}
 
@@ -101,8 +101,7 @@ namespace Mix.Ui
 				Analytics.LogForgotPasswordPageView();
 			}
 			EmailUsernameText.text = inputText;
-			EmailUsernameInputField.DefaultText = inputText;
-			EmailUsernameInputField.Value = string.Empty;
+			EmailUsernameInputField.text = string.Empty;
 			MonoSingleton<NativeKeyboardManager>.Instance.Keyboard.OnNativeKeyboardReturnKeyPressed += OnKeyboardReturnKey;
 			base.gameObject.SetActive(true);
 			setUiInteractable(true);
@@ -166,11 +165,11 @@ namespace Mix.Ui
 		{
 			if (trueIfUsernameFalseIfPassword)
 			{
-				errorEmailUsername = !DataChecker.IsValidEmail(EmailUsernameInputField.Value);
+				errorEmailUsername = !DataChecker.IsValidEmail(EmailUsernameInputField.text);
 			}
 			else
 			{
-				errorEmailUsername = DataChecker.IsNullEmptyOrJustWhiteSpace(EmailUsernameInputField.Value);
+				errorEmailUsername = DataChecker.IsNullEmptyOrJustWhiteSpace(EmailUsernameInputField.text);
 			}
 			toggleErrorFields();
 			return !errorEmailUsername;
@@ -181,12 +180,12 @@ namespace Mix.Ui
 			if (trueIfUsernameFalseIfPassword)
 			{
 				UsernameRecoverySender usernameRecoverySender = new UsernameRecoverySender(MonoSingleton<LoginManager>.Instance.KeychainData, Log.MixLogger, MonoSingleton<LoginManager>.Instance.StorageDir, ExternalizedConstants.GuestControllerUrl, MixSession.GuestControllerSpoofedIP, ExternalizedConstants.GuestControllerClientId, MonoSingleton<LoginManager>.Instance.CoroutineManager);
-				usernameRecoverySender.Send(EmailUsernameInputField.Value, OnUsernameResponse);
+				usernameRecoverySender.Send(EmailUsernameInputField.text, OnUsernameResponse);
 			}
 			else
 			{
 				PasswordRecoverySender passwordRecoverySender = new PasswordRecoverySender(MonoSingleton<LoginManager>.Instance.KeychainData, Log.MixLogger, MonoSingleton<LoginManager>.Instance.StorageDir, ExternalizedConstants.GuestControllerUrl, MixSession.GuestControllerSpoofedIP, ExternalizedConstants.GuestControllerClientId, MonoSingleton<LoginManager>.Instance.CoroutineManager);
-				passwordRecoverySender.Send(EmailUsernameInputField.Value, OnPasswordResponse);
+				passwordRecoverySender.Send(EmailUsernameInputField.text, OnPasswordResponse);
 			}
 		}
 

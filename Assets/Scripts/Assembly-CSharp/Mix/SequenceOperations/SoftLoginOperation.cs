@@ -100,6 +100,12 @@ namespace Mix.SequenceOperations
 		private NavigationRequest handleDisplayNameStatus(bool navToConvo)
 		{
 			NavigationRequest navigationRequest = null;
+			// The profile refresh can answer after the session was discarded
+			// (auth lost -> back to login); there's nothing to navigate then.
+			if (MixSession.Session == null || MixSession.Session.LocalUser == null || MixSession.Session.LocalUser.RegistrationProfile == null)
+			{
+				return null;
+			}
 			DisplayNameProposedStatus displayNameProposedStatus = MixSession.Session.LocalUser.RegistrationProfile.DisplayNameProposedStatus;
 			if (displayNameProposedStatus != DisplayNameProposedStatus.Accepted)
 			{

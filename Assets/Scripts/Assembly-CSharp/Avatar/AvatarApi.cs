@@ -163,7 +163,17 @@ namespace Avatar
 
 		public bool IsAvatarMultiplane(IAvatar avatar)
 		{
-			return avatar != null && IsAvatarPropMultiplane(avatar.Accessory) && IsAvatarPropMultiplane(avatar.Brow) && IsAvatarPropMultiplane(avatar.Costume) && IsAvatarPropMultiplane(avatar.Eyes) && IsAvatarPropMultiplane(avatar.Hair) && IsAvatarPropMultiplane(avatar.Mouth) && IsAvatarPropMultiplane(avatar.Nose) && IsAvatarPropMultiplane(avatar.Skin) && IsAvatarPropMultiplane(avatar.Hat);
+			return avatar != null && IsOptionalPropMultiplane(avatar.Accessory) && IsAvatarPropMultiplane(avatar.Brow) && IsOptionalPropMultiplane(avatar.Costume) && IsAvatarPropMultiplane(avatar.Eyes) && IsAvatarPropMultiplane(avatar.Hair) && IsAvatarPropMultiplane(avatar.Mouth) && IsAvatarPropMultiplane(avatar.Nose) && IsAvatarPropMultiplane(avatar.Skin) && IsOptionalPropMultiplane(avatar.Hat);
+		}
+
+		// Accessory, Costume and Hat can be left off: "0" (or nothing) is the
+		// game's own "none" value (DefaultAvatar, AvatarEngine, ClientAvatar)
+		// and is no content item, so it must not make the avatar invalid.
+		// Without this every outfit with no costume or hat was rejected,
+		// e.g. every closet slot on load.
+		private bool IsOptionalPropMultiplane(IAvatarProperty prop)
+		{
+			return prop == null || string.IsNullOrEmpty(prop.SelectionKey) || prop.SelectionKey == "0" || IsAvatarPropMultiplane(prop);
 		}
 
 		public static IAvatar DeserializeAvatar(string avatarString)

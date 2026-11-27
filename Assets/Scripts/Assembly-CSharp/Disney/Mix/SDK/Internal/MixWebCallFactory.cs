@@ -457,7 +457,12 @@ namespace Disney.Mix.SDK.Internal
 					});
 					break;
 				case "UNAUTHORIZED_MIX_SESSION":
-					sessionRefresher.RefreshSession(guestControllerAccessToken, swid, delegate(IWebCallEncryptor encryptor)
+					// The Mix session usually expires together with the Guest
+					// Controller access token (both after a long idle), and
+					// starting a new session with an expired token fails with a
+					// 401 that can't be recovered, which logs the user out.
+					// Refresh the token first, then start the session.
+					sessionRefresher.RefreshAll(swid, delegate(IWebCallEncryptor encryptor)
 					{
 						isSessionRefreshing = false;
 						webCallEncryptor = encryptor;
