@@ -2,13 +2,31 @@ using UnityEngine;
 
 namespace Mix
 {
+	internal static class MonoSingletonState
+	{
+		public static bool ApplicationIsQuitting;
+
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+		private static void ResetOnLoad()
+		{
+			// Statics survive play-mode entry when domain reload is disabled.
+			ApplicationIsQuitting = false;
+			SingletonCleaner.cleaningHouse = 0;
+			UnityEngine.Application.quitting -= OnQuitting;
+			UnityEngine.Application.quitting += OnQuitting;
+		}
+
+		private static void OnQuitting()
+		{
+			ApplicationIsQuitting = true;
+		}
+	}
+
 	public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 	{
 		private static T _instance;
 
 		private static object _lock = new object();
-
-		private static bool applicationIsQuitting = false;
 
 		public static T Instance
 		{
@@ -16,24 +34,20 @@ namespace Mix
 			{
 				lock (_lock)
 				{
-					if (applicationIsQuitting)
+					if (MonoSingletonState.ApplicationIsQuitting)
 					{
 						return (T)null;
 					}
 					if (_instance == null)
 					{
 						_instance = (T)Object.FindFirstObjectByType(typeof(T));
-						if (Object.FindObjectsByType(typeof(T), FindObjectsSortMode.InstanceID).Length > 1)
-						{
-							return _instance;
-						}
 						if (_instance == null)
 						{
 							GameObject gameObject = new GameObject();
 							_instance = gameObject.AddComponent<T>();
-							gameObject.name = "(singleton) " + typeof(T).ToString() + Object.FindObjectsByType(typeof(T), FindObjectsSortMode.InstanceID).Length;
+							gameObject.name = "(singleton) " + typeof(T).ToString();
 							Object.DontDestroyOnLoad(gameObject);
-							Singleton<SingletonCleaner>.Instance.AddSingleton(gameObject);
+							Singleton<SingletonCleaner>.Instance?.AddSingleton(gameObject);
 						}
 					}
 					return _instance;
@@ -43,11 +57,13 @@ namespace Mix
 
 		public void OnDestroy()
 		{
-			if (SingletonCleaner.cleaningHouse == 0)
+			// Destroying a singleton (scene change, SingletonCleaner restart) must not
+			// permanently disable it; just drop the cached reference so it can be recreated.
+			if (_instance == this)
 			{
-				applicationIsQuitting = true;
+				_instance = (T)null;
 			}
-			else
+			if (SingletonCleaner.cleaningHouse > 0)
 			{
 				SingletonCleaner.cleaningHouse--;
 			}
@@ -55,11 +71,7 @@ namespace Mix
 
 		public static bool IsInstanceCreated()
 		{
-			if (_instance == null)
-			{
-				return false;
-			}
-			return true;
+			return _instance != null;
 		}
 	}
 }

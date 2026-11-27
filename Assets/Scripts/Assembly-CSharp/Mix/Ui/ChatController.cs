@@ -948,6 +948,14 @@ namespace Mix.Ui
 			}
 		}
 
+		// WaitForStateChange releases IsStateChange after 0.1s, but a coroutine
+		// dies when the screen is disabled (app paused, overlay), which left the
+		// media bar locked until the chat was reopened.
+		private void OnDisable()
+		{
+			IsStateChange = false;
+		}
+
 		private void OnDestroy()
 		{
 			if (ScrollView != null)

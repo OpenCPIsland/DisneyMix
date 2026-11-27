@@ -82,7 +82,7 @@ namespace Disney.Native
 					{
 						continue;
 					}
-					int instanceID = obj.GetInstanceID();
+					int instanceID = obj.GetEntityId().GetHashCode();
 					if (MonoSingleton<NativeAccessiblityManager>.Instance.HiddenScrollItemIds.IndexOf(component) <= -1)
 					{
 						list.Add(instanceID);
@@ -135,7 +135,7 @@ namespace Disney.Native
 		{
 			AccessibilitySettings component = GetGameobject(aItem).GetComponent<AccessibilitySettings>();
 			Rect rectInPhysicalScreenSpace = Util.GetRectInPhysicalScreenSpace(GetGameobject(aItem).GetComponent<RectTransform>());
-			MonoSingleton<NativeAccessiblityManager>.Instance.Native.UpdateView(GetGameobject(aItem).GetInstanceID(), rectInPhysicalScreenSpace, GetTokenText(component));
+			MonoSingleton<NativeAccessiblityManager>.Instance.Native.UpdateView(GetGameobject(aItem).GetEntityId().GetHashCode(), rectInPhysicalScreenSpace, GetTokenText(component));
 		}
 
 		protected virtual void Remove(int aId)

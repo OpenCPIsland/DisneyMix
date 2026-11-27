@@ -47,6 +47,17 @@ namespace Mix.Ui
 			inputStartHeight = InputField.GetComponent<RectTransform>().rect.height;
 			padding = base.gameObject.GetComponent<LayoutElement>().minHeight - inputStartHeight;
 			listenersActive = true;
+			// On phones the Unity keyboard's Send/Done key ends up here. The
+			// native keyboard plugin that used to send on the return key is
+			// stubbed out, and KeyboardTextInputNavigation only sees hardware
+			// keyboards, so without this the key did nothing on Android.
+			if (UnityEngine.Application.isMobilePlatform)
+			{
+				InputField.onSubmit.AddListener(delegate
+				{
+					SendChat();
+				});
+			}
 		}
 
 		private void Update()
@@ -155,8 +166,23 @@ namespace Mix.Ui
 			string text = InputField.text.TrimEnd(' ', '\n').TrimStart(' ', '\n');
 			if (text.Length >= 1)
 			{
+				if (listener == null)
+				{
+					Debug.LogError("[ChatBar] SendChat: no chat listener, message not sent");
+					return;
+				}
+				try
+				{
+					listener.OnSendTextMessage(text);
+				}
+				catch (System.Exception ex)
+				{
+					// Keep the text so the user can try again, and leave a trace:
+					// this used to fail silently.
+					Debug.LogError("[ChatBar] Sending the message failed: " + ex);
+					return;
+				}
 				Singleton<SoundManager>.Instance.PlaySoundEvent("MainApp/UI/SFX_4_SendChat");
-				listener.OnSendTextMessage(text);
 				Analytics.LogSendChat(clientThread);
 				InputField.text = string.Empty;
 				OnKeyboardInputResize(null, new NativeKeyboardInputHeightChangedEventArgs((int)(inputStartHeight / Singleton<SettingsManager>.Instance.GetHeightScale())));

@@ -7,9 +7,9 @@ namespace Mix.Games.Tray.ObjectPool
 	{
 		private static ObjectPoolManager mInstance;
 
-		private Dictionary<int, ObjectPool> mPools = new Dictionary<int, ObjectPool>();
+		private Dictionary<EntityId, ObjectPool> mPools = new Dictionary<EntityId, ObjectPool>();
 
-		private Dictionary<int, int> mObjToPrefabMap = new Dictionary<int, int>();
+		private Dictionary<EntityId, EntityId> mObjToPrefabMap = new Dictionary<EntityId, EntityId>();
 
 		public static ObjectPoolManager Instance
 		{
@@ -29,7 +29,7 @@ namespace Mix.Games.Tray.ObjectPool
 
 		public static bool HasPoolForObj(GameObject aPrefab)
 		{
-			int instanceID = aPrefab.GetInstanceID();
+			EntityId instanceID = aPrefab.GetEntityId();
 			return Instance.mPools.ContainsKey(instanceID);
 		}
 
@@ -40,7 +40,7 @@ namespace Mix.Games.Tray.ObjectPool
 
 		public static GameObject InstantiatePooledObj(GameObject aPrefab, Vector3 aPosition, Quaternion aRotation)
 		{
-			int instanceID = aPrefab.GetInstanceID();
+			EntityId instanceID = aPrefab.GetEntityId();
 			ObjectPool value;
 			if (Instance.mPools.TryGetValue(instanceID, out value))
 			{
@@ -67,7 +67,7 @@ namespace Mix.Games.Tray.ObjectPool
 
 		public static void CreatePool(GameObject aPrefab, int aInitSize)
 		{
-			int instanceID = aPrefab.GetInstanceID();
+			EntityId instanceID = aPrefab.GetEntityId();
 			ObjectPool value;
 			if (!Instance.mPools.TryGetValue(instanceID, out value))
 			{
@@ -83,7 +83,7 @@ namespace Mix.Games.Tray.ObjectPool
 
 		public static void DestroyPooled(GameObject aPrefab)
 		{
-			int instanceID = aPrefab.GetInstanceID();
+			EntityId instanceID = aPrefab.GetEntityId();
 			ObjectPool value;
 			if (Instance.mPools.TryGetValue(instanceID, out value))
 			{
@@ -99,7 +99,7 @@ namespace Mix.Games.Tray.ObjectPool
 
 		public static void ExpandPool(GameObject aPrefab, int aAddSize)
 		{
-			int instanceID = aPrefab.GetInstanceID();
+			EntityId instanceID = aPrefab.GetEntityId();
 			ObjectPool value;
 			if (Instance.mPools.TryGetValue(instanceID, out value))
 			{
@@ -122,9 +122,9 @@ namespace Mix.Games.Tray.ObjectPool
 
 		private ObjectPool GetObjectPoolFromObj(GameObject aObj)
 		{
-			int value = -1;
+			EntityId value;
 			ObjectPool value2;
-			if (mObjToPrefabMap.TryGetValue(aObj.GetInstanceID(), out value) && mPools.TryGetValue(value, out value2))
+			if (mObjToPrefabMap.TryGetValue(aObj.GetEntityId(), out value) && mPools.TryGetValue(value, out value2))
 			{
 				return value2;
 			}
@@ -133,12 +133,12 @@ namespace Mix.Games.Tray.ObjectPool
 
 		public void RegisterObjectToPrefab(GameObject aObj, GameObject aPrefab)
 		{
-			mObjToPrefabMap.Add(aObj.GetInstanceID(), aPrefab.GetInstanceID());
+			mObjToPrefabMap.Add(aObj.GetEntityId(), aPrefab.GetEntityId());
 		}
 
 		public void UnregisterObject(GameObject aObj)
 		{
-			mObjToPrefabMap.Remove(aObj.GetInstanceID());
+			mObjToPrefabMap.Remove(aObj.GetEntityId());
 		}
 
 		public void DrawInspectorGUI()

@@ -19,9 +19,7 @@ namespace Mix.SequenceOperations
 
 		private void InitKeyChainPlugin()
 		{
-			GameObject gameObject = new GameObject();
-			gameObject.name = typeof(KeyChainManager).Name;
-			gameObject.AddComponent<KeyChainWindowsManager>();
+			KeyChainManager instance = KeyChainManager.Instance;
 		}
 	}
 }

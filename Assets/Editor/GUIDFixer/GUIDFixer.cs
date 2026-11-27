@@ -175,7 +175,7 @@ namespace Kamgam.GF
             var asset = AssetDatabase.LoadAssetAtPath<Object>(path);
             if (asset != null)
             {
-                if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(asset.GetInstanceID(), out string guid, out long localId))
+                if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(asset, out string guid, out long localId))
                 {
                     return guid;
                 }

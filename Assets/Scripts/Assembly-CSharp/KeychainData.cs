@@ -25,11 +25,11 @@ public class KeychainData : IKeychain
 
 	private byte[] GetOrGenerateLocalStorageKey()
 	{
-		string text = Service.Get<KeyChainManager>().GetString("SessionUnlockKey");
+		string text = KeyChainManager.Instance.GetString("SessionUnlockKey");
 		if (string.IsNullOrEmpty(text))
 		{
 			new RNGCryptoServiceProvider().GetBytes(localStorageKey);
-			Service.Get<KeyChainManager>().PutString("SessionUnlockKey", Convert.ToBase64String(localStorageKey));
+			KeyChainManager.Instance.PutString("SessionUnlockKey", Convert.ToBase64String(localStorageKey));
 		}
 		else
 		{
@@ -42,11 +42,11 @@ public class KeychainData : IKeychain
 	{
 		if (aKey != null)
 		{
-			Service.Get<KeyChainManager>().PutString("PushNotificationUnlockKey", Convert.ToBase64String(aKey));
+			KeyChainManager.Instance.PutString("PushNotificationUnlockKey", Convert.ToBase64String(aKey));
 		}
 		else
 		{
-			Service.Get<KeyChainManager>().RemoveString("PushNotificationUnlockKey");
+			KeyChainManager.Instance.RemoveString("PushNotificationUnlockKey");
 		}
 	}
 }

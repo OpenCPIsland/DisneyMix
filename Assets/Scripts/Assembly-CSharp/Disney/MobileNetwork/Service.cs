@@ -7,9 +7,26 @@ namespace Disney.MobileNetwork
 	{
 		private static List<IServiceWrapper> serviceWrapperList;
 
+		[UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.SubsystemRegistration)]
+		private static void ResetOnLoad()
+		{
+			// Static services survive play-mode entry when domain reload is disabled.
+			ResetAll();
+		}
+
+		private static bool IsAlive(object instance)
+		{
+			if (instance == null)
+			{
+				return false;
+			}
+			UnityEngine.Object unityObject = instance as UnityEngine.Object;
+			return (object)unityObject == null || unityObject != null;
+		}
+
 		public static void Set<T>(T instance)
 		{
-			if (ServiceWrapper<T>.instance != null)
+			if (IsAlive(ServiceWrapper<T>.instance))
 			{
 				throw new Exception("An instance of this service class has already been set!");
 			}
@@ -23,12 +40,13 @@ namespace Disney.MobileNetwork
 
 		public static T Get<T>()
 		{
-			return ServiceWrapper<T>.instance;
+			T instance = ServiceWrapper<T>.instance;
+			return IsAlive(instance) ? instance : default(T);
 		}
 
 		public static bool IsSet<T>()
 		{
-			return ServiceWrapper<T>.instance != null;
+			return IsAlive(ServiceWrapper<T>.instance);
 		}
 
 		public static void ResetAll()

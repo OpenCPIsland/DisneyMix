@@ -118,7 +118,7 @@ public class FindMissingAssetsWindow : EditorWindow
             {
                 if (prop.propertyType == SerializedPropertyType.ObjectReference)
                 {
-                    if (prop.objectReferenceValue == null && prop.objectReferenceInstanceIDValue != 0)
+                    if (prop.objectReferenceValue == null && prop.objectReferenceEntityIdValue != EntityId.None)
                     {
                         // Try to parse fileID/guid from YAML
                         string fileId = null, assetGuid = null;

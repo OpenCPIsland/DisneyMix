@@ -43,7 +43,7 @@ namespace Disney.Native
 		{
 			AccessibilitySettings component = aItem.GetComponent<AccessibilitySettings>();
 			Rect rectInPhysicalScreenSpace = Util.GetRectInPhysicalScreenSpace(aItem.GetComponent<RectTransform>());
-			MonoSingleton<NativeAccessiblityManager>.Instance.Native.UpdateView(aItem.GetInstanceID(), rectInPhysicalScreenSpace, GetTokenText(component));
+			MonoSingleton<NativeAccessiblityManager>.Instance.Native.UpdateView(aItem.GetEntityId().GetHashCode(), rectInPhysicalScreenSpace, GetTokenText(component));
 		}
 
 		protected override void Remove(int aId)

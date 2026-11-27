@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OpenCPI - Disney Mix</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../../assets/css/main.css" rel="stylesheet" type="text/css">
+    <link href="../../assets/css/mobile.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" href="../../assets/img/favicon.png">
+    <script src="../../assets/js/sound.js" defer></script>
+    <script src="../../assets/js/theme.js" defer></script>
+    <script src="../../assets/js/glare.js" defer></script>
+
+    <style>
+        /* ===== BANNER: Disney Mix login background ===== */
+        .mixbanner {
+            display: block;
+            position: relative;
+            overflow: hidden;
+            background-color: #59c0e5;
+            /* fades to white at the bottom */
+            background-image: linear-gradient(to bottom, rgba(255,255,255,0.3), #fff);
+            animation: mixColors 21s ease-in-out infinite;
+        }
+
+        /* color loop: blue -> yellow -> pink -> blue (21 seconds) */
+        @keyframes mixColors {
+            0%   { background-color: #59c0e5; } /* blue   */
+            19%  { background-color: #59c0e5; }
+            33%  { background-color: #dce11e; } /* yellow */
+            52%  { background-color: #dce11e; }
+            67%  { background-color: #cd1f72; } /* pink   */
+            86%  { background-color: #cd1f72; }
+            100% { background-color: #59c0e5; } /* blue   */
+        }
+
+        /* particles canvas fills the banner, behind the logo */
+        #mixParticles {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+        }
+        .mixbanner center { position: relative; }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="../../"><img class="headlogo soundclick" src="../../assets/img/logo.png" alt="OpenCPI Logo"></a>
+        <a class="headlink soundclick" href="https://github.com/OpenCPIsland/">GitHub</a>
+        <a class="headlink soundclick" href="https://discord.gg/jkWbd3uqTS">Discord</a>
+        <button id="themeToggle" class="themeToggle soundclick" type="button" aria-pressed="false">Light</button>
+    </header>
+
+<banner class="plbanner mixbanner">
+    <canvas id="mixParticles"></canvas>
+    <center>
+    <img style="height: 25vh;width: auto;border-radius: 22%" src="../../assets/img/mix_logo_EN.png" alt="Disney Mix Logo">
+    </center>
+</banner>
+
+<script>
+/* ===== PARTICLES: colored squares like the login screen ===== */
+var canvas = document.getElementById('mixParticles');
+var ctx = canvas.getContext('2d');
+
+// settings
+var PER_SECOND = 12;                                // new squares per second
+var LIFETIME   = 2;                                 // seconds a square lives
+var SIZE       = 24;                                // biggest square size in pixels
+var COLORS     = ['#1c99d6', '#dce11e', '#e62380']; // blue, yellow, pink
+
+// the square picture
+var square = new Image();
+square.src = '../../assets/img/mix_particle.png';
+
+// make a colored copy of the white square
+function colorSquare(color) {
+    var c = document.createElement('canvas');
+    c.width = square.width;
+    c.height = square.height;
+    var g = c.getContext('2d');
+    g.drawImage(square, 0, 0);
+    g.globalCompositeOperation = 'source-in';
+    g.fillStyle = color;
+    g.fillRect(0, 0, c.width, c.height);
+    return c;
+}
+
+var coloredSquares = [];
+square.onload = function () {
+    coloredSquares = COLORS.map(colorSquare);
+};
+
+// list of squares on screen
+var particles = [];
+
+function addParticle() {
+    particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: SIZE * (0.6 + Math.random() * 0.4),
+        // color changes every 5 seconds: blue, then yellow, then pink
+        color: Math.floor((Date.now() / 1000 % 5) / 5 * 3),
+        age: 0
+    });
+}
+
+var last = Date.now();
+var toAdd = 0; // counts up until it's time for the next square
+
+function loop() {
+    var now = Date.now();
+    var dt = Math.min((now - last) / 1000, 0.1); // seconds since last frame
+    last = now;
+
+    // keep canvas the same size as the banner (this also clears it)
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+
+    // add new squares (PER_SECOND of them every second)
+    toAdd += PER_SECOND * dt;
+    while (toAdd >= 1) {
+        addParticle();
+        toAdd--;
+    }
+
+    // move, grow, fade, draw
+    particles.forEach(function (p) {
+        p.age += dt;
+        p.y += 10 * dt;                               // drift down slowly
+
+        var life  = p.age / LIFETIME;                 // 0 = new, 1 = gone
+        var grow  = Math.min(life / 0.4, 1);          // grows in the first 40%
+        var alpha = Math.max(1 - life / 0.75, 0);     // gone by 75%
+        var s     = p.size * grow;
+
+        if (coloredSquares.length) {
+            ctx.globalAlpha = alpha;
+            ctx.drawImage(coloredSquares[p.color], p.x - s / 2, p.y - s / 2, s, s);
+        }
+    });
+
+    // remove old squares
+    particles = particles.filter(function (p) { return p.age < LIFETIME; });
+
+    requestAnimationFrame(loop);
+}
+
+loop();
+</script>
+
+<grid>
+    <div class="orange">
+        <div class="checkereda"></div>
+        <div class="text center" style="overflow: hidden; height: 95%;">
+         <a>Chat with your friends, send stickers and gags, and play minigames together in Disney Mix!<br><br>Hang out with Mixbot and over 20 of your favorite Disney, Pixar and Star Wars characters, customize your avatar, and keep the conversation going anywhere.<br><br>No account from Disney required.</a>
+        </div>
+    </div>
+
+    <div class="peach">
+        <div class="checkeredc"></div>
+        <div class="text center">
+            <center>
+            <h1>Check out our repos!</h1>
+            <br>
+            <a href="https://github.com/OpenCPIsland/"><button class="transparentbutton soundclick">GitHub</button></a>
+            <br>
+            <a href="https://github.com/OpenCPIsland/DisneyMix"><button class="transparentbutton soundclick">Source Code</button></a>
+            </center>
+        </div>
+    </div>
+
+    <div style="background: url(../../assets/img/mix_banner_2.png);background-size: cover;background-position: center;">
+    </div>
+
+    <div class="arcticblue">
+        <div class="checkeredr"></div>
+        <div class="downloadbtns">
+            <center>
+            <a href="https://github.com/OpenCPIsland/builds/releases/download/disneymix/Windows.zip"><button style="width: 100% !important;" class="dlbtnforwin soundclick">Download for Windows</button></a>
+            <br>
+            <a href="https://github.com/OpenCPIsland/builds/releases/download/disneymix/Linux.zip"><button style="width: 100% !important;" class="dlbtnforwin soundclick">Download for Linux</button></a>
+            <br>
+            <a href="https://github.com/OpenCPIsland/builds/releases/download/disneymix/Disney.Mix.apk"><button style="width: 100% !important;" class="dlbtnforand soundclick">Download for Android</button></a>
+            </center>
+        </div>
+    </div>
+</grid>
+
+<footer>
+<div class="abovefooter">
+    <a>OpenCPI Interactive is a fan made project with no affiliations to Disney. © 2026 Disney. Disney Mix ™</a>
+</div>
+    <div id="h1footer">
+    <img id="disneyLogo" src="../../assets/img/logo-disney-grey.png" alt="Disney">
+    <div class="footerlinks">
+    <a class="footerDiscordLogo soundclick" href="https://discord.gg/jkWbd3uqTS"><img src="../../assets/img/Discord.png" alt="Discord"></a>
+    </div>
+</div>
+<hr>
+<div id="h2footer">
+    <center>
+   <p>© 2026 Disney. Disney Mix ™</p>
+   <br><br>
+    <p>OpenCPI Interactive is a non profit project aimed at open sourcing the recreated Disney Mix client's source code, as well as updating the Unity engine to modern versions. We do not profit from Disney Mix or any other Disney properties, and we do not own the rights to these properties. All rights are owned by Disney and the respective copyright holders. If you are Disney or another entity that holds copyrights related to this project, please reach out to us, and we will take it down. We aim to avoid any legal issues.</p>
+    </center>
+</div>
+</footer>
+
+</body>
+</html>

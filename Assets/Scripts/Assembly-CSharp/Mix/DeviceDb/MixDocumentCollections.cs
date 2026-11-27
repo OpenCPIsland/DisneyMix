@@ -189,11 +189,11 @@ namespace Mix.DeviceDb
 			factory = new DocumentCollectionFactory();
 			DirPath = Application.PersistentDataPath + "/cache/";
 			key = new byte[32];
-			string text = Service.Get<KeyChainManager>().GetString("DocumentsKey");
+			string text = KeyChainManager.Instance.GetString("DocumentsKey");
 			if (string.IsNullOrEmpty(text))
 			{
 				new RNGCryptoServiceProvider().GetBytes(key);
-				Service.Get<KeyChainManager>().PutString("DocumentsKey", Convert.ToBase64String(key));
+				KeyChainManager.Instance.PutString("DocumentsKey", Convert.ToBase64String(key));
 			}
 			else
 			{

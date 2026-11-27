@@ -7,11 +7,35 @@ namespace Disney.MobileNetwork
 	{
 		protected Dictionary<string, string> appData = new Dictionary<string, string>();
 
+		// Returns the live keychain manager, creating one if it is missing or was destroyed.
+		public static KeyChainManager Instance
+		{
+			get
+			{
+				KeyChainManager existing = Service.Get<KeyChainManager>();
+				if (existing != null)
+				{
+					return existing;
+				}
+				GameObject gameObject = new GameObject(typeof(KeyChainManager).Name);
+				return gameObject.AddComponent<KeyChainWindowsManager>();
+			}
+		}
+
 		public void Awake()
 		{
-			Service.Set(this);
-			Init();
+			KeyChainManager existing = Service.Get<KeyChainManager>();
+			if (existing != null && existing != this)
+			{
+				Object.Destroy(base.gameObject);
+				return;
+			}
+			if (existing == null)
+			{
+				Service.Set<KeyChainManager>(this);
+			}
 			Object.DontDestroyOnLoad(base.gameObject);
+			Init();
 		}
 
 		protected virtual void Init()

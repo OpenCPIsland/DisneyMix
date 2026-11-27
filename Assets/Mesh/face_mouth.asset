@@ -91,7 +91,7 @@ Mesh:
     e31: 0
     e32: 0
     e33: 1
-  m_BoneNameHashes: 9deadd08
+  m_BoneNameHashes: 9deadd08u
   m_RootBoneNameHash: 3101551261
   m_BonesAABB:
   - m_Min: {x: -23.747467, y: -13.063685, z: -0.6285324}
@@ -101,9 +101,9 @@ Mesh:
   m_MeshCompression: 0
   m_IsReadable: 1
   m_KeepVertices: 1
-  m_KeepIndices: 1
+  m_KeepIndices: 0
   m_IndexFormat: 0
-  m_IndexBuffer: 000001000200000002000300
+  m_IndexBuffer: 000001000200000002000300y
   m_VertexData:
     serializedVersion: 3
     m_VertexCount: 4
@@ -221,8 +221,9 @@ Mesh:
   m_LocalAABB:
     m_Center: {x: 0, y: 8.772737, z: 50.467457}
     m_Extent: {x: 23.747467, y: 14.636422, z: 0}
-  m_MeshUsageFlags: 1
   m_CookingOptions: 30
+  m_PreBakeConvexCollisionMesh: 0
+  m_PreBakeTriangleCollisionMesh: 0
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   'm_MeshMetrics[0]': 1
