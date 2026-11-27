@@ -2049,17 +2049,45 @@ namespace Mix.Ui
 		{
 			if (!this.IsNullOrDisposed() && !comingFromPushNote)
 			{
-				MixGameData mixGameData = JsonMapper.ToObject<MixGameData>((string)e.Message.GameStateMessage.State["GameData"]);
-				BaseGameData gameData = Singleton<EntitlementsManager>.Instance.GetGameData(mixGameData.Entitlement);
-				if (!string.Equals("fireworks", gameData.GetName()))
+				AddGameEventMessage(sender as IChatThread, e.Message, true);
+			}
+		}
+
+		// Post-only games (Fireworks, Meme Generator) have no results bundle in the
+		// content data, so their game events have nothing to show as a response tile.
+		// Both the live path and the history path go through AddGameEventMessage.
+		private static bool IsPostOnlyGameEvent(IGameEventMessage aGameEventMessage)
+		{
+			try
+			{
+				IGameStateMessage stateMessage = (aGameEventMessage == null) ? null : aGameEventMessage.GameStateMessage;
+				object gameDataJson;
+				if (stateMessage == null || stateMessage.State == null || !stateMessage.State.TryGetValue("GameData", out gameDataJson) || !(gameDataJson is string))
 				{
-					AddGameEventMessage(sender as IChatThread, e.Message, true);
+					return false;
 				}
+				MixGameData mixGameData = JsonMapper.ToObject<MixGameData>((string)gameDataJson);
+				EntitlementsManager entitlementsManager = Singleton<EntitlementsManager>.Instance;
+				BaseGameData gameData = (mixGameData == null || entitlementsManager == null) ? null : entitlementsManager.GetGameData(mixGameData.Entitlement);
+				if (gameData == null)
+				{
+					return false;
+				}
+				string result = gameData.GetResult();
+				return string.IsNullOrEmpty(result) || string.IsNullOrEmpty(result.Trim());
+			}
+			catch (Exception)
+			{
+				return false;
 			}
 		}
 
 		private void AddGameEventMessage(IChatThread aChatThread, IGameEventMessage aGameEventMessage, bool aIsNewMessage)
 		{
+			if (IsPostOnlyGameEvent(aGameEventMessage))
+			{
+				return;
+			}
 			if (ShouldAddMessage(aChatThread, aGameEventMessage))
 			{
 				IScrollItem item = new MixGameResponseItem(aChatThread, aGameEventMessage, ScrollView, this);

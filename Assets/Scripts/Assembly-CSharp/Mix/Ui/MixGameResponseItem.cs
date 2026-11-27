@@ -275,8 +275,11 @@ namespace Mix.Ui
 			string bundle = mEntitlement.GetResult();
 			if (string.IsNullOrEmpty(bundle) || string.IsNullOrEmpty(bundle.Trim()))
 			{
-				Debug.LogWarning(LOG_TAG + "No result bundle for entitlement '" + mGameData.Entitlement + "'");
-				ShowAssetError();
+				// Post-only games (Fireworks, Meme Generator) have no results object by
+				// design; the original client simply rendered nothing here. ChatController
+				// skips these up front, this covers events whose state wasn't cached yet.
+				SetActive(LoaderObject, false);
+				SetActive(ErrorObject, false);
 				return;
 			}
 
