@@ -275,8 +275,8 @@ namespace Mix.Ui
 			string bundle = mEntitlement.GetResult();
 			if (string.IsNullOrEmpty(bundle) || string.IsNullOrEmpty(bundle.Trim()))
 			{
-				Debug.LogWarning(LOG_TAG + "No result bundle for entitlement '" + mGameData.Entitlement + "'");
-				ShowAssetError();
+				// Some games (e.g. Fireworks) have no result card; responses to them show nothing, as in the original client.
+				SetActive(LoaderObject, false);
 				return;
 			}
 

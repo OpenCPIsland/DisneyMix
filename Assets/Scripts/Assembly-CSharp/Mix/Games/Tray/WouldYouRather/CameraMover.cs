@@ -23,6 +23,19 @@ namespace Mix.Games.Tray.WouldYouRather
 		{
 		};
 
+		// CoreCLR / no domain reload: statics survive between play sessions, so handlers from a
+		// destroyed WouldYouRatherGame could stay subscribed and throw before the live game's handler runs.
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+		private static void ResetStaticStateForPlaySession()
+		{
+			OnTransitionToGameplayComplete = delegate
+			{
+			};
+			OnTransitionToConfirmationComplete = delegate
+			{
+			};
+		}
+
 		[Header("Intro")]
 		public MovementInfo introMovementInfo;
 

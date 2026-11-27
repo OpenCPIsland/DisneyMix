@@ -153,6 +153,7 @@ namespace Mix.Games.Tray.Fireworks
 
 		public virtual void Return()
 		{
+			if (this is FireworkF) Debug.Log($"[FWDBG] Message firework Return() at t={Time.time:F2}");
 			mIsPlaying = false;
 			foreach (ParticleSystem trail in Trails)
 			{

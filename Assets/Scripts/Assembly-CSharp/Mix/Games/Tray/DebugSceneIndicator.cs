@@ -27,6 +27,15 @@ namespace Mix.Games.Tray
 
 		public static GameManagerRetriever GetGameManager { get; set; }
 
+		// CoreCLR / no domain reload: mIsDebugScene is only ever set to true, so after one run of a
+		// standalone game debug scene every later play session would be treated as a debug scene.
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+		private static void ResetStaticStateForPlaySession()
+		{
+			mIsDebugScene = false;
+			GetGameManager = null;
+		}
+
 		private void Awake()
 		{
 			mIsDebugScene = true;

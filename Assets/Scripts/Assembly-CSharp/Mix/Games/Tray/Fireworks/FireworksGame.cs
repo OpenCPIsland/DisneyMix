@@ -369,6 +369,7 @@ namespace Mix.Games.Tray.Fireworks
 		public void ReadyPlayback(FireworksData configData)
 		{
 			mGameStage = FireworksStage.Loading;
+			Debug.Log($"[FWDBG] ReadyPlayback t={Time.time:F2}");
 			ShowData showData = Toolbox.Instance.mPlaybackAssembler.Parse(configData);
 			int num = 0;
 			float num2 = 0f;
@@ -822,6 +823,7 @@ namespace Mix.Games.Tray.Fireworks
 			}
 			else if (mGameStage == FireworksStage.End && !mPhysicalMessageFirework.GetComponent<FireworkF>().mIsPlaying)
 			{
+				Debug.Log($"[FWDBG] Message firework finished at t={Time.time:F2}, calling GameOver");
 				mGameStage = FireworksStage.Idle;
 				Toolbox.PurgeToolbox();
 				FireworksData gameData = GameController.GetGameData<FireworksData>();
@@ -927,6 +929,7 @@ namespace Mix.Games.Tray.Fireworks
 			if (mCurrentSongTime <= 0f)
 			{
 				Toolbox.Instance.mFireworkManager.mGestureFirework.GetComponent<ParticleSystem>().Stop();
+				Debug.Log($"[FWDBG] Song timer hit 0 at t={Time.time:F2}, launching message firework, remaining queued={mLaunchedFireworks.Count}");
 				mPhysicalMessageFirework.GetComponent<FireworkF>().Launch(mPhysicalMessageFirework.transform.localPosition);
 				mGameStage = FireworksStage.End;
 			}
@@ -943,6 +946,7 @@ namespace Mix.Games.Tray.Fireworks
 		public void StartTheShow()
 		{
 			mGameStage = FireworksStage.ShowTime;
+			Debug.Log($"[FWDBG] StartTheShow t={Time.time:F2} songTime={mCurrentSongTime:F2} max={mMaxSongTime:F2} queued={mLaunchedFireworks.Count} fixedDt={Time.fixedDeltaTime}");
 
         }
 

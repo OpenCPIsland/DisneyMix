@@ -1,17 +1,17 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1419176010340755
+--- !u!1 &1510499937402764
 GameObject:
   serializedVersion: 4
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_Component:
-  - 224: {fileID: 224472486117730347}
-  - 222: {fileID: 222729260653738468}
-  - 114: {fileID: 114897606805918560}
-  - 114: {fileID: 114855622580273474}
-  - 114: {fileID: 114783392483536796}
+  - 224: {fileID: 224599518508485057}
+  - 222: {fileID: 222929742896600500}
+  - 114: {fileID: 114181531678325033}
+  - 114: {fileID: 114506367224312285}
+  - 114: {fileID: 114695095749050463}
   m_Layer: 9
   m_Name: brand_stickerName_thumb
   m_TagString: Untagged
@@ -19,16 +19,15 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &224472486117730347
+--- !u!224 &224599518508485057
 RectTransform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1419176010340755}
+  m_GameObject: {fileID: 1510499937402764}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -37,18 +36,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 128, y: 128}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &222729260653738468
+--- !u!222 &222929742896600500
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1419176010340755}
---- !u!114 &114897606805918560
+  m_GameObject: {fileID: 1510499937402764}
+--- !u!114 &114181531678325033
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1419176010340755}
+  m_GameObject: {fileID: 1510499937402764}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
@@ -61,7 +60,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: b3287182bf61a3b4db4a5d918416e3b1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0e9bff2ecbf312a4b8cbd60e9044d519, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -69,12 +68,12 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114855622580273474
+--- !u!114 &114506367224312285
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1419176010340755}
+  m_GameObject: {fileID: 1510499937402764}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
@@ -104,7 +103,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 114897606805918560}
+  m_TargetGraphic: {fileID: 114181531678325033}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -120,12 +119,12 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
---- !u!114 &114783392483536796
+--- !u!114 &114695095749050463
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1419176010340755}
+  m_GameObject: {fileID: 1510499937402764}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 1679637790, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
@@ -147,5 +146,5 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1419176010340755}
+  m_RootGameObject: {fileID: 1510499937402764}
   m_IsPrefabParent: 1

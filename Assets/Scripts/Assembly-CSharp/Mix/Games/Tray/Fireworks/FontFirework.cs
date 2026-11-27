@@ -77,6 +77,8 @@ namespace Mix.Games.Tray.Fireworks
 
 		private Texture2D mFontTexture;
 
+		private Texture2D mOwnedFontTexture;
+
 		private ParticleSystem mParticleSystem;
 
 		private Vector2 mUvStart;
@@ -120,19 +122,34 @@ namespace Mix.Games.Tray.Fireworks
 		public void BuildFirework()
 		{
 			mParticleSystem = GetComponent<ParticleSystem>();
+			if (mMessage == null)
+			{
+				mMessage = string.Empty;
+			}
 			if (mMessage.Length > 16)
 			{
 				mMessage = mMessage.Remove(16);
 			}
-			mMessage = mMessage.ToUpper();
+			mMessage = mMessage.ToUpperInvariant();
 			mNumCharacters = mMessage.Length;
-			Debug.Log("this.mNumCharacters: " + mNumCharacters);
-			Debug.Log("mNumCharacters: " + mNumCharacters);
 			if (mNumCharacters == 0)
 			{
 				return;
 			}
-			mFontTexture = (Texture2D)mFont.material.mainTexture;
+			// The message font is a dynamic font: glyphs only exist in its texture after they are
+			// requested. Without this, GetCharacterInfo returns empty glyphs, no particles are built
+			// and the end-of-show message firework explodes into nothing.
+			mFont.RequestCharactersInTexture(mMessage);
+			Texture fontTexture = mFont.material.mainTexture;
+			if (fontTexture == null)
+			{
+				Debug.LogError("[FontFirework] Font '" + mFont.name + "' has no texture; message firework cannot be built.");
+				mNumCharacters = 0;
+				return;
+			}
+			// The dynamic font atlas lives on the GPU only (not CPU-readable), so take a readable
+			// snapshot of it to sample glyph pixels from.
+			mFontTexture = CreateReadableCopy(fontTexture);
 			CharacterInfo info = default(CharacterInfo);
 			int num = 0;
 			for (int i = 0; i < mMessage.Length; i++)
@@ -205,6 +222,37 @@ namespace Mix.Games.Tray.Fireworks
 			mParticles = new ParticleSystem.Particle[mTotalNum];
 			mCenterIndex = mTotalNum / 2;
 			built = true;
+			Debug.Log($"[FWDBG] FontFirework built '{mMessage}' chars={mNumCharacters} particles={mTotalNum}");
+		}
+
+		private Texture2D CreateReadableCopy(Texture source)
+		{
+			ReleaseReadableCopy();
+			RenderTexture renderTexture = RenderTexture.GetTemporary(source.width, source.height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
+			RenderTexture previous = RenderTexture.active;
+			Graphics.Blit(source, renderTexture);
+			RenderTexture.active = renderTexture;
+			Texture2D copy = new Texture2D(source.width, source.height, TextureFormat.RGBA32, false, true);
+			copy.ReadPixels(new Rect(0f, 0f, source.width, source.height), 0, 0);
+			copy.Apply(false);
+			RenderTexture.active = previous;
+			RenderTexture.ReleaseTemporary(renderTexture);
+			mOwnedFontTexture = copy;
+			return copy;
+		}
+
+		private void ReleaseReadableCopy()
+		{
+			if (mOwnedFontTexture != null)
+			{
+				Destroy(mOwnedFontTexture);
+				mOwnedFontTexture = null;
+			}
+		}
+
+		private void OnDestroy()
+		{
+			ReleaseReadableCopy();
 		}
 
 		private void Add(int curChar)
@@ -265,6 +313,10 @@ namespace Mix.Games.Tray.Fireworks
 
 		public void Explode()
 		{
+			if (!built || mParticles == null || mTotalNum == 0)
+			{
+				return;
+			}
 			mParticleSystem.Emit(mTotalNum);
 			int particles = mParticleSystem.GetParticles(mParticles);
 			int num = 0;
@@ -325,6 +377,10 @@ namespace Mix.Games.Tray.Fireworks
 
 		public void ExplodeD()
 		{
+			if (!built || mParticles == null || mTotalNum == 0)
+			{
+				return;
+			}
 			mTimer = 0f;
 			ParticleSystem.MainModule mainModule5 = mParticleSystem.main;
 			mainModule5.gravityModifier = 0f;

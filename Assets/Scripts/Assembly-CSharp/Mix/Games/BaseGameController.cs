@@ -44,6 +44,13 @@ namespace Mix.Games
 			}
 		}
 
+		// CoreCLR / no domain reload: don't carry the previous play session's destroyed controller over.
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+		private static void ResetStaticStateForPlaySession()
+		{
+			mInstance = null;
+		}
+
 		public string FriendName
 		{
 			get

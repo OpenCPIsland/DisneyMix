@@ -1,15 +1,16 @@
 fileFormatVersion: 2
-guid: c17791b1e194b5146936380e4bb84607
-timeCreated: 1772215214
+guid: b3dc1266038ccd94d8c7c304419f0bd9
+timeCreated: 1795818000
 licenseType: Free
 TrueTypeFontImporter:
-  serializedVersion: 4
+  serializedVersion: 2
   name:
   fontSize: 16
   forceTextureCase: -2
-  characterSpacing: 0
-  characterPadding: 1
+  characterSpacing: 1
+  characterPadding: 0
   includeFontData: 1
+  use2xBehaviour: 0
   fontNames:
   - AnimatedGothicLight
   - Animated Gothic Light
@@ -18,7 +19,6 @@ TrueTypeFontImporter:
   fontRenderingMode: 0
   output:
     hasEmptyFontData: 0
-  ascentCalculationMode: 1
   userData:
   assetBundleName:
   assetBundleVariant:

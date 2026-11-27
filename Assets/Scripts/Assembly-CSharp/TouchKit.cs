@@ -11,6 +11,10 @@ public class TouchKit : MonoBehaviour
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 	private static void EnableEnhancedTouch()
 	{
+		// Statics survive play-mode entry (CoreCLR / no domain reload): clear the quit flag
+		// set by the previous session's OnApplicationQuit, or instance returns null forever.
+		isApplicationQuitting = false;
+		_instance = null;
 		if (!EnhancedTouchSupport.enabled)
 		{
 			EnhancedTouchSupport.Enable();

@@ -2057,17 +2057,36 @@ namespace Mix.Ui
 		{
 			if (!this.IsNullOrDisposed() && !comingFromPushNote)
 			{
-				MixGameData mixGameData = JsonMapper.ToObject<MixGameData>((string)e.Message.GameStateMessage.State["GameData"]);
+				AddGameEventMessage(sender as IChatThread, e.Message, true);
+			}
+		}
+
+		// Games without a result card (e.g. Fireworks) never show responses in chat,
+		// whether the message arrives live or is loaded from history.
+		private static bool HasNoResultCard(IGameEventMessage aGameEventMessage)
+		{
+			try
+			{
+				MixGameData mixGameData = JsonMapper.ToObject<MixGameData>((string)aGameEventMessage.GameStateMessage.State["GameData"]);
 				BaseGameData gameData = Singleton<EntitlementsManager>.Instance.GetGameData(mixGameData.Entitlement);
-				if (!string.Equals("fireworks", gameData.GetName()))
+				if (gameData == null)
 				{
-					AddGameEventMessage(sender as IChatThread, e.Message, true);
+					return false;
 				}
+				return string.Equals("fireworks", gameData.GetName()) || string.IsNullOrEmpty((gameData.GetResult() ?? string.Empty).Trim());
+			}
+			catch
+			{
+				return false;
 			}
 		}
 
 		private void AddGameEventMessage(IChatThread aChatThread, IGameEventMessage aGameEventMessage, bool aIsNewMessage)
 		{
+			if (HasNoResultCard(aGameEventMessage))
+			{
+				return;
+			}
 			if (ShouldAddMessage(aChatThread, aGameEventMessage))
 			{
 				IScrollItem item = new MixGameResponseItem(aChatThread, aGameEventMessage, ScrollView, this);

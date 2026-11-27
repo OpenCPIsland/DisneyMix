@@ -418,6 +418,26 @@ namespace DG.Tweening
 			return TweenManager.FilteredOperation(OperationType.Play, FilterType.TargetOrId, targetOrId, false, 0f);
 		}
 
+		// With "Enter Play Mode Options" / Reload Domain disabled, static state survives between play
+		// sessions: `initialized` (and `isQuitting`, set by OnApplicationQuit) stay true while the
+		// [DOTween] driver GameObject from the previous session is gone, so InitCheck never recreates
+		// it and every tween is created but never updated. Reset it at the start of each session.
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+		private static void ResetStaticStateForPlaySession()
+		{
+			TweenManager.isUpdateLoop = false;
+			if (initialized)
+			{
+				TweenManager.DespawnAll();
+			}
+			instance = null;
+			initialized = false;
+			isQuitting = false;
+			maxActiveTweenersReached = 0;
+			maxActiveSequencesReached = 0;
+			GizmosDelegates.Clear();
+		}
+
 		private static void InitCheck()
 		{
 			if (!initialized && Application.isPlaying && !isQuitting)

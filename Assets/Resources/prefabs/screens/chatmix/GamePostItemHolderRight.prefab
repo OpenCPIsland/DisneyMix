@@ -568,7 +568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doNotLocalize: 0
-  token: customtokens.game.gameitemholder_fu_errortext
+  token: customtokens.game.gameitemholder_fuerrortext
 --- !u!1 &1192314519590148
 GameObject:
   m_ObjectHideFlags: 0
