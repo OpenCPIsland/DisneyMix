@@ -10,7 +10,7 @@
 ### 🛠 Technical Specifications
 * **Unity Version:** `6000.3.29f1`
 * **Roadmap:** Stable, used alongside Glacier
-* **Unity Roadmap:** Updates beyond **Unity 6.3** are not planned until the release of **Unity 6.7**.
+* **Unity Roadmap:** Updates beyond **Unity 6.3** are not planned. Unity 6.7 might be doable but not anytime soon.
 * **Backend:** Based on the **Disney Mix API** (used on Club Penguin Island & Disney Mix)
 ---
 
