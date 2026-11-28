@@ -163,11 +163,16 @@ if (replaceImage)
 
 		private void OnDestroy()
 		{
-if (createdSprite != null) { 
-	Object.Destroy(createdSprite); 
-	createdSprite = null; 
-	}
-
+			if (createdSprite != null)
+			{
+				Object.Destroy(createdSprite);
+				createdSprite = null;
+			}
+			if (gag != null && ActiveObject != null && MonoSingleton<AssetManager>.Instance != null)
+			{
+				MonoSingleton<AssetManager>.Instance.DestroyBundleInstance(gag.GetThumb(), ActiveObject);
+			}
+			ActiveObject = null;
 		}
 
 		public void OnPlayGag()

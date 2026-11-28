@@ -210,9 +210,10 @@ namespace Mix.Assets
 			{
 				long size = cache[aKey].size;
 				int index = cache[aKey].index;
-				if (cache[aKey].isRefCounting && MonoSingleton<AssetManager>.Instance != null)
+				if (cache[aKey].isRefCounting)
 				{
-					MonoSingleton<AssetManager>.Instance.DestroyBundleInstance(aKey);
+					// aKey is already a converted cache key; don't run it through ConvertEntitlementPathToCpipePath again.
+					AssetManager.RefCounter.DecrementReferenceCount(aKey);
 				}
 				cache.Remove(aKey);
 				priorityList.RemoveAt(index);

@@ -1075,7 +1075,9 @@ namespace Mix.Assets
 					obj = UnityEngine.Object.Instantiate(obj);
 				}
 				AssetUtils.ConfigureAnisotropicFiltering(obj as GameObject);
-				IncrementBundleReferenceCount(text);
+				// 'text' is already the converted key; converting it again (via IncrementBundleReferenceCount)
+				// isn't idempotent for paths missing from the cpipe manifest, so the increment would be lost.
+				RefCounter.IncrementReferenceCount(text);
 				return obj;
 			}
 			obj = RefCounter.GetInstance(text);
